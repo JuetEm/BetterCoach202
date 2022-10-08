@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -81,6 +82,20 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 // 회원가입
                 print("sign up");
+              },
+            ),
+
+            /// 홈화면 버튼
+            ElevatedButton(
+              child: Text("홈", style: TextStyle(fontSize: 21)),
+              onPressed: () {
+                // 회원가입
+                print("홈화면");
+                // 로그인 성공시 HomePage로 이동
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => Home()),
+                );
               },
             ),
           ],
