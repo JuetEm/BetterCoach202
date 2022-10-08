@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'home.dart';
+
 /// 브랜치 테스트
 /// /// 브랜치 테스트222
-
-import 'package:web_project/home.dart';
 
 void main() {
   runApp(const MyApp());
