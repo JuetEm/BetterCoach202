@@ -1,6 +1,10 @@
 # web_project
 
+<<<<<<< HEAD
 A new Flutter project.
+=======
+A new Flutter project. test
+>>>>>>> 41270106dfb475616023c6e3cae9adf57b0cdfc9
 
 ## Getting Started
 
