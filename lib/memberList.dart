@@ -6,7 +6,9 @@ import 'auth_service.dart';
 import 'globalWidget.dart';
 import 'main.dart';
 import 'memberAdd.dart';
+import 'memberInfo.dart';
 import 'member_service.dart';
+import 'userInfo.dart';
 
 class MemberList extends StatefulWidget {
   const MemberList({super.key});
@@ -119,9 +121,30 @@ class _MemberListState extends State<MemberList> {
                               String info = doc.get('info');
                               String note = doc.get('note');
                               bool isActive = doc.get('isActive');
+                              final UserInfo userInfo = UserInfo(
+                                user.uid,
+                                name,
+                                registerDate,
+                                phoneNumber,
+                                registerType,
+                                goal,
+                                info,
+                                note,
+                                isActive,
+                              );
                               return InkWell(
                                 onTap: () {
-                                  memberService.update(doc.id, !isActive);
+                                  // 회원 카드 선택시 MemberInfo로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MemberInfo(),
+                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                      settings: RouteSettings(
+                                        arguments: userInfo,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: BaseContainer(
                                     name: name,
@@ -129,6 +152,7 @@ class _MemberListState extends State<MemberList> {
                                     goal: goal,
                                     info: info,
                                     note: note,
+                                    phoneNumber: phoneNumber,
                                     isActive: isActive),
                               );
                             },

@@ -38,6 +38,8 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
           child: Row(
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
                 onPressed: () {
@@ -51,7 +53,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                 icon: Icon(Icons.contacts_outlined),
                 tooltip: 'MEMBERS',
               ),
-              Spacer(),
+              //Spacer(),
               IconButton(
                 onPressed: () {
                   print('note_add');
@@ -64,7 +66,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                 icon: Icon(Icons.home_outlined),
                 tooltip: 'Add Class',
               ),
-              Spacer(),
+              //Spacer(),
               IconButton(
                 onPressed: () {
                   print('search');
@@ -149,6 +151,7 @@ class BaseContainer extends StatelessWidget {
     required this.info,
     required this.note,
     required this.isActive,
+    required this.phoneNumber,
   }) : super(key: key);
 
   final String name;
@@ -156,6 +159,7 @@ class BaseContainer extends StatelessWidget {
   final String goal;
   final String info;
   final String note;
+  final String phoneNumber;
   final bool isActive;
 
   @override
@@ -179,6 +183,55 @@ class BaseContainer extends StatelessWidget {
             const SizedBox(height: 5.0),
             Text(
               '등록 : ${registerDate}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ActionContainer extends StatelessWidget {
+  const ActionContainer({
+    Key? key,
+    required this.apratusName,
+    required this.actionName,
+    required this.lessonDate,
+    required this.grade,
+    required this.totalNote,
+  }) : super(key: key);
+
+  final String apratusName;
+  final String actionName;
+  final String lessonDate;
+  final String grade;
+  final String totalNote;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '기구이름 : ${apratusName}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 5.0),
+            Text(
+              '동작이름 : ${actionName}',
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,

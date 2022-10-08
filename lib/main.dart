@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 
 import 'auth_service.dart';
@@ -12,6 +13,7 @@ import 'cloudStorage.dart';
 import 'firebase_options.dart';
 import 'global_service.dart';
 import 'home.dart';
+import 'lesson_service.dart';
 import 'member_service.dart';
 
 /// 브랜치 테스트
@@ -29,6 +31,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => BucketService()),
         ChangeNotifierProvider(create: (context) => GlobalService()),
         ChangeNotifierProvider(create: (context) => MemberService()),
+        ChangeNotifierProvider(create: (context) => LessonService()),
         ChangeNotifierProvider(create: (context) => CalendarService()),
       ],
       child: const MyApp(),
@@ -44,8 +47,8 @@ class MyApp extends StatelessWidget {
     final user = context.read<AuthService>().currentUser();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: user == null ? LoginPage() : Home(),
       theme: ThemeData(fontFamily: 'Pretendard'),
+      home: user == null ? LoginPage() : Home(),
     );
   }
 }
@@ -178,6 +181,20 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => CloudStorage()),
+                    );
+                  },
+                ),
+
+                /// Cloud Storage 개발화면 버튼
+                ElevatedButton(
+                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 21)),
+                  onPressed: () {
+                    // 회원가입
+                    print("global widget");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => GlobalWidgetDashboard()),
                     );
                   },
                 ),
