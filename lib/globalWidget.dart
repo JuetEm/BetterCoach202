@@ -105,28 +105,34 @@ class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TextField(
-        readOnly: widget.showArrow,
-        controller: widget.customController,
-        decoration: InputDecoration(
-            suffixIcon: widget.showArrow
-                ? IconButton(
-                    onPressed: () {
-                      widget.customFunction();
-                    },
-                    icon: Icon(Icons.navigate_next),
-                  )
-                : null,
-            hintText: widget.hint,
-            border: OutlineInputBorder(
+      child: Container(
+        constraints: BoxConstraints(
+          minHeight: 100,
+        ),
+        child: TextField(
+          readOnly: widget.showArrow,
+          controller: widget.customController,
+          decoration: InputDecoration(
+              suffixIcon: widget.showArrow
+                  ? IconButton(
+                      onPressed: () {
+                        widget.customFunction();
+                      },
+                      icon: Icon(Icons.navigate_next),
+                    )
+                  : null,
+              hintText: widget.hint,
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
                   width: 0,
                   style: BorderStyle.none,
-                )),
-            filled: true,
-            contentPadding: EdgeInsets.all(16),
-            fillColor: Colors.white),
+                ),
+              ),
+              filled: true,
+              contentPadding: EdgeInsets.all(16),
+              fillColor: Colors.white),
+        ),
       ),
     );
   }

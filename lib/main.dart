@@ -8,6 +8,7 @@ import 'package:web_project/sign_up.dart';
 import 'auth_service.dart';
 import 'bucket_service.dart';
 import 'calendar_service.dart';
+import 'cloudStorage.dart';
 import 'firebase_options.dart';
 import 'global_service.dart';
 import 'home.dart';
@@ -164,6 +165,19 @@ class _LoginPageState extends State<LoginPage> {
                           content: Text(err),
                         ));
                       },
+                    );
+                  },
+                ),
+
+                /// Cloud Storage 개발화면 버튼
+                ElevatedButton(
+                  child: Text("클라우드 스토리지", style: TextStyle(fontSize: 21)),
+                  onPressed: () {
+                    // 회원가입
+                    print("cloud storage");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => CloudStorage()),
                     );
                   },
                 ),

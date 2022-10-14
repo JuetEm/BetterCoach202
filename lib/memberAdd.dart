@@ -31,6 +31,9 @@ class _MemberAddState extends State<MemberAdd> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+
+    String imgUrl =
+        "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return Scaffold(
@@ -44,6 +47,18 @@ class _MemberAddState extends State<MemberAdd> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.network(
+                            imgUrl,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+
                       /// 이름 입력창
                       BaseTextField(
                         customController: nameController,
