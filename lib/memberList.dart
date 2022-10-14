@@ -36,7 +36,7 @@ class _MemberListState extends State<MemberList> {
           child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text("투데이"),
+              title: Text("회원 관리"),
               centerTitle: true,
               leading: IconButton(
                 onPressed: () {},
@@ -123,15 +123,12 @@ class _MemberListState extends State<MemberList> {
                                 onTap: () {
                                   memberService.update(doc.id, !isActive);
                                 },
-                                child: Container(
-                                  height: 50,
-                                  // color: Colors.amber[colorCodes[index]],
-                                  child: Center(
-                                    child: Text(
-                                      'name : ${name}, goal : ${goal}, info : ${info}, note : ${note}, isActive : ${isActive}',
-                                    ),
-                                  ),
-                                ),
+                                child: BaseContainer(
+                                    name: name,
+                                    goal: goal,
+                                    info: info,
+                                    note: note,
+                                    isActive: isActive),
                               );
                             },
                             separatorBuilder: ((context, index) => Divider()),

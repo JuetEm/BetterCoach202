@@ -7,6 +7,7 @@ import 'package:web_project/sign_up.dart';
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
+import 'calendar_service.dart';
 import 'firebase_options.dart';
 import 'global_service.dart';
 import 'home.dart';
@@ -27,6 +28,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => BucketService()),
         ChangeNotifierProvider(create: (context) => GlobalService()),
         ChangeNotifierProvider(create: (context) => MemberService()),
+        ChangeNotifierProvider(create: (context) => CalendarService()),
       ],
       child: const MyApp(),
     ),

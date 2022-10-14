@@ -104,43 +104,43 @@ class _HomeState extends State<Home> {
               ),
             ),
             body: SafeArea(
-              child: FutureBuilder<QuerySnapshot>(
-                  future: memberService.read(user.uid),
-                  builder: (context, snapshot) {
-                    final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                    if (docs.isEmpty) {
-                      return Center(child: Text("수업을 준비 중입니다."));
-                    }
-                    return ListView.separated(
-                      itemCount: docs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final doc = docs[index];
-                        String name = doc.get('name');
-                        String registerDate = doc.get('registerDate');
-                        String phoneNumber = doc.get('phoneNumber');
-                        String registerType = doc.get('registerType');
-                        String goal = doc.get('goal');
-                        String info = doc.get('info');
-                        String note = doc.get('note');
-                        bool isActive = doc.get('isActive');
-                        return InkWell(
-                          onTap: () {
-                            memberService.update(doc.id, !isActive);
-                          },
-                          child: Container(
-                            height: 50,
-                            // color: Colors.amber[colorCodes[index]],
-                            child: Center(
-                              child: Text(
-                                'name : ${name}, goal : ${goal}, info : ${info}, note : ${note}, isActive : ${isActive}',
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: ((context, index) => Divider()),
-                    );
-                  }),
+              child: Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: FutureBuilder<QuerySnapshot>(
+                    future: memberService.read(user.uid),
+                    builder: (context, snapshot) {
+                      final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                      if (docs.isEmpty) {
+                        return Center(child: Text("수업을 준비 중입니다."));
+                      }
+                      return ListView.separated(
+                        itemCount: docs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final doc = docs[index];
+                          String name = doc.get('name');
+                          String registerDate = doc.get('registerDate');
+                          String phoneNumber = doc.get('phoneNumber');
+                          String registerType = doc.get('registerType');
+                          String goal = doc.get('goal');
+                          String info = doc.get('info');
+                          String note = doc.get('note');
+                          bool isActive = doc.get('isActive');
+                          return InkWell(
+                            onTap: () {
+                              memberService.update(doc.id, !isActive);
+                            },
+                            child: BaseContainer(
+                                name: name,
+                                goal: goal,
+                                info: info,
+                                note: note,
+                                isActive: isActive),
+                          );
+                        },
+                        separatorBuilder: ((context, index) => Divider()),
+                      );
+                    }),
+              ),
             ),
             bottomNavigationBar: BaseBottomAppBar(),
             floatingActionButton: FloatingActionButton(

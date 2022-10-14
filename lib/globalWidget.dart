@@ -2,62 +2,20 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'memberList.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+import 'search.dart';
 
-class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const BaseAppBar({
-    Key? key,
-    required this.appBar,
-    required this.title,
-    required this.center,
-  }) : super(key: key);
-
-  final AppBar appBar;
-  final String title;
-  final bool center;
-
-  @override
-  State<BaseAppBar> createState() => _BaseAppBarState();
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
-}
-
-class _BaseAppBarState extends State<BaseAppBar> {
-  void _openEndDrawer() {
-    _scaffoldKey.currentState!.openEndDrawer();
-  }
-
-  void _closeEndDrawer() {
-    Navigator.of(context).pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(widget.title),
-      centerTitle: widget.center,
-      leading: IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.calendar_month),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            print('profile');
-          },
-          icon: Icon(Icons.account_circle),
-        ),
-        IconButton(
-          onPressed: () {
-            _openEndDrawer();
-          },
-          icon: Icon(Icons.menu),
-        ),
-      ],
-    );
-  }
+AppBar BaseAppBarMethod(BuildContext context, String pageName) {
+  return AppBar(
+    title: Text(pageName),
+    centerTitle: true,
+    leading: IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      color: Colors.black,
+      icon: Icon(Icons.arrow_back_ios),
+    ),
+  );
 }
 
 class BaseBottomAppBar extends StatefulWidget {
@@ -108,6 +66,11 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
               IconButton(
                 onPressed: () {
                   print('search');
+                  // 서치 화면으로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Search()),
+                  );
                 },
                 icon: Icon(Icons.search),
                 tooltip: 'Search',
@@ -125,10 +88,14 @@ class BaseTextField extends StatefulWidget {
     Key? key,
     required this.customController,
     required this.hint,
+    required this.showArrow,
+    required this.customFunction,
   }) : super(key: key);
 
   final TextEditingController customController;
   final String hint;
+  final showArrow;
+  final Function customFunction;
 
   @override
   State<BaseTextField> createState() => _BaseTextFieldState();
@@ -137,13 +104,19 @@ class BaseTextField extends StatefulWidget {
 class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
-    return
-
-        /// 이름 입력창
-        Expanded(
+    return Expanded(
       child: TextField(
+        readOnly: widget.showArrow,
         controller: widget.customController,
         decoration: InputDecoration(
+            suffixIcon: widget.showArrow
+                ? IconButton(
+                    onPressed: () {
+                      widget.customFunction();
+                    },
+                    icon: Icon(Icons.navigate_next),
+                  )
+                : null,
             hintText: widget.hint,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -154,6 +127,42 @@ class _BaseTextFieldState extends State<BaseTextField> {
             filled: true,
             contentPadding: EdgeInsets.all(16),
             fillColor: Colors.white),
+      ),
+    );
+  }
+}
+
+class BaseContainer extends StatelessWidget {
+  const BaseContainer({
+    Key? key,
+    required this.name,
+    required this.goal,
+    required this.info,
+    required this.note,
+    required this.isActive,
+  }) : super(key: key);
+
+  final String name;
+  final String goal;
+  final String info;
+  final String note;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: EdgeInsets.all(8.0),
+      height: 50,
+      // color: Colors.amber[colorCodes[index]],
+      child: Center(
+        child: Text(
+          'name : ${name}, goal : ${goal}, info : ${info}, note : ${note}, isActive : ${isActive}',
+        ),
       ),
     );
   }

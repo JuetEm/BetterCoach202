@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'auth_service.dart';
+import 'baseTableCalendar.dart';
 import 'globalWidget.dart';
 import 'home.dart';
 import 'memberList.dart';
 import 'member_service.dart';
+import 'membershipList.dart';
 
 class MemberAdd extends StatefulWidget {
   const MemberAdd({super.key});
@@ -31,17 +34,7 @@ class _MemberAddState extends State<MemberAdd> {
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text("회원추가"),
-            centerTitle: true,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              color: Colors.black,
-              icon: Icon(Icons.arrow_back_ios),
-            ),
-          ),
+          appBar: BaseAppBarMethod(context, "회원 추가"),
           body: Column(
             children: [
               /// 입력창
@@ -55,42 +48,60 @@ class _MemberAddState extends State<MemberAdd> {
                       BaseTextField(
                         customController: nameController,
                         hint: "이름",
+                        showArrow: false,
+                        customFunction: () {},
                       ),
 
                       /// 등록일 입력창
                       BaseTextField(
                         customController: registerDateController,
                         hint: "등록일",
+                        showArrow: true,
+                        customFunction: () {
+                          _getDateFromCalendar(context);
+                        },
                       ),
 
                       /// 전화번호 입력창
                       BaseTextField(
                         customController: phoneNumberController,
                         hint: "전화번호",
+                        showArrow: false,
+                        customFunction: () {},
                       ),
 
                       /// 수강권 선택 입력창
                       BaseTextField(
                         customController: registerTypeController,
                         hint: "수강권 선택",
+                        showArrow: true,
+                        customFunction: () {
+                          _getMembership(context);
+                        },
                       ),
 
                       /// 목표 입력창
                       BaseTextField(
                         customController: goalController,
                         hint: "목표",
+                        showArrow: false,
+                        customFunction: () {},
                       ),
 
                       /// 신체 특이사항/체형분석 입력창
                       BaseTextField(
                         customController: infoController,
                         hint: "신체 특이사항 / 체형분석",
+                        showArrow: false,
+                        customFunction: () {},
                       ),
 
                       /// 메모 입력창
                       BaseTextField(
                         customController: noteController,
                         hint: "메모",
+                        showArrow: false,
+                        customFunction: () {},
                       ),
                       Divider(height: 1),
 
@@ -126,7 +137,7 @@ class _MemberAddState extends State<MemberAdd> {
                                     content: Text("저장하기 성공"),
                                   ));
                                   // 저장하기 성공시 Home로 이동
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => MemberList()),
@@ -152,6 +163,47 @@ class _MemberAddState extends State<MemberAdd> {
         );
       },
     );
+  }
+
+  void _getDateFromCalendar(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => BaseTableCalendar()),
+    );
+
+    if (!(result == null)) {
+      String formatedDate = DateFormat("yyyy-MM-dd")
+          .format(DateTime(result.year, result.month, result.day));
+
+      registerDateController.text = formatedDate;
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("등록일 : ${formatedDate}"),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("등록일을 선택해주세요."),
+      ));
+    }
+  }
+
+  void _getMembership(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => MembershipList()),
+    );
+
+    if (!(result == null)) {
+      registerTypeController.text = result;
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("선택 된 수강권 : ${result}"),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("수강권을 선택해주세요."),
+      ));
+    }
   }
 
   bool textNullCheck(
