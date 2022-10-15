@@ -122,6 +122,14 @@ class _MemberListState extends State<MemberList> {
                               return InkWell(
                                 onTap: () {
                                   memberService.update(doc.id, !isActive);
+                                  print("회원추가");
+                                  // create bucket
+                                  // 저장하기 성공시 Home로 이동
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => MemberAdd()),
+                                  );
                                 },
                                 child: BaseContainer(
                                     name: name,

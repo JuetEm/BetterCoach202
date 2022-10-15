@@ -38,6 +38,8 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
           child: Row(
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
                 onPressed: () {
@@ -51,7 +53,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                 icon: Icon(Icons.contacts_outlined),
                 tooltip: 'MEMBERS',
               ),
-              Spacer(),
+              //Spacer(),
               IconButton(
                 onPressed: () {
                   print('note_add');
@@ -64,7 +66,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                 icon: Icon(Icons.home_outlined),
                 tooltip: 'Add Class',
               ),
-              Spacer(),
+              //Spacer(),
               IconButton(
                 onPressed: () {
                   print('search');
