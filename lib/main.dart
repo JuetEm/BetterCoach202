@@ -181,6 +181,19 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
+
+                /// Cloud Storage 개발화면 버튼
+                ElevatedButton(
+                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 21)),
+                  onPressed: () {
+                    // 회원가입
+                    print("global widget");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => CloudStorage()),
+                    );
+                  },
+                ),
               ],
             ),
           ),
