@@ -125,6 +125,7 @@ class _MemberListState extends State<MemberList> {
                                 },
                                 child: BaseContainer(
                                     name: name,
+                                    registerDate: registerDate,
                                     goal: goal,
                                     info: info,
                                     note: note,
@@ -136,7 +137,6 @@ class _MemberListState extends State<MemberList> {
                         },
                       ),
                     ),
-                    Divider(height: 1),
 
                     /// 추가 버튼
                     ElevatedButton(

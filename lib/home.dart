@@ -131,6 +131,7 @@ class _HomeState extends State<Home> {
                             },
                             child: BaseContainer(
                                 name: name,
+                                registerDate: registerDate,
                                 goal: goal,
                                 info: info,
                                 note: note,

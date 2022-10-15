@@ -4,6 +4,7 @@ import 'home.dart';
 import 'memberList.dart';
 
 import 'search.dart';
+import 'color.dart';
 
 AppBar BaseAppBarMethod(BuildContext context, String pageName) {
   return AppBar(
@@ -143,6 +144,7 @@ class BaseContainer extends StatelessWidget {
   const BaseContainer({
     Key? key,
     required this.name,
+    required this.registerDate,
     required this.goal,
     required this.info,
     required this.note,
@@ -150,6 +152,7 @@ class BaseContainer extends StatelessWidget {
   }) : super(key: key);
 
   final String name;
+  final String registerDate;
   final String goal;
   final String info;
   final String note;
@@ -157,18 +160,31 @@ class BaseContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
       ),
-      padding: EdgeInsets.all(8.0),
-      height: 50,
-      // color: Colors.amber[colorCodes[index]],
-      child: Center(
-        child: Text(
-          'name : ${name}, goal : ${goal}, info : ${info}, note : ${note}, isActive : ${isActive}',
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '회원이름 : ${name}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 5.0),
+            Text(
+              '등록 : ${registerDate}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
         ),
       ),
     );
