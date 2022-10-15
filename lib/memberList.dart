@@ -105,36 +105,80 @@ class _MemberListState extends State<MemberList> {
                           if (docs.isEmpty) {
                             return Center(child: Text("회원 목록을 준비 중입니다."));
                           }
-                          return ListView.separated(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final doc = docs[index];
-                              String name = doc.get('name');
-                              String registerDate = doc.get('registerDate');
-                              String phoneNumber = doc.get('phoneNumber');
-                              String registerType = doc.get('registerType');
-                              String goal = doc.get('goal');
-                              String info = doc.get('info');
-                              String note = doc.get('note');
-                              bool isActive = doc.get('isActive');
-                              return InkWell(
-                                onTap: () {
-                                  memberService.update(doc.id, !isActive);
-                                },
-                                child: Container(
-                                  height: 50,
-                                  // color: Colors.amber[colorCodes[index]],
-                                  child: Center(
-                                    child: Text(
-                                      'name : ${name}, goal : ${goal}, info : ${info}, note : ${note}, isActive : ${isActive}',
-                                    ),
+                          return Expanded(
+                            child: ListView.separated(
+                              padding: const EdgeInsets.fromLTRB(
+                                  10.0, 10.0, 10.0, 120.0),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final doc = docs[index];
+                                String name = doc.get('name');
+                                String registerDate = doc.get('registerDate');
+                                String phoneNumber = doc.get('phoneNumber');
+                                String registerType = doc.get('registerType');
+                                String goal = doc.get('goal');
+                                String info = doc.get('info');
+                                String note = doc.get('note');
+                                bool isActive = doc.get('isActive');
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: ((context, index) => Divider()),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '회원이름 : ${name}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        Text(
+                                          '목표 : ${goal}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        Text(
+                                          '정보 : ${info}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                        Text(
+                                          '수업노트 : ${note}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 5.0),
+                                      ]),
+                                );
+                              },
+                              separatorBuilder: ((context, index) => Divider()),
+                            ),
                           );
                         },
                       ),
