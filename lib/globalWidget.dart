@@ -4,6 +4,7 @@ import 'home.dart';
 import 'memberList.dart';
 
 import 'search.dart';
+import 'color.dart';
 
 AppBar BaseAppBarMethod(BuildContext context, String pageName) {
   return AppBar(
