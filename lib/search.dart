@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'auth_service.dart';
 import 'globalWidget.dart';
 import 'main.dart';
-import 'memberAdd.dart';
 import 'member_service.dart';
 
 class Search extends StatefulWidget {
@@ -92,174 +90,175 @@ class _searchState extends State<Search> {
               ),
             ),
             body: SafeArea(
-        child: Column(
-          children: [
-            // 상단 간격
-            SizedBox(
-              height: 20,
-            ),
-
-            /// 가로 회원리스트
-            SizedBox(
-              height: 100,
-              child: ListView(
-                // This next line does the trick.
-                scrollDirection: Axis.horizontal,
+              child: Column(
                 children: [
+                  // 상단 간격
                   SizedBox(
-                    width: 20,
+                    height: 20,
                   ),
-                  Column(
-                    children: [
-                      UserProfileImage(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                        size: 60.0,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "이다인",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard-ExtraBold',
-                          color: Color(0xFF666666),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
+
+                  /// 가로 회원리스트
                   SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: [
-                      UserProfileImage(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                        size: 60.0,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "이다인",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard-ExtraBold',
-                          color: Color(0xFF666666),
-                          fontSize: 14,
+                    height: 100,
+                    child: ListView(
+                      // This next line does the trick.
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        SizedBox(
+                          width: 20,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: [
-                      UserProfileImage(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                        size: 60.0,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "이다인",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard-ExtraBold',
-                          color: Color(0xFF666666),
-                          fontSize: 14,
+                        Column(
+                          children: [
+                            UserProfileImage(
+                              imageURL:
+                                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                              size: 60.0,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "이다인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard-ExtraBold',
+                                color: Color(0xFF666666),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: [
-                      UserProfileImage(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                        size: 60.0,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "이다인",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard-ExtraBold',
-                          color: Color(0xFF666666),
-                          fontSize: 14,
+                        SizedBox(
+                          width: 20,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: [
-                      UserProfileImage(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                        size: 60.0,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "이다인",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard-ExtraBold',
-                          color: Color(0xFF666666),
-                          fontSize: 14,
+                        Column(
+                          children: [
+                            UserProfileImage(
+                              imageURL:
+                                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                              size: 60.0,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "이다인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard-ExtraBold',
+                                color: Color(0xFF666666),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: [
-                      UserProfileImage(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                        size: 60.0,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "이다인",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard-ExtraBold',
-                          color: Color(0xFF666666),
-                          fontSize: 14,
+                        SizedBox(
+                          width: 20,
                         ),
-                      ),
-                    ],
+                        Column(
+                          children: [
+                            UserProfileImage(
+                              imageURL:
+                                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                              size: 60.0,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "이다인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard-ExtraBold',
+                                color: Color(0xFF666666),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          children: [
+                            UserProfileImage(
+                              imageURL:
+                                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                              size: 60.0,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "이다인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard-ExtraBold',
+                                color: Color(0xFF666666),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          children: [
+                            UserProfileImage(
+                              imageURL:
+                                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                              size: 60.0,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "이다인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard-ExtraBold',
+                                color: Color(0xFF666666),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          children: [
+                            UserProfileImage(
+                              imageURL:
+                                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                              size: 60.0,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "이다인",
+                              style: TextStyle(
+                                fontFamily: 'Pretendard-ExtraBold',
+                                color: Color(0xFF666666),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// 세로 카드리스트
+                  Expanded(
+                    child: ListView(
+                      padding:
+                          const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 120.0),
+                      children: [
+                        ...noteList.map((e) => NoteCard(note: e)),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-
-            /// 세로 카드리스트
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 120.0),
-                children: [
-                  ...noteList.map((e) => NoteCard(note: e)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
             bottomNavigationBar: BaseBottomAppBar(),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -274,7 +273,6 @@ class _searchState extends State<Search> {
     );
   }
 }
-
 
 class User {
   final String name;

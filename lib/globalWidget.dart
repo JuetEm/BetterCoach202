@@ -1,64 +1,21 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'memberList.dart';
+
 import 'search.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const BaseAppBar({
-    Key? key,
-    required this.appBar,
-    required this.title,
-    required this.center,
-  }) : super(key: key);
-
-  final AppBar appBar;
-  final String title;
-  final bool center;
-
-  @override
-  State<BaseAppBar> createState() => _BaseAppBarState();
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
-}
-
-class _BaseAppBarState extends State<BaseAppBar> {
-  void _openEndDrawer() {
-    _scaffoldKey.currentState!.openEndDrawer();
-  }
-
-  void _closeEndDrawer() {
-    Navigator.of(context).pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(widget.title),
-      centerTitle: widget.center,
-      leading: IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.calendar_month),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            print('profile');
-          },
-          icon: Icon(Icons.account_circle),
-        ),
-        IconButton(
-          onPressed: () {
-            _openEndDrawer();
-          },
-          icon: Icon(Icons.menu),
-        ),
-      ],
-    );
-  }
+AppBar BaseAppBarMethod(BuildContext context, String pageName) {
+  return AppBar(
+    title: Text(pageName),
+    centerTitle: true,
+    leading: IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      color: Colors.black,
+      icon: Icon(Icons.arrow_back_ios),
+    ),
+  );
 }
 
 class BaseBottomAppBar extends StatefulWidget {
@@ -131,10 +88,14 @@ class BaseTextField extends StatefulWidget {
     Key? key,
     required this.customController,
     required this.hint,
+    required this.showArrow,
+    required this.customFunction,
   }) : super(key: key);
 
   final TextEditingController customController;
   final String hint;
+  final showArrow;
+  final Function customFunction;
 
   @override
   State<BaseTextField> createState() => _BaseTextFieldState();
@@ -143,23 +104,86 @@ class BaseTextField extends StatefulWidget {
 class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
-    return
-
-        /// 이름 입력창
-        Expanded(
-      child: TextField(
-        controller: widget.customController,
-        decoration: InputDecoration(
-            hintText: widget.hint,
-            border: OutlineInputBorder(
+    return Expanded(
+      child: Container(
+        constraints: BoxConstraints(
+          minHeight: 100,
+        ),
+        child: TextField(
+          readOnly: widget.showArrow,
+          controller: widget.customController,
+          decoration: InputDecoration(
+              suffixIcon: widget.showArrow
+                  ? IconButton(
+                      onPressed: () {
+                        widget.customFunction();
+                      },
+                      icon: Icon(Icons.navigate_next),
+                    )
+                  : null,
+              hintText: widget.hint,
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(
                   width: 0,
                   style: BorderStyle.none,
-                )),
-            filled: true,
-            contentPadding: EdgeInsets.all(16),
-            fillColor: Colors.white),
+                ),
+              ),
+              filled: true,
+              contentPadding: EdgeInsets.all(16),
+              fillColor: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
+class BaseContainer extends StatelessWidget {
+  const BaseContainer({
+    Key? key,
+    required this.name,
+    required this.registerDate,
+    required this.goal,
+    required this.info,
+    required this.note,
+    required this.isActive,
+  }) : super(key: key);
+
+  final String name;
+  final String registerDate;
+  final String goal;
+  final String info;
+  final String note;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '회원이름 : ${name}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 5.0),
+            Text(
+              '등록 : ${registerDate}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
