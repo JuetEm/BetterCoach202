@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web_project/color.dart';
 import 'home.dart';
 import 'memberList.dart';
 
@@ -30,9 +31,9 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
   Widget build(BuildContext context) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
-      color: Colors.blue,
+      color: Colors.white,
       child: IconTheme(
-        data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+        data: IconThemeData(color: Palette.gray66),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
           child: Row(
@@ -46,7 +47,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                     MaterialPageRoute(builder: (context) => MemberList()),
                   );
                 },
-                icon: Icon(Icons.contacts),
+                icon: Icon(Icons.contacts_outlined),
                 tooltip: 'MEMBERS',
               ),
               Spacer(),
@@ -59,7 +60,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                     MaterialPageRoute(builder: (context) => Home()),
                   );
                 },
-                icon: Icon(Icons.note_add),
+                icon: Icon(Icons.home_outlined),
                 tooltip: 'Add Class',
               ),
               Spacer(),
