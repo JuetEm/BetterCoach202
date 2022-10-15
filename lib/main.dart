@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 
 import 'auth_service.dart';
@@ -190,7 +191,8 @@ class _LoginPageState extends State<LoginPage> {
                     print("global widget");
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => CloudStorage()),
+                      MaterialPageRoute(
+                          builder: (_) => GlobalWidgetDashboard()),
                     );
                   },
                 ),
