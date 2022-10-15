@@ -4,8 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
 
-import 'memberList.dart';
 import 'member_service.dart';
+import 'userInfo.dart';
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -34,7 +34,7 @@ class _MemberInfoState extends State<MemberInfo> {
                 note: userInfo.note,
                 phoneNumber: userInfo.phoneNumber,
                 isActive: userInfo.isActive,
-              )
+              ),
             ],
           ),
         ),
