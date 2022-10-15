@@ -6,7 +6,29 @@ import 'auth_service.dart';
 import 'globalWidget.dart';
 import 'main.dart';
 import 'memberAdd.dart';
+import 'memberInfo.dart';
 import 'member_service.dart';
+
+class UserInfo {
+  const UserInfo(
+    this.name,
+    this.registerDate,
+    this.phoneNumber,
+    this.registerType,
+    this.goal,
+    this.info,
+    this.note,
+    this.isActive,
+  );
+  final String name;
+  final String registerDate;
+  final String phoneNumber;
+  final String registerType;
+  final String goal;
+  final String info;
+  final String note;
+  final bool isActive;
+}
 
 class MemberList extends StatefulWidget {
   const MemberList({super.key});
@@ -119,16 +141,26 @@ class _MemberListState extends State<MemberList> {
                               String info = doc.get('info');
                               String note = doc.get('note');
                               bool isActive = doc.get('isActive');
+                              final UserInfo userInfo = UserInfo(
+                                  name,
+                                  registerDate,
+                                  phoneNumber,
+                                  registerType,
+                                  goal,
+                                  info,
+                                  note,
+                                  isActive);
                               return InkWell(
                                 onTap: () {
-                                  memberService.update(doc.id, !isActive);
-                                  print("회원추가");
-                                  // create bucket
-                                  // 저장하기 성공시 Home로 이동
-                                  Navigator.pushReplacement(
+                                  // 회원 카드 선택시 MemberInfo로 이동
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => MemberAdd()),
+                                      builder: (context) => MemberInfo(),
+                                      settings: RouteSettings(
+                                        arguments: userInfo,
+                                      ),
+                                    ),
                                   );
                                 },
                                 child: BaseContainer(
@@ -137,6 +169,7 @@ class _MemberListState extends State<MemberList> {
                                     goal: goal,
                                     info: info,
                                     note: note,
+                                    phoneNumber: phoneNumber,
                                     isActive: isActive),
                               );
                             },
