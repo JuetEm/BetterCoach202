@@ -6,6 +6,7 @@ import 'auth_service.dart';
 import 'globalWidget.dart';
 import 'main.dart';
 import 'memberAdd.dart';
+import 'memberInfo.dart';
 import 'member_service.dart';
 
 class MemberList extends StatefulWidget {
@@ -121,7 +122,12 @@ class _MemberListState extends State<MemberList> {
                               bool isActive = doc.get('isActive');
                               return InkWell(
                                 onTap: () {
-                                  memberService.update(doc.id, !isActive);
+                                  // 회원 카드 선택시 MemberInfo로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => MemberInfo()),
+                                  );
                                 },
                                 child: BaseContainer(
                                     name: name,
@@ -129,6 +135,7 @@ class _MemberListState extends State<MemberList> {
                                     goal: goal,
                                     info: info,
                                     note: note,
+                                    phoneNumber: phoneNumber,
                                     isActive: isActive),
                               );
                             },

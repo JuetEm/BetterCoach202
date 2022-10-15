@@ -135,6 +135,7 @@ class _HomeState extends State<Home> {
                                 goal: goal,
                                 info: info,
                                 note: note,
+                                phoneNumber: phoneNumber,
                                 isActive: isActive),
                           );
                         },

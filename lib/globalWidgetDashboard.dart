@@ -21,12 +21,14 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
       body: Column(
         children: [
           BaseContainer(
-              name: "홍길동",
-              registerDate: "20200202",
-              goal: "체형관리",
-              info: "인포입니다",
-              note: "노트입니다",
-              isActive: true),
+            name: "홍길동",
+            registerDate: "20200202",
+            goal: "체형관리",
+            info: "인포입니다",
+            note: "노트입니다",
+            isActive: true,
+            phoneNumber: "010-0000-1111",
+          ),
           BaseTextField(
               customController: controller,
               hint: "힌트 입력",

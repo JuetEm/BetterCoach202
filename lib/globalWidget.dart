@@ -149,6 +149,7 @@ class BaseContainer extends StatelessWidget {
     required this.info,
     required this.note,
     required this.isActive,
+    required this.phoneNumber,
   }) : super(key: key);
 
   final String name;
@@ -156,6 +157,7 @@ class BaseContainer extends StatelessWidget {
   final String goal;
   final String info;
   final String note;
+  final String phoneNumber;
   final bool isActive;
 
   @override
