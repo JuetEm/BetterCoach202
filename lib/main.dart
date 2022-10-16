@@ -12,6 +12,7 @@ import 'calendar_service.dart';
 import 'cloudStorage.dart';
 import 'color.dart';
 import 'firebase_options.dart';
+import 'globalFunction.dart';
 import 'global_service.dart';
 import 'home.dart';
 import 'lesson_service.dart';
@@ -21,6 +22,8 @@ import 'globalWidget.dart';
 
 /// 브랜치 테스트
 /// /// 브랜치 테스트222
+
+GlobalFunction globalfunction = GlobalFunction();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
@@ -51,7 +54,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Pretendard'),
-      home: user == null ? LoginPage() : Home(),
+      home: user == null ? LoginPage() : MemberList(),
     );
   }
 }
@@ -93,24 +96,85 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 32),
 
                 /// 이메일
-                LoginTextField(
-                  customController: emailController,
-                  hint: "이메일",
-                  width: 100,
-                  height: 100,
-                  customFunction: () {},
-                  isSecure: false,
-                ),
-                SizedBox(height: 20),
+                TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(hintText: "이메일"),
+                    onSubmitted: ((value) {
+                      if (globalfunction.textNullCheck(
+                            context,
+                            emailController,
+                            "이메일",
+                          ) &&
+                          globalfunction.textNullCheck(
+                            context,
+                            passwordController,
+                            "비밀번호",
+                          )) {
+                        // 로그인
+                        authService.signIn(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          onSuccess: () {
+                            // 로그인 성공
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("로그인 성공"),
+                            ));
+                            // 로그인 성공시 Home로 이동
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (_) => Home()),
+                            );
+                          },
+                          onError: (err) {
+                            // 에러 발생
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(err),
+                            ));
+                          },
+                        );
+                      }
+                    })),
 
                 /// 비밀번호
-                LoginTextField(
-                  customController: passwordController,
-                  hint: "비밀번호",
-                  width: 100,
-                  height: 100,
-                  customFunction: () {},
-                  isSecure: false,
+                TextField(
+                  controller: passwordController,
+                  obscureText: true, // 비밀번호 안보이게
+                  decoration: InputDecoration(hintText: "비밀번호"),
+                  onSubmitted: ((value) {
+                    if (globalfunction.textNullCheck(
+                          context,
+                          emailController,
+                          "이메일",
+                        ) &&
+                        globalfunction.textNullCheck(
+                          context,
+                          passwordController,
+                          "비밀번호",
+                        )) {
+                      // 로그인
+                      authService.signIn(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        onSuccess: () {
+                          // 로그인 성공
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("로그인 성공"),
+                          ));
+                          // 로그인 성공시 Home로 이동
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => MemberList()),
+                          );
+                        },
+                        onError: (err) {
+                          // 에러 발생
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(err),
+                          ));
+                        },
+                      );
+                    }
+                  }),
                 ),
 
                 SizedBox(height: 32),
@@ -207,7 +271,8 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => GlobalWidgetDashboard()),
+                        builder: (_) => GlobalWidgetDashboard(),
+                      ),
                     );
                   },
                 ),

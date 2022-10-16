@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class MemberService extends ChangeNotifier {
   final memberCollection = FirebaseFirestore.instance.collection('member');
 
-  Future<QuerySnapshot> read(String uid) async {
+  Future<QuerySnapshot> read(String uid, String orderByField) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+
+    // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
     return memberCollection.where('uid', isEqualTo: uid).get();
   }
 
@@ -31,7 +33,18 @@ class MemberService extends ChangeNotifier {
     // });
 
     // 문서 만들기 add 방식 => 문서 ID를 랜덤으로 부여
-    await memberCollection.add({
+    // await memberCollection.add({
+    //   'uid': uid, // 유저(강사) 식별자
+    //   'name': name, // 회원 이름
+    //   'registerDate': registerDate, // 회원 등록일
+    //   'phoneNumber': phoneNumber, // 회원 전화번호
+    //   'registerType': registerType, // 수강권 종류
+    //   'goal': goal, // 운동 목표
+    //   'info': info, // 신체 특이사항/체형분석
+    //   'note': note, // 메모
+    //   'isActive': true, // 회원권 활성화 여부
+    // });
+    await memberCollection.doc(phoneNumber).set({
       'uid': uid, // 유저(강사) 식별자
       'name': name, // 회원 이름
       'registerDate': registerDate, // 회원 등록일

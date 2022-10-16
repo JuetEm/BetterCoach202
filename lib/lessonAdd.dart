@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -6,12 +5,15 @@ import 'package:web_project/userInfo.dart';
 
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
+import 'globalFunction.dart';
 import 'globalWidget.dart';
-import 'home.dart';
 import 'memberInfo.dart';
-import 'memberList.dart';
 import 'lesson_service.dart';
-import 'membershipList.dart';
+
+// B6m98WudN4dtpIuFJtg9dw8bnRk2
+// B6m98WudN4dtpIuFJtg9dw8bnRk2
+
+GlobalFunction globalFunction = GlobalFunction();
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
@@ -21,11 +23,6 @@ class LessonAdd extends StatefulWidget {
 }
 
 class _LessonAddState extends State<LessonAdd> {
-  TextEditingController apratusNameController = TextEditingController();
-  TextEditingController actionNameController = TextEditingController();
-  TextEditingController gradeController = TextEditingController();
-  TextEditingController totalNoteController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
@@ -33,6 +30,13 @@ class _LessonAddState extends State<LessonAdd> {
     // 이전 화면에서 보낸 변수 받기
     final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
+    TextEditingController nameController =
+        TextEditingController(text: userInfo.name);
+    TextEditingController apratusNameController = TextEditingController();
+    TextEditingController actionNameController = TextEditingController();
+    TextEditingController lessonDateController = TextEditingController();
+    TextEditingController gradeController = TextEditingController();
+    TextEditingController totalNoteController = TextEditingController();
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
@@ -52,6 +56,17 @@ class _LessonAddState extends State<LessonAdd> {
                         hint: "기구",
                         showArrow: false,
                         customFunction: () {},
+                      ),
+
+                      /// 수업일 입력창
+                      BaseTextField(
+                        customController: lessonDateController,
+                        hint: "등록일",
+                        showArrow: true,
+                        customFunction: () {
+                          globalFunction.getDateFromCalendar(
+                              context, lessonDateController);
+                        },
                       ),
 
                       /// 전화번호 입력창
@@ -85,19 +100,27 @@ class _LessonAddState extends State<LessonAdd> {
                         onPressed: () {
                           print("추가 버튼");
                           // create bucket
-                          if (textNullCheck(apratusNameController,
+                          if (globalFunction.textNullCheck(
+                                  context,
+                                  apratusNameController,
                                   "apratusNameController") &&
-                              textNullCheck(actionNameController,
-                                  "actionNameController") &&
-                              textNullCheck(
+                              globalFunction.textNullCheck(
+                                  context,
+                                  lessonDateController,
+                                  "lessonDateController") &&
+                              globalFunction.textNullCheck(context,
+                                  actionNameController, "actionNameController") &&
+                              globalFunction.textNullCheck(context,
                                   gradeController, "gradeController") &&
-                              textNullCheck(
+                              globalFunction.textNullCheck(context,
                                   totalNoteController, "totalNoteController")) {
                             String now = DateFormat("yyyy-MM-dd")
                                 .format(DateTime.now()); // 오늘 날짜 가져오기
                             lessonService.create(
                                 uid: user.uid,
-                                name: userInfo.name,
+                                name: nameController.text,
+                                phoneNumber: userInfo
+                                    .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
                                 apratusName: apratusNameController.text, //기구이름
                                 actionName: actionNameController.text, //동작이름
                                 lessonDate: now, //수업날짜
@@ -141,18 +164,5 @@ class _LessonAddState extends State<LessonAdd> {
         );
       },
     );
-  }
-
-  bool textNullCheck(
-    TextEditingController checkController,
-    String controllerName,
-  ) {
-    bool notEmpty = true;
-    if (!checkController.text.isNotEmpty) {
-      print("${controllerName} is Empty");
-      notEmpty = !notEmpty;
-    }
-
-    return notEmpty;
   }
 }
