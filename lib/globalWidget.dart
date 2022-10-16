@@ -158,35 +158,33 @@ class BaseTextField extends StatefulWidget {
 class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: BoxConstraints(
-          minHeight: 100,
-        ),
-        child: TextField(
-          readOnly: widget.showArrow,
-          controller: widget.customController,
-          decoration: InputDecoration(
-              suffixIcon: widget.showArrow
-                  ? IconButton(
-                      onPressed: () {
-                        widget.customFunction();
-                      },
-                      icon: Icon(Icons.navigate_next),
-                    )
-                  : null,
-              hintText: widget.hint,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
-                ),
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 100,
+      ),
+      child: TextField(
+        readOnly: widget.showArrow,
+        controller: widget.customController,
+        decoration: InputDecoration(
+            suffixIcon: widget.showArrow
+                ? IconButton(
+                    onPressed: () {
+                      widget.customFunction();
+                    },
+                    icon: Icon(Icons.navigate_next),
+                  )
+                : null,
+            hintText: widget.hint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
               ),
-              filled: true,
-              contentPadding: EdgeInsets.all(16),
-              fillColor: Colors.white),
-        ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
       ),
     );
   }
@@ -226,6 +224,8 @@ class _LoginTextFieldState extends State<LoginTextField> {
       obscureText: widget.isSecure, // 비밀번호여부
       style: TextStyle(color: normalColor),
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Palette.grayFA,
         border: OutlineInputBorder(),
         labelText: widget.hint,
         labelStyle:

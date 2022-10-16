@@ -39,26 +39,27 @@ class _MemberAddState extends State<MemberAdd> {
       builder: (context, memberService, child) {
         return Scaffold(
           appBar: BaseAppBarMethod(context, "회원 추가"),
-          body: Column(
-            children: [
-              /// 입력창
-              Expanded(
-                child: Padding(
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                /// 입력창
+                Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.network(
-                            imgUrl,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 200,
+                      //   width: 200,
+                      //   child: ClipRRect(
+                      //     borderRadius: BorderRadius.circular(100),
+                      //     child: Image.network(
+                      //       imgUrl,
+                      //       fit: BoxFit.fill,
+                      //     ),
+                      //   ),
+                      // ),
 
                       /// 이름 입력창
                       BaseTextField(
@@ -179,8 +180,8 @@ class _MemberAddState extends State<MemberAdd> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           bottomNavigationBar: BaseBottomAppBar(),
         );
