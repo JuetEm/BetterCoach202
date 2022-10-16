@@ -102,95 +102,77 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 /// 현재 유저 로그인 상태
                 Center(
-                  child: Text(
-                    user == null ? "로그인해 주세요 🙂" : "${user.email}님 안녕하세요 👋",
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 30),
+                      Container(
+                        //color: Colors.red,
+                        child: SizedBox(
+                          height: 70,
+                          child: Text(
+                            user == null
+                                ? "Pilates is complete coordination of body, mind and spirit."
+                                : "${user.email}님 안녕하세요 👋",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        height: 40,
+                        child: Text(
+                          "-Joseph Pilates-",
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        height: 40,
+                        child: Text(
+                          "Better Cauch는 필라테스 강사 전용",
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                        child: Text(
+                          "레슨기록앱입니다.",
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 32),
 
                 /// 이메일
-                TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(hintText: "이메일"),
-                    onSubmitted: ((value) {
-                      if (globalfunction.textNullCheck(
-                            context,
-                            emailController,
-                            "이메일",
-                          ) &&
-                          globalfunction.textNullCheck(
-                            context,
-                            passwordController,
-                            "비밀번호",
-                          )) {
-                        // 로그인
-                        authService.signIn(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          onSuccess: () {
-                            // 로그인 성공
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("로그인 성공"),
-                            ));
-                            // 로그인 성공시 Home로 이동
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (_) => Home()),
-                            );
-                          },
-                          onError: (err) {
-                            // 에러 발생
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(err),
-                            ));
-                          },
-                        );
-                      }
-                    })),
+                LoginTextField(
+                  customController: emailController,
+                  hint: "이메일",
+                  width: 100,
+                  height: 100,
+                  customFunction: () {},
+                  isSecure: false,
+                ),
+                SizedBox(height: 20),
 
                 /// 비밀번호
-                TextField(
-                  controller: passwordController,
-                  obscureText: true, // 비밀번호 안보이게
-                  decoration: InputDecoration(hintText: "비밀번호"),
-                  onSubmitted: ((value) {
-                    if (globalfunction.textNullCheck(
-                          context,
-                          emailController,
-                          "이메일",
-                        ) &&
-                        globalfunction.textNullCheck(
-                          context,
-                          passwordController,
-                          "비밀번호",
-                        )) {
-                      // 로그인
-                      authService.signIn(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        onSuccess: () {
-                          // 로그인 성공
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("로그인 성공"),
-                          ));
-                          // 로그인 성공시 Home로 이동
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => MemberList()),
-                          );
-                        },
-                        onError: (err) {
-                          // 에러 발생
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(err),
-                          ));
-                        },
-                      );
-                    }
-                  }),
+                LoginTextField(
+                  customController: passwordController,
+                  hint: "비밀번호",
+                  width: 100,
+                  height: 100,
+                  customFunction: () {},
+                  isSecure: false,
                 ),
 
                 SizedBox(height: 32),

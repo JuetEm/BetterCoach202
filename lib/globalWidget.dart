@@ -294,6 +294,8 @@ class _LoginTextFieldState extends State<LoginTextField> {
       obscureText: widget.isSecure, // 비밀번호여부
       style: TextStyle(color: normalColor),
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Palette.grayFA,
         border: OutlineInputBorder(),
         labelText: widget.hint,
         labelStyle:
