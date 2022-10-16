@@ -11,7 +11,8 @@ class GlobalWidgetDashboard extends StatefulWidget {
   State<GlobalWidgetDashboard> createState() => _GlobalWidgetDashboardState();
 }
 
-TextEditingController controller = TextEditingController();
+TextEditingController controller1 = TextEditingController();
+TextEditingController controller2 = TextEditingController();
 
 class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
   @override
@@ -30,12 +31,22 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
             phoneNumber: "010-0000-1111",
           ),
           BaseTextField(
-              customController: controller,
-              hint: "힌트 입력",
-              showArrow: true, // 화살표 보여주기
-              customFunction: () {
-                // 원하는 기능 구현
-              }),
+            customController: controller1,
+            hint: "힌트 입력",
+            showArrow: true, // 화살표 보여주기
+            customFunction: () {
+              // 원하는 기능 구현
+            },
+          ),
+
+          /// 기구 입력창
+          BasePopupMenuButton(
+            customController: controller2,
+            hint: "기구",
+            showButton: true,
+            dropdownList: ['옵션1', '옵션2', '옵션3'],
+            customFunction: () {},
+          ),
         ],
       ),
       bottomNavigationBar: BaseBottomAppBar(),

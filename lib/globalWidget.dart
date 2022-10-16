@@ -137,6 +137,74 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
   }
 }
 
+class BasePopupMenuButton extends StatefulWidget {
+  const BasePopupMenuButton({
+    Key? key,
+    required this.customController,
+    required this.hint,
+    required this.showButton,
+    required this.dropdownList,
+    required this.customFunction,
+  }) : super(key: key);
+
+  final TextEditingController customController;
+  final String hint;
+  final bool showButton;
+  final List<String> dropdownList;
+  final Function customFunction;
+
+  @override
+  State<BasePopupMenuButton> createState() => _BasePopupMenuButtonState();
+}
+
+class _BasePopupMenuButtonState extends State<BasePopupMenuButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        constraints: BoxConstraints(
+          minHeight: 100,
+        ),
+        child: TextField(
+          readOnly: widget.showButton,
+          controller: widget.customController,
+          decoration: InputDecoration(
+              suffixIcon: widget.showButton
+                  ? PopupMenuButton<String>(
+                      itemBuilder: ((context) =>
+                          widget.dropdownList.map((String item) {
+                            return PopupMenuItem<String>(
+                              child: Text('$item'),
+                              value: item,
+                            );
+                          }).toList()),
+                      onSelected: (value) => setState(
+                        () {
+                          widget.customController.text = value;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("${value} 선택 완료"),
+                          ));
+                        },
+                      ),
+                    )
+                  : null,
+              hintText: widget.hint,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+              filled: true,
+              contentPadding: EdgeInsets.all(16),
+              fillColor: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
     Key? key,
