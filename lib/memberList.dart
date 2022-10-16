@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'auth_service.dart';
+import 'color.dart';
 import 'globalWidget.dart';
 import 'main.dart';
 import 'memberAdd.dart';
@@ -36,34 +37,9 @@ class _MemberListState extends State<MemberList> {
       builder: (context, memberService, child) {
         return SafeArea(
           child: Scaffold(
+            backgroundColor: Palette.secondaryBackground,
             key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text("회원 관리"),
-              centerTitle: true,
-              leading: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.calendar_month),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    print('profile');
-                    // 로그인 페이지로 이동
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  icon: Icon(Icons.account_circle),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _openEndDrawer();
-                  },
-                  icon: Icon(Icons.menu),
-                ),
-              ],
-            ),
+            appBar: MainAppBarMethod(context, "회원리스트"),
             endDrawer: Container(
               child: Drawer(
                 child: Center(
@@ -164,10 +140,32 @@ class _MemberListState extends State<MemberList> {
 
                     /// 추가 버튼
                     ElevatedButton(
-                      child: Text("회원추가", style: TextStyle(fontSize: 21)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          color: Palette.buttonOrange,
+                        ),
+                        height: 60,
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "회원추가",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
                       onPressed: () {
                         print("회원추가");
-                        // create bucket
                         // 저장하기 성공시 Home로 이동
                         Navigator.pushReplacement(
                           context,
@@ -180,13 +178,13 @@ class _MemberListState extends State<MemberList> {
               ),
             ),
             bottomNavigationBar: BaseBottomAppBar(),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                print('floating button');
-              },
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.add),
-            ),
+            // floatingActionButton: FloatingActionButton(
+            //   onPressed: () {
+            //     print('floating button');
+            //   },
+            //   backgroundColor: Colors.blue,
+            //   child: const Icon(Icons.add),
+            // ),
           ),
         );
       },

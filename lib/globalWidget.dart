@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_project/color.dart';
 import 'home.dart';
+import 'main.dart';
 import 'memberList.dart';
 
 import 'search.dart';
@@ -8,15 +9,64 @@ import 'color.dart';
 
 AppBar BaseAppBarMethod(BuildContext context, String pageName) {
   return AppBar(
-    title: Text(pageName),
+    elevation: 1,
+    backgroundColor: Palette.mainBackground,
+    title: Text(
+      pageName,
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Palette.gray33,
+          ),
+    ),
     centerTitle: true,
     leading: IconButton(
       onPressed: () {
         Navigator.pop(context);
       },
-      color: Colors.black,
+      color: Palette.gray33,
       icon: Icon(Icons.arrow_back_ios),
     ),
+  );
+}
+
+AppBar MainAppBarMethod(BuildContext context, String pageName) {
+  return AppBar(
+    elevation: 1,
+    backgroundColor: Palette.mainBackground,
+    title: Text(
+      pageName,
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Palette.gray33,
+          ),
+    ),
+    centerTitle: true,
+    // leading: IconButton(
+    //   onPressed: () {},
+    //   icon: Icon(Icons.calendar_month),
+    // ),
+    actions: [
+      IconButton(
+        onPressed: () {
+          print('profile');
+          // 로그인 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
+        },
+        color: Palette.gray33,
+        icon: Icon(Icons.account_circle),
+      ),
+      // IconButton(
+      //   onPressed: () {
+      //     _openEndDrawer();
+      //   },
+      //   icon: Icon(Icons.menu),
+      // ),
+    ],
   );
 }
 
@@ -136,6 +186,53 @@ class _BaseTextFieldState extends State<BaseTextField> {
               filled: true,
               contentPadding: EdgeInsets.all(16),
               fillColor: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginTextField extends StatefulWidget {
+  const LoginTextField({
+    Key? key,
+    required this.customController,
+    required this.hint,
+    required this.width,
+    required this.height,
+    required this.customFunction,
+    required this.isSecure,
+  }) : super(key: key);
+
+  final TextEditingController customController;
+  final String hint;
+  final double width;
+  final double height;
+  final bool isSecure;
+  final Function customFunction;
+
+  @override
+  State<LoginTextField> createState() => _LoginTextFieldState();
+}
+
+class _LoginTextFieldState extends State<LoginTextField> {
+  @override
+  Widget build(BuildContext context) {
+    FocusNode myFocusNode = new FocusNode();
+    Color focusColor = Palette.buttonOrange;
+    Color normalColor = Palette.gray66;
+
+    return TextField(
+      controller: widget.customController,
+      obscureText: widget.isSecure, // 비밀번호여부
+      style: TextStyle(color: normalColor),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: widget.hint,
+        labelStyle:
+            TextStyle(color: myFocusNode.hasFocus ? focusColor : normalColor),
+        focusColor: focusColor,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: focusColor, width: 2.0),
         ),
       ),
     );

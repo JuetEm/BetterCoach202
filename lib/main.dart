@@ -10,11 +10,14 @@ import 'auth_service.dart';
 import 'bucket_service.dart';
 import 'calendar_service.dart';
 import 'cloudStorage.dart';
+import 'color.dart';
 import 'firebase_options.dart';
 import 'global_service.dart';
 import 'home.dart';
 import 'lesson_service.dart';
+import 'memberList.dart';
 import 'member_service.dart';
+import 'globalWidget.dart';
 
 /// 브랜치 테스트
 /// /// 브랜치 테스트222
@@ -71,7 +74,8 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, authService, child) {
         final user = authService.currentUser();
         return Scaffold(
-          appBar: AppBar(title: Text("로그인")),
+          backgroundColor: Palette.secondaryBackground,
+          appBar: BaseAppBarMethod(context, "로그인"),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -89,17 +93,26 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 32),
 
                 /// 이메일
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(hintText: "이메일"),
+                LoginTextField(
+                  customController: emailController,
+                  hint: "이메일",
+                  width: 100,
+                  height: 100,
+                  customFunction: () {},
+                  isSecure: false,
                 ),
+                SizedBox(height: 20),
 
                 /// 비밀번호
-                TextField(
-                  controller: passwordController,
-                  obscureText: true, // 비밀번호 안보이게
-                  decoration: InputDecoration(hintText: "비밀번호"),
+                LoginTextField(
+                  customController: passwordController,
+                  hint: "비밀번호",
+                  width: 100,
+                  height: 100,
+                  customFunction: () {},
+                  isSecure: false,
                 ),
+
                 SizedBox(height: 32),
 
                 /// 로그인 버튼
@@ -118,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         // 로그인 성공시 Home로 이동
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (_) => Home()),
+                          MaterialPageRoute(builder: (_) => MemberList()),
                         );
                       },
                       onError: (err) {
