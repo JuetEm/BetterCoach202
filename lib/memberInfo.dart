@@ -237,6 +237,9 @@ class _MemberInfoState extends State<MemberInfo> {
             ),
           ),
         ),
+        // Figma 확인 해보면 '회원정보' 탭에는 BottomAppBar 없는데, '동작' 탬에는 있음
+        // 같은 화면인데 '회원정보' 탭에는 누락 된 듯하여 추가 BottomAppBar 함
+        bottomNavigationBar: BaseBottomAppBar(),
       );
     });
   }

@@ -23,6 +23,8 @@ List<String> dropdownList = [
   'MAT'
 ];
 
+double sliderValue = 50;
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -96,13 +98,14 @@ class _LessonAddState extends State<LessonAdd> {
                         ),
 
                         Slider(
-                            value: 50,
+                            value: sliderValue,
                             min: 0,
                             max: 100,
                             divisions: 6,
                             onChanged: (value) {
                               setState(() {
-                                gradeController.text = "${value}";
+                                sliderValue = value;
+                                gradeController.text = "변함";
                               });
                             }),
 
@@ -121,23 +124,17 @@ class _LessonAddState extends State<LessonAdd> {
                           onPressed: () {
                             print("추가 버튼");
                             // create bucket
-                            if (globalFunction.textNullCheck(
-                                    context,
-                                    apratusNameController,
-                                    "apratusNameController") &&
-                                globalFunction
-                                    .textNullCheck(context, lessonDateController,
-                                        "lessonDateController") &&
+                            if (globalFunction
+                                    .textNullCheck(context, apratusNameController,
+                                        "기구") &&
                                 globalFunction.textNullCheck(
-                                    context,
-                                    actionNameController,
-                                    "actionNameController") &&
-                                globalFunction.textNullCheck(context,
-                                    gradeController, "gradeController") &&
+                                    context, lessonDateController, "수업일") &&
                                 globalFunction.textNullCheck(
-                                    context,
-                                    totalNoteController,
-                                    "totalNoteController")) {
+                                    context, actionNameController, "동작이름") &&
+                                globalFunction.textNullCheck(
+                                    context, gradeController, "수행도") &&
+                                globalFunction.textNullCheck(
+                                    context, totalNoteController, "메모")) {
                               String now = DateFormat("yyyy-MM-dd")
                                   .format(DateTime.now()); // 오늘 날짜 가져오기
                               lessonService.create(

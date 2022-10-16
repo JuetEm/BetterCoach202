@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 
@@ -25,8 +26,13 @@ import 'globalWidget.dart';
 
 GlobalFunction globalfunction = GlobalFunction();
 
+late SharedPreferences prefs;
+
+bool isLogInActiveChecked = false;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
+  prefs = await SharedPreferences.getInstance();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // firebase 앱 시작
@@ -51,10 +57,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthService>().currentUser();
+    isLogInActiveChecked = prefs.getBool("isLogInActiveChecked") ?? false;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Pretendard'),
-      home: user == null ? LoginPage() : MemberList(),
+      home: user == null
+          ? LoginPage()
+          : isLogInActiveChecked
+              ? MemberList()
+              : MemberList(),
     );
   }
 }
@@ -175,6 +186,19 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     }
                   }),
+                ),
+
+                SizedBox(height: 32),
+
+                Switch(
+                  value: isLogInActiveChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      isLogInActiveChecked = !isLogInActiveChecked;
+                      prefs.setBool(
+                          "isLogInActiveChecked", isLogInActiveChecked);
+                    });
+                  },
                 ),
 
                 SizedBox(height: 32),
