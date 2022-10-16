@@ -198,19 +198,38 @@ class _MemberInfoState extends State<MemberInfo> {
 
                   /// 추가 버튼
                   ElevatedButton(
-                    child: Text("노트추가", style: TextStyle(fontSize: 21)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        color: Palette.buttonOrange,
+                      ),
+                      height: 60,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "노트추가",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
                     onPressed: () {
                       print("노트추가");
-                      // create bucket
                       // 저장하기 성공시 Home로 이동
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
-                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                          settings: RouteSettings(
-                            arguments: userInfo,
-                          ),
+                      MaterialPageRoute(
+                        builder: (context) => LessonAdd(),
+                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                        settings: RouteSettings(
+                          arguments: userInfo,
                         ),
                       );
                     },
