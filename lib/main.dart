@@ -165,28 +165,35 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   child: Text("로그인", style: TextStyle(fontSize: 21)),
                   onPressed: () {
-                    // 로그인
-                    authService.signIn(
-                      email: emailController.text,
-                      password: passwordController.text,
-                      onSuccess: () {
-                        // 로그인 성공
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("로그인 성공"),
-                        ));
-                        // 로그인 성공시 Home로 이동
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => MemberList()),
-                        );
-                      },
-                      onError: (err) {
-                        // 에러 발생
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(err),
-                        ));
-                      },
-                    );
+                    if (!(user == null)) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => MemberList()),
+                      );
+                    } else {
+                      // 로그인
+                      authService.signIn(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        onSuccess: () {
+                          // 로그인 성공
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("로그인 성공"),
+                          ));
+                          // 로그인 성공시 Home로 이동
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => MemberList()),
+                          );
+                        },
+                        onError: (err) {
+                          // 에러 발생
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(err),
+                          ));
+                        },
+                      );
+                    }
                   },
                 ),
 
