@@ -50,14 +50,6 @@ class _LessonAddState extends State<LessonAdd> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      /// 이름 입력창
-                      BaseTextField(
-                        customController: nameController,
-                        hint: "이름",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
-
                       /// 기구 입력창
                       BaseTextField(
                         customController: apratusNameController,
@@ -88,7 +80,7 @@ class _LessonAddState extends State<LessonAdd> {
                       /// 수행도 입력창
                       BaseTextField(
                         customController: gradeController,
-                        hint: "목표",
+                        hint: "수행도",
                         showArrow: false,
                         customFunction: () {},
                       ),
@@ -122,6 +114,8 @@ class _LessonAddState extends State<LessonAdd> {
                                   gradeController, "gradeController") &&
                               globalFunction.textNullCheck(context,
                                   totalNoteController, "totalNoteController")) {
+                            String now = DateFormat("yyyy-MM-dd")
+                                .format(DateTime.now()); // 오늘 날짜 가져오기
                             lessonService.create(
                                 uid: user.uid,
                                 name: nameController.text,
@@ -129,7 +123,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
                                 apratusName: apratusNameController.text, //기구이름
                                 actionName: actionNameController.text, //동작이름
-                                lessonDate: lessonDateController.text, //수업날짜
+                                lessonDate: now, //수업날짜
                                 grade: gradeController.text, //수행도
                                 totalNote: totalNoteController.text, //수업총메모
                                 onSuccess: () {

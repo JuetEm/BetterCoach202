@@ -10,6 +10,7 @@ import 'auth_service.dart';
 import 'bucket_service.dart';
 import 'calendar_service.dart';
 import 'cloudStorage.dart';
+import 'color.dart';
 import 'firebase_options.dart';
 import 'globalFunction.dart';
 import 'global_service.dart';
@@ -17,6 +18,7 @@ import 'home.dart';
 import 'lesson_service.dart';
 import 'memberList.dart';
 import 'member_service.dart';
+import 'globalWidget.dart';
 
 /// 브랜치 테스트
 /// /// 브랜치 테스트222
@@ -75,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, authService, child) {
         final user = authService.currentUser();
         return Scaffold(
-          appBar: AppBar(title: Text("로그인")),
+          backgroundColor: Palette.secondaryBackground,
+          appBar: BaseAppBarMethod(context, "로그인"),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -173,6 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   }),
                 ),
+
                 SizedBox(height: 32),
 
                 /// 로그인 버튼

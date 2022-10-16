@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/globalWidget.dart';
 
 import 'auth_service.dart';
+import 'color.dart';
 import 'main.dart';
 
 bool isSame = true;
@@ -37,16 +39,8 @@ class _SignUpState extends State<SignUp> {
     return Consumer<AuthService>(
       builder: (context, authService, child) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text("회원가입"),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              color: Colors.black,
-              icon: Icon(Icons.arrow_back_ios),
-            ),
-          ),
+          backgroundColor: Palette.secondaryBackground,
+          appBar: BaseAppBarMethod(context, "회원가입"),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(

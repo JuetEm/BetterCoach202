@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
 
 import 'auth_service.dart';
+import 'color.dart';
 import 'lessonAdd.dart';
 import 'lesson_service.dart';
 import 'member_service.dart';
