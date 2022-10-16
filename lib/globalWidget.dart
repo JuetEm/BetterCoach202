@@ -329,29 +329,55 @@ class BaseContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String nameFirst = ' ';
+    if (name.length > 0) {
+      nameFirst = name.substring(0, 1);
+    }
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Text(
-              '회원이름 : ${name}',
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
+            Column(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Palette.grayEE,
+                  // backgroundImage: NetworkImage(
+                  //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
+                  child: Text(
+                    nameFirst,
+                    //name == null ? "N" : name.substring(0, 1),
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Palette.gray33),
                   ),
+                ),
+              ],
             ),
-            const SizedBox(height: 5.0),
-            Text(
-              '등록 : ${registerDate}',
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+            SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '회원이름 : ${name}',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 5.0),
+                Text(
+                  '등록 : ${registerDate}',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
             ),
           ],
         ),

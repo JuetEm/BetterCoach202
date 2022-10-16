@@ -95,6 +95,17 @@ class _LessonAddState extends State<LessonAdd> {
                           customFunction: () {},
                         ),
 
+                        Slider(
+                            value: 50,
+                            min: 0,
+                            max: 100,
+                            divisions: 6,
+                            onChanged: (value) {
+                              setState(() {
+                                gradeController.text = "${value}";
+                              });
+                            }),
+
                         /// 메모 입력창
                         BaseTextField(
                           customController: totalNoteController,

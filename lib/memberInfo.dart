@@ -29,6 +29,7 @@ class _MemberInfoState extends State<MemberInfo> {
     final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
     return Consumer<LessonService>(builder: (context, lessonService, child) {
       // lessonService
+      // ignore: dead_code
       return Scaffold(
         appBar: BaseAppBarMethod(context, "회원 관리"),
         body: SafeArea(
@@ -193,10 +194,32 @@ class _MemberInfoState extends State<MemberInfo> {
 
                 /// 추가 버튼
                 ElevatedButton(
-                  child: Text("노트추가", style: TextStyle(fontSize: 21)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                      color: Palette.buttonOrange,
+                    ),
+                    height: 60,
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "노트추가",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
                   onPressed: () {
                     print("노트추가");
-                    // create bucket
                     // 저장하기 성공시 Home로 이동
                     Navigator.push(
                       context,
@@ -214,7 +237,6 @@ class _MemberInfoState extends State<MemberInfo> {
             ),
           ),
         ),
-        bottomNavigationBar: BaseBottomAppBar(),
       );
     });
   }
