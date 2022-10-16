@@ -46,138 +46,138 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 입력창
                 Padding(
                   padding: const EdgeInsets.all(14.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // SizedBox(
-                      //   height: 200,
-                      //   width: 200,
-                      //   child: ClipRRect(
-                      //     borderRadius: BorderRadius.circular(100),
-                      //     child: Image.network(
-                      //       imgUrl,
-                      //       fit: BoxFit.fill,
-                      //     ),
-                      //   ),
-                      // ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // SizedBox(
+                        //   height: 200,
+                        //   width: 200,
+                        //   child: ClipRRect(
+                        //     borderRadius: BorderRadius.circular(100),
+                        //     child: Image.network(
+                        //       imgUrl,
+                        //       fit: BoxFit.fill,
+                        //     ),
+                        //   ),
+                        // ),
 
-                      /// 이름 입력창
-                      BaseTextField(
-                        customController: nameController,
-                        hint: "이름",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
+                        /// 이름 입력창
+                        BaseTextField(
+                          customController: nameController,
+                          hint: "이름",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
 
-                      /// 등록일 입력창
-                      BaseTextField(
-                        customController: registerDateController,
-                        hint: "등록일",
-                        showArrow: true,
-                        customFunction: () {
-                          globlaFunction.getDateFromCalendar(
-                              context, registerDateController, "등록일");
-                        },
-                      ),
+                        /// 등록일 입력창
+                        BaseTextField(
+                          customController: registerDateController,
+                          hint: "등록일",
+                          showArrow: true,
+                          customFunction: () {
+                            globlaFunction.getDateFromCalendar(
+                                context, registerDateController, "등록일");
+                          },
+                        ),
 
-                      /// 전화번호 입력창
-                      BaseTextField(
-                        customController: phoneNumberController,
-                        hint: "전화번호",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
+                        /// 전화번호 입력창
+                        BaseTextField(
+                          customController: phoneNumberController,
+                          hint: "전화번호",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
 
-                      /// 수강권 선택 입력창
-                      BaseTextField(
-                        customController: registerTypeController,
-                        hint: "수강권 선택",
-                        showArrow: true,
-                        customFunction: () {
-                          _getMembership(context);
-                        },
-                      ),
+                        /// 수강권 선택 입력창
+                        BaseTextField(
+                          customController: registerTypeController,
+                          hint: "수강권 선택",
+                          showArrow: true,
+                          customFunction: () {
+                            _getMembership(context);
+                          },
+                        ),
 
-                      /// 목표 입력창
-                      BaseTextField(
-                        customController: goalController,
-                        hint: "목표",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
+                        /// 목표 입력창
+                        BaseTextField(
+                          customController: goalController,
+                          hint: "목표",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
 
-                      /// 신체 특이사항/체형분석 입력창
-                      BaseTextField(
-                        customController: infoController,
-                        hint: "신체 특이사항 / 체형분석",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
+                        /// 신체 특이사항/체형분석 입력창
+                        BaseTextField(
+                          customController: infoController,
+                          hint: "신체 특이사항 / 체형분석",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
 
-                      /// 메모 입력창
-                      BaseTextField(
-                        customController: noteController,
-                        hint: "메모",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
-                      Divider(height: 1),
+                        /// 메모 입력창
+                        BaseTextField(
+                          customController: noteController,
+                          hint: "메모",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
+                        Divider(height: 1),
 
-                      /// 추가 버튼
-                      ElevatedButton(
-                        child: Text("저장하기", style: TextStyle(fontSize: 21)),
-                        onPressed: () {
-                          print("추가 버튼");
-                          // create bucket
-                          if (globlaFunction.textNullCheck(context, nameController,
-                                  "이름") &&
-                              globlaFunction.textNullCheck(
-                                  context, registerDateController, "등록일") &&
-                              globlaFunction.textNullCheck(context,
-                                  phoneNumberController, "전화번호") &&
-                              globlaFunction
-                                  .textNullCheck(context, registerTypeController,
-                                      "수강권") &&
-                              globlaFunction
-                                  .textNullCheck(context, goalController,
-                                      "목표") &&
-                              globlaFunction.textNullCheck(
-                                  context, infoController, "신체 특이사항 / 체형분석") &&
-                              globlaFunction.textNullCheck(
-                                  context, noteController, "메모")) {
-                            memberService.create(
-                                name: nameController.text,
-                                registerDate: registerDateController.text,
-                                phoneNumber: phoneNumberController.text,
-                                registerType: registerTypeController.text,
-                                goal: goalController.text,
-                                info: infoController.text,
-                                note: noteController.text,
-                                uid: user.uid,
-                                onSuccess: () {
-                                  // 저장하기 성공
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text("저장하기 성공"),
-                                  ));
-                                  // 저장하기 성공시 Home로 이동
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => MemberList()),
-                                  );
-                                },
-                                onError: () {
-                                  print("저장하기 ERROR");
-                                });
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("항목을 모두 입력해주세요."),
-                            ));
-                          }
-                        },
-                      ),
-                    ],
+                        /// 추가 버튼
+                        ElevatedButton(
+                          child: Text("저장하기", style: TextStyle(fontSize: 21)),
+                          onPressed: () {
+                            print("추가 버튼");
+                            // create bucket
+                            if (globlaFunction.textNullCheck(context, nameController, "이름") &&
+                                globlaFunction.textNullCheck(
+                                    context, registerDateController, "등록일") &&
+                                globlaFunction.textNullCheck(
+                                    context, phoneNumberController, "전화번호") &&
+                                globlaFunction.textNullCheck(
+                                    context, registerTypeController, "수강권") &&
+                                globlaFunction.textNullCheck(
+                                    context, goalController, "목표") &&
+                                globlaFunction.textNullCheck(context,
+                                    infoController, "신체 특이사항 / 체형분석") &&
+                                globlaFunction.textNullCheck(
+                                    context, noteController, "메모")) {
+                              memberService.create(
+                                  name: nameController.text,
+                                  registerDate: registerDateController.text,
+                                  phoneNumber: phoneNumberController.text,
+                                  registerType: registerTypeController.text,
+                                  goal: goalController.text,
+                                  info: infoController.text,
+                                  note: noteController.text,
+                                  uid: user.uid,
+                                  onSuccess: () {
+                                    // 저장하기 성공
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text("저장하기 성공"),
+                                    ));
+                                    // 저장하기 성공시 Home로 이동
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => MemberList()),
+                                    );
+                                  },
+                                  onError: () {
+                                    print("저장하기 ERROR");
+                                  });
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("항목을 모두 입력해주세요."),
+                              ));
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

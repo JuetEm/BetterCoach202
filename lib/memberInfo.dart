@@ -9,6 +9,7 @@ import 'auth_service.dart';
 import 'color.dart';
 import 'lessonAdd.dart';
 import 'lesson_service.dart';
+import 'memberList.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 import 'lessonInfo.dart';
@@ -31,7 +32,18 @@ class _MemberInfoState extends State<MemberInfo> {
       // lessonService
       // ignore: dead_code
       return Scaffold(
-        appBar: BaseAppBarMethod(context, "회원 관리",null),
+        appBar: BaseAppBarMethod(context, "회원 관리", () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MemberList(),
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(
+                arguments: userInfo,
+              ),
+            ),
+          );
+        }),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(14.0),
@@ -220,7 +232,7 @@ class _MemberInfoState extends State<MemberInfo> {
                   ),
                   onPressed: () {
                     print("노트추가");
-                    // 저장하기 성공시 Home로 이동
+                    // LessonAdd로 이동
                     Navigator.push(
                       context,
                       MaterialPageRoute(

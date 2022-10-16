@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/actionSelector.dart';
 import 'package:web_project/userInfo.dart';
 
 import 'auth_service.dart';
@@ -99,8 +100,20 @@ class _LessonAddState extends State<LessonAdd> {
                         BaseTextField(
                           customController: actionNameController,
                           hint: "동작이름",
-                          showArrow: false,
-                          customFunction: () {},
+                          showArrow: true,
+                          customFunction: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ActionSelector(),
+                                fullscreenDialog: true,
+                                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                settings: RouteSettings(
+                                  arguments: userInfo,
+                                ),
+                              ),
+                            );
+                          },
                         ),
 
                         /// 수행도 입력창
@@ -112,7 +125,7 @@ class _LessonAddState extends State<LessonAdd> {
                         ),
 
                         SizedBox(
-                          height: 40,
+                          height: 20,
                           child: Slider(
                               value: sliderValue,
                               min: 0,

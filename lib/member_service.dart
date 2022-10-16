@@ -10,7 +10,7 @@ class MemberService extends ChangeNotifier {
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
 
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
-    return memberCollection.where('uid', isEqualTo: uid).orderBy("name").get();
+    return memberCollection.where('uid', isEqualTo: uid).get();
   }
 
   void create({

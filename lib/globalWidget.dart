@@ -9,10 +9,13 @@ import 'memberList.dart';
 import 'search.dart';
 import 'color.dart';
 
+GlobalKey appBapKey = GlobalKey();
+GlobalKey bottomAppBapKey = GlobalKey();
 
 AppBar BaseAppBarMethod(
     BuildContext context, String pageName, Function? customFunction) {
   return AppBar(
+    // key: appBapKey,
     elevation: 1,
     backgroundColor: Palette.mainBackground,
     title: Text(
@@ -33,7 +36,7 @@ AppBar BaseAppBarMethod(
         }
       },
       color: Palette.gray33,
-      icon: Icon(Icons.arrow_back_ios),
+      icon: pageName == "로그인" ? Icon(null) : Icon(Icons.arrow_back_ios),
     ),
   );
 }
@@ -89,6 +92,7 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      // key: bottomAppBapKey,
       shape: const CircularNotchedRectangle(),
       color: Colors.white,
       child: IconTheme(

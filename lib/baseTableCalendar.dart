@@ -33,7 +33,12 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
     return Consumer<CalendarService>(
       builder: (context, calendarService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(context, "${widget.pageName} 선택", null),
+          appBar: BaseAppBarMethod(context, "${widget.pageName} 선택", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => MemberAdd()),
+            );
+          }),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -61,7 +66,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                       focusedDate.day,
                     ),
                   );
-                  // 저장하기 성공시 Home로 이동
+                  // 저장하기 성공시 MemberAdd로 이동
                   Navigator.pop(context, calendarService.currentSelectedDate());
                 },
               )

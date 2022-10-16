@@ -37,9 +37,20 @@ late TextEditingController passwordController;
 TextEditingController switchController =
     TextEditingController(text: "이메일 / 비밀번호 기억하기");
 
+String? userEmail;
+String? userPassword;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
   prefs = await SharedPreferences.getInstance();
+
+  isLogInActiveChecked = prefs.getBool("isLogInActiveChecked") ?? false;
+  userEmail = prefs.getString("userEmail");
+  userPassword = prefs.getString("userPassword");
+  print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
+  print("prefs check userEmail : ${userEmail}");
+  print("prefs check userPassword : ${userPassword}");
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // firebase 앱 시작
@@ -65,13 +76,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthService>().currentUser();
-    isLogInActiveChecked = prefs.getBool("isLogInActiveChecked") ?? false;
-    String? userEmail = prefs.getString("userEmail");
-    String? userPassword = prefs.getString("userPassword");
-    print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
-    print("prefs check userEmail : ${userEmail}");
-    print("prefs check userPassword : ${userPassword}");
-
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
 
@@ -93,8 +97,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    String? userEmail = prefs.getString("userEmail");
-    String? userPassword = prefs.getString("userPassword");
+    userEmail = prefs.getString("userEmail");
+    userPassword = prefs.getString("userPassword");
     print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
     print("prefs check userEmail : ${userEmail}");
     print("prefs check userPassword : ${userPassword}");
