@@ -105,7 +105,8 @@ class _LessonAddState extends State<LessonAdd> {
                             onChanged: (value) {
                               setState(() {
                                 sliderValue = value;
-                                gradeController.text = "변함";
+                                gradeController.text = sliderValue.toString();
+                                print(sliderValue.toString());
                               });
                             }),
 

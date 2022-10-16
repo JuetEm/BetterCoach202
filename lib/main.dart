@@ -61,11 +61,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Pretendard'),
-      home: user == null
-          ? LoginPage()
-          : isLogInActiveChecked
-              ? MemberList()
-              : MemberList(),
+      home: user == null ? LoginPage() : MemberList(),
     );
   }
 }
@@ -79,11 +75,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {
+    if (isLogInActiveChecked) {
+      emailController =
+          TextEditingController(text: prefs.getString("userEmail"));
+      passwordController =
+          TextEditingController(text: prefs.getString("userPassword"));
+    } else {
+      emailController = TextEditingController();
+      passwordController = TextEditingController();
+    }
     return Consumer<AuthService>(
       builder: (context, authService, child) {
         final user = authService.currentUser();
@@ -195,8 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                   onChanged: (value) {
                     setState(() {
                       isLogInActiveChecked = !isLogInActiveChecked;
-                      prefs.setBool(
-                          "isLogInActiveChecked", isLogInActiveChecked);
+                      print("isLogInActiveChecked : ${isLogInActiveChecked}");
                     });
                   },
                 ),
@@ -213,28 +217,49 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(builder: (_) => MemberList()),
                       );
                     } else {
-                      // 로그인
-                      authService.signIn(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        onSuccess: () {
-                          // 로그인 성공
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("로그인 성공"),
-                          ));
-                          // 로그인 성공시 Home로 이동
-                          Navigator.pushReplacement(
+                      if (globalfunction.textNullCheck(
                             context,
-                            MaterialPageRoute(builder: (_) => MemberList()),
-                          );
-                        },
-                        onError: (err) {
-                          // 에러 발생
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(err),
-                          ));
-                        },
-                      );
+                            emailController,
+                            "이메일",
+                          ) &&
+                          globalfunction.textNullCheck(
+                            context,
+                            passwordController,
+                            "비밀번호",
+                          )) {
+                        prefs.setBool(
+                            "isLogInActiveChecked", isLogInActiveChecked);
+                        if (isLogInActiveChecked) {
+                          prefs.setString("userEmail", emailController.text);
+                          prefs.setString(
+                              "userPassword", passwordController.text);
+                        } else {
+                          prefs.setString("userEmail", "");
+                          prefs.setString("userPassword", "");
+                        }
+                        // 로그인
+                        authService.signIn(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          onSuccess: () {
+                            // 로그인 성공
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("로그인 성공"),
+                            ));
+                            // 로그인 성공시 Home로 이동
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (_) => MemberList()),
+                            );
+                          },
+                          onError: (err) {
+                            // 에러 발생
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(err),
+                            ));
+                          },
+                        );
+                      }
                     }
                   },
                 ),
