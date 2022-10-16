@@ -30,6 +30,12 @@ late SharedPreferences prefs;
 
 bool isLogInActiveChecked = false;
 
+late TextEditingController emailController;
+late TextEditingController passwordController;
+
+TextEditingController switchController =
+    TextEditingController(text: "이메일 / 비밀번호 기억하기");
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
   prefs = await SharedPreferences.getInstance();
@@ -58,6 +64,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.read<AuthService>().currentUser();
     isLogInActiveChecked = prefs.getBool("isLogInActiveChecked") ?? false;
+    String? userEmail = prefs.getString("userEmail");
+    String? userPassword = prefs.getString("userPassword");
+    print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
+    print("prefs check userEmail : ${userEmail}");
+    print("prefs check userPassword : ${userPassword}");
+    if (isLogInActiveChecked) {
+      emailController = TextEditingController(text: userEmail);
+      passwordController = TextEditingController(text: userPassword);
+    } else {
+      emailController = TextEditingController();
+      passwordController = TextEditingController();
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Pretendard'),
@@ -69,26 +87,27 @@ class MyApp extends StatelessWidget {
 /// 로그인 페이지
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
-
   @override
   Widget build(BuildContext context) {
-    if (isLogInActiveChecked) {
-      emailController =
-          TextEditingController(text: prefs.getString("userEmail"));
-      passwordController =
-          TextEditingController(text: prefs.getString("userPassword"));
-    } else {
-      emailController = TextEditingController();
-      passwordController = TextEditingController();
-    }
+    String? userEmail = prefs.getString("userEmail");
+    String? userPassword = prefs.getString("userPassword");
+    print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
+    print("prefs check userEmail : ${userEmail}");
+    print("prefs check userPassword : ${userPassword}");
+
+    // if (isLogInActiveChecked) {
+    emailController = TextEditingController(text: userEmail);
+    passwordController = TextEditingController(text: userPassword);
+    // } else {
+    //   emailController = TextEditingController();
+    //   passwordController = TextEditingController();
+    // }
+
     return Consumer<AuthService>(
       builder: (context, authService, child) {
         final user = authService.currentUser();
@@ -172,19 +191,40 @@ class _LoginPageState extends State<LoginPage> {
                   width: 100,
                   height: 100,
                   customFunction: () {},
-                  isSecure: false,
+                  isSecure: true,
                 ),
 
                 SizedBox(height: 32),
 
-                Switch(
-                  value: isLogInActiveChecked,
-                  onChanged: (value) {
-                    setState(() {
-                      isLogInActiveChecked = !isLogInActiveChecked;
-                      print("isLogInActiveChecked : ${isLogInActiveChecked}");
-                    });
-                  },
+                Center(
+                  child: SizedBox(
+                    height: 40,
+                    width: 250,
+                    child: TextField(
+                      readOnly: true,
+                      controller: switchController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        suffixIcon: Switch(
+                          value: isLogInActiveChecked,
+                          onChanged: (value) {
+                            setState(() {
+                              isLogInActiveChecked = !isLogInActiveChecked;
+                              // if (isLogInActiveChecked) {
+                              prefs.setString(
+                                  "userEmail", emailController.text);
+                              prefs.setString(
+                                  "userPassword", passwordController.text);
+                              // }
+
+                              print(
+                                  "isLogInActiveChecked : ${isLogInActiveChecked}");
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
 
                 SizedBox(height: 32),
@@ -193,55 +233,64 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   child: Text("로그인", style: TextStyle(fontSize: 21)),
                   onPressed: () {
-                    if (!(user == null)) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => MemberList()),
+                    // if (!(user == null)) {
+                    //   Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(builder: (_) => MemberList()),
+                    //   );
+                    // } else {
+                    if (globalfunction.textNullCheck(
+                          context,
+                          emailController,
+                          "이메일",
+                        ) &&
+                        globalfunction.textNullCheck(
+                          context,
+                          passwordController,
+                          "비밀번호",
+                        )) {
+                      // 로그인
+                      authService.signIn(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        onSuccess: () {
+                          // 로그인 성공
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("로그인 성공"),
+                          ));
+                          // 로그인 성공시 Home로 이동
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => MemberList()),
+                          );
+
+                          emailController.clear();
+                          passwordController.clear();
+                        },
+                        onError: (err) {
+                          // 에러 발생
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(err),
+                          ));
+                        },
                       );
-                    } else {
-                      if (globalfunction.textNullCheck(
-                            context,
-                            emailController,
-                            "이메일",
-                          ) &&
-                          globalfunction.textNullCheck(
-                            context,
-                            passwordController,
-                            "비밀번호",
-                          )) {
-                        prefs.setBool(
-                            "isLogInActiveChecked", isLogInActiveChecked);
-                        if (isLogInActiveChecked) {
-                          prefs.setString("userEmail", emailController.text);
-                          prefs.setString(
-                              "userPassword", passwordController.text);
-                        } else {
-                          prefs.setString("userEmail", "");
-                          prefs.setString("userPassword", "");
-                        }
-                        // 로그인
-                        authService.signIn(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          onSuccess: () {
-                            // 로그인 성공
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("로그인 성공"),
-                            ));
-                            // 로그인 성공시 Home로 이동
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (_) => MemberList()),
-                            );
-                          },
-                          onError: (err) {
-                            // 에러 발생
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(err),
-                            ));
-                          },
-                        );
+
+                      prefs.setBool(
+                          "isLogInActiveChecked", isLogInActiveChecked);
+
+                      if (isLogInActiveChecked) {
+                        prefs.setString("userEmail", emailController.text);
+                        prefs.setString(
+                            "userPassword", passwordController.text);
+                        print(
+                            "switch on isLogInActiveChecked : ${isLogInActiveChecked}");
+                      } else {
+                        prefs.setString("userEmail", "");
+                        prefs.setString("userPassword", "");
+                        print(
+                            "switch off isLogInActiveChecked : ${isLogInActiveChecked}");
                       }
+                      // }
                     }
                   },
                 ),
