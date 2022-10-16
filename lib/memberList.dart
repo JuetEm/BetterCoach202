@@ -122,14 +122,16 @@ class _MemberListState extends State<MemberList> {
                               String note = doc.get('note');
                               bool isActive = doc.get('isActive');
                               final UserInfo userInfo = UserInfo(
-                                  name,
-                                  registerDate,
-                                  phoneNumber,
-                                  registerType,
-                                  goal,
-                                  info,
-                                  note,
-                                  isActive);
+                                user.uid,
+                                name,
+                                registerDate,
+                                phoneNumber,
+                                registerType,
+                                goal,
+                                info,
+                                note,
+                                isActive,
+                              );
                               return InkWell(
                                 onTap: () {
                                   // 회원 카드 선택시 MemberInfo로 이동
@@ -137,6 +139,7 @@ class _MemberListState extends State<MemberList> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MemberInfo(),
+                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                       settings: RouteSettings(
                                         arguments: userInfo,
                                       ),

@@ -13,6 +13,7 @@ import 'cloudStorage.dart';
 import 'firebase_options.dart';
 import 'global_service.dart';
 import 'home.dart';
+import 'lesson_service.dart';
 import 'member_service.dart';
 
 /// 브랜치 테스트
@@ -30,6 +31,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => BucketService()),
         ChangeNotifierProvider(create: (context) => GlobalService()),
         ChangeNotifierProvider(create: (context) => MemberService()),
+        ChangeNotifierProvider(create: (context) => LessonService()),
         ChangeNotifierProvider(create: (context) => CalendarService()),
       ],
       child: const MyApp(),
@@ -45,8 +47,8 @@ class MyApp extends StatelessWidget {
     final user = context.read<AuthService>().currentUser();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: user == null ? LoginPage() : Home(),
       theme: ThemeData(fontFamily: 'Pretendard'),
+      home: user == null ? LoginPage() : Home(),
     );
   }
 }

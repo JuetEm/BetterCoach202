@@ -1,25 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class MemberService extends ChangeNotifier {
-  final memberCollection = FirebaseFirestore.instance.collection('lessonNote');
+class LessonService extends ChangeNotifier {
+  final lessonCollection = FirebaseFirestore.instance.collection('lesson');
 
   Future<QuerySnapshot> read(String uid) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return memberCollection.where('uid', isEqualTo: uid).get();
+    return lessonCollection.where('uid', isEqualTo: uid).get();
   }
 
   void create({
-    required String uid, //트레이너고유아이디
-    required String trainerName, //트레이너이름
-    required String traineeName,
-    required String tid, //회원 고유식별아이디
+    required String uid, //트레이너이름
+    required String name, //회원이름
+    required String apratusName, //기구이름
+    required String actionName, //동작이름
     required String lessonDate, //수업날짜
-    required String startTime, //수업시작시간
-    required String endTime, //수업마감시간
-    required String title, //수업제목
+    required String grade, //수행도
     required String totalNote, //수업총메모
 
     required Function onSuccess,
@@ -33,15 +31,13 @@ class MemberService extends ChangeNotifier {
     // });
 
     // 문서 만들기 add 방식 => 문서 ID를 랜덤으로 부여
-    await memberCollection.add({
+    await lessonCollection.add({
       'uid': uid, //트레이너고유아이디
-      'trainerName': trainerName, //트레이너이름
-      'traineeName': traineeName, //회원이름
-      'tid': tid, //회원고유아이디
+      'name': name, //회원이름
+      'apratusName': apratusName, //기구이름
+      'actionName': actionName, //동작이름
       'lessonDate': lessonDate, //수업날짜
-      'startTime': startTime, //수업시작시간
-      'endTime': endTime, //수업마감시간
-      'title': title, //수업이름
+      'grade': grade, //수행도
       'totalNote': totalNote, //수업총메모
     });
     notifyListeners(); // 화면 갱신
@@ -51,13 +47,13 @@ class MemberService extends ChangeNotifier {
   void update(String docId, bool isActive) async {
     // bucket isActive 업데이트
 
-    await memberCollection.doc(docId).update({'isActive': isActive});
+    await lessonCollection.doc(docId).update({'isActive': isActive});
     notifyListeners(); // 화면 갱신
   }
 
   void delete(String docId) async {
     // bucket 삭제
-    await memberCollection.doc(docId).delete();
+    await lessonCollection.doc(docId).delete();
     notifyListeners(); // 화면 갱신
   }
 }

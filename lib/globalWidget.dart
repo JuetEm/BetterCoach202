@@ -194,3 +194,52 @@ class BaseContainer extends StatelessWidget {
     );
   }
 }
+
+class ActionContainer extends StatelessWidget {
+  const ActionContainer({
+    Key? key,
+    required this.apratusName,
+    required this.actionName,
+    required this.lessonDate,
+    required this.grade,
+    required this.totalNote,
+  }) : super(key: key);
+
+  final String apratusName;
+  final String actionName;
+  final String lessonDate;
+  final String grade;
+  final String totalNote;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '기구이름 : ${apratusName}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 5.0),
+            Text(
+              '동작이름 : ${actionName}',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
