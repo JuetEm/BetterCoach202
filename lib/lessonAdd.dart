@@ -10,6 +10,13 @@ import 'globalWidget.dart';
 import 'memberInfo.dart';
 import 'lesson_service.dart';
 
+TextEditingController nameController = TextEditingController();
+TextEditingController apratusNameController = TextEditingController();
+TextEditingController actionNameController = TextEditingController();
+TextEditingController lessonDateController = TextEditingController();
+TextEditingController gradeController = TextEditingController();
+TextEditingController totalNoteController = TextEditingController();
+
 GlobalFunction globalFunction = GlobalFunction();
 
 String selectedDropdown = '기구';
@@ -40,17 +47,24 @@ class _LessonAddState extends State<LessonAdd> {
     // 이전 화면에서 보낸 변수 받기
     final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
-    TextEditingController nameController =
-        TextEditingController(text: userInfo.name);
-    TextEditingController apratusNameController = TextEditingController();
-    TextEditingController actionNameController = TextEditingController();
-    TextEditingController lessonDateController = TextEditingController();
-    TextEditingController gradeController = TextEditingController();
-    TextEditingController totalNoteController = TextEditingController();
+    nameController = TextEditingController(text: userInfo.name);
+
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(context, "노트 추가"),
+          appBar: BaseAppBarMethod(context, "노트 추가", () {
+            // 뒤로가기 선택시 MemberInfo로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberInfo(),
+                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                settings: RouteSettings(
+                  arguments: userInfo,
+                ),
+              ),
+            );
+          }),
           body: SafeArea(
             child: Column(
               children: [
@@ -77,11 +91,11 @@ class _LessonAddState extends State<LessonAdd> {
                           showArrow: true,
                           customFunction: () {
                             globalFunction.getDateFromCalendar(
-                                context, lessonDateController);
+                                context, lessonDateController, "수업일");
                           },
                         ),
 
-                        /// 전화번호 입력창
+                        /// 동작이름 입력창
                         BaseTextField(
                           customController: actionNameController,
                           hint: "동작이름",
@@ -97,18 +111,22 @@ class _LessonAddState extends State<LessonAdd> {
                           customFunction: () {},
                         ),
 
-                        Slider(
-                            value: sliderValue,
-                            min: 0,
-                            max: 100,
-                            divisions: 6,
-                            onChanged: (value) {
-                              setState(() {
-                                sliderValue = value;
-                                gradeController.text = sliderValue.toString();
-                                print(sliderValue.toString());
-                              });
-                            }),
+                        SizedBox(
+                          height: 40,
+                          child: Slider(
+                              value: sliderValue,
+                              min: 0,
+                              max: 100,
+                              divisions: 10,
+                              onChanged: (value) {
+                                setState(() {
+                                  sliderValue = value;
+                                  gradeController.text =
+                                      sliderValue.clamp(0, 100).toString();
+                                  print(sliderValue.toString());
+                                });
+                              }),
+                        ),
 
                         /// 메모 입력창
                         BaseTextField(
@@ -155,7 +173,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         .showSnackBar(SnackBar(
                                       content: Text("저장하기 성공"),
                                     ));
-                                    // 저장하기 성공시 Home로 이동
+                                    // 저장하기 성공시 MemberInfo로 이동
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

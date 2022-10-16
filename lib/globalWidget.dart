@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:web_project/color.dart';
+import 'baseTableCalendar.dart';
 import 'home.dart';
 import 'main.dart';
 import 'memberList.dart';
@@ -7,7 +9,9 @@ import 'memberList.dart';
 import 'search.dart';
 import 'color.dart';
 
-AppBar BaseAppBarMethod(BuildContext context, String pageName) {
+
+AppBar BaseAppBarMethod(
+    BuildContext context, String pageName, Function? customFunction) {
   return AppBar(
     elevation: 1,
     backgroundColor: Palette.mainBackground,
@@ -22,7 +26,11 @@ AppBar BaseAppBarMethod(BuildContext context, String pageName) {
     centerTitle: true,
     leading: IconButton(
       onPressed: () {
-        Navigator.pop(context);
+        if (!(customFunction == null)) {
+          customFunction!();
+        } else {
+          Navigator.pop(context);
+        }
       },
       color: Palette.gray33,
       icon: Icon(Icons.arrow_back_ios),
@@ -169,6 +177,7 @@ class _BasePopupMenuButtonState extends State<BasePopupMenuButton> {
           readOnly: widget.showButton,
           controller: widget.customController,
           decoration: InputDecoration(
+              labelText: widget.hint,
               suffixIcon: widget.showButton
                   ? PopupMenuButton<String>(
                       itemBuilder: ((context) =>
@@ -235,6 +244,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
           readOnly: widget.showArrow,
           controller: widget.customController,
           decoration: InputDecoration(
+              labelText: widget.hint,
               suffixIcon: widget.showArrow
                   ? IconButton(
                       onPressed: () {

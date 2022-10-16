@@ -7,7 +7,9 @@ import 'globalWidget.dart';
 import 'memberAdd.dart';
 
 class BaseTableCalendar extends StatefulWidget {
-  const BaseTableCalendar({super.key});
+  const BaseTableCalendar({super.key, required this.pageName});
+
+  final String pageName;
 
   @override
   State<BaseTableCalendar> createState() => _BaseTableCalendarState();
@@ -31,7 +33,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
     return Consumer<CalendarService>(
       builder: (context, calendarService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(context, "등록일 선택"),
+          appBar: BaseAppBarMethod(context, "${widget.pageName} 선택", null),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -49,7 +51,8 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
 
               /// 추가 버튼
               ElevatedButton(
-                child: Text("등록일 선택", style: TextStyle(fontSize: 21)),
+                child: Text("${widget.pageName} 선택",
+                    style: TextStyle(fontSize: 21)),
                 onPressed: () {
                   calendarService.setDate(
                     DateTime(

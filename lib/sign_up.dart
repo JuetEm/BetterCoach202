@@ -40,7 +40,7 @@ class _SignUpState extends State<SignUp> {
       builder: (context, authService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "회원가입"),
+          appBar: BaseAppBarMethod(context, "회원가입",null),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(

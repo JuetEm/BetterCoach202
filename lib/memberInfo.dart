@@ -31,7 +31,7 @@ class _MemberInfoState extends State<MemberInfo> {
       // lessonService
       // ignore: dead_code
       return Scaffold(
-        appBar: BaseAppBarMethod(context, "회원 관리"),
+        appBar: BaseAppBarMethod(context, "회원 관리",null),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(14.0),

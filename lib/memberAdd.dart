@@ -38,7 +38,7 @@ class _MemberAddState extends State<MemberAdd> {
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(context, "회원 추가"),
+          appBar: BaseAppBarMethod(context, "회원 추가", null),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -76,7 +76,7 @@ class _MemberAddState extends State<MemberAdd> {
                         showArrow: true,
                         customFunction: () {
                           globlaFunction.getDateFromCalendar(
-                              context, registerDateController);
+                              context, registerDateController, "등록일");
                         },
                       ),
 

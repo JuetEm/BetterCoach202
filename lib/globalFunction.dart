@@ -25,12 +25,16 @@ class GlobalFunction {
     return notEmpty;
   }
 
-  void getDateFromCalendar(
-      BuildContext context, TextEditingController customController) async {
+  void getDateFromCalendar(BuildContext context,
+      TextEditingController customController, String pageName) async {
     final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => BaseTableCalendar()),
-    );
+        context,
+        MaterialPageRoute(
+          builder: (_) => BaseTableCalendar(
+            pageName: pageName,
+          ),
+          fullscreenDialog: true,
+        ));
 
     if (!(result == null)) {
       String formatedDate = DateFormat("yyyy-MM-dd")
@@ -39,11 +43,11 @@ class GlobalFunction {
       customController.text = formatedDate;
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("등록일 : ${formatedDate}"),
+        content: Text("${pageName} : ${formatedDate}"),
       ));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("등록일을 선택해주세요."),
+        content: Text("${pageName}을 선택해주세요."),
       ));
     }
   }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_project/action_service.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 
@@ -51,6 +52,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => MemberService()),
         ChangeNotifierProvider(create: (context) => LessonService()),
         ChangeNotifierProvider(create: (context) => CalendarService()),
+        ChangeNotifierProvider(create: (context) => ActionService()),
       ],
       child: const MyApp(),
     ),
@@ -69,13 +71,10 @@ class MyApp extends StatelessWidget {
     print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
     print("prefs check userEmail : ${userEmail}");
     print("prefs check userPassword : ${userPassword}");
-    if (isLogInActiveChecked) {
-      emailController = TextEditingController(text: userEmail);
-      passwordController = TextEditingController(text: userPassword);
-    } else {
-      emailController = TextEditingController();
-      passwordController = TextEditingController();
-    }
+
+    emailController = TextEditingController(text: userEmail);
+    passwordController = TextEditingController(text: userPassword);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Pretendard'),
@@ -100,20 +99,15 @@ class _LoginPageState extends State<LoginPage> {
     print("prefs check userEmail : ${userEmail}");
     print("prefs check userPassword : ${userPassword}");
 
-    // if (isLogInActiveChecked) {
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
-    // } else {
-    //   emailController = TextEditingController();
-    //   passwordController = TextEditingController();
-    // }
 
     return Consumer<AuthService>(
       builder: (context, authService, child) {
         final user = authService.currentUser();
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "로그인"),
+          appBar: BaseAppBarMethod(context, "로그인", null),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -233,12 +227,6 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   child: Text("로그인", style: TextStyle(fontSize: 21)),
                   onPressed: () {
-                    // if (!(user == null)) {
-                    //   Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(builder: (_) => MemberList()),
-                    //   );
-                    // } else {
                     if (globalfunction.textNullCheck(
                           context,
                           emailController,
@@ -290,7 +278,6 @@ class _LoginPageState extends State<LoginPage> {
                         print(
                             "switch off isLogInActiveChecked : ${isLogInActiveChecked}");
                       }
-                      // }
                     }
                   },
                 ),
