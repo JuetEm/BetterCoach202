@@ -4,16 +4,23 @@ import 'package:flutter/material.dart';
 class LessonService extends ChangeNotifier {
   final lessonCollection = FirebaseFirestore.instance.collection('lesson');
 
-  Future<QuerySnapshot> read(String uid) async {
+  Future<QuerySnapshot> read(
+    String uid,
+    String phoneNumber,
+  ) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return lessonCollection.where('uid', isEqualTo: uid).get();
+    return lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('phoneNumber', isEqualTo: phoneNumber)
+        .get();
   }
 
   void create({
-    required String uid, //트레이너이름
+    required String uid, // 강사 고유번호
     required String name, //회원이름
+    required String phoneNumber, // 회원 고유번호 (전화번호로 회원 식별)
     required String apratusName, //기구이름
     required String actionName, //동작이름
     required String lessonDate, //수업날짜
@@ -31,9 +38,20 @@ class LessonService extends ChangeNotifier {
     // });
 
     // 문서 만들기 add 방식 => 문서 ID를 랜덤으로 부여
+    // await lessonCollection.add({
+    //   'uid': uid, //강사 고유번호
+    //   'name': name, //회원이름
+    //   'apratusName': apratusName, //기구이름
+    //   'actionName': actionName, //동작이름
+    //   'lessonDate': lessonDate, //수업날짜
+    //   'grade': grade, //수행도
+    //   'totalNote': totalNote, //수업총메모
+    // });
+
     await lessonCollection.add({
-      'uid': uid, //트레이너고유아이디
+      'uid': uid, //강사 고유번호
       'name': name, //회원이름
+      'phoneNumber': phoneNumber, // 회원 고유번호 => 전화번호로 회원 식별
       'apratusName': apratusName, //기구이름
       'actionName': actionName, //동작이름
       'lessonDate': lessonDate, //수업날짜

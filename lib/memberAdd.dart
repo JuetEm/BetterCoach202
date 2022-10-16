@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
+import 'globalFunction.dart';
 import 'globalWidget.dart';
-import 'home.dart';
 import 'memberList.dart';
 import 'member_service.dart';
 import 'membershipList.dart';
+
+GlobalFunction globlaFunction = GlobalFunction();
 
 class MemberAdd extends StatefulWidget {
   const MemberAdd({super.key});
@@ -73,7 +74,8 @@ class _MemberAddState extends State<MemberAdd> {
                         hint: "등록일",
                         showArrow: true,
                         customFunction: () {
-                          _getDateFromCalendar(context);
+                          globlaFunction.getDateFromCalendar(
+                              context, registerDateController);
                         },
                       ),
 
@@ -126,16 +128,22 @@ class _MemberAddState extends State<MemberAdd> {
                         onPressed: () {
                           print("추가 버튼");
                           // create bucket
-                          if (textNullCheck(nameController, "nameController") &&
-                              textNullCheck(registerDateController,
-                                  "registerDateController") &&
-                              textNullCheck(phoneNumberController,
-                                  "phoneNumberController") &&
-                              textNullCheck(registerTypeController,
-                                  "registerTypeController") &&
-                              textNullCheck(goalController, "goalController") &&
-                              textNullCheck(infoController, "infoController") &&
-                              textNullCheck(noteController, "noteController")) {
+                          if (globlaFunction.textNullCheck(context, nameController,
+                                  "이름") &&
+                              globlaFunction.textNullCheck(
+                                  context, registerDateController, "등록일") &&
+                              globlaFunction.textNullCheck(context,
+                                  phoneNumberController, "전화번호") &&
+                              globlaFunction
+                                  .textNullCheck(context, registerTypeController,
+                                      "수강권") &&
+                              globlaFunction
+                                  .textNullCheck(context, goalController,
+                                      "목표") &&
+                              globlaFunction.textNullCheck(
+                                  context, infoController, "신체 특이사항 / 체형분석") &&
+                              globlaFunction.textNullCheck(
+                                  context, noteController, "메모")) {
                             memberService.create(
                                 name: nameController.text,
                                 registerDate: registerDateController.text,
@@ -180,28 +188,6 @@ class _MemberAddState extends State<MemberAdd> {
     );
   }
 
-  void _getDateFromCalendar(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => BaseTableCalendar()),
-    );
-
-    if (!(result == null)) {
-      String formatedDate = DateFormat("yyyy-MM-dd")
-          .format(DateTime(result.year, result.month, result.day));
-
-      registerDateController.text = formatedDate;
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("등록일 : ${formatedDate}"),
-      ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("등록일을 선택해주세요."),
-      ));
-    }
-  }
-
   void _getMembership(BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -219,18 +205,5 @@ class _MemberAddState extends State<MemberAdd> {
         content: Text("수강권을 선택해주세요."),
       ));
     }
-  }
-
-  bool textNullCheck(
-    TextEditingController checkController,
-    String controllerName,
-  ) {
-    bool notEmpty = true;
-    if (!checkController.text.isNotEmpty) {
-      print("${controllerName} is Empty");
-      notEmpty = !notEmpty;
-    }
-
-    return notEmpty;
   }
 }

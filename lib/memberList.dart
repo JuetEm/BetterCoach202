@@ -101,7 +101,7 @@ class _MemberListState extends State<MemberList> {
                   children: [
                     Expanded(
                       child: FutureBuilder<QuerySnapshot>(
-                        future: memberService.read(user.uid),
+                        future: memberService.read(user.uid, 'name'),
                         builder: (context, snapshot) {
                           final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
                           if (docs.isEmpty) {
@@ -169,7 +169,7 @@ class _MemberListState extends State<MemberList> {
                         print("회원추가");
                         // create bucket
                         // 저장하기 성공시 Home로 이동
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(builder: (_) => MemberAdd()),
                         );
