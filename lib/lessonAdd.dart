@@ -21,10 +21,8 @@ class LessonAdd extends StatefulWidget {
 }
 
 class _LessonAddState extends State<LessonAdd> {
-  TextEditingController nameController = TextEditingController();
   TextEditingController apratusNameController = TextEditingController();
   TextEditingController actionNameController = TextEditingController();
-  TextEditingController lessonDateController = TextEditingController();
   TextEditingController gradeController = TextEditingController();
   TextEditingController totalNoteController = TextEditingController();
 
@@ -48,30 +46,12 @@ class _LessonAddState extends State<LessonAdd> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      /// 이름 입력창
-                      BaseTextField(
-                        customController: nameController,
-                        hint: "이름",
-                        showArrow: false,
-                        customFunction: () {},
-                      ),
-
                       /// 기구 입력창
                       BaseTextField(
                         customController: apratusNameController,
                         hint: "기구",
                         showArrow: false,
                         customFunction: () {},
-                      ),
-
-                      /// 수업일 입력창
-                      BaseTextField(
-                        customController: lessonDateController,
-                        hint: "등록일",
-                        showArrow: true,
-                        customFunction: () {
-                          _getDateFromCalendar(context);
-                        },
                       ),
 
                       /// 전화번호 입력창
@@ -85,7 +65,7 @@ class _LessonAddState extends State<LessonAdd> {
                       /// 수행도 입력창
                       BaseTextField(
                         customController: gradeController,
-                        hint: "목표",
+                        hint: "수행도",
                         showArrow: false,
                         customFunction: () {},
                       ),
@@ -107,20 +87,20 @@ class _LessonAddState extends State<LessonAdd> {
                           // create bucket
                           if (textNullCheck(apratusNameController,
                                   "apratusNameController") &&
-                              textNullCheck(lessonDateController,
-                                  "lessonDateController") &&
                               textNullCheck(actionNameController,
                                   "actionNameController") &&
                               textNullCheck(
                                   gradeController, "gradeController") &&
                               textNullCheck(
                                   totalNoteController, "totalNoteController")) {
+                            String now = DateFormat("yyyy-MM-dd")
+                                .format(DateTime.now()); // 오늘 날짜 가져오기
                             lessonService.create(
                                 uid: user.uid,
-                                name: nameController.text,
+                                name: userInfo.name,
                                 apratusName: apratusNameController.text, //기구이름
                                 actionName: actionNameController.text, //동작이름
-                                lessonDate: lessonDateController.text, //수업날짜
+                                lessonDate: now, //수업날짜
                                 grade: gradeController.text, //수행도
                                 totalNote: totalNoteController.text, //수업총메모
                                 onSuccess: () {
@@ -161,28 +141,6 @@ class _LessonAddState extends State<LessonAdd> {
         );
       },
     );
-  }
-
-  void _getDateFromCalendar(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => BaseTableCalendar()),
-    );
-
-    if (!(result == null)) {
-      String formatedDate = DateFormat("yyyy-MM-dd")
-          .format(DateTime(result.year, result.month, result.day));
-
-      lessonDateController.text = formatedDate;
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("등록일 : ${formatedDate}"),
-      ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("등록일을 선택해주세요."),
-      ));
-    }
   }
 
   bool textNullCheck(

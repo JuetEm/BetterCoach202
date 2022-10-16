@@ -31,109 +31,109 @@ class _MemberInfoState extends State<MemberInfo> {
       return Scaffold(
         appBar: BaseAppBarMethod(context, "회원 관리"),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                BaseContainer(
-                  name: userInfo.name,
-                  registerDate: userInfo.registerDate,
-                  goal: userInfo.goal,
-                  info: userInfo.info,
-                  note: userInfo.note,
-                  phoneNumber: userInfo.phoneNumber,
-                  isActive: userInfo.isActive,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '회원정보',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  BaseContainer(
+                    name: userInfo.name,
+                    registerDate: userInfo.registerDate,
+                    goal: userInfo.goal,
+                    info: userInfo.info,
+                    note: userInfo.note,
+                    phoneNumber: userInfo.phoneNumber,
+                    isActive: userInfo.isActive,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '회원정보',
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '목표',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            userInfo.goal,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Text(
+                            '신체특이사항/체형분석',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            userInfo.info,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Text(
+                            '메모',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            userInfo.note,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                          ),
+                        ],
                       ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '목표',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          userInfo.goal,
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Text(
-                          '신체특이사항/체형분석',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          userInfo.info,
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Text(
-                          '메모',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          userInfo.note,
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '동작',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                Expanded(
-                  child: FutureBuilder<QuerySnapshot>(
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '동작',
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  FutureBuilder<QuerySnapshot>(
                     future: lessonService.read(user.uid),
                     builder: (context, snapshot) {
                       final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
@@ -141,7 +141,7 @@ class _MemberInfoState extends State<MemberInfo> {
                         return Center(child: Text("동작 목록을 준비 중입니다."));
                       }
                       return ListView.separated(
-                        scrollDirection: Axis.vertical,
+                        //scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: docs.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -166,28 +166,28 @@ class _MemberInfoState extends State<MemberInfo> {
                       );
                     },
                   ),
-                ),
 
-                /// 추가 버튼
-                ElevatedButton(
-                  child: Text("노트추가", style: TextStyle(fontSize: 21)),
-                  onPressed: () {
-                    print("노트추가");
-                    // create bucket
-                    // 저장하기 성공시 Home로 이동
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LessonAdd(),
-                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        settings: RouteSettings(
-                          arguments: userInfo,
+                  /// 추가 버튼
+                  ElevatedButton(
+                    child: Text("노트추가", style: TextStyle(fontSize: 21)),
+                    onPressed: () {
+                      print("노트추가");
+                      // create bucket
+                      // 저장하기 성공시 Home로 이동
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LessonAdd(),
+                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                          settings: RouteSettings(
+                            arguments: userInfo,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

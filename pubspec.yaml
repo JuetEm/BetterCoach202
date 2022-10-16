@@ -44,6 +44,7 @@ dependencies:
   table_calendar: ^3.0.7
   intl: ^0.17.0
   firebase_storage: ^10.3.11
+  grouped_list: ^5.1.2
 
 dev_dependencies:
   flutter_test:

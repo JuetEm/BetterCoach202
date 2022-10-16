@@ -219,21 +219,21 @@ class ActionContainer extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              '기구이름 : ${apratusName}',
+              apratusName,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 15.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const SizedBox(height: 5.0),
+            const SizedBox(width: 15.0),
             Text(
-              '동작이름 : ${actionName}',
+              actionName,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 15.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
             ),
