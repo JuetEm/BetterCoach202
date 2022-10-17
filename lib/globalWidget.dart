@@ -48,18 +48,18 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
     //   icon: Icon(Icons.calendar_month),
     // ),
     actions: [
-      IconButton(
-        onPressed: () {
-          print('profile');
-          // 로그인 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );
-        },
-        color: Palette.gray33,
-        icon: Icon(Icons.account_circle),
-      ),
+      // IconButton(
+      //   onPressed: () {
+      //     print('profile');
+      //     // 로그인 페이지로 이동
+      //     Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => LoginPage()),
+      //     );
+      //   },
+      //   color: Palette.gray33,
+      //   icon: Icon(Icons.account_circle),
+      // ),
       // IconButton(
       //   onPressed: () {
       //     _openEndDrawer();
@@ -100,35 +100,35 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                     MaterialPageRoute(builder: (context) => MemberList()),
                   );
                 },
-                icon: Icon(Icons.contacts_outlined),
+                icon: Icon(Icons.supervisor_account),
                 tooltip: 'MEMBERS',
               ),
-              //Spacer(),
-              IconButton(
-                onPressed: () {
-                  print('note_add');
-                  // 홈 화면으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                  );
-                },
-                icon: Icon(Icons.home_outlined),
-                tooltip: 'Add Class',
-              ),
-              //Spacer(),
-              IconButton(
-                onPressed: () {
-                  print('search');
-                  // 서치 화면으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Search()),
-                  );
-                },
-                icon: Icon(Icons.search),
-                tooltip: 'Search',
-              ),
+
+              // IconButton(
+              //   onPressed: () {
+              //     print('note_add');
+              //     // 홈 화면으로 이동
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => Home()),
+              //     );
+              //   },
+              //   icon: Icon(Icons.home_outlined),
+              //   tooltip: 'Add Class',
+              // ),
+
+              // IconButton(
+              //   onPressed: () {
+              //     print('search');
+              //     // 서치 화면으로 이동
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => Search()),
+              //     );
+              //   },
+              //   icon: Icon(Icons.search),
+              //   tooltip: 'Search',
+              // ),
             ],
           ),
         ),
