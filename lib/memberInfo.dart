@@ -229,7 +229,16 @@ class _MemberInfoState extends State<MemberInfo> {
                               final docs =
                                   snapshot.data?.docs ?? []; // 문서들 가져오기
                               if (docs.isEmpty) {
-                                return Center(child: Text("동작 목록을 준비 중입니다."));
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Center(
+                                      child: Text("노트추가 버튼을 눌러 동작을 추가할 수 있습니다"),
+                                    ),
+                                  ],
+                                );
                               }
                               return GroupedListView(
                                 shrinkWrap: true,
@@ -245,7 +254,10 @@ class _MemberInfoState extends State<MemberInfo> {
                                             lessonDate: docs['lessonDate'],
                                             grade: docs['grade'],
                                             totalNote: docs['totalNote']),
-                                order: GroupedListOrder.ASC,
+                                itemComparator: (item1, item2) =>
+                                    item1['lessonDate'].compareTo(
+                                        item2['lessonDate']), // optional
+                                order: GroupedListOrder.DESC,
                               );
                             },
                           ),
