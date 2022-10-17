@@ -50,6 +50,7 @@ class _MemberAddState extends State<MemberAdd> {
                   padding: const EdgeInsets.all(14.0),
                   child: IntrinsicHeight(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // SizedBox(
@@ -128,7 +129,14 @@ class _MemberAddState extends State<MemberAdd> {
 
                         /// 추가 버튼
                         ElevatedButton(
-                          child: Text("저장하기", style: TextStyle(fontSize: 21)),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Palette.buttonOrange,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text("저장하기", style: TextStyle(fontSize: 18)),
+                          ),
                           onPressed: () {
                             print("추가 버튼");
                             // create bucket

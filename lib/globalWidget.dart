@@ -21,16 +21,16 @@ AppBar BaseAppBarMethod(
     title: Text(
       pageName,
       style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            fontSize: 20.0,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold,
-            color: Palette.gray33,
+            color: Palette.gray66,
           ),
     ),
     centerTitle: true,
     leading: IconButton(
       onPressed: () {
         if (!(customFunction == null)) {
-          customFunction!();
+          customFunction();
         } else {
           Navigator.pop(context);
         }
@@ -48,9 +48,9 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
     title: Text(
       pageName,
       style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            fontSize: 20.0,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold,
-            color: Palette.gray33,
+            color: Palette.gray66,
           ),
     ),
     centerTitle: true,
@@ -241,7 +241,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        minHeight: 100,
+        minHeight: 60,
       ),
       child: TextField(
         readOnly: widget.showArrow,
@@ -308,13 +308,18 @@ class _LoginTextFieldState extends State<LoginTextField> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Palette.grayFA,
-        border: OutlineInputBorder(),
         labelText: widget.hint,
         labelStyle:
             TextStyle(color: myFocusNode.hasFocus ? focusColor : normalColor),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Palette.grayEE, width: 0),
+            borderRadius: BorderRadius.circular(10)),
         focusColor: focusColor,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: focusColor, width: 2.0),
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: focusColor,
+          ),
         ),
       ),
     );
@@ -383,9 +388,9 @@ class BaseContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '이름 : ${name}',
+                    '${name}',
                     style: TextStyle(
-                      fontSize: 12.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: Palette.gray33,
                     ),
@@ -396,7 +401,7 @@ class BaseContainer extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12.0,
                       //fontWeight: FontWeight.bold,
-                      color: Palette.gray66,
+                      color: Palette.gray99,
                     ),
                   ),
                 ],

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'calendar_service.dart';
+import 'color.dart';
 import 'globalWidget.dart';
 import 'memberAdd.dart';
 
@@ -39,38 +40,49 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
               MaterialPageRoute(builder: (_) => MemberAdd()),
             );
           }),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              tableCalendarMethod(),
-              Divider(
-                height: 1,
-              ),
-              Container(
-                height: 30,
-                child: Center(
-                  child: Text(
-                      "등록일 : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
+          body: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                tableCalendarMethod(),
+                Divider(
+                  height: 1,
                 ),
-              ),
+                Container(
+                  height: 30,
+                  child: Center(
+                    child: Text(
+                        "등록일 : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
+                  ),
+                ),
 
-              /// 추가 버튼
-              ElevatedButton(
-                child: Text("${widget.pageName} 선택",
-                    style: TextStyle(fontSize: 21)),
-                onPressed: () {
-                  calendarService.setDate(
-                    DateTime(
-                      focusedDate.year,
-                      focusedDate.month,
-                      focusedDate.day,
-                    ),
-                  );
-                  // 저장하기 성공시 MemberAdd로 이동
-                  Navigator.pop(context, calendarService.currentSelectedDate());
-                },
-              )
-            ],
+                /// 추가 버튼
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text("${widget.pageName} 선택",
+                        style: TextStyle(fontSize: 18)),
+                  ),
+                  onPressed: () {
+                    calendarService.setDate(
+                      DateTime(
+                        focusedDate.year,
+                        focusedDate.month,
+                        focusedDate.day,
+                      ),
+                    );
+                    // 저장하기 성공시 MemberAdd로 이동
+                    Navigator.pop(
+                        context, calendarService.currentSelectedDate());
+                  },
+                )
+              ],
+            ),
           ),
         );
       },

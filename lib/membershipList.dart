@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'auth_service.dart';
+import 'color.dart';
 import 'globalWidget.dart';
 
 class MembershipList extends StatefulWidget {
@@ -19,7 +20,7 @@ class _MembershipListState extends State<MembershipList> {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     return Scaffold(
-        appBar: BaseAppBarMethod(context, "수강권",null),
+        appBar: BaseAppBarMethod(context, "수강권", null),
         body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
@@ -34,7 +35,14 @@ class _MembershipListState extends State<MembershipList> {
 
               /// 수강권 선택 버튼
               ElevatedButton(
-                child: Text("수강권 선택", style: TextStyle(fontSize: 21)),
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: Palette.buttonOrange,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text("수강권 선택", style: TextStyle(fontSize: 18)),
+                ),
                 onPressed: () {
                   print("수강권 선택 버튼");
                   // create bucket
