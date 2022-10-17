@@ -320,14 +320,17 @@ class _ActionSelectorState extends State<ActionSelector> {
               // ),
               Divider(),
               Center(
-                child: Wrap(
-                  children: [
-                    for (final chip in apparatusChips)
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: chip,
-                      ),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (final chip in apparatusChips)
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: chip,
+                        ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 10),
@@ -342,14 +345,17 @@ class _ActionSelectorState extends State<ActionSelector> {
               //   ),
               // ),
               Center(
-                child: Wrap(
-                  children: [
-                    for (final chip in positionChips)
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: chip,
-                      ),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (final chip in positionChips)
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: chip,
+                        ),
+                    ],
+                  ),
                 ),
               ),
               Divider(),
@@ -409,7 +415,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                     }
                     return Padding(
                       padding: const EdgeInsets.all(14.0),
-                      child: ListView.separated(
+                      child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: docs.length,
@@ -427,93 +433,113 @@ class _ActionSelectorState extends State<ActionSelector> {
                           );
 
                           if (positionArray.isEmpty) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Palette.mainBackground,
-                                borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Palette.grayEE, width: 1),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  // 회원 카드 선택시 MemberInfo로 이동
-                                  Navigator.pop(context, actionInfo);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 40,
-                                        child: Text(
-                                          "${apparatus}   ",
-                                          style:
-                                              TextStyle(color: Palette.gray99),
-                                        ),
-                                      ),
-                                      // Text("${position}"),
-                                      Text(
-                                        "${name}",
-                                        style: TextStyle(
-                                            color: Palette.gray66,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Spacer(),
-                                      Icon(
-                                        Icons.arrow_forward,
-                                        color: Palette.gray66,
-                                      )
-                                    ],
+                            return Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Palette.mainBackground,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Palette.grayEE, width: 1),
                                   ),
-                                ),
-                              ),
-                            );
-                          } else {
-                            if (positionArray.contains(position)) {
-                              return Container(
-                                color: Palette.mainBackground,
-                                child: InkWell(
-                                  onTap: () {
-                                    // 회원 카드 선택시 MemberInfo로 이동
-                                    Navigator.pop(context, actionInfo);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 40,
-                                          child: Text(
-                                            "${apparatus}   ",
-                                            style: TextStyle(
-                                                color: Palette.gray99),
+                                  child: InkWell(
+                                    onTap: () {
+                                      // 회원 카드 선택시 MemberInfo로 이동
+                                      Navigator.pop(context, actionInfo);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 40,
+                                            child: Text(
+                                              "${apparatus}   ",
+                                              style: TextStyle(
+                                                  color: Palette.gray99),
+                                            ),
                                           ),
-                                        ),
-                                        // Text("${position}"),
-                                        Text(
-                                          "${name}",
-                                          style: TextStyle(
-                                              color: Palette.gray66,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
+                                          // Text("${position}"),
+                                          Text(
+                                            "${name}",
+                                            style: TextStyle(
+                                                color: Palette.gray66,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: Palette.gray66,
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
+                                Divider(
+                                  height: 10,
+                                )
+                              ],
+                            );
+                          } else {
+                            if (positionArray.contains(position)) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Palette.mainBackground,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Palette.grayEE, width: 1),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        // 회원 카드 선택시 MemberInfo로 이동
+                                        Navigator.pop(context, actionInfo);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 40,
+                                              child: Text(
+                                                "${apparatus}   ",
+                                                style: TextStyle(
+                                                    color: Palette.gray99),
+                                              ),
+                                            ),
+                                            // Text("${position}"),
+                                            Text(
+                                              "${name}",
+                                              style: TextStyle(
+                                                  color: Palette.gray66,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Spacer(),
+                                            Icon(
+                                              Icons.arrow_forward,
+                                              color: Palette.gray66,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(
+                                    height: 10,
+                                  )
+                                ],
                               );
                             } else {
-                              return SizedBox(
-                                height: 0,
-                              );
+                              return SizedBox.shrink();
                             }
                           }
                         },
-                        separatorBuilder: ((context, index) => Divider(
-                              height: 10,
-                            )),
                       ),
                     );
                   },

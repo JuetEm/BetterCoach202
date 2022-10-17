@@ -112,7 +112,8 @@ class _LoginPageState extends State<LoginPage> {
         final user = authService.currentUser();
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "로그인", null),
+          // 디자인적 요소 더하기 위해 appBar 제거
+          // appBar: BaseAppBarMethod(context, "로그인", null),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
