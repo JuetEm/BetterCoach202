@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -123,18 +124,15 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 30),
-                      Container(
-                        //color: Colors.red,
-                        child: SizedBox(
-                          height: 70,
-                          child: Text(
-                            user == null
-                                ? "Pilates is complete coordination of body, mind and spirit."
-                                : "${user.email}님 안녕하세요 👋",
-                            style: TextStyle(
-                              fontSize: 24,
-                            ),
-                          ),
+                      SizedBox(
+                        child: Text(
+                          user == null
+                              ? "Pilates is complete coordination of body, mind and spirit."
+                              : "${user.email}님 안녕하세요 👋",
+                          style: user == null
+                              ? GoogleFonts.lora(fontSize: 20)
+                              : TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       SizedBox(height: 10),
@@ -142,28 +140,23 @@ class _LoginPageState extends State<LoginPage> {
                         height: 40,
                         child: Text(
                           "-Joseph Pilates-",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
+                          style: TextStyle(fontSize: 14, color: Palette.gray99),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       SizedBox(height: 10),
                       SizedBox(
-                        height: 40,
+                        height: 20,
                         child: Text(
                           "Better Coach는 필라테스 강사 전용",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
+                          style: TextStyle(fontSize: 14, color: Palette.gray66),
                         ),
                       ),
                       SizedBox(
                         height: 40,
                         child: Text(
                           "레슨기록앱입니다.",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
+                          style: TextStyle(fontSize: 14, color: Palette.gray66),
                         ),
                       ),
                     ],
@@ -180,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                   customFunction: () {},
                   isSecure: false,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
 
                 /// 비밀번호
                 LoginTextField(
@@ -229,7 +222,14 @@ class _LoginPageState extends State<LoginPage> {
 
                 /// 로그인 버튼
                 ElevatedButton(
-                  child: Text("로그인", style: TextStyle(fontSize: 21)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("로그인", style: TextStyle(fontSize: 18)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
                   onPressed: () {
                     if (globalfunction.textNullCheck(
                           context,
@@ -285,10 +285,18 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                 ),
+                SizedBox(height: 10),
 
                 /// 회원가입 버튼
                 ElevatedButton(
-                  child: Text("회원가입", style: TextStyle(fontSize: 21)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("회원가입", style: TextStyle(fontSize: 18)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
                   onPressed: () {
                     // 회원가입
                     print("sign up");
@@ -298,9 +306,11 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
+                SizedBox(height: 30),
+
                 // 버켓리스트 버튼
                 ElevatedButton(
-                  child: Text("버켓리스트", style: TextStyle(fontSize: 21)),
+                  child: Text("버켓리스트", style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     // 로그인
                     authService.signIn(
@@ -326,10 +336,11 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
+                SizedBox(height: 10),
 
                 /// Cloud Storage 개발화면 버튼
                 ElevatedButton(
-                  child: Text("클라우드 스토리지", style: TextStyle(fontSize: 21)),
+                  child: Text("클라우드 스토리지", style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     // 회원가입
                     print("cloud storage");
@@ -339,10 +350,11 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
+                SizedBox(height: 10),
 
                 /// Cloud Storage 개발화면 버튼
                 ElevatedButton(
-                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 21)),
+                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     // 회원가입
                     print("global widget");
