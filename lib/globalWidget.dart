@@ -406,31 +406,70 @@ class ActionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
+    return Padding(
+      padding: const EdgeInsets.only(left: 50.0),
+      child: SizedBox(
+        height: 20,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              apratusName,
+              lessonDate,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
                   ),
             ),
             const SizedBox(width: 15.0),
             Text(
-              actionName,
+              apratusName,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(width: 15.0),
+            Text(
+              totalNote,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 12.0,
                   ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GroupActionContainer extends StatelessWidget {
+  const GroupActionContainer({
+    Key? key,
+    required this.actionName,
+  }) : super(key: key);
+
+  final String actionName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: SizedBox(
+          height: 40,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                actionName,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
 
@@ -161,29 +162,20 @@ class _MemberInfoState extends State<MemberInfo> {
                             if (docs.isEmpty) {
                               return Center(child: Text("동작 목록을 준비 중입니다."));
                             }
-                            return ListView.separated(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: docs.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final doc = docs[index];
-                                String actionName = doc.get('actionName');
-                                String apratusName = doc.get('apratusName');
-                                String lessonDate = doc.get('lessonDate');
-                                String grade = doc.get('grade');
-                                String totalNote = doc.get('totalNote');
-
-                                return InkWell(
-                                  onTap: () {},
-                                  child: ActionContainer(
-                                      apratusName: apratusName,
-                                      actionName: actionName,
-                                      lessonDate: lessonDate,
-                                      grade: grade,
-                                      totalNote: totalNote),
-                                );
-                              },
-                              separatorBuilder: ((context, index) => Divider()),
+                            return GroupedListView(
+                              elements: docs,
+                              groupBy: (element) => element['actionName'],
+                              groupSeparatorBuilder: (String value) =>
+                                  GroupActionContainer(actionName: value),
+                              itemBuilder:
+                                  (BuildContext context, dynamic docs) =>
+                                      ActionContainer(
+                                          apratusName: docs['apratusName'],
+                                          actionName: docs['actionName'],
+                                          lessonDate: docs['lessonDate'],
+                                          grade: docs['grade'],
+                                          totalNote: docs['totalNote']),
+                              order: GroupedListOrder.ASC,
                             );
                           },
                         ),
