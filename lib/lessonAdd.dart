@@ -70,11 +70,12 @@ class _LessonAddState extends State<LessonAdd> {
             );
           }),
           body: SafeArea(
-            child: Column(
-              children: [
-                /// 입력창
-                Expanded(
-                  child: Padding(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  /// 입력창
+                  Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -194,7 +195,7 @@ class _LessonAddState extends State<LessonAdd> {
                                   apratusName:
                                       apratusNameController.text, //기구이름
                                   actionName: actionNameController.text, //동작이름
-                                  lessonDate: now, //수업날짜
+                                  lessonDate: lessonDateController.text, //수업날짜
                                   grade: gradeController.text, //수행도
                                   totalNote: totalNoteController.text, //수업총메모
                                   onSuccess: () {
@@ -229,8 +230,8 @@ class _LessonAddState extends State<LessonAdd> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           //bottomNavigationBar: BaseBottomAppBar(),
