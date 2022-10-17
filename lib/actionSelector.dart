@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/color.dart';
 
 import 'actionInfo.dart';
 import 'action_service.dart';
@@ -47,6 +48,10 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     final apparatusChips = [
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("CADILLAC"),
         selected: isCadillacSelected,
         onSelected: (value) {
@@ -60,6 +65,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("REFORMER"),
         selected: isReformerSelected,
         onSelected: (value) {
@@ -72,6 +81,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("CHAIR"),
         selected: isChairSelected,
         onSelected: (value) {
@@ -84,6 +97,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("LADDER BARREL"),
         selected: isLadderBarrelSelected,
         onSelected: (value) {
@@ -96,6 +113,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("SPRING BOARD"),
         selected: isSpringBoardSelected,
         onSelected: (value) {
@@ -108,6 +129,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("SPINE CORRECTOR"),
         selected: isSpineCorrectorSelected,
         onSelected: (value) {
@@ -120,6 +145,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("MAT"),
         selected: isMatSelected,
         onSelected: (value) {
@@ -135,6 +164,10 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     final positionChips = [
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("SUPINE"),
         selected: isSupineSelected,
         onSelected: (value) {
@@ -153,6 +186,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("SITTING"),
         selected: isSittingSelected,
         onSelected: (value) {
@@ -171,6 +208,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("PRONE"),
         selected: isProneSelected,
         onSelected: (value) {
@@ -189,6 +230,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("KNEELING"),
         selected: isKneelingSelected,
         onSelected: (value) {
@@ -207,6 +252,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("SIDE LYING"),
         selected: isSideLyingSelected,
         onSelected: (value) {
@@ -225,6 +274,10 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
         label: Text("STANDING"),
         selected: isStandingSelected,
         onSelected: (value) {
@@ -250,20 +303,22 @@ class _ActionSelectorState extends State<ActionSelector> {
       removeBottom: true,
       child: Consumer<ActionService>(builder: (context, actionService, child) {
         return Scaffold(
+          backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", null),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(height: 10),
-              SizedBox(
-                height: 30,
-                child: Text(
-                  "기구 필터",
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+              // SizedBox(
+              //   height: 30,
+              //   child: Text(
+              //     "기구 필터",
+              //     style: TextStyle(
+              //       fontSize: 14,
+              //     ),
+              //   ),
+              // ),
+              Divider(),
               Center(
                 child: Wrap(
                   children: [
@@ -275,15 +330,17 @@ class _ActionSelectorState extends State<ActionSelector> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-                child: Text(
-                  "자세 필터",
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+              SizedBox(height: 10),
+              Divider(),
+              // SizedBox(
+              //   height: 30,
+              //   child: Text(
+              //     "자세 필터",
+              //     style: TextStyle(
+              //       fontSize: 14,
+              //     ),
+              //   ),
+              // ),
               Center(
                 child: Wrap(
                   children: [
@@ -295,37 +352,38 @@ class _ActionSelectorState extends State<ActionSelector> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "APPARATUS",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      Spacer(),
-                      Text(
-                        "POSITION",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      Spacer(),
-                      Text(
-                        "NAME",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Divider(),
+              // SizedBox(
+              //   height: 50,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(14.0),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         Text(
+              //           "APPARATUS",
+              //           style: TextStyle(
+              //             fontSize: 14,
+              //           ),
+              //         ),
+              //         Spacer(),
+              //         Text(
+              //           "POSITION",
+              //           style: TextStyle(
+              //             fontSize: 14,
+              //           ),
+              //         ),
+              //         Spacer(),
+              //         Text(
+              //           "NAME",
+              //           style: TextStyle(
+              //             fontSize: 14,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 child: FutureBuilder<QuerySnapshot>(
                   future: actionService.read(
@@ -349,74 +407,114 @@ class _ActionSelectorState extends State<ActionSelector> {
                     if (docs.isEmpty) {
                       return Center(child: Text("운동 목록을 준비 중입니다."));
                     }
-                    return ListView.separated(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: docs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final doc = docs[index];
-                        String apparatus = doc.get('apparatus');
-                        String position = doc.get('position');
-                        String name = doc.get('name');
-                        String upperCaseName = doc.get('upperCaseName');
-                        String lowerCaseName = doc.get('lowerCaseName');
-                        final ActionInfo actionInfo = ActionInfo(
-                          name,
-                          apparatus,
-                          position,
-                        );
-
-                        if (positionArray.isEmpty) {
-                          return InkWell(
-                            onTap: () {
-                              // 회원 카드 선택시 MemberInfo로 이동
-                              Navigator.pop(context, actionInfo);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text("${apparatus}"),
-                                  Spacer(),
-                                  Text("${position}"),
-                                  Spacer(),
-                                  Text("${name}"),
-                                ],
-                              ),
-                            ),
+                    return Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: docs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final doc = docs[index];
+                          String apparatus = doc.get('apparatus');
+                          String position = doc.get('position');
+                          String name = doc.get('name');
+                          String upperCaseName = doc.get('upperCaseName');
+                          String lowerCaseName = doc.get('lowerCaseName');
+                          final ActionInfo actionInfo = ActionInfo(
+                            name,
+                            apparatus,
+                            position,
                           );
-                        } else {
-                          if (positionArray.contains(position)) {
-                            return InkWell(
-                              onTap: () {
-                                // 회원 카드 선택시 MemberInfo로 이동
-                                Navigator.pop(context, actionInfo);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text("${apparatus}"),
-                                    Spacer(),
-                                    Text("${position}"),
-                                    Spacer(),
-                                    Text("${name}"),
-                                  ],
+
+                          if (positionArray.isEmpty) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Palette.mainBackground,
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(color: Palette.grayEE, width: 1),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  // 회원 카드 선택시 MemberInfo로 이동
+                                  Navigator.pop(context, actionInfo);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                        child: Text(
+                                          "${apparatus}   ",
+                                          style:
+                                              TextStyle(color: Palette.gray99),
+                                        ),
+                                      ),
+                                      // Text("${position}"),
+                                      Text(
+                                        "${name}",
+                                        style: TextStyle(
+                                            color: Palette.gray66,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Spacer(),
+                                      Icon(
+                                        Icons.arrow_forward,
+                                        color: Palette.gray66,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
                           } else {
-                            return SizedBox(
-                              height: 0,
-                            );
+                            if (positionArray.contains(position)) {
+                              return Container(
+                                color: Palette.mainBackground,
+                                child: InkWell(
+                                  onTap: () {
+                                    // 회원 카드 선택시 MemberInfo로 이동
+                                    Navigator.pop(context, actionInfo);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 40,
+                                          child: Text(
+                                            "${apparatus}   ",
+                                            style: TextStyle(
+                                                color: Palette.gray99),
+                                          ),
+                                        ),
+                                        // Text("${position}"),
+                                        Text(
+                                          "${name}",
+                                          style: TextStyle(
+                                              color: Palette.gray66,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return SizedBox(
+                                height: 0,
+                              );
+                            }
                           }
-                        }
-                      },
-                      separatorBuilder: ((context, index) => Divider()),
+                        },
+                        separatorBuilder: ((context, index) => Divider(
+                              height: 10,
+                            )),
+                      ),
                     );
                   },
                 ),

@@ -241,7 +241,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        minHeight: 60,
+        minHeight: 70,
       ),
       child: TextField(
         readOnly: widget.showArrow,
