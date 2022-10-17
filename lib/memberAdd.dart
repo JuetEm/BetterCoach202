@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
+import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'memberList.dart';
@@ -38,6 +39,7 @@ class _MemberAddState extends State<MemberAdd> {
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return Scaffold(
+          backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원 추가", null),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -183,7 +185,7 @@ class _MemberAddState extends State<MemberAdd> {
               ],
             ),
           ),
-          bottomNavigationBar: BaseBottomAppBar(),
+          //bottomNavigationBar: BaseBottomAppBar(),
         );
       },
     );
