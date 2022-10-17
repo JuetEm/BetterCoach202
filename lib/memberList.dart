@@ -37,7 +37,7 @@ class _MemberListState extends State<MemberList> {
       builder: (context, memberService, child) {
         return SafeArea(
           child: Scaffold(
-            backgroundColor: Palette.secondaryBackground,
+            backgroundColor: Palette.mainBackground,
             key: _scaffoldKey,
             appBar: MainAppBarMethod(context, "회원리스트"),
             endDrawer: Container(
