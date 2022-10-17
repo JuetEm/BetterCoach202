@@ -59,18 +59,18 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
     //   icon: Icon(Icons.calendar_month),
     // ),
     actions: [
-      IconButton(
-        onPressed: () {
-          print('profile');
-          // 로그인 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );
-        },
-        color: Palette.gray33,
-        icon: Icon(Icons.account_circle),
-      ),
+      // IconButton(
+      //   onPressed: () {
+      //     print('profile');
+      //     // 로그인 페이지로 이동
+      //     Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => LoginPage()),
+      //     );
+      //   },
+      //   color: Palette.gray33,
+      //   icon: Icon(Icons.account_circle),
+      // ),
       // IconButton(
       //   onPressed: () {
       //     _openEndDrawer();
@@ -112,35 +112,35 @@ class _BaseBottomAppBarState extends State<BaseBottomAppBar> {
                     MaterialPageRoute(builder: (context) => MemberList()),
                   );
                 },
-                icon: Icon(Icons.contacts_outlined),
+                icon: Icon(Icons.supervisor_account),
                 tooltip: 'MEMBERS',
               ),
-              //Spacer(),
-              IconButton(
-                onPressed: () {
-                  print('note_add');
-                  // 홈 화면으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                  );
-                },
-                icon: Icon(Icons.home_outlined),
-                tooltip: 'Add Class',
-              ),
-              //Spacer(),
-              IconButton(
-                onPressed: () {
-                  print('search');
-                  // 서치 화면으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Search()),
-                  );
-                },
-                icon: Icon(Icons.search),
-                tooltip: 'Search',
-              ),
+
+              // IconButton(
+              //   onPressed: () {
+              //     print('note_add');
+              //     // 홈 화면으로 이동
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => Home()),
+              //     );
+              //   },
+              //   icon: Icon(Icons.home_outlined),
+              //   tooltip: 'Add Class',
+              // ),
+
+              // IconButton(
+              //   onPressed: () {
+              //     print('search');
+              //     // 서치 화면으로 이동
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => Search()),
+              //     );
+              //   },
+              //   icon: Icon(Icons.search),
+              //   tooltip: 'Search',
+              // ),
             ],
           ),
         ),
@@ -420,31 +420,70 @@ class ActionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
+    return Padding(
+      padding: const EdgeInsets.only(left: 50.0),
+      child: SizedBox(
+        height: 20,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              apratusName,
+              lessonDate,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
                   ),
             ),
             const SizedBox(width: 15.0),
             Text(
-              actionName,
+              apratusName,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(width: 15.0),
+            Text(
+              totalNote,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 12.0,
                   ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GroupActionContainer extends StatelessWidget {
+  const GroupActionContainer({
+    Key? key,
+    required this.actionName,
+  }) : super(key: key);
+
+  final String actionName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: SizedBox(
+          height: 40,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                actionName,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
