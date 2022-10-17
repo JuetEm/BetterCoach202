@@ -34,62 +34,74 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
     return Consumer<CalendarService>(
       builder: (context, calendarService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(context, "${widget.pageName} 선택", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => MemberAdd()),
-            );
-          }),
-          body: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                tableCalendarMethod(),
-                Divider(
-                  height: 1,
-                ),
-                Container(
-                  height: 30,
-                  child: Center(
-                    child: Text(
-                        "등록일 : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
+          appBar: widget.pageName == "수업 보기"
+              ? null
+              : BaseAppBarMethod(context, "${widget.pageName} 선택", () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => MemberAdd()),
+                  );
+                }),
+          body: widget.pageName == "수업 보기"
+              ? Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      tableCalendarMethod(),
+                    ],
                   ),
-                ),
-
-                /// 추가 버튼
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Palette.buttonOrange,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text("${widget.pageName} 선택",
-                        style: TextStyle(fontSize: 18)),
-                  ),
-                  onPressed: () {
-                    calendarService.setDate(
-                      DateTime(
-                        focusedDate.year,
-                        focusedDate.month,
-                        focusedDate.day,
-                      ),
-                    );
-                    // 저장하기 성공시 MemberAdd로 이동
-                    Navigator.pop(
-                        context, calendarService.currentSelectedDate());
-                  },
                 )
-              ],
-            ),
-          ),
+              : Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      tableCalendarMethod(),
+                      Divider(
+                        height: 1,
+                      ),
+                      Container(
+                        height: 30,
+                        child: Center(
+                          child: Text(
+                              "등록일 : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
+                        ),
+                      ),
+
+                      /// 추가 버튼
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Palette.buttonOrange,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text("${widget.pageName} 선택",
+                              style: TextStyle(fontSize: 18)),
+                        ),
+                        onPressed: () {
+                          calendarService.setDate(
+                            DateTime(
+                              focusedDate.year,
+                              focusedDate.month,
+                              focusedDate.day,
+                            ),
+                          );
+                          // 저장하기 성공시 MemberAdd로 이동
+                          Navigator.pop(
+                              context, calendarService.currentSelectedDate());
+                        },
+                      )
+                    ],
+                  ),
+                ),
         );
       },
     );
   }
 
-  TableCalendar<dynamic> tableCalendarMethod() {
+  TableCalendar<dynamic> tableCalendarMethod(List<dynamic> eventList) {
     return TableCalendar(
       focusedDay: focusedDate,
       firstDay: DateTime.now().subtract(Duration(days: 365 * 10 + 2)),
@@ -108,6 +120,9 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
       },
       selectedDayPredicate: (day) {
         return isSameDay(selectedDate, day);
+      },
+      eventLoader: (day) {
+        return eventList;
       },
     );
   }

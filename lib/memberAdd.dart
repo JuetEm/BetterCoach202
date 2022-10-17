@@ -11,7 +11,7 @@ import 'memberList.dart';
 import 'member_service.dart';
 import 'membershipList.dart';
 
-GlobalFunction globlaFunction = GlobalFunction();
+GlobalFunction globalFunction = GlobalFunction();
 
 class MemberAdd extends StatefulWidget {
   const MemberAdd({super.key});
@@ -40,7 +40,24 @@ class _MemberAddState extends State<MemberAdd> {
       builder: (context, memberService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "회원 추가", null),
+          appBar: BaseAppBarMethod(context, "회원 추가", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberList(),
+              ),
+            );
+
+            globalFunction.clearTextEditController([
+              nameController,
+              registerDateController,
+              phoneNumberController,
+              registerTypeController,
+              goalController,
+              infoController,
+              noteController
+            ]);
+          }),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -79,7 +96,7 @@ class _MemberAddState extends State<MemberAdd> {
                           hint: "등록일",
                           showArrow: true,
                           customFunction: () {
-                            globlaFunction.getDateFromCalendar(
+                            globalFunction.getDateFromCalendar(
                                 context, registerDateController, "등록일");
                           },
                         ),
@@ -140,18 +157,18 @@ class _MemberAddState extends State<MemberAdd> {
                           onPressed: () {
                             print("추가 버튼");
                             // create bucket
-                            if (globlaFunction.textNullCheck(context, nameController, "이름") &&
-                                globlaFunction.textNullCheck(
+                            if (globalFunction.textNullCheck(context, nameController, "이름") &&
+                                globalFunction.textNullCheck(
                                     context, registerDateController, "등록일") &&
-                                globlaFunction.textNullCheck(
+                                globalFunction.textNullCheck(
                                     context, phoneNumberController, "전화번호") &&
-                                globlaFunction.textNullCheck(
+                                globalFunction.textNullCheck(
                                     context, registerTypeController, "수강권") &&
-                                globlaFunction.textNullCheck(
+                                globalFunction.textNullCheck(
                                     context, goalController, "목표") &&
-                                globlaFunction.textNullCheck(context,
+                                globalFunction.textNullCheck(context,
                                     infoController, "신체 특이사항 / 체형분석") &&
-                                globlaFunction.textNullCheck(
+                                globalFunction.textNullCheck(
                                     context, noteController, "메모")) {
                               memberService.create(
                                   name: nameController.text,
@@ -174,6 +191,16 @@ class _MemberAddState extends State<MemberAdd> {
                                       MaterialPageRoute(
                                           builder: (_) => MemberList()),
                                     );
+
+                                    globalFunction.clearTextEditController([
+                                      nameController,
+                                      registerDateController,
+                                      phoneNumberController,
+                                      registerTypeController,
+                                      goalController,
+                                      infoController,
+                                      noteController
+                                    ]);
                                   },
                                   onError: () {
                                     print("저장하기 ERROR");

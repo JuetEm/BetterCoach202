@@ -193,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                   hint: "이메일",
                   width: 100,
                   height: 100,
-                  customFunction: () {},
+                  customFunction: () {
+                    loginMethod(context, authService);
+                  },
                   isSecure: false,
                 ),
                 SizedBox(height: 10),
@@ -204,7 +206,9 @@ class _LoginPageState extends State<LoginPage> {
                   hint: "비밀번호",
                   width: 100,
                   height: 100,
-                  customFunction: () {},
+                  customFunction: () {
+                    loginMethod(context, authService);
+                  },
                   isSecure: true,
                 ),
 
@@ -254,58 +258,7 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Palette.buttonOrange,
                   ),
                   onPressed: () {
-                    if (globalfunction.textNullCheck(
-                          context,
-                          emailController,
-                          "이메일",
-                        ) &&
-                        globalfunction.textNullCheck(
-                          context,
-                          passwordController,
-                          "비밀번호",
-                        )) {
-                      // 로그인
-                      authService.signIn(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        onSuccess: () {
-                          // 로그인 성공
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("로그인 성공"),
-                          ));
-                          // 로그인 성공시 Home로 이동
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => MemberList()),
-                          );
-
-                          emailController.clear();
-                          passwordController.clear();
-                        },
-                        onError: (err) {
-                          // 에러 발생
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(err),
-                          ));
-                        },
-                      );
-
-                      prefs.setBool(
-                          "isLogInActiveChecked", isLogInActiveChecked);
-
-                      if (isLogInActiveChecked) {
-                        prefs.setString("userEmail", emailController.text);
-                        prefs.setString(
-                            "userPassword", passwordController.text);
-                        print(
-                            "switch on isLogInActiveChecked : ${isLogInActiveChecked}");
-                      } else {
-                        prefs.setString("userEmail", "");
-                        prefs.setString("userPassword", "");
-                        print(
-                            "switch off isLogInActiveChecked : ${isLogInActiveChecked}");
-                      }
-                    }
+                    loginMethod(context, authService);
                   },
                 ),
                 SizedBox(height: 10),
@@ -395,6 +348,57 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
+  }
+
+  void loginMethod(BuildContext context, AuthService authService) {
+    if (globalfunction.textNullCheck(
+          context,
+          emailController,
+          "이메일",
+        ) &&
+        globalfunction.textNullCheck(
+          context,
+          passwordController,
+          "비밀번호",
+        )) {
+      // 로그인
+      authService.signIn(
+        email: emailController.text,
+        password: passwordController.text,
+        onSuccess: () {
+          // 로그인 성공
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("로그인 성공"),
+          ));
+          // 로그인 성공시 Home로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => MemberList()),
+          );
+
+          emailController.clear();
+          passwordController.clear();
+        },
+        onError: (err) {
+          // 에러 발생
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(err),
+          ));
+        },
+      );
+
+      prefs.setBool("isLogInActiveChecked", isLogInActiveChecked);
+
+      if (isLogInActiveChecked) {
+        prefs.setString("userEmail", emailController.text);
+        prefs.setString("userPassword", passwordController.text);
+        print("switch on isLogInActiveChecked : ${isLogInActiveChecked}");
+      } else {
+        prefs.setString("userEmail", "");
+        prefs.setString("userPassword", "");
+        print("switch off isLogInActiveChecked : ${isLogInActiveChecked}");
+      }
+    }
   }
 }
 

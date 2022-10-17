@@ -17,6 +17,21 @@ class LessonService extends ChangeNotifier {
         .get();
   }
 
+  Future<QuerySnapshot> readNotesOfAction(
+    String uid,
+    String phoneNumber,
+    String actionName,
+  ) async {
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('phoneNumber', isEqualTo: phoneNumber)
+        .where('actionName', isEqualTo: actionName)
+        .get();
+  }
+
   void create({
     required String uid, // 강사 고유번호
     required String name, //회원이름

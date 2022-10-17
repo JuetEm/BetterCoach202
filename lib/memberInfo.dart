@@ -9,11 +9,14 @@ import 'package:web_project/globalWidget.dart';
 import 'auth_service.dart';
 import 'color.dart';
 import 'lessonAdd.dart';
+import 'lessonDetail.dart';
 import 'lesson_service.dart';
 import 'memberList.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 import 'lessonInfo.dart';
+
+late List<DateTime> eventList = [];
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -245,15 +248,37 @@ class _MemberInfoState extends State<MemberInfo> {
                                 elements: docs,
                                 groupBy: (element) => element['actionName'],
                                 groupSeparatorBuilder: (String value) =>
-                                    GroupActionContainer(actionName: value),
+                                    InkWell(
+                                  onTap: () {
+                                    // 회원 운동 카드 선택시 MemberInfo로 이동
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LessonDetail(),
+                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                        settings: RouteSettings(arguments: [
+                                          userInfo,
+                                          value,
+                                        ] // 동작 이름 전달
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                  child:
+                                      GroupActionContainer(actionName: value),
+                                ),
                                 itemBuilder:
-                                    (BuildContext context, dynamic docs) =>
-                                        ActionContainer(
-                                            apratusName: docs['apratusName'],
-                                            actionName: docs['actionName'],
-                                            lessonDate: docs['lessonDate'],
-                                            grade: docs['grade'],
-                                            totalNote: docs['totalNote']),
+                                    (BuildContext context, dynamic docs) {
+                                  ActionContainer(
+                                      apratusName: docs['apratusName'],
+                                      actionName: docs['actionName'],
+                                      lessonDate: docs['lessonDate'],
+                                      grade: docs['grade'],
+                                      totalNote: docs['totalNote']);
+                                  DateTime eventDate = DateTime.parse(
+                                      docs['lessonDate'].toString());
+                                  eventList.add(eventDate);
+                                },
                                 itemComparator: (item1, item2) =>
                                     item1['lessonDate'].compareTo(
                                         item2['lessonDate']), // optional

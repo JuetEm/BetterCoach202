@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -35,20 +36,23 @@ List<String> dropdownList = [
 
 double sliderValue = 50;
 
-class LessonAdd extends StatefulWidget {
-  const LessonAdd({super.key});
+class LessonDetail extends StatefulWidget {
+  const LessonDetail({super.key});
 
   @override
-  State<LessonAdd> createState() => _LessonAddState();
+  State<LessonDetail> createState() => _LessonDetailState();
 }
 
-class _LessonAddState extends State<LessonAdd> {
+class _LessonDetailState extends State<LessonDetail> {
   @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     // 이전 화면에서 보낸 변수 받기
-    final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
+    final argsList =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    UserInfo userInfo = argsList[0];
+    String actionName = argsList[1];
 
     nameController = TextEditingController(text: userInfo.name);
 
@@ -56,7 +60,7 @@ class _LessonAddState extends State<LessonAdd> {
       builder: (context, lessonService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "노트 추가", () {
+          appBar: BaseAppBarMethod(context, "수업 보기", () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.push(
               context,
@@ -88,82 +92,80 @@ class _LessonAddState extends State<LessonAdd> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        /// 기구 입력창
-                        BasePopupMenuButton(
-                          customController: apratusNameController,
-                          hint: "기구",
-                          showButton: true,
-                          dropdownList: dropdownList,
-                          customFunction: () {},
-                        ),
-
                         /// 수업일 입력창
-                        BaseTextField(
-                          customController: lessonDateController,
-                          hint: "수업일",
-                          showArrow: true,
-                          customFunction: () {
-                            globalFunction.getDateFromCalendar(
-                                context, lessonDateController, "수업일");
-                          },
-                        ),
+                        SizedBox(
+                            height: 420,
+                            child: BaseTableCalendar(pageName: "수업 보기")),
 
-                        /// 동작이름 입력창
-                        BaseTextField(
-                          customController: actionNameController,
-                          hint: "동작이름",
-                          showArrow: true,
-                          customFunction: () async {
-                            final ActionInfo result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ActionSelector(),
-                                fullscreenDialog: true,
-                                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                settings: RouteSettings(
-                                  arguments: userInfo,
+                        /// 동작 노트
+                        FutureBuilder<QuerySnapshot>(
+                          future: lessonService.readNotesOfAction(
+                            user.uid,
+                            userInfo.phoneNumber,
+                            actionName,
+                          ),
+                          builder: (context, snapshot) {
+                            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                            if (docs.isEmpty) {
+                              return Center(child: Text("회원 목록을 준비 중입니다."));
+                            }
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
                                 ),
+                                color: Palette.grayEE,
+                              ),
+                              padding: const EdgeInsets.all(20.0),
+                              child: ListView.separated(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final doc = docs[index];
+
+                                  String uid = doc.get('uid'); // 강사 고유번호
+                                  String name = doc.get('name'); //회원이름
+                                  String phoneNumber = doc.get(
+                                      'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                  String apratusName =
+                                      doc.get('apratusName'); //기구이름
+                                  String actionName =
+                                      doc.get('actionName'); //동작이름
+                                  String lessonDate =
+                                      doc.get('lessonDate'); //수업날짜
+                                  String grade = doc.get('grade'); //수행도
+                                  String totalNote =
+                                      doc.get('totalNote'); //수업총메모
+
+                                  return InkWell(
+                                    onTap: () {
+                                      // 회원 카드 선택시 MemberInfo로 이동
+                                      totalNoteController.text = totalNote;
+                                    },
+                                    child: Text(
+                                      "${apratusName}, ${lessonDate}, ${totalNote}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            fontSize: 12.0,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: ((context, index) => Divider(
+                                      height: 0,
+                                    )),
                               ),
                             );
-
-                            print(
-                                "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
-
-                            setState(() {
-                              actionNameController.text = result.actionName;
-                            });
                           },
                         ),
 
-                        /// 수행도 입력창
-                        BaseTextField(
-                          customController: gradeController,
-                          hint: "수행도",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-
-                        SizedBox(
-                          height: 20,
-                          child: Slider(
-                              value: sliderValue,
-                              min: 0,
-                              max: 100,
-                              divisions: 10,
-                              onChanged: (value) {
-                                setState(() {
-                                  sliderValue = value;
-                                  gradeController.text =
-                                      sliderValue.clamp(0, 100).toString();
-                                  print(sliderValue.toString());
-                                });
-                              }),
-                        ),
-
-                        /// 메모 입력창
+                        /// 동작 노트
                         BaseTextField(
                           customController: totalNoteController,
-                          hint: "메모",
+                          hint: "노트 입력",
                           showArrow: false,
                           customFunction: () {},
                         ),

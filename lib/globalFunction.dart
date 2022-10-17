@@ -7,6 +7,18 @@ import 'baseTableCalendar.dart';
 class GlobalFunction {
   GlobalFunction();
 
+  void inititalizeBools(List<bool> boolList, bool initState) {
+    for (int i = 0; i < boolList.length; i++) {
+      boolList[i] = initState;
+    }
+  }
+
+  void clearTextEditController(List<TextEditingController> controllerList) {
+    for (int i = 0; i < controllerList.length; i++) {
+      controllerList[i].clear();
+    }
+  }
+
   getWidgetSize(GlobalKey key) {
     if (key.currentContext != null) {
       final RenderBox renderBox =
@@ -41,9 +53,7 @@ class GlobalFunction {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => BaseTableCalendar(
-            pageName: pageName,
-          ),
+          builder: (_) => BaseTableCalendar(pageName: pageName, []),
           fullscreenDialog: true,
         ));
 

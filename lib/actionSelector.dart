@@ -6,8 +6,8 @@ import 'package:web_project/color.dart';
 import 'actionInfo.dart';
 import 'action_service.dart';
 import 'auth_service.dart';
+import 'globalFunction.dart';
 import 'globalWidget.dart';
-import 'memberInfo.dart';
 import 'userInfo.dart';
 
 bool isReformerSelected = false;
@@ -28,6 +28,8 @@ bool isStandingSelected = false;
 List positionArray = [];
 
 int positionFilteredSize = 0;
+
+GlobalFunction globalFunction = GlobalFunction();
 
 class ActionSelector extends StatefulWidget {
   const ActionSelector({super.key});
@@ -498,6 +500,22 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       onTap: () {
                                         // 회원 카드 선택시 MemberInfo로 이동
                                         Navigator.pop(context, actionInfo);
+
+                                        globalFunction.inititalizeBools([
+                                          isReformerSelected,
+                                          isCadillacSelected,
+                                          isChairSelected,
+                                          isLadderBarrelSelected,
+                                          isSpringBoardSelected,
+                                          isSpineCorrectorSelected,
+                                          isMatSelected,
+                                          isSupineSelected,
+                                          isSittingSelected,
+                                          isProneSelected,
+                                          isKneelingSelected,
+                                          isSideLyingSelected,
+                                          isStandingSelected
+                                        ], false);
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.all(16.0),
