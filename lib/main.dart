@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 40,
                         child: Text(
-                          "Better Cauch는 필라테스 강사 전용",
+                          "Better Coach는 필라테스 강사 전용",
                           style: TextStyle(
                             fontSize: 15,
                           ),
