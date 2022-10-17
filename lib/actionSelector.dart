@@ -67,7 +67,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isReformerSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("REFORMER"),
         selected: isReformerSelected,
@@ -83,7 +83,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isChairSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("CHAIR"),
         selected: isChairSelected,
@@ -99,7 +99,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isLadderBarrelSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("LADDER BARREL"),
         selected: isLadderBarrelSelected,
@@ -115,7 +115,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isSpringBoardSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("SPRING BOARD"),
         selected: isSpringBoardSelected,
@@ -131,7 +131,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isSpineCorrectorSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("SPINE CORRECTOR"),
         selected: isSpineCorrectorSelected,
@@ -147,7 +147,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isMatSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("MAT"),
         selected: isMatSelected,
@@ -166,7 +166,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isSupineSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("SUPINE"),
         selected: isSupineSelected,
@@ -188,7 +188,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isSittingSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("SITTING"),
         selected: isSittingSelected,
@@ -210,7 +210,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isProneSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("PRONE"),
         selected: isProneSelected,
@@ -232,7 +232,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isKneelingSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("KNEELING"),
         selected: isKneelingSelected,
@@ -254,7 +254,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isSideLyingSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("SIDE LYING"),
         selected: isSideLyingSelected,
@@ -276,7 +276,7 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isStandingSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
         label: Text("STANDING"),
         selected: isStandingSelected,
