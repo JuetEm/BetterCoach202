@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/actionSelector.dart';
 import 'package:web_project/userInfo.dart';
 
+import 'actionInfo.dart';
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
 import 'globalFunction.dart';
@@ -101,8 +102,8 @@ class _LessonAddState extends State<LessonAdd> {
                           customController: actionNameController,
                           hint: "동작이름",
                           showArrow: true,
-                          customFunction: () {
-                            Navigator.push(
+                          customFunction: () async {
+                            final ActionInfo result = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ActionSelector(),
@@ -113,6 +114,13 @@ class _LessonAddState extends State<LessonAdd> {
                                 ),
                               ),
                             );
+
+                            print(
+                                "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
+
+                            setState(() {
+                              actionNameController.text = result.actionName;
+                            });
                           },
                         ),
 

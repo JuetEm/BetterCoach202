@@ -370,16 +370,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                           return InkWell(
                             onTap: () {
                               // 회원 카드 선택시 MemberInfo로 이동
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MemberInfo(),
-                                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                  settings: RouteSettings(
-                                    arguments: [userInfo, actionInfo],
-                                  ),
-                                ),
-                              );
+                              Navigator.pop(context, actionInfo);
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(14.0),
@@ -401,16 +392,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                             return InkWell(
                               onTap: () {
                                 // 회원 카드 선택시 MemberInfo로 이동
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MemberInfo(),
-                                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                    settings: RouteSettings(
-                                      arguments: [userInfo, actionInfo],
-                                    ),
-                                  ),
-                                );
+                                Navigator.pop(context, actionInfo);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(14.0),

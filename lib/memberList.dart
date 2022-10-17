@@ -33,6 +33,7 @@ class _MemberListState extends State<MemberList> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return SafeArea(
