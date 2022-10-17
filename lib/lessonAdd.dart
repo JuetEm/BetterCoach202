@@ -7,6 +7,7 @@ import 'package:web_project/userInfo.dart';
 import 'actionInfo.dart';
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
+import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'memberInfo.dart';
@@ -54,6 +55,7 @@ class _LessonAddState extends State<LessonAdd> {
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
+          backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "노트 추가", () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.push(
@@ -224,7 +226,7 @@ class _LessonAddState extends State<LessonAdd> {
               ],
             ),
           ),
-          bottomNavigationBar: BaseBottomAppBar(),
+          //bottomNavigationBar: BaseBottomAppBar(),
         );
       },
     );

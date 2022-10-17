@@ -239,36 +239,34 @@ class BaseTextField extends StatefulWidget {
 class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: BoxConstraints(
-          minHeight: 100,
-        ),
-        child: TextField(
-          readOnly: widget.showArrow,
-          controller: widget.customController,
-          decoration: InputDecoration(
-              labelText: widget.hint,
-              suffixIcon: widget.showArrow
-                  ? IconButton(
-                      onPressed: () {
-                        widget.customFunction();
-                      },
-                      icon: Icon(Icons.navigate_next),
-                    )
-                  : null,
-              hintText: widget.hint,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
-                ),
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 100,
+      ),
+      child: TextField(
+        readOnly: widget.showArrow,
+        controller: widget.customController,
+        decoration: InputDecoration(
+            labelText: widget.hint,
+            suffixIcon: widget.showArrow
+                ? IconButton(
+                    onPressed: () {
+                      widget.customFunction();
+                    },
+                    icon: Icon(Icons.navigate_next),
+                  )
+                : null,
+            hintText: widget.hint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
               ),
-              filled: true,
-              contentPadding: EdgeInsets.all(16),
-              fillColor: Colors.white),
-        ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
       ),
     );
   }
@@ -349,54 +347,69 @@ class BaseContainer extends StatelessWidget {
     if (name.length > 0) {
       nameFirst = name.substring(0, 1);
     }
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
-          children: [
-            Column(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Palette.grayEE,
-                  // backgroundImage: NetworkImage(
-                  //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
-                  child: Text(
-                    nameFirst,
-                    //name == null ? "N" : name.substring(0, 1),
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Palette.gray33),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '회원이름 : ${name}',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 5.0),
-                Text(
-                  '등록 : ${registerDate}',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ],
-            ),
-          ],
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        //color: Palette.backgroundPink,
+        border: Border(
+          bottom: BorderSide(width: 1, color: Palette.grayEE),
         ),
+      ),
+      height: 81,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Column(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Palette.grayEE,
+                    // backgroundImage: NetworkImage(
+                    //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
+                    child: Text(
+                      nameFirst,
+                      //name == null ? "N" : name.substring(0, 1),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Palette.gray33),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 15),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '이름 : ${name}',
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                      color: Palette.gray33,
+                    ),
+                  ),
+                  const SizedBox(height: 5.0),
+                  Text(
+                    '등록일 : ${registerDate}',
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray66,
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(flex: 1),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Palette.gray99,
+                size: 22.0,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -421,7 +434,10 @@ class ActionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 50.0),
+      padding: const EdgeInsets.only(
+        left: 30.0,
+        top: 5.0,
+      ),
       child: SizedBox(
         height: 20,
         child: Row(
@@ -464,28 +480,47 @@ class GroupActionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: SizedBox(
-          height: 40,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                actionName,
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+            color: Palette.grayEE,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 30.0,
+              right: 16.0,
+            ),
+            child: SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    actionName,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Spacer(flex: 1),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Palette.gray99,
+                    size: 12.0,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

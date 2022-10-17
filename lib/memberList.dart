@@ -38,7 +38,7 @@ class _MemberListState extends State<MemberList> {
       builder: (context, memberService, child) {
         return SafeArea(
           child: Scaffold(
-            backgroundColor: Palette.mainBackground,
+            backgroundColor: Palette.secondaryBackground,
             key: _scaffoldKey,
             appBar: MainAppBarMethod(context, "회원리스트"),
             endDrawer: Container(
@@ -72,71 +72,84 @@ class _MemberListState extends State<MemberList> {
             ),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(14.0),
+                padding: const EdgeInsets.all(22.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: FutureBuilder<QuerySnapshot>(
-                        future: memberService.read(user.uid, 'name'),
-                        builder: (context, snapshot) {
-                          final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                          if (docs.isEmpty) {
-                            return Center(child: Text("회원 목록을 준비 중입니다."));
-                          }
-                          return ListView.separated(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final doc = docs[index];
-                              String name = doc.get('name');
-                              String registerDate = doc.get('registerDate');
-                              String phoneNumber = doc.get('phoneNumber');
-                              String registerType = doc.get('registerType');
-                              String goal = doc.get('goal');
-                              String info = doc.get('info');
-                              String note = doc.get('note');
-                              bool isActive = doc.get('isActive');
-                              final UserInfo userInfo = UserInfo(
-                                user.uid,
-                                name,
-                                registerDate,
-                                phoneNumber,
-                                registerType,
-                                goal,
-                                info,
-                                note,
-                                isActive,
-                              );
-                              return InkWell(
-                                onTap: () {
-                                  // 회원 카드 선택시 MemberInfo로 이동
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MemberInfo(),
-                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                      settings: RouteSettings(
-                                        arguments: userInfo,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          color: Palette.mainBackground,
+                        ),
+                        child: FutureBuilder<QuerySnapshot>(
+                          future: memberService.read(user.uid, 'name'),
+                          builder: (context, snapshot) {
+                            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                            if (docs.isEmpty) {
+                              return Center(child: Text("회원 목록을 준비 중입니다."));
+                            }
+                            return ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final doc = docs[index];
+                                String name = doc.get('name');
+                                String registerDate = doc.get('registerDate');
+                                String phoneNumber = doc.get('phoneNumber');
+                                String registerType = doc.get('registerType');
+                                String goal = doc.get('goal');
+                                String info = doc.get('info');
+                                String note = doc.get('note');
+                                bool isActive = doc.get('isActive');
+                                final UserInfo userInfo = UserInfo(
+                                  user.uid,
+                                  name,
+                                  registerDate,
+                                  phoneNumber,
+                                  registerType,
+                                  goal,
+                                  info,
+                                  note,
+                                  isActive,
+                                );
+                                return InkWell(
+                                  onTap: () {
+                                    // 회원 카드 선택시 MemberInfo로 이동
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MemberInfo(),
+                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                        settings: RouteSettings(
+                                          arguments: userInfo,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: BaseContainer(
-                                    name: name,
-                                    registerDate: registerDate,
-                                    goal: goal,
-                                    info: info,
-                                    note: note,
-                                    phoneNumber: phoneNumber,
-                                    isActive: isActive),
-                              );
-                            },
-                            separatorBuilder: ((context, index) => Divider()),
-                          );
-                        },
+                                    );
+                                  },
+                                  child: BaseContainer(
+                                      name: name,
+                                      registerDate: registerDate,
+                                      goal: goal,
+                                      info: info,
+                                      note: note,
+                                      phoneNumber: phoneNumber,
+                                      isActive: isActive),
+                                );
+                              },
+                              separatorBuilder: ((context, index) => Divider(
+                                    height: 0,
+                                  )),
+                            );
+                          },
+                        ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 14,
                     ),
 
                     /// 추가 버튼
@@ -178,7 +191,7 @@ class _MemberListState extends State<MemberList> {
                 ),
               ),
             ),
-            bottomNavigationBar: BaseBottomAppBar(),
+            //bottomNavigationBar: BaseBottomAppBar(),
             // floatingActionButton: FloatingActionButton(
             //   onPressed: () {
             //     print('floating button');
