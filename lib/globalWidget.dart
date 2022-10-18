@@ -248,14 +248,16 @@ class _BaseTextFieldState extends State<BaseTextField> {
         controller: widget.customController,
         decoration: InputDecoration(
             labelText: widget.hint,
-            suffixIcon: widget.hint == "수행도" ? null : widget.showArrow
-                ? IconButton(
-                    onPressed: () {
-                      widget.customFunction();
-                    },
-                    icon: Icon(Icons.navigate_next),
-                  )
-                : null,
+            suffixIcon: widget.hint == ""
+                ? null
+                : widget.showArrow
+                    ? IconButton(
+                        onPressed: () {
+                          widget.customFunction();
+                        },
+                        icon: Icon(Icons.navigate_next),
+                      )
+                    : null,
             hintText: widget.hint,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),

@@ -130,16 +130,18 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             Text(
-                              "필라테스 강사를 위한 레슨 기록앱,",
-                              style: TextStyle(
-                                  fontSize: 14, color: Palette.gray66),
-                            ),
-                            Text(
                               "Better Coach",
                               style: GoogleFonts.pacifico(
-                                  fontSize: 40,
-                                  color: Palette.buttonOrange,
-                                  fontWeight: FontWeight.bold),
+                                textStyle: TextStyle(height: 1),
+                                fontSize: 48,
+                                color: Palette.buttonOrange,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "필라테스 강사를 위한 레슨 기록앱",
+                              style: TextStyle(
+                                  fontSize: 14, color: Palette.gray66),
                             ),
                           ],
                         ),
@@ -157,8 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                               ? "Pilates is complete coordination of body, mind and spirit."
                               : "${user.email}님 안녕하세요 👋",
                           style: user == null
-                              ? GoogleFonts.lora(
-                                  fontSize: 12, color: Palette.gray66)
+                              ? TextStyle(fontSize: 12, color: Palette.gray66)
                               : TextStyle(fontSize: 14),
                           textAlign: TextAlign.center,
                         ),
@@ -167,10 +168,9 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 40,
                         child: Text(
-                          "-Joseph Pilates-",
+                          "Joseph Pilates",
                           style: user == null
-                              ? GoogleFonts.lora(
-                                  fontSize: 12, color: Palette.gray99)
+                              ? TextStyle(fontSize: 12)
                               : TextStyle(fontSize: 14),
                           textAlign: TextAlign.center,
                         ),

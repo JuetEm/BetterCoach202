@@ -359,149 +359,169 @@ class _ActionSelectorState extends State<ActionSelector> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", null),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: 10),
-              // SizedBox(
-              //   height: 30,
-              //   child: Text(
-              //     "기구 필터",
-              //     style: TextStyle(
-              //       fontSize: 14,
-              //     ),
-              //   ),
-              // ),
-              Divider(),
-              Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (final chip in apparatusChips)
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: chip,
-                        ),
-                    ],
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 10),
+                SizedBox(
+                  height: 30,
+                  width: double.infinity,
+                  child: Text(
+                    "기구별",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              Divider(),
-              // SizedBox(
-              //   height: 30,
-              //   child: Text(
-              //     "자세 필터",
-              //     style: TextStyle(
-              //       fontSize: 14,
-              //     ),
-              //   ),
-              // ),
-              Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (final chip in positionChips)
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: chip,
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              Divider(),
-              // SizedBox(
-              //   height: 50,
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(14.0),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [
-              //         Text(
-              //           "APPARATUS",
-              //           style: TextStyle(
-              //             fontSize: 14,
-              //           ),
-              //         ),
-              //         Spacer(),
-              //         Text(
-              //           "POSITION",
-              //           style: TextStyle(
-              //             fontSize: 14,
-              //           ),
-              //         ),
-              //         Spacer(),
-              //         Text(
-              //           "NAME",
-              //           style: TextStyle(
-              //             fontSize: 14,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              Expanded(
-                child: FutureBuilder<QuerySnapshot>(
-                  future: actionService.read(
-                    isReformerSelected,
-                    isCadillacSelected,
-                    isChairSelected,
-                    isLadderBarrelSelected,
-                    isSpringBoardSelected,
-                    isSpineCorrectorSelected,
-                    isMatSelected,
-                    isSupineSelected,
-                    isSittingSelected,
-                    isProneSelected,
-                    isKneelingSelected,
-                    isSideLyingSelected,
-                    isStandingSelected,
-                  ),
-                  builder: (context, snapshot) {
-                    final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                    print("docs : ${docs.length}");
-                    if (docs.isEmpty) {
-                      return Center(child: Text("운동 목록을 준비 중입니다."));
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final doc = docs[index];
-                          String apparatus = doc.get('apparatus');
-                          String position = doc.get('position');
-                          String name = doc.get('name');
-                          String upperCaseName = doc.get('upperCaseName');
-                          String lowerCaseName = doc.get('lowerCaseName');
-                          final ActionInfo actionInfo = ActionInfo(
-                            name,
-                            apparatus,
-                            position,
-                          );
 
-                          if (positionArray.isEmpty) {
-                            return Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Palette.mainBackground,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: Palette.grayEE, width: 1),
-                                  ),
-                                  child: InkWell(
+                Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for (final chip in apparatusChips)
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: chip,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 30,
+                  width: double.infinity,
+                  child: Text(
+                    "자세별",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for (final chip in positionChips)
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: chip,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                // SizedBox(
+                //   height: 50,
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(14.0),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //       children: [
+                //         Text(
+                //           "APPARATUS",
+                //           style: TextStyle(
+                //             fontSize: 14,
+                //           ),
+                //         ),
+                //         Spacer(),
+                //         Text(
+                //           "POSITION",
+                //           style: TextStyle(
+                //             fontSize: 14,
+                //           ),
+                //         ),
+                //         Spacer(),
+                //         Text(
+                //           "NAME",
+                //           style: TextStyle(
+                //             fontSize: 14,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 30,
+                  width: double.infinity,
+                  child: Text(
+                    "동작을 선택하세요",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Expanded(
+                  child: FutureBuilder<QuerySnapshot>(
+                    future: actionService.read(
+                      isReformerSelected,
+                      isCadillacSelected,
+                      isChairSelected,
+                      isLadderBarrelSelected,
+                      isSpringBoardSelected,
+                      isSpineCorrectorSelected,
+                      isMatSelected,
+                      isSupineSelected,
+                      isSittingSelected,
+                      isProneSelected,
+                      isKneelingSelected,
+                      isSideLyingSelected,
+                      isStandingSelected,
+                    ),
+                    builder: (context, snapshot) {
+                      final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                      print("docs : ${docs.length}");
+                      if (docs.isEmpty) {
+                        return Center(child: Text("운동 목록을 준비 중입니다."));
+                      }
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Palette.mainBackground,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final doc = docs[index];
+                            String apparatus = doc.get('apparatus');
+                            String position = doc.get('position');
+                            String name = doc.get('name');
+                            String upperCaseName = doc.get('upperCaseName');
+                            String lowerCaseName = doc.get('lowerCaseName');
+                            final ActionInfo actionInfo = ActionInfo(
+                              name,
+                              apparatus,
+                              position,
+                            );
+
+                            if (positionArray.isEmpty) {
+                              return Column(
+                                children: [
+                                  InkWell(
                                     onTap: () {
                                       // 회원 카드 선택시 MemberInfo로 이동
                                       Navigator.pop(context, actionInfo);
                                     },
-                                    child: Padding(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  color: Palette.grayEE,
+                                                  width: 1))),
                                       padding: const EdgeInsets.all(16.0),
                                       child: Row(
                                         mainAxisAlignment:
@@ -531,25 +551,14 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       ),
                                     ),
                                   ),
-                                ),
-                                Divider(
-                                  height: 10,
-                                )
-                              ],
-                            );
-                          } else {
-                            if (positionArray.contains(position)) {
-                              positionFilteredSize++;
-                              return Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Palette.mainBackground,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: Palette.grayEE, width: 1),
-                                    ),
-                                    child: InkWell(
+                                ],
+                              );
+                            } else {
+                              if (positionArray.contains(position)) {
+                                positionFilteredSize++;
+                                return Column(
+                                  children: [
+                                    InkWell(
                                       onTap: () {
                                         // 회원 카드 선택시 MemberInfo로 이동
                                         Navigator.pop(context, actionInfo);
@@ -570,7 +579,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                                           isStandingSelected
                                         ], false);
                                       },
-                                      child: Padding(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Palette.grayEE,
+                                                    width: 1))),
                                         padding: const EdgeInsets.all(16.0),
                                         child: Row(
                                           mainAxisAlignment:
@@ -600,23 +614,20 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Divider(
-                                    height: 10,
-                                  )
-                                ],
-                              );
-                            } else {
-                              return SizedBox.shrink();
+                                  ],
+                                );
+                              } else {
+                                return SizedBox.shrink();
+                              }
                             }
-                          }
-                        },
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
           // bottomNavigationBar: BaseBottomAppBar(),
         );
