@@ -17,8 +17,8 @@ import 'lesson_service.dart';
 TextEditingController nameController = TextEditingController();
 TextEditingController apratusNameController = TextEditingController();
 TextEditingController actionNameController = TextEditingController();
-TextEditingController lessonDateController = TextEditingController();
-TextEditingController gradeController = TextEditingController();
+TextEditingController lessonDateController = TextEditingController(text: now);
+TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController totalNoteController = TextEditingController();
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
@@ -58,8 +58,6 @@ class _LessonDetailState extends State<LessonDetail> {
     List<DateTime> eventList = argsList[2];
 
     nameController = TextEditingController(text: userInfo.name);
-    lessonDateController = TextEditingController(text: now);
-    gradeController = TextEditingController(text: "50");
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {

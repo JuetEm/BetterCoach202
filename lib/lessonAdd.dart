@@ -13,14 +13,14 @@ import 'globalWidget.dart';
 import 'memberInfo.dart';
 import 'lesson_service.dart';
 
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
 TextEditingController nameController = TextEditingController();
 TextEditingController apratusNameController = TextEditingController();
 TextEditingController actionNameController = TextEditingController();
-TextEditingController lessonDateController = TextEditingController();
-TextEditingController gradeController = TextEditingController();
+TextEditingController lessonDateController = TextEditingController(text: now);
+TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController totalNoteController = TextEditingController();
-
-String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -53,8 +53,8 @@ class _LessonAddState extends State<LessonAdd> {
     final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
     nameController = TextEditingController(text: userInfo.name);
-    lessonDateController = TextEditingController(text: now);
-    gradeController = TextEditingController(text: "50");
+    //lessonDateController = TextEditingController(text: now);
+    //gradeController = TextEditingController(text: "50");
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
