@@ -41,8 +41,8 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
               hint: "힌트 입력",
               showArrow: true, // 화살표 보여주기
               customFunction: () {
-                // 원하는 기능 구현
-                globalfunction.createDummy(actionService);
+                // 동작 DB 밀어넣기
+                //globalfunction.createDummy(actionService);
               },
             ),
 
