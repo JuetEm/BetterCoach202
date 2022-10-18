@@ -40,19 +40,22 @@ class _SignUpState extends State<SignUp> {
       builder: (context, authService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "회원가입",null),
+          appBar: BaseAppBarMethod(context, "회원가입", null),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(height: 32),
+
                 /// 현재 유저 로그인 상태
                 Center(
                   child: Text(
-                    "가입하실 이메일과 비밀번호를 입력해주세요 🙂",
+                    "가입하실 이메일과 비밀번호를 입력해주세요",
                     style: TextStyle(
-                      fontSize: 24,
-                    ),
+                        color: Palette.gray66,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(height: 32),
@@ -99,7 +102,14 @@ class _SignUpState extends State<SignUp> {
 
                 /// 회원가입 버튼
                 ElevatedButton(
-                  child: Text("회원가입", style: TextStyle(fontSize: 21)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("회원가입", style: TextStyle(fontSize: 18)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
                   onPressed: () {
                     // 회원가입
                     print("sign up");

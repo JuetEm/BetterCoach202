@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
                       SizedBox(
                         child: Column(
                           children: [
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
                       SizedBox(
                         height: 150,
                         child: Image.asset("assets/images/login_main.png",
@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                   isSecure: true,
                 ),
 
-                SizedBox(height: 32),
+                SizedBox(height: 10),
 
                 Center(
                   child: SizedBox(
@@ -331,64 +331,64 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 30),
 
-                // 버켓리스트 버튼
-                ElevatedButton(
-                  child: Text("버켓리스트", style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    // 로그인
-                    authService.signIn(
-                      email: emailController.text,
-                      password: passwordController.text,
-                      onSuccess: () {
-                        // 로그인 성공
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("로그인 성공"),
-                        ));
-                        // 로그인 성공시 Home로 이동
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => HomePage()),
-                        );
-                      },
-                      onError: (err) {
-                        // 에러 발생
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(err),
-                        ));
-                      },
-                    );
-                  },
-                ),
-                SizedBox(height: 10),
+                //   // 버켓리스트 버튼
+                //   ElevatedButton(
+                //     child: Text("버켓리스트", style: TextStyle(fontSize: 20)),
+                //     onPressed: () {
+                //       // 로그인
+                //       authService.signIn(
+                //         email: emailController.text,
+                //         password: passwordController.text,
+                //         onSuccess: () {
+                //           // 로그인 성공
+                //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //             content: Text("로그인 성공"),
+                //           ));
+                //           // 로그인 성공시 Home로 이동
+                //           Navigator.pushReplacement(
+                //             context,
+                //             MaterialPageRoute(builder: (_) => HomePage()),
+                //           );
+                //         },
+                //         onError: (err) {
+                //           // 에러 발생
+                //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //             content: Text(err),
+                //           ));
+                //         },
+                //       );
+                //     },
+                //   ),
+                //   SizedBox(height: 10),
 
-                /// Cloud Storage 개발화면 버튼
-                ElevatedButton(
-                  child: Text("클라우드 스토리지", style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    // 회원가입
-                    print("cloud storage");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => CloudStorage()),
-                    );
-                  },
-                ),
-                SizedBox(height: 10),
+                //   /// Cloud Storage 개발화면 버튼
+                //   ElevatedButton(
+                //     child: Text("클라우드 스토리지", style: TextStyle(fontSize: 20)),
+                //     onPressed: () {
+                //       // 회원가입
+                //       print("cloud storage");
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(builder: (_) => CloudStorage()),
+                //       );
+                //     },
+                //   ),
+                //   SizedBox(height: 10),
 
-                /// Cloud Storage 개발화면 버튼
-                ElevatedButton(
-                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    // 회원가입
-                    print("global widget");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => GlobalWidgetDashboard(),
-                      ),
-                    );
-                  },
-                ),
+                //   /// Cloud Storage 개발화면 버튼
+                //   ElevatedButton(
+                //     child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
+                //     onPressed: () {
+                //       // 회원가입
+                //       print("global widget");
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (_) => GlobalWidgetDashboard(),
+                //         ),
+                //       );
+                //     },
+                //   ),
               ],
             ),
           ),
