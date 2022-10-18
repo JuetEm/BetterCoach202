@@ -439,6 +439,16 @@ class ActionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String lessonDateTrim = " ";
+    String apratusNameTrim = " ";
+    // 날짜 글자 자르기
+    if (lessonDate.length > 0) {
+      lessonDateTrim = lessonDate.substring(2, 10);
+    }
+    // 기구 첫두글자 자르기
+    if (apratusName.length > 0) {
+      apratusNameTrim = apratusName.substring(0, 2);
+    }
     return Padding(
       padding: const EdgeInsets.only(
         left: 30.0,
@@ -450,14 +460,14 @@ class ActionContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              lessonDate,
+              lessonDateTrim,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 12.0,
                   ),
             ),
             const SizedBox(width: 15.0),
             Text(
-              apratusName,
+              apratusNameTrim,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 12.0,
                   ),

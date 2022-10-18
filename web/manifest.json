@@ -1,6 +1,6 @@
 {
-    "name": "web_project",
-    "short_name": "web_project",
+    "name": "BetterCoach",
+    "short_name": "bettercoach",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
