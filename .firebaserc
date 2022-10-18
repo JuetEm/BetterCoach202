@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "bettercoach-d6c79",
+    "staging": "webproject-48ca4"
+  },
+  "targets": {},
+  "etags": {}
+}
