@@ -31,6 +31,8 @@ int positionFilteredSize = 0;
 
 GlobalFunction globalFunction = GlobalFunction();
 
+bool initState = true;
+
 class ActionSelector extends StatefulWidget {
   const ActionSelector({super.key});
 
@@ -44,7 +46,44 @@ class _ActionSelectorState extends State<ActionSelector> {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     // 이전 화면에서 보낸 변수 받기
-    final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
+    final List<dynamic> args =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    final userInfo = args[0];
+    final String currentApparatus = args[1];
+
+    if (initState) {
+      switch (currentApparatus) {
+        case "REFORMER":
+          isReformerSelected = true;
+          initState = false;
+          break;
+        case "CADILLAC":
+          isCadillacSelected = true;
+          initState = false;
+          break;
+        case "CHAIR":
+          isChairSelected = true;
+          initState = false;
+          break;
+        case "LADDER BARREL":
+          isLadderBarrelSelected = true;
+          initState = false;
+          break;
+        case "SPRING BOARD":
+          isSpringBoardSelected = true;
+          initState = false;
+          break;
+        case "SPINE CORRECTOR":
+          isSpineCorrectorSelected = true;
+          initState = false;
+          break;
+        case "MAT":
+          isMatSelected = true;
+          initState = false;
+          break;
+      }
+    }
+
     print("positionFilteredSize : ${positionFilteredSize}");
     positionFilteredSize = 0;
 
@@ -487,6 +526,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                             );
                           } else {
                             if (positionArray.contains(position)) {
+                              positionFilteredSize++;
                               return Column(
                                 children: [
                                   Container(

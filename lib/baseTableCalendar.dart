@@ -67,7 +67,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                         height: 30,
                         child: Center(
                           child: Text(
-                              "등록일 : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
+                              "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
                         ),
                       ),
 

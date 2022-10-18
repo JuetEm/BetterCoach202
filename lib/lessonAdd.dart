@@ -114,6 +114,8 @@ class _LessonAddState extends State<LessonAdd> {
                           hint: "동작이름",
                           showArrow: true,
                           customFunction: () async {
+                            String currentAppratus = apratusNameController.text;
+
                             final ActionInfo result = await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -121,7 +123,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 fullscreenDialog: true,
                                 // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                 settings: RouteSettings(
-                                  arguments: userInfo,
+                                  arguments: [userInfo,currentAppratus]
                                 ),
                               ),
                             );
@@ -139,7 +141,7 @@ class _LessonAddState extends State<LessonAdd> {
                         BaseTextField(
                           customController: gradeController,
                           hint: "수행도",
-                          showArrow: false,
+                          showArrow: true,
                           customFunction: () {},
                         ),
 

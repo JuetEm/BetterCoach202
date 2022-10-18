@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/globalWidgetDashboard.dart';
 
 import 'auth_service.dart';
 import 'color.dart';
@@ -252,17 +253,22 @@ class _MemberInfoState extends State<MemberInfo> {
                                     InkWell(
                                   onTap: () {
                                     // 회원 운동 카드 선택시 MemberInfo로 이동
+
+                                    List<dynamic> args = [
+                                      userInfo,
+                                      value,
+                                      eventList
+                                    ];
+
+                                    print("args.length : ${args.length}");
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => LessonDetail(),
+                                        builder: (context) =>
+                                            GlobalWidgetDashboard(), // LessonDetail(),
                                         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(arguments: [
-                                          userInfo,
-                                          value,
-                                          eventList,
-                                        ] // 동작 이름 전달
-                                            ),
+                                        settings:
+                                            RouteSettings(arguments: args),
                                       ),
                                     );
                                   },
