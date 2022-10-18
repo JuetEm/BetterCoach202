@@ -21,6 +21,8 @@ TextEditingController lessonDateController = TextEditingController();
 TextEditingController gradeController = TextEditingController();
 TextEditingController totalNoteController = TextEditingController();
 
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
 GlobalFunction globalFunction = GlobalFunction();
 
 String selectedDropdown = '기구';
@@ -56,6 +58,8 @@ class _LessonDetailState extends State<LessonDetail> {
     List<DateTime> eventList = argsList[2];
 
     nameController = TextEditingController(text: userInfo.name);
+    lessonDateController = TextEditingController(text: now);
+    gradeController = TextEditingController(text: "50");
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
@@ -74,12 +78,10 @@ class _LessonDetailState extends State<LessonDetail> {
               ),
             );
             globalFunction.clearTextEditController([
-              nameController,
               apratusNameController,
-              actionNameController,
               lessonDateController,
               gradeController,
-              totalNoteController
+              totalNoteController,
             ]);
           }),
           body: SafeArea(
@@ -89,88 +91,191 @@ class _LessonDetailState extends State<LessonDetail> {
                 children: [
                   /// 입력창
                   Padding(
-                    padding: const EdgeInsets.all(14.0),
+                    padding: const EdgeInsets.all(22.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        /// 수업일 입력창
                         SizedBox(
-                            height: 420,
-                            child: BaseTableCalendar(
-                              pageName: "수업 보기",
-                              eventList: eventList,
-                            )),
-                        Divider(height: 10),
+                          height: 8,
+                        ),
+
+                        /// Action 제목
+                        Text(
+                          actionName,
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.gray33,
+                                  ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
 
                         /// 동작 노트
-                        FutureBuilder<QuerySnapshot>(
-                          future: lessonService.readNotesOfAction(
-                            user.uid,
-                            userInfo.phoneNumber,
-                            actionName,
+                        Container(
+                          padding: const EdgeInsets.all(21.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                            color: Palette.mainBackground,
                           ),
-                          builder: (context, snapshot) {
-                            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                            if (docs.isEmpty) {
-                              return Center(child: Text("회원 목록을 준비 중입니다."));
-                            }
-                            return Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                                color: Palette.mainBackground,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 9,
                               ),
-                              padding: const EdgeInsets.all(20.0),
-                              child: ListView.separated(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: docs.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final doc = docs[index];
+                              Text("동작노트",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.gray66,
+                                  )),
+                              SizedBox(
+                                height: 19,
+                              ),
+                              FutureBuilder<QuerySnapshot>(
+                                future: lessonService.readNotesOfAction(
+                                  user.uid,
+                                  userInfo.phoneNumber,
+                                  actionName,
+                                ),
+                                builder: (context, snapshot) {
+                                  final docs =
+                                      snapshot.data?.docs ?? []; // 문서들 가져오기
+                                  if (docs.isEmpty) {
+                                    return Center(child: Text("노트를 추가해 주세요."));
+                                  }
+                                  return Container(
+                                    //height: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                      color: Palette.mainBackground,
+                                    ),
+                                    //padding: const EdgeInsets.all(20.0),
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: docs.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final doc = docs[index];
 
-                                  String uid = doc.get('uid'); // 강사 고유번호
-                                  String name = doc.get('name'); //회원이름
-                                  String phoneNumber = doc.get(
-                                      'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
-                                  String apratusName =
-                                      doc.get('apratusName'); //기구이름
-                                  String actionName =
-                                      doc.get('actionName'); //동작이름
-                                  String lessonDate =
-                                      doc.get('lessonDate'); //수업날짜
-                                  String grade = doc.get('grade'); //수행도
-                                  String totalNote =
-                                      doc.get('totalNote'); //수업총메모
+                                        String uid = doc.get('uid'); // 강사 고유번호
+                                        String name = doc.get('name'); //회원이름
+                                        String phoneNumber = doc.get(
+                                            'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                        String apratusName =
+                                            doc.get('apratusName'); //기구이름
+                                        String actionName =
+                                            doc.get('actionName'); //동작이름
+                                        String lessonDate =
+                                            doc.get('lessonDate'); //수업날짜
+                                        String grade = doc.get('grade'); //수행도
+                                        String totalNote =
+                                            doc.get('totalNote'); //수업총메모
 
-                                  return InkWell(
-                                    onTap: () {
-                                      // 회원 카드 선택시 MemberInfo로 이동
-                                      totalNoteController.text = totalNote;
+                                        // return InkWell(
+                                        //   onTap: () {
+                                        //     // 회원 카드 선택시 MemberInfo로 이동
+                                        //     totalNoteController.text = totalNote;
 
-                                      lessonService.readEventData(user.uid,
-                                          userInfo.phoneNumber, actionName);
-                                    },
-                                    child: Text(
-                                      "${apratusName}, ${lessonDate}, ${totalNote}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                            fontSize: 12.0,
-                                          ),
+                                        //     lessonService.readEventData(user.uid,
+                                        //         userInfo.phoneNumber, actionName);
+                                        //   },
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${lessonDate}   ${apratusName}  ${grade}  ${totalNote}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .copyWith(
+                                                    fontSize: 12.0,
+                                                  ),
+                                            ),
+                                            SizedBox(
+                                              height: 9,
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      separatorBuilder: ((context, index) =>
+                                          Divider(
+                                            height: 0,
+                                          )),
                                     ),
                                   );
                                 },
-                                separatorBuilder: ((context, index) => Divider(
-                                      height: 0,
-                                    )),
                               ),
-                            );
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        /// 기구 입력창
+                        BasePopupMenuButton(
+                          customController: apratusNameController,
+                          hint: "기구",
+                          showButton: true,
+                          dropdownList: dropdownList,
+                          customFunction: () {},
+                        ),
+
+                        /// 수업일 입력창
+                        BaseTextField(
+                          customController: lessonDateController,
+                          hint: "수업일",
+                          showArrow: true,
+                          customFunction: () {
+                            globalFunction.getDateFromCalendar(
+                                context, lessonDateController, "수업일");
                           },
                         ),
-                        Divider(height: 10),
+
+                        /// 수행도 입력창
+                        BaseTextField(
+                          customController: gradeController,
+                          hint: "수행도",
+                          showArrow: true,
+                          customFunction: () {},
+                        ),
+
+                        Container(
+                          //color: Colors.red,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Slider(
+                                  value: sliderValue,
+                                  min: 0,
+                                  max: 100,
+                                  divisions: 10,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      sliderValue = value;
+                                      gradeController.text =
+                                          sliderValue.clamp(0, 100).toString();
+                                      print(sliderValue.toString());
+                                    });
+                                  }),
+                            ],
+                          ),
+                        ),
 
                         /// 동작 노트
                         BaseTextField(
@@ -194,13 +299,17 @@ class _LessonDetailState extends State<LessonDetail> {
                           onPressed: () {
                             print("저장하기 버튼");
                             // create bucket
-                            if (globalFunction
-                                    .textNullCheck(context, apratusNameController,
-                                        "기구") &&
-                                globalFunction.textNullCheck(
+                            // if (globalFunction.textNullCheck(
+                            //         context, lessonDateController, "수업일") &&
+                            //     globalFunction.textNullCheck(
+                            //         context, actionNameController, "동작이름") &&
+                            //     globalFunction.textNullCheck(
+                            //         context, gradeController, "수행도") &&
+                            //     globalFunction.textNullCheck(
+                            //         context, totalNoteController, "메모"))
+
+                            if (globalFunction.textNullCheck(
                                     context, lessonDateController, "수업일") &&
-                                globalFunction.textNullCheck(
-                                    context, actionNameController, "동작이름") &&
                                 globalFunction.textNullCheck(
                                     context, gradeController, "수행도") &&
                                 globalFunction.textNullCheck(
@@ -214,7 +323,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                       .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
                                   apratusName:
                                       apratusNameController.text, //기구이름
-                                  actionName: actionNameController.text, //동작이름
+                                  actionName: actionName, //동작이름
                                   lessonDate: lessonDateController.text, //수업날짜
                                   grade: gradeController.text, //수행도
                                   totalNote: totalNoteController.text, //수업총메모
@@ -237,9 +346,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                     );
 
                                     globalFunction.clearTextEditController([
-                                      nameController,
                                       apratusNameController,
-                                      actionNameController,
                                       lessonDateController,
                                       gradeController,
                                       totalNoteController

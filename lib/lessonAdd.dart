@@ -20,6 +20,8 @@ TextEditingController lessonDateController = TextEditingController();
 TextEditingController gradeController = TextEditingController();
 TextEditingController totalNoteController = TextEditingController();
 
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
 GlobalFunction globalFunction = GlobalFunction();
 
 String selectedDropdown = '기구';
@@ -51,6 +53,8 @@ class _LessonAddState extends State<LessonAdd> {
     final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
     nameController = TextEditingController(text: userInfo.name);
+    lessonDateController = TextEditingController(text: now);
+    gradeController = TextEditingController(text: "50");
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
@@ -123,8 +127,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 fullscreenDialog: true,
                                 // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                 settings: RouteSettings(
-                                  arguments: [userInfo,currentAppratus]
-                                ),
+                                    arguments: [userInfo, currentAppratus]),
                               ),
                             );
 
@@ -199,8 +202,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     context, gradeController, "수행도") &&
                                 globalFunction.textNullCheck(
                                     context, totalNoteController, "메모")) {
-                              String now = DateFormat("yyyy-MM-dd")
-                                  .format(DateTime.now()); // 오늘 날짜 가져오기
+                              // 오늘 날짜 가져오기
                               lessonService.create(
                                   uid: user.uid,
                                   name: nameController.text,

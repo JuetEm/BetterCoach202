@@ -82,10 +82,10 @@ class MyApp extends StatelessWidget {
     passwordController = TextEditingController(text: userPassword);
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Pretendard'),
-        home: user == null ? LoginPage() : MemberList(),
-        );
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Pretendard'),
+      home: user == null ? LoginPage() : MemberList(),
+    );
   }
 }
 
