@@ -42,7 +42,7 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
               showArrow: true, // 화살표 보여주기
               customFunction: () {
                 // 원하는 기능 구현
-                // globalfunction.createDummy(actionService);
+                globalfunction.createDummy(actionService);
               },
             ),
 

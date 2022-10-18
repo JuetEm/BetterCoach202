@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'globalFunction.dart';
+
 class LessonService extends ChangeNotifier {
   final lessonCollection = FirebaseFirestore.instance.collection('lesson');
+
+  GlobalFunction globalFunction = GlobalFunction();
 
   Future<QuerySnapshot> read(
     String uid,
@@ -30,6 +34,19 @@ class LessonService extends ChangeNotifier {
         .where('phoneNumber', isEqualTo: phoneNumber)
         .where('actionName', isEqualTo: actionName)
         .get();
+  }
+
+  readEventData(
+    String uid,
+    String phoneNumber,
+    String actionName,
+  ) async {
+    final eventData = await lessonCollection.doc("lesson").get().then((value) {
+      print("value ${value}");
+    });
+
+    // DateTime eventDate = DateTime.parse(formattedString)
+    // globalFunction.eventList
   }
 
   void create({

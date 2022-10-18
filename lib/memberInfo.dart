@@ -16,7 +16,8 @@ import 'member_service.dart';
 import 'userInfo.dart';
 import 'lessonInfo.dart';
 
-late List<DateTime> eventList = [];
+Map<DateTime, dynamic> eventSource = {};
+List<DateTime> eventList = [];
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -259,6 +260,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         settings: RouteSettings(arguments: [
                                           userInfo,
                                           value,
+                                          eventList,
                                         ] // 동작 이름 전달
                                             ),
                                       ),
@@ -269,15 +271,15 @@ class _MemberInfoState extends State<MemberInfo> {
                                 ),
                                 itemBuilder:
                                     (BuildContext context, dynamic docs) {
-                                  ActionContainer(
+                                  DateTime eventDate = DateTime.parse(
+                                      docs['lessonDate'].toString());
+                                  eventList.add(eventDate);
+                                  return ActionContainer(
                                       apratusName: docs['apratusName'],
                                       actionName: docs['actionName'],
                                       lessonDate: docs['lessonDate'],
                                       grade: docs['grade'],
                                       totalNote: docs['totalNote']);
-                                  DateTime eventDate = DateTime.parse(
-                                      docs['lessonDate'].toString());
-                                  eventList.add(eventDate);
                                 },
                                 itemComparator: (item1, item2) =>
                                     item1['lessonDate'].compareTo(

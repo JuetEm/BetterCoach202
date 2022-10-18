@@ -18,6 +18,7 @@ import 'firebase_options.dart';
 import 'globalFunction.dart';
 import 'global_service.dart';
 import 'home.dart';
+import 'lessonDetail.dart';
 import 'lesson_service.dart';
 import 'memberList.dart';
 import 'member_service.dart';
@@ -81,10 +82,10 @@ class MyApp extends StatelessWidget {
     passwordController = TextEditingController(text: userPassword);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Pretendard'),
-      home: user == null ? LoginPage() : MemberList(),
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Pretendard'),
+        home: user == null ? LoginPage() : MemberList(),
+        );
   }
 }
 
@@ -193,9 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                   hint: "이메일",
                   width: 100,
                   height: 100,
-                  customFunction: () {
-                    loginMethod(context, authService);
-                  },
+                  customFunction: () {},
                   isSecure: false,
                 ),
                 SizedBox(height: 10),
@@ -206,9 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                   hint: "비밀번호",
                   width: 100,
                   height: 100,
-                  customFunction: () {
-                    loginMethod(context, authService);
-                  },
+                  customFunction: () {},
                   isSecure: true,
                 ),
 

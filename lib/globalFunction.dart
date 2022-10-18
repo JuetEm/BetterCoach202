@@ -53,7 +53,10 @@ class GlobalFunction {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => BaseTableCalendar(pageName: pageName, []),
+          builder: (_) => BaseTableCalendar(
+            pageName: pageName,
+            eventList: [],
+          ),
           fullscreenDialog: true,
         ));
 

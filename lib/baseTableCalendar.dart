@@ -8,9 +8,11 @@ import 'globalWidget.dart';
 import 'memberAdd.dart';
 
 class BaseTableCalendar extends StatefulWidget {
-  const BaseTableCalendar({super.key, required this.pageName});
+  const BaseTableCalendar(
+      {super.key, required this.pageName, required this.eventList});
 
   final String pageName;
+  final List<dynamic> eventList;
 
   @override
   State<BaseTableCalendar> createState() => _BaseTableCalendarState();
@@ -48,7 +50,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      tableCalendarMethod(),
+                      tableCalendarMethod(widget.eventList),
                     ],
                   ),
                 )
@@ -57,7 +59,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      tableCalendarMethod(),
+                      tableCalendarMethod(widget.eventList),
                       Divider(
                         height: 1,
                       ),

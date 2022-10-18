@@ -53,6 +53,7 @@ class _LessonDetailState extends State<LessonDetail> {
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     UserInfo userInfo = argsList[0];
     String actionName = argsList[1];
+    List<DateTime> eventList = argsList[3];
 
     nameController = TextEditingController(text: userInfo.name);
 
@@ -95,7 +96,10 @@ class _LessonDetailState extends State<LessonDetail> {
                         /// 수업일 입력창
                         SizedBox(
                             height: 420,
-                            child: BaseTableCalendar(pageName: "수업 보기")),
+                            child: BaseTableCalendar(
+                              pageName: "수업 보기",
+                              eventList: eventList,
+                            )),
 
                         /// 동작 노트
                         FutureBuilder<QuerySnapshot>(
@@ -142,6 +146,9 @@ class _LessonDetailState extends State<LessonDetail> {
                                     onTap: () {
                                       // 회원 카드 선택시 MemberInfo로 이동
                                       totalNoteController.text = totalNote;
+
+                                      lessonService.readEventData(user.uid,
+                                          userInfo.phoneNumber, actionName);
                                     },
                                     child: Text(
                                       "${apratusName}, ${lessonDate}, ${totalNote}",
