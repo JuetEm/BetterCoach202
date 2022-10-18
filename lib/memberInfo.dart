@@ -253,11 +253,11 @@ class _MemberInfoState extends State<MemberInfo> {
                                     InkWell(
                                   onTap: () {
                                     // 회원 운동 카드 선택시 MemberInfo로 이동
-
+                                    eventList = [];
                                     List<dynamic> args = [
                                       userInfo,
                                       value,
-                                      [], //eventList
+                                      eventList
                                     ];
 
                                     print("args.length : ${args.length}");

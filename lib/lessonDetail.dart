@@ -100,6 +100,7 @@ class _LessonDetailState extends State<LessonDetail> {
                               pageName: "수업 보기",
                               eventList: eventList,
                             )),
+                        Divider(height: 10),
 
                         /// 동작 노트
                         FutureBuilder<QuerySnapshot>(
@@ -114,11 +115,12 @@ class _LessonDetailState extends State<LessonDetail> {
                               return Center(child: Text("회원 목록을 준비 중입니다."));
                             }
                             return Container(
+                              height: 200,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
-                                color: Palette.grayEE,
+                                color: Palette.mainBackground,
                               ),
                               padding: const EdgeInsets.all(20.0),
                               child: ListView.separated(
@@ -168,6 +170,7 @@ class _LessonDetailState extends State<LessonDetail> {
                             );
                           },
                         ),
+                        Divider(height: 10),
 
                         /// 동작 노트
                         BaseTextField(
