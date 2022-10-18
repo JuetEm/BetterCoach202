@@ -1,11 +1,11 @@
 {
-    "name": "BetterCoach",
-    "short_name": "bettercoach",
+    "name": "베러코치",
+    "short_name": "베러코치",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F29B45",
+    "theme_color": "#F29B45",
+    "description": "필라테스 강사를 위한 레슨 기록앱",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
