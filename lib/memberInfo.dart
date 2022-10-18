@@ -257,15 +257,15 @@ class _MemberInfoState extends State<MemberInfo> {
                                     List<dynamic> args = [
                                       userInfo,
                                       value,
-                                      eventList
+                                      [], //eventList
                                     ];
 
                                     print("args.length : ${args.length}");
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            GlobalWidgetDashboard(), // LessonDetail(),
+                                        builder: (context) => LessonDetail(),
+                                        // GlobalWidgetDashboard(), //
                                         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                         settings:
                                             RouteSettings(arguments: args),

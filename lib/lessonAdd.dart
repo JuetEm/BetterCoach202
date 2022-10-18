@@ -145,21 +145,26 @@ class _LessonAddState extends State<LessonAdd> {
                           customFunction: () {},
                         ),
 
-                        SizedBox(
-                          height: 20,
-                          child: Slider(
-                              value: sliderValue,
-                              min: 0,
-                              max: 100,
-                              divisions: 10,
-                              onChanged: (value) {
-                                setState(() {
-                                  sliderValue = value;
-                                  gradeController.text =
-                                      sliderValue.clamp(0, 100).toString();
-                                  print(sliderValue.toString());
-                                });
-                              }),
+                        Container(
+                          //color: Colors.red,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Slider(
+                                  value: sliderValue,
+                                  min: 0,
+                                  max: 100,
+                                  divisions: 10,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      sliderValue = value;
+                                      gradeController.text =
+                                          sliderValue.clamp(0, 100).toString();
+                                      print(sliderValue.toString());
+                                    });
+                                  }),
+                            ],
+                          ),
                         ),
 
                         /// 메모 입력창
@@ -169,7 +174,6 @@ class _LessonAddState extends State<LessonAdd> {
                           showArrow: false,
                           customFunction: () {},
                         ),
-                        Divider(height: 1),
 
                         /// 추가 버튼
                         ElevatedButton(

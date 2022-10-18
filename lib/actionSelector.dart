@@ -95,6 +95,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("CADILLAC"),
         selected: isCadillacSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -112,6 +113,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("REFORMER"),
         selected: isReformerSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -128,6 +130,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("CHAIR"),
         selected: isChairSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -144,6 +147,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("LADDER BARREL"),
         selected: isLadderBarrelSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -160,6 +164,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("SPRING BOARD"),
         selected: isSpringBoardSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -176,6 +181,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("SPINE CORRECTOR"),
         selected: isSpineCorrectorSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -192,6 +198,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("MAT"),
         selected: isMatSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -211,6 +218,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("SUPINE"),
         selected: isSupineSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -233,6 +241,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("SITTING"),
         selected: isSittingSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -255,6 +264,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("PRONE"),
         selected: isProneSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -277,6 +287,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("KNEELING"),
         selected: isKneelingSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -299,6 +310,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("SIDE LYING"),
         selected: isSideLyingSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
@@ -321,6 +333,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         selectedColor: Palette.buttonOrange,
         label: Text("STANDING"),
         selected: isStandingSelected,
+        showCheckmark: false,
         onSelected: (value) {
           setState(
             () {

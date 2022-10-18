@@ -53,7 +53,7 @@ class _LessonDetailState extends State<LessonDetail> {
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     UserInfo userInfo = argsList[0];
     String actionName = argsList[1];
-    List<DateTime> eventList = argsList[3];
+    List<DateTime> eventList = argsList[2];
 
     nameController = TextEditingController(text: userInfo.name);
 
