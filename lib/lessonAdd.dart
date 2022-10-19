@@ -185,17 +185,10 @@ class _LessonAddState extends State<LessonAdd> {
                           onPressed: () {
                             print("저장하기 버튼");
                             // create bucket
-                            if (globalFunction
-                                    .textNullCheck(context, apratusNameController,
-                                        "기구") &&
-                                globalFunction.textNullCheck(
+                            if (globalFunction.textNullCheck(
                                     context, lessonDateController, "수업일") &&
                                 globalFunction.textNullCheck(
-                                    context, actionNameController, "동작이름") &&
-                                globalFunction.textNullCheck(
-                                    context, gradeController, "수행도") &&
-                                globalFunction.textNullCheck(
-                                    context, totalNoteController, "메모")) {
+                                    context, actionNameController, "동작이름")) {
                               // 오늘 날짜 가져오기
                               lessonService.create(
                                   docId: userInfo
