@@ -485,7 +485,8 @@ class _LessonDetailState extends State<LessonDetail> {
                               saveButtonMethod(context, lessonService, user,
                                   customUserInfo, actionName);
                             } else if (buttonString == "수정하기") {
-                              editButtonMethod(context, lessonService);
+                              editButtonMethod(
+                                  context, lessonService, customUserInfo);
                             }
                           },
                         ),
@@ -502,7 +503,8 @@ class _LessonDetailState extends State<LessonDetail> {
     );
   }
 
-  void editButtonMethod(BuildContext context, LessonService lessonService) {
+  void editButtonMethod(BuildContext context, LessonService lessonService,
+      CustomUserInfo.UserInfo userInfo) {
     if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
       setState(() {
         lessonService.update(
@@ -514,6 +516,17 @@ class _LessonDetailState extends State<LessonDetail> {
         sliderValue = double.parse(gradeController.text);
         buttonString = "저장하기";
       });
+      // 저장하기 성공시 MemberInfo로 이동
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MemberInfo(),
+          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+          settings: RouteSettings(
+            arguments: userInfo,
+          ),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("항목을 모두 입력해주세요."),
