@@ -86,12 +86,11 @@ class _LessonAddState extends State<LessonAdd> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        /// 기구 입력창
-                        BasePopupMenuButton(
-                          customController: apratusNameController,
+                        BaseModalBottomSheetButton(
+                          bottomModalController: apratusNameController,
                           hint: "기구",
                           showButton: true,
-                          dropdownList: dropdownList,
+                          optionList: dropdownList,
                           customFunction: () {},
                         ),
 

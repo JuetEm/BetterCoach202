@@ -13,6 +13,44 @@ import 'color.dart';
 GlobalKey appBapKey = GlobalKey();
 GlobalKey bottomAppBapKey = GlobalKey();
 
+showAlertDialog(BuildContext context, String title, String content) async {
+  String result = await showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // title: Text('정말로 삭제하시겠습니까?'),
+        title: Text(title),
+        // content: Text("회원과 관련된 레슨노트 정보도 모두 삭제됩니다."),
+        content: Text(content),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Palette.buttonOrange,
+            ),
+            child: Text('취소'),
+            onPressed: () {
+              Navigator.pop(context, "Cancel");
+            },
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Palette.buttonOrange,
+            ),
+            child: Text('확인'),
+            onPressed: () {
+              Navigator.pop(context, "OK");
+            },
+          ),
+        ],
+      );
+    },
+  );
+  return result;
+}
+
 AppBar BaseAppBarMethod(
     BuildContext context, String pageName, Function? customFunction) {
   return AppBar(

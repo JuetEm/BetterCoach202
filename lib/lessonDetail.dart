@@ -311,38 +311,42 @@ class _LessonDetailState extends State<LessonDetail> {
                                                             builder:
                                                                 (BuildContext
                                                                     context) {
-                                                              return AlertDialog(
-                                                                title:
-                                                                    Text('삭제'),
-                                                                content: Text(
-                                                                    '동작노트를 삭제하시겠습니까?'),
-                                                                actions: <
-                                                                    Widget>[
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      lessonService
-                                                                          .delete(
-                                                                              doc.id);
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                    child: Text(
-                                                                        '삭제'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                    child: Text(
-                                                                        '취소'),
-                                                                  ),
-                                                                ],
-                                                              );
+                                                              return showAlertDialog(
+                                                                  context,
+                                                                  "정말로 삭제하시겠습니까?",
+                                                                  "동작 정보가 삭제됩니다.");
+                                                              // AlertDialog(
+                                                              //   title:
+                                                              //       Text('삭제'),
+                                                              //   content: Text(
+                                                              //       '동작노트를 삭제하시겠습니까?'),
+                                                              //   actions: <
+                                                              //       Widget>[
+                                                              //     TextButton(
+                                                              //       onPressed:
+                                                              //           () {
+                                                              //         lessonService
+                                                              //             .delete(
+                                                              //                 doc.id);
+                                                              //         Navigator.of(
+                                                              //                 context)
+                                                              //             .pop();
+                                                              //       },
+                                                              //       child: Text(
+                                                              //           '삭제'),
+                                                              //     ),
+                                                              //     TextButton(
+                                                              //       onPressed:
+                                                              //           () {
+                                                              //         Navigator.of(
+                                                              //                 context)
+                                                              //             .pop();
+                                                              //       },
+                                                              //       child: Text(
+                                                              //           '취소'),
+                                                              //     ),
+                                                              //   ],
+                                                              // );
                                                             });
                                                       },
                                                     );
