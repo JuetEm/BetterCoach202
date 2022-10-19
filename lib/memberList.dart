@@ -97,6 +97,7 @@ class _MemberListState extends State<MemberList> {
                               itemCount: docs.length,
                               itemBuilder: (BuildContext context, int index) {
                                 final doc = docs[index];
+                                String mid = doc.id;
                                 String name = doc.get('name');
                                 String registerDate = doc.get('registerDate');
                                 String phoneNumber = doc.get('phoneNumber');
@@ -106,6 +107,7 @@ class _MemberListState extends State<MemberList> {
                                 String note = doc.get('note');
                                 bool isActive = doc.get('isActive');
                                 final UserInfo userInfo = UserInfo(
+                                  mid,
                                   user.uid,
                                   name,
                                   registerDate,

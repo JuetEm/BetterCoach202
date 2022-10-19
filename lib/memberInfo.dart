@@ -12,7 +12,9 @@ import 'color.dart';
 import 'lessonAdd.dart';
 import 'lessonDetail.dart';
 import 'lesson_service.dart';
+import 'memberAdd.dart';
 import 'memberList.dart';
+import 'memberUpdate.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 import 'lessonInfo.dart';
@@ -142,84 +144,112 @@ class _MemberInfoState extends State<MemberInfo> {
                           color: Palette.mainBackground,
                         ),
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 10.0),
-                              Text(
-                                '회원정보',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Palette.gray33,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10.0),
+                            Row(
+                              children: [
+                                Text(
+                                  '회원정보',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.gray33,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.white),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '운동목표',
-                                      style: TextStyle(
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    // 회원 운동 카드 선택시 MemberInfo로 이동
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MemberUpdate(),
+                                        // GlobalWidgetDashboard(), //
+                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                        settings:
+                                            RouteSettings(arguments: userInfo),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    '수정/삭제',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.gray33,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '운동목표',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.gray66,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    userInfo.goal,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      //fontWeight: FontWeight.bold,
+                                      color: Palette.gray99,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                  Text(
+                                    '통증/상해/병력',
+                                    style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Palette.gray66,
-                                      ),
+                                        color: Palette.gray66),
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    userInfo.info,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      //fontWeight: FontWeight.bold,
+                                      color: Palette.gray99,
                                     ),
-                                    const SizedBox(height: 5.0),
-                                    Text(
-                                      userInfo.goal,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        //fontWeight: FontWeight.bold,
-                                        color: Palette.gray99,
-                                      ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                  Text(
+                                    '체형분석',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.gray66,
                                     ),
-                                    const SizedBox(height: 20.0),
-                                    Text(
-                                      '통증/상해/병력',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Palette.gray66),
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    userInfo.note,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      //fontWeight: FontWeight.bold,
+                                      color: Palette.gray99,
                                     ),
-                                    const SizedBox(height: 5.0),
-                                    Text(
-                                      userInfo.info,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        //fontWeight: FontWeight.bold,
-                                        color: Palette.gray99,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20.0),
-                                    Text(
-                                      '체형분석',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Palette.gray66,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5.0),
-                                    Text(
-                                      userInfo.note,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        //fontWeight: FontWeight.bold,
-                                        color: Palette.gray99,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ]),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 20),
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(22.0),
