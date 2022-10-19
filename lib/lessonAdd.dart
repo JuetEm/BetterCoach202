@@ -72,14 +72,8 @@ class _LessonAddState extends State<LessonAdd> {
                 ),
               ),
             );
-            globalFunction.clearTextEditController([
-              nameController,
-              apratusNameController,
-              actionNameController,
-              lessonDateController,
-              gradeController,
-              totalNoteController
-            ]);
+            // 페이지 초기화
+            initInpuWidget();
           }),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -204,10 +198,12 @@ class _LessonAddState extends State<LessonAdd> {
                                     context, totalNoteController, "메모")) {
                               // 오늘 날짜 가져오기
                               lessonService.create(
+                                  docId: userInfo
+                                      .docId, // 회권 고유번호 => 회원번호(문서고유번호)로 회원 식별
                                   uid: user.uid,
                                   name: nameController.text,
                                   phoneNumber: userInfo
-                                      .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
+                                      .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 방식 제거
                                   apratusName:
                                       apratusNameController.text, //기구이름
                                   actionName: actionNameController.text, //동작이름
@@ -232,14 +228,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       ),
                                     );
 
-                                    globalFunction.clearTextEditController([
-                                      nameController,
-                                      apratusNameController,
-                                      actionNameController,
-                                      lessonDateController,
-                                      gradeController,
-                                      totalNoteController
-                                    ]);
+                                    // 화면 초기화
+                                    initInpuWidget();
                                   },
                                   onError: () {
                                     print("저장하기 ERROR");
@@ -263,5 +253,20 @@ class _LessonAddState extends State<LessonAdd> {
         );
       },
     );
+  }
+
+  void initInpuWidget() {
+    globalFunction.clearTextEditController([
+      nameController,
+      apratusNameController,
+      actionNameController,
+      lessonDateController,
+      gradeController,
+      totalNoteController
+    ]);
+    lessonDateController.text = now;
+    setState(() {
+      sliderValue = 50;
+    });
   }
 }

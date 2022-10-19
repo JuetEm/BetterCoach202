@@ -167,7 +167,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                             child: Text("저장하기", style: TextStyle(fontSize: 18)),
                           ),
                           onPressed: () {
-                            print("${userInfo.mid}");
+                            //print("${userInfo.mid}");
                             // create bucket
 
                             if (globalFunction.textNullCheck(
@@ -185,7 +185,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                 globalFunction.textNullCheck(
                                     context, noteController, "체형분석")) {
                               memberService.update(
-                                  docId: userInfo.mid,
+                                  docId: userInfo.docId,
                                   name: nameController.text,
                                   registerDate: registerDateController.text,
                                   phoneNumber: phoneNumberController.text,
@@ -205,7 +205,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
 
                                     //List<UserInfo> userupdateInfo
                                     UserInfo userInfouUpdate = new UserInfo(
-                                        userInfo.mid,
+                                        userInfo.docId,
                                         userInfo.uid,
                                         nameController.text,
                                         registerDateController.text,
@@ -262,11 +262,11 @@ class _MemberUpdateState extends State<MemberUpdate> {
                             child: Text("삭제하기", style: TextStyle(fontSize: 18)),
                           ),
                           onPressed: () {
-                            print("${userInfo.mid}");
+                            print("${userInfo.docId}");
                             // create bucket
 
                             memberService.delete(
-                                docId: userInfo.mid,
+                                docId: userInfo.docId,
                                 onSuccess: () {
                                   // 삭제하기 성공
                                   ScaffoldMessenger.of(context)

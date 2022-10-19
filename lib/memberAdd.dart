@@ -13,6 +13,8 @@ import 'membershipList.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
 
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
 class MemberAdd extends StatefulWidget {
   const MemberAdd({super.key});
 
@@ -22,7 +24,8 @@ class MemberAdd extends StatefulWidget {
 
 class _MemberAddState extends State<MemberAdd> {
   TextEditingController nameController = TextEditingController();
-  TextEditingController registerDateController = TextEditingController();
+  TextEditingController registerDateController =
+      TextEditingController(text: now);
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController registerTypeController = TextEditingController();
   TextEditingController goalController = TextEditingController();
@@ -57,6 +60,7 @@ class _MemberAddState extends State<MemberAdd> {
               infoController,
               noteController
             ]);
+            registerDateController.text = now;
           }),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -202,6 +206,7 @@ class _MemberAddState extends State<MemberAdd> {
                                       infoController,
                                       noteController
                                     ]);
+                                    registerDateController.text = now;
                                   },
                                   onError: () {
                                     print("저장하기 ERROR");

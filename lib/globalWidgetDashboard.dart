@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -43,6 +44,10 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
               customFunction: () {
                 // 동작 DB 밀어넣기
                 //globalfunction.createDummy(actionService);
+                Timestamp timestamp = Timestamp.now();
+
+                print(
+                    "timestamp : ${timestamp}, in one line : ${timestamp.seconds}${timestamp.nanoseconds}");
               },
             ),
 

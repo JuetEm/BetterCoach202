@@ -107,7 +107,7 @@ class _MemberListState extends State<MemberList> {
                                 String note = doc.get('note');
                                 bool isActive = doc.get('isActive');
                                 final UserInfo userInfo = UserInfo(
-                                  mid,
+                                  doc.id,
                                   user.uid,
                                   name,
                                   registerDate,
