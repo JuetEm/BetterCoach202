@@ -19,6 +19,7 @@ class GlobalWidgetDashboard extends StatefulWidget {
 
 TextEditingController controller1 = TextEditingController();
 TextEditingController controller2 = TextEditingController();
+TextEditingController controller3 = TextEditingController();
 
 class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
   @override
@@ -57,6 +58,23 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
               hint: "기구",
               showButton: true,
               dropdownList: ['옵션1', '옵션2', '옵션3'],
+              customFunction: () {},
+            ),
+
+            /// 기구 입력창2
+            BaseModalBottomSheetButton(
+              bottomModalController: controller3,
+              hint: "기구2",
+              showButton: true,
+              optionList: [
+                'REFORMER',
+                'CADILLAC',
+                'CHAIR',
+                'LADDER BARREL',
+                'SPRING BOARD',
+                'SPINE CORRECTOR',
+                'MAT'
+              ],
               customFunction: () {},
             ),
           ],
