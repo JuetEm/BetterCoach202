@@ -22,8 +22,6 @@ import 'lessonInfo.dart';
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
 
-List<LessonInfo> lessonInfoList = [];
-
 String lessonNoteId = "";
 
 int indexCheck = 0;
@@ -308,15 +306,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         InkWell(
                                       onTap: () {
                                         indexCheck = 0;
-                                        final lessons = lessonInfoList;
-                                        lessons.sort(((a, b) => a.lessonDate
-                                            .compareTo(b.lessonDate)));
-                                        for (int i = 0;
-                                            i < lessons.length;
-                                            i++) {
-                                          print(
-                                              "docID : ${lessons[i].docId}, apratusName : ${lessons[i].apratusName}, actionName :${lessons[i].actionName}, lessonDate : ${lessons[i].lessonDate}, grade: ${lessons[i].grade}, totalNote : ${lessons[i].totalNote}");
-                                        }
+
                                         // 회원 운동 카드 선택시 MemberInfo로 이동
                                         eventList = [];
                                         List<dynamic> args = [
@@ -349,23 +339,11 @@ class _MemberInfoState extends State<MemberInfo> {
                                       //     docs['lessonDate'].toString());
                                       // eventList.add(eventDate);
 
-                                      // print("indexCheck : ${indexCheck}");
+                                      print("indexCheck : ${indexCheck}");
 
-                                      // final doc = docs[indexCheck];
-                                      // // print(
-                                      // //     "docs[indexCheck] : ${doc}, docID : ${doc.id}, lessonDate : ${doc['lessonDate']}, apratusName : ${doc['apratusName']}, totalNote : ${doc['totalNote']}");
-                                      // print(
-                                      //     "docID : ${doc.id}, apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
-                                      // indexCheck++;
-
-                                      // LessonInfo lessonInfo = LessonInfo(
-                                      //     doc['apratusName'],
-                                      //     doc['actionName'],
-                                      //     doc['lessonDate'],
-                                      //     doc['grade'],
-                                      //     doc['totalNote'],
-                                      //     doc.id);
-                                      // lessonInfoList.add(lessonInfo);
+                                      print(
+                                          "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+                                      indexCheck++;
 
                                       return ActionContainer(
                                           apratusName: ddocs['apratusName'],

@@ -15,6 +15,7 @@ import 'baseTableCalendar.dart';
 import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
+import 'lessonInfo.dart';
 import 'memberInfo.dart';
 import 'lesson_service.dart';
 
@@ -48,6 +49,13 @@ Color moreButtonColor = Palette.gray99;
 
 String buttonString = "저장하기";
 
+String editDocId = "";
+String editApparatusName = "";
+String editLessonDate = "";
+String editGrade = "";
+String editTotalNote = "";
+int lessonListIndex = 0;
+
 class LessonDetail extends StatefulWidget {
   const LessonDetail({super.key});
 
@@ -56,6 +64,8 @@ class LessonDetail extends StatefulWidget {
 }
 
 class _LessonDetailState extends State<LessonDetail> {
+  // set double(double value) => setState(() => sliderValue = value);
+
   @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
@@ -290,6 +300,43 @@ class _LessonDetailState extends State<LessonDetail> {
                                                       customDeleteFunction: () {
                                                         print(
                                                             "Delete Function");
+                                                        showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                false,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title:
+                                                                    Text('삭제'),
+                                                                content: Text(
+                                                                    '동작노트를 삭제하시겠습니까?'),
+                                                                actions: <
+                                                                    Widget>[
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      lessonService
+                                                                          .delete(
+                                                                              doc.id);
+                                                                    },
+                                                                    child: Text(
+                                                                        '삭제'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Text(
+                                                                        '취소'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            });
                                                       },
                                                     );
                                                   },
@@ -413,7 +460,7 @@ class _LessonDetailState extends State<LessonDetail> {
 
                         SizedBox(height: 10),
 
-                        /// 추가 버튼
+                        /// 추가/수정 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
@@ -426,32 +473,12 @@ class _LessonDetailState extends State<LessonDetail> {
                           ),
                           onPressed: () {
                             print("${buttonString} 버튼");
-                            // create bucket
-                            // if (globalFunction.textNullCheck(
-                            //         context, lessonDateController, "수업일") &&
-                            //     globalFunction.textNullCheck(
-                            //         context, actionNameController, "동작이름") &&
-                            //     globalFunction.textNullCheck(
-                            //         context, gradeController, "수행도") &&
-                            //     globalFunction.textNullCheck(
-                            //         context, totalNoteController, "메모"))
 
                             if (buttonString == "저장하기") {
                               saveButtonMethod(context, lessonService, user,
                                   customUserInfo, actionName);
                             } else if (buttonString == "수정하기") {
-                              if (globalFunction.textNullCheck(
-                                      context, lessonDateController, "수업일") &&
-                                  globalFunction.textNullCheck(
-                                      context, gradeController, "수행도") &&
-                                  globalFunction.textNullCheck(
-                                      context, totalNoteController, "메모")) {
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("항목을 모두 입력해주세요."),
-                                ));
-                              }
+                              editButtonMethod(context, lessonService);
                             }
                           },
                         ),
@@ -466,6 +493,25 @@ class _LessonDetailState extends State<LessonDetail> {
         );
       },
     );
+  }
+
+  void editButtonMethod(BuildContext context, LessonService lessonService) {
+    if (globalFunction.textNullCheck(context, lessonDateController, "수업일") &&
+        globalFunction.textNullCheck(context, gradeController, "수행도") &&
+        globalFunction.textNullCheck(context, totalNoteController, "메모")) {
+      lessonService.update(
+          editDocId,
+          apratusNameController.text,
+          lessonDateController.text,
+          gradeController.text,
+          totalNoteController.text);
+      sliderValue = double.parse(gradeController.text);
+      buttonString = "저장하기";
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("항목을 모두 입력해주세요."),
+      ));
+    }
   }
 
   void saveButtonMethod(BuildContext context, LessonService lessonService,
