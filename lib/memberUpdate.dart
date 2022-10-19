@@ -52,7 +52,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
       builder: (context, memberService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "회원 추가", () {
+          appBar: BaseAppBarMethod(context, "회원정보 변경", () {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -261,42 +261,47 @@ class _MemberUpdateState extends State<MemberUpdate> {
                             padding: const EdgeInsets.all(16.0),
                             child: Text("삭제하기", style: TextStyle(fontSize: 18)),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             print("${userInfo.docId}");
                             // create bucket
+                            final retvaldelte = await showAlertDialog(context);
+                            if (retvaldelte == "OK") {
+                              memberService.delete(
+                                  docId: userInfo.docId,
+                                  onSuccess: () {
+                                    // 삭제하기 성공
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text("삭제하기 성공"),
+                                    ));
 
-                            memberService.delete(
-                                docId: userInfo.docId,
-                                onSuccess: () {
-                                  // 삭제하기 성공
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text("저장하기 성공"),
-                                  ));
+                                    //userinfoupdate.mid = nameController.text;
 
-                                  //userinfoupdate.mid = nameController.text;
+                                    // 삭제하기 성공시 MemberList로 이동
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MemberList(),
+                                      ),
+                                    );
 
-                                  // 삭제하기 성공시 MemberList로 이동
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MemberList(),
-                                    ),
-                                  );
+                                    globalFunction.clearTextEditController([
+                                      nameController,
+                                      registerDateController,
+                                      phoneNumberController,
+                                      registerTypeController,
+                                      goalController,
+                                      infoController,
+                                      noteController
+                                    ]);
+                                  },
+                                  onError: () {
+                                    print("삭제하기 ERROR");
+                                  });
+                            }
 
-                                  globalFunction.clearTextEditController([
-                                    nameController,
-                                    registerDateController,
-                                    phoneNumberController,
-                                    registerTypeController,
-                                    goalController,
-                                    infoController,
-                                    noteController
-                                  ]);
-                                },
-                                onError: () {
-                                  print("삭제하기 ERROR");
-                                });
+                            //if (showAlertDialog(context) == "OK"){
+                            //
                           },
                         ),
                       ],
@@ -330,4 +335,40 @@ class _MemberUpdateState extends State<MemberUpdate> {
       ));
     }
   }
+}
+
+showAlertDialog(BuildContext context) async {
+  String result = await showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('정말로 삭제하시겠습니까?'),
+        content: Text("회원과 관련된 레슨노트 정보도 모두 삭제됩니다."),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Palette.buttonOrange,
+            ),
+            child: Text('취소'),
+            onPressed: () {
+              Navigator.pop(context, "Cancel");
+            },
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Palette.buttonOrange,
+            ),
+            child: Text('확인'),
+            onPressed: () {
+              Navigator.pop(context, "OK");
+            },
+          ),
+        ],
+      );
+    },
+  );
+  return result;
 }

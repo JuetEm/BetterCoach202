@@ -199,16 +199,21 @@ class _LessonDetailState extends State<LessonDetail> {
                                         //     lessonService.readEventData(user.uid,
                                         //         userInfo.phoneNumber, actionName);
                                         //   },
-                                        return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
+
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                            top: 5.0,
+                                          ),
+                                          child: SizedBox(
+                                            //height: 20,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${lessonDate}   ${apratusName}  ${grade}  ${totalNote}",
+                                                  lessonDate,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1!
@@ -216,7 +221,31 @@ class _LessonDetailState extends State<LessonDetail> {
                                                         fontSize: 12.0,
                                                       ),
                                                 ),
-                                                Spacer(),
+                                                const SizedBox(width: 15.0),
+                                                Text(
+                                                  apratusName,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .copyWith(
+                                                        fontSize: 12.0,
+                                                      ),
+                                                ),
+                                                const SizedBox(width: 15.0),
+                                                Expanded(
+                                                  child: Text(
+                                                    totalNote,
+                                                    //overflow: TextOverflow.fade,
+                                                    //maxLines: 2,
+                                                    softWrap: true,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .copyWith(
+                                                          fontSize: 12.0,
+                                                        ),
+                                                  ),
+                                                ),
                                                 IconButton(
                                                   onPressed: () {
                                                     print("More");
@@ -257,11 +286,42 @@ class _LessonDetailState extends State<LessonDetail> {
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
-                                              height: 9,
-                                            ),
-                                          ],
+                                          ),
                                         );
+                                        //   return Column(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.start,
+                                        //     crossAxisAlignment:
+                                        //         CrossAxisAlignment.start,
+                                        //     children: [
+                                        //       SizedBox(
+                                        //         width: 100,
+                                        //         child: Row(
+                                        //           children: [
+                                        //             Text(
+                                        //               "${lessonDate}   ${apratusName}  ${grade}  ${totalNote}",
+                                        //               overflow: TextOverflow.fade,
+                                        //               maxLines: 1,
+                                        //               softWrap: true,
+                                        //               style: Theme.of(context)
+                                        //                   .textTheme
+                                        //                   .bodyText1!
+                                        //                   .copyWith(
+                                        //                     fontSize: 12.0,
+                                        //                   ),
+                                        //             ),
+                                        //             Spacer(),
+                                        //             SizedBox(width: 10),
+
+                                        //           ],
+                                        //         ),
+                                        //       ),
+                                        //       SizedBox(
+                                        //         height: 9,
+                                        //       ),
+                                        //     ],
+                                        //   );
+                                        // },
                                       },
                                       separatorBuilder: ((context, index) =>
                                           Divider(

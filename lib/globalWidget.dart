@@ -454,10 +454,11 @@ class ActionContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         left: 30.0,
+        right: 30.0,
         top: 5.0,
       ),
       child: SizedBox(
-        height: 20,
+        //height: 20,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -475,11 +476,16 @@ class ActionContainer extends StatelessWidget {
                   ),
             ),
             const SizedBox(width: 15.0),
-            Text(
-              totalNote,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 12.0,
-                  ),
+            Expanded(
+              child: Text(
+                totalNote,
+                overflow: TextOverflow.fade,
+                maxLines: 2,
+                softWrap: true,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 12.0,
+                    ),
+              ),
             ),
           ],
         ),

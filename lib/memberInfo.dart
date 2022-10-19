@@ -256,6 +256,7 @@ class _MemberInfoState extends State<MemberInfo> {
                           ],
                         ),
                       ),
+                      SizedBox(height: 15),
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(22.0),
