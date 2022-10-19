@@ -21,7 +21,7 @@ class _MembershipState extends State<Membership> {
             /// 신체 특이사항/체형분석 입력창
             BaseTextField(
           customController: membershipController,
-          hint: "수강권 입력",
+          hint: "횟수입력",
           showArrow: false,
           customFunction: () {},
         ),

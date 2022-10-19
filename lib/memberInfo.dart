@@ -20,7 +20,11 @@ import 'lessonInfo.dart';
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
 
+List<LessonInfo> lessonInfoList = [];
+
 String lessonNoteId = "";
+
+int indexCheck = 0;
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -68,6 +72,8 @@ class _MemberInfoState extends State<MemberInfo> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
+                    //mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Column(
                         children: [
@@ -113,6 +119,18 @@ class _MemberInfoState extends State<MemberInfo> {
                           ),
                         ],
                       ),
+                      Spacer(),
+                      Column(
+                        children: [
+                          Text(
+                            '등록횟수 : ${userInfo.registerType}',
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                //fontWeight: FontWeight.bold,
+                                color: Palette.gray99),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -151,7 +169,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '목표',
+                                      '운동목표',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -169,7 +187,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                     ),
                                     const SizedBox(height: 20.0),
                                     Text(
-                                      '신체특이사항/체형분석',
+                                      '통증/상해/병력',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -186,7 +204,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                     ),
                                     const SizedBox(height: 20.0),
                                     Text(
-                                      '메모',
+                                      '체형분석',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -222,7 +240,7 @@ class _MemberInfoState extends State<MemberInfo> {
                             children: [
                               const SizedBox(height: 10),
                               Text(
-                                '동작',
+                                '레슨노트',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -246,7 +264,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         ),
                                         Center(
                                           child: Text(
-                                              "노트추가 버튼을 눌러 동작을 추가할 수 있습니다"),
+                                              "동작추가 버튼을 눌러 동작을 추가할 수 있습니다"),
                                         ),
                                       ],
                                     );
@@ -284,18 +302,36 @@ class _MemberInfoState extends State<MemberInfo> {
                                           actionName: value),
                                     ),
                                     itemBuilder:
-                                        (BuildContext context, dynamic docs) {
+                                        (BuildContext context, dynamic ddocs) {
                                       // 달력기능 개발 중
                                       // DateTime eventDate = DateTime.parse(
                                       //     docs['lessonDate'].toString());
                                       // eventList.add(eventDate);
-                                      lessonNoteId = docs["timestamp"];
+
+                                      print("indexCheck : ${indexCheck}");
+                                      // lessonNoteId = docs["timestamp"];
+                                      final doc = docs[indexCheck];
+                                      print(
+                                          "docs[indexCheck] : ${doc}, docID : ${doc.id}, lessonDate : ${doc['lessonDate']}, apratusName : ${doc['apratusName']}, totalNote : ${doc['totalNote']}");
+                                      print(
+                                          "ddocs[indexCheck] : ${ddocs}, docID : ${doc.id}, lessonDate : ${ddocs['lessonDate']}, apratusName : ${ddocs['apratusName']}, totalNote : ${ddocs['totalNote']}");
+                                      indexCheck++;
+
+                                      LessonInfo lessonInfo = LessonInfo(
+                                          doc['apratusName'],
+                                          doc['actionName'],
+                                          doc['lessonDate'],
+                                          doc['grade'],
+                                          doc['totalNote'],
+                                          doc.id);
+                                      lessonInfoList.add(lessonInfo);
+
                                       return ActionContainer(
-                                          apratusName: docs['apratusName'],
-                                          actionName: docs['actionName'],
-                                          lessonDate: docs['lessonDate'],
-                                          grade: docs['grade'],
-                                          totalNote: docs['totalNote']);
+                                          apratusName: ddocs['apratusName'],
+                                          actionName: ddocs['actionName'],
+                                          lessonDate: ddocs['lessonDate'],
+                                          grade: ddocs['grade'],
+                                          totalNote: ddocs['totalNote']);
                                     },
                                     itemComparator: (item1, item2) =>
                                         item1['lessonDate'].compareTo(
@@ -335,14 +371,14 @@ class _MemberInfoState extends State<MemberInfo> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "노트추가",
+                            "동작추가",
                             style: TextStyle(fontSize: 18),
                           ),
                         ],
                       ),
                     ),
                     onPressed: () {
-                      print("노트추가");
+                      print("동작추가");
                       // LessonAdd로 이동
                       Navigator.push(
                         context,

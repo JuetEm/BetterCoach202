@@ -20,7 +20,7 @@ class _MembershipListState extends State<MembershipList> {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     return Scaffold(
-        appBar: BaseAppBarMethod(context, "수강권", null),
+        appBar: BaseAppBarMethod(context, "수강횟수", null),
         body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
@@ -28,7 +28,7 @@ class _MembershipListState extends State<MembershipList> {
             children: [
               BaseTextField(
                 customController: membershipController,
-                hint: "수강권 입력",
+                hint: "횟수입력",
                 showArrow: false,
                 customFunction: () {},
               ),
@@ -41,13 +41,13 @@ class _MembershipListState extends State<MembershipList> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text("수강권 선택", style: TextStyle(fontSize: 18)),
+                  child: Text("확인", style: TextStyle(fontSize: 18)),
                 ),
                 onPressed: () {
-                  print("수강권 선택 버튼");
+                  print("확인 버튼");
                   // create bucket
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("수강권 선택 성공"),
+                    content: Text("횟수 입력 성공"),
                   ));
                   // 저장하기 성공시 Home로 이동
                   Navigator.pop(context, membershipController.text);

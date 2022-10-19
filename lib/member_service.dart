@@ -44,7 +44,7 @@ class MemberService extends ChangeNotifier {
     //   'note': note, // 메모
     //   'isActive': true, // 회원권 활성화 여부
     // });
-    await memberCollection.doc(phoneNumber).set({
+    await memberCollection.add({
       'uid': uid, // 유저(강사) 식별자
       'name': name, // 회원 이름
       'registerDate': registerDate, // 회원 등록일

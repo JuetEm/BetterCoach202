@@ -62,6 +62,7 @@ class _LessonDetailState extends State<LessonDetail> {
     CustomUserInfo.UserInfo customUserInfo = argsList[0];
     String actionName = argsList[1];
     List<DateTime> eventList = argsList[2];
+    String lessonNoteId = argsList[3];
 
     nameController = TextEditingController(text: customUserInfo.name);
 
@@ -396,9 +397,10 @@ class _LessonDetailState extends State<LessonDetail> {
       String now =
           DateFormat("yyyy-MM-dd").format(DateTime.now()); // 오늘 날짜 가져오기
       lessonService.create(
+          docId: userInfo.docId, // 회권 고유번호 => 회원번호(문서고유번호)로 회원 식별
           uid: user.uid,
           name: nameController.text,
-          phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
+          phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 => 제거
           apratusName: apratusNameController.text, //기구이름
           actionName: actionName, //동작이름
           lessonDate: lessonDateController.text, //수업날짜
