@@ -257,11 +257,13 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            backgroundColor: Palette.buttonOrange,
+                            backgroundColor: Palette.mainBackground,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Text("삭제하기", style: TextStyle(fontSize: 18)),
+                            child: Text("삭제하기",
+                                style: TextStyle(
+                                    fontSize: 18, color: Palette.textRed)),
                           ),
                           onPressed: () async {
                             print("${userInfo.docId}");

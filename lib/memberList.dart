@@ -159,6 +159,7 @@ class _MemberListState extends State<MemberList> {
                     /// 추가 버튼
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        elevation: 0,
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
                       ),

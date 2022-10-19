@@ -150,7 +150,7 @@ class _MemberInfoState extends State<MemberInfo> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 10.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Text(
@@ -162,29 +162,6 @@ class _MemberInfoState extends State<MemberInfo> {
                                   ),
                                 ),
                                 Spacer(),
-                                InkWell(
-                                  onTap: () {
-                                    // 회원 운동 카드 선택시 MemberInfo로 이동
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MemberUpdate(),
-                                        // GlobalWidgetDashboard(), //
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings:
-                                            RouteSettings(arguments: userInfo),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                    '수정/삭제',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Palette.gray33,
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                             const SizedBox(height: 20),
@@ -269,10 +246,55 @@ class _MemberInfoState extends State<MemberInfo> {
                                 ],
                               ),
                             ),
+                            Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    shadowColor: Colors.transparent,
+                                    elevation: 0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
+                                    color: Palette.grayEE,
+                                  ),
+                                  height: 40,
+                                  width: 80,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "수정하기",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Palette.gray66),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () {
+                                  // 회원 운동 카드 선택시 MemberInfo로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MemberUpdate(),
+                                      // GlobalWidgetDashboard(), //
+                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                      settings:
+                                          RouteSettings(arguments: userInfo),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(height: 10),
                           ],
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(22.0),
@@ -285,7 +307,7 @@ class _MemberInfoState extends State<MemberInfo> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 5),
                               Text(
                                 '레슨노트',
                                 style: TextStyle(

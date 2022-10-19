@@ -278,6 +278,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                                       context,
                                                       customEditFunction: () {
                                                         setState(() {
+                                                          editDocId = doc.id;
                                                           buttonString = "수정하기";
                                                           sliderValue =
                                                               double.parse(
@@ -300,6 +301,9 @@ class _LessonDetailState extends State<LessonDetail> {
                                                       customDeleteFunction: () {
                                                         print(
                                                             "Delete Function");
+
+                                                        Navigator.of(context)
+                                                            .pop();
                                                         showDialog(
                                                             context: context,
                                                             barrierDismissible:
@@ -323,9 +327,6 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
                                                                     },
                                                                     child: Text(
                                                                         '삭제'),
@@ -333,9 +334,6 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                   TextButton(
                                                                     onPressed:
                                                                         () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
@@ -556,6 +554,7 @@ class _LessonDetailState extends State<LessonDetail> {
               ),
             );
 
+            sliderValue = 50;
             globalFunction.clearTextEditController([
               apratusNameController,
               lessonDateController,

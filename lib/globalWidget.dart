@@ -217,6 +217,131 @@ class _BasePopupMenuButtonState extends State<BasePopupMenuButton> {
   }
 }
 
+//Bottom Sheet
+
+class BaseModalBottomSheetButton extends StatefulWidget {
+  const BaseModalBottomSheetButton({
+    Key? key,
+    required this.bottomModalController,
+    required this.hint,
+    required this.showButton,
+    required this.optionList,
+    required this.customFunction,
+  }) : super(key: key);
+
+  final TextEditingController bottomModalController;
+  final String hint;
+  final bool showButton;
+  final List<String> optionList;
+  final Function customFunction;
+
+  @override
+  State<BaseModalBottomSheetButton> createState() =>
+      _BaseModalBottomSheetButton();
+}
+
+class _BaseModalBottomSheetButton extends State<BaseModalBottomSheetButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 100,
+      ),
+      child: TextField(
+        readOnly: widget.showButton,
+        controller: widget.bottomModalController,
+        decoration: InputDecoration(
+            labelText: widget.hint,
+            suffixIcon: widget.showButton
+                ? IconButton(
+                    onPressed: () {
+                      showModalBottomSheet<void>(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        backgroundColor: Colors.white,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                    width: double.infinity,
+                                    alignment: Alignment.topLeft,
+                                    child: const Text(
+                                      '기구를 선택하세요',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Palette.gray66,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                SizedBox(height: 10),
+                                Expanded(
+                                  child: ListView.builder(
+                                      itemCount: widget.optionList.length,
+                                      itemBuilder: ((context, index) {
+                                        var value = widget.optionList[index];
+                                        // return Text(widget.optionList[index]);
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: ListTile(
+                                            onTap: () {
+                                              setState(
+                                                () {
+                                                  widget.bottomModalController
+                                                      .text = value;
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text("${value} 선택 완료"),
+                                                  ));
+                                                },
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            tileColor: Palette.grayEE,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                side: BorderSide(
+                                                    width: 1,
+                                                    color: Palette.grayFA)),
+                                            title:
+                                                Text(widget.optionList[index]),
+                                            trailing: Icon(Icons.arrow_forward),
+                                          ),
+                                        );
+                                      })),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.keyboard_arrow_down_outlined))
+                : null,
+            hintText: widget.hint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
+      ),
+    );
+  }
+}
+
+// Text Field
+
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
     Key? key,
