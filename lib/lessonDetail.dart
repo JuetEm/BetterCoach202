@@ -103,6 +103,7 @@ class _LessonDetailState extends State<LessonDetail> {
               totalNoteController,
             ]);
           }),
+
           body: SafeArea(
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -170,6 +171,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                   if (docs.isEmpty) {
                                     return Center(child: Text("노트를 추가해 주세요."));
                                   }
+
                                   return Container(
                                     //height: 200,
                                     decoration: BoxDecoration(
@@ -200,6 +202,18 @@ class _LessonDetailState extends State<LessonDetail> {
                                         String grade = doc.get('grade'); //수행도
                                         String totalNote =
                                             doc.get('totalNote'); //수업총메모
+                                        String lessonDateTrim = " ";
+                                        String apratusNameTrim = " ";
+                                        // 날짜 글자 자르기
+                                        if (lessonDate.length > 0) {
+                                          lessonDateTrim =
+                                              lessonDate.substring(2, 10);
+                                        }
+                                        // 기구 첫두글자 자르기
+                                        if (apratusName.length > 0) {
+                                          apratusNameTrim =
+                                              apratusName.substring(0, 2);
+                                        }
 
                                         // return InkWell(
                                         //   onTap: () {
@@ -223,7 +237,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                                   MainAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  lessonDate,
+                                                  lessonDateTrim,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1!
@@ -233,7 +247,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                                 ),
                                                 const SizedBox(width: 15.0),
                                                 Text(
-                                                  apratusName,
+                                                  apratusNameTrim,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1!
@@ -440,13 +454,14 @@ class _LessonDetailState extends State<LessonDetail> {
                         ),
 
                         /// 동작 노트
-                        BaseTextField(
+                        BaseMultiTextField(
                           customController: totalNoteController,
                           hint: "노트 입력",
                           showArrow: false,
                           customFunction: () {},
                         ),
-                        Divider(height: 1),
+
+                        SizedBox(height: 10),
 
                         /// 추가/수정 버튼
                         ElevatedButton(
