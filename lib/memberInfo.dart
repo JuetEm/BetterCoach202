@@ -276,6 +276,16 @@ class _MemberInfoState extends State<MemberInfo> {
                                     groupSeparatorBuilder: (String value) =>
                                         InkWell(
                                       onTap: () {
+                                        indexCheck = 0;
+                                        final lessons = lessonInfoList;
+                                        lessons.sort(((a, b) => a.lessonDate
+                                            .compareTo(b.lessonDate)));
+                                        for (int i = 0;
+                                            i < lessons.length;
+                                            i++) {
+                                          print(
+                                              "docID : ${lessons[i].docId}, apratusName : ${lessons[i].apratusName}, actionName :${lessons[i].actionName}, lessonDate : ${lessons[i].lessonDate}, grade: ${lessons[i].grade}, totalNote : ${lessons[i].totalNote}");
+                                        }
                                         // 회원 운동 카드 선택시 MemberInfo로 이동
                                         eventList = [];
                                         List<dynamic> args = [
@@ -308,23 +318,23 @@ class _MemberInfoState extends State<MemberInfo> {
                                       //     docs['lessonDate'].toString());
                                       // eventList.add(eventDate);
 
-                                      print("indexCheck : ${indexCheck}");
-                                      // lessonNoteId = docs["timestamp"];
-                                      final doc = docs[indexCheck];
-                                      print(
-                                          "docs[indexCheck] : ${doc}, docID : ${doc.id}, lessonDate : ${doc['lessonDate']}, apratusName : ${doc['apratusName']}, totalNote : ${doc['totalNote']}");
-                                      print(
-                                          "ddocs[indexCheck] : ${ddocs}, docID : ${doc.id}, lessonDate : ${ddocs['lessonDate']}, apratusName : ${ddocs['apratusName']}, totalNote : ${ddocs['totalNote']}");
-                                      indexCheck++;
+                                      // print("indexCheck : ${indexCheck}");
 
-                                      LessonInfo lessonInfo = LessonInfo(
-                                          doc['apratusName'],
-                                          doc['actionName'],
-                                          doc['lessonDate'],
-                                          doc['grade'],
-                                          doc['totalNote'],
-                                          doc.id);
-                                      lessonInfoList.add(lessonInfo);
+                                      // final doc = docs[indexCheck];
+                                      // // print(
+                                      // //     "docs[indexCheck] : ${doc}, docID : ${doc.id}, lessonDate : ${doc['lessonDate']}, apratusName : ${doc['apratusName']}, totalNote : ${doc['totalNote']}");
+                                      // print(
+                                      //     "docID : ${doc.id}, apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+                                      // indexCheck++;
+
+                                      // LessonInfo lessonInfo = LessonInfo(
+                                      //     doc['apratusName'],
+                                      //     doc['actionName'],
+                                      //     doc['lessonDate'],
+                                      //     doc['grade'],
+                                      //     doc['totalNote'],
+                                      //     doc.id);
+                                      // lessonInfoList.add(lessonInfo);
 
                                       return ActionContainer(
                                           apratusName: ddocs['apratusName'],
