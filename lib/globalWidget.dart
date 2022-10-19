@@ -274,6 +274,66 @@ class _BaseTextFieldState extends State<BaseTextField> {
   }
 }
 
+class BaseMultiTextField extends StatefulWidget {
+  const BaseMultiTextField({
+    Key? key,
+    required this.customController,
+    required this.hint,
+    required this.showArrow,
+    required this.customFunction,
+  }) : super(key: key);
+
+  final TextEditingController customController;
+  final String hint;
+  final showArrow;
+  final Function customFunction;
+
+  @override
+  State<BaseMultiTextField> createState() => _BaseMultiTextFieldState();
+}
+
+class _BaseMultiTextFieldState extends State<BaseMultiTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 70,
+      ),
+      child: TextField(
+        minLines: 3,
+        maxLines: 10,
+        keyboardType: TextInputType.multiline,
+        //textInputAction: TextInputAction.done,
+        readOnly: widget.showArrow,
+        controller: widget.customController,
+        decoration: InputDecoration(
+            labelText: widget.hint,
+            suffixIcon: widget.hint == ""
+                ? null
+                : widget.showArrow
+                    ? IconButton(
+                        onPressed: () {
+                          widget.customFunction();
+                        },
+                        icon: Icon(Icons.navigate_next),
+                      )
+                    : null,
+            hintText: widget.hint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
+      ),
+    );
+  }
+}
+
 class LoginTextField extends StatefulWidget {
   const LoginTextField({
     Key? key,
