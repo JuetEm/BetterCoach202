@@ -3,9 +3,26 @@ import 'package:intl/intl.dart';
 
 import 'action_service.dart';
 import 'baseTableCalendar.dart';
+import 'bottomSheetContent.dart';
 
 class GlobalFunction {
   GlobalFunction();
+
+  void showBottomSheetContent(BuildContext context,
+      {Function? customEditFunction, Function? customDeleteFunction}) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      builder: (context) {
+        return BottomSheetContent(
+          customEditFunction: customEditFunction,
+          customDeleteFunction: customDeleteFunction,
+        );
+      },
+    );
+  }
 
   void inititalizeBools(List<bool> boolList, bool initState) {
     for (int i = 0; i < boolList.length; i++) {

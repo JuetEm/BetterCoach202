@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/actionSelector.dart';
-import 'package:web_project/userInfo.dart';
+import 'package:web_project/userInfo.dart'
+    as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
 import 'actionInfo.dart';
 import 'auth_service.dart';
@@ -38,6 +40,10 @@ List<String> dropdownList = [
 
 double sliderValue = 50;
 
+Color moreButtonColor = Palette.gray99;
+
+String buttonString = "저장하기";
+
 class LessonDetail extends StatefulWidget {
   const LessonDetail({super.key});
 
@@ -53,11 +59,11 @@ class _LessonDetailState extends State<LessonDetail> {
     // 이전 화면에서 보낸 변수 받기
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-    UserInfo userInfo = argsList[0];
+    CustomUserInfo.UserInfo customUserInfo = argsList[0];
     String actionName = argsList[1];
     List<DateTime> eventList = argsList[2];
 
-    nameController = TextEditingController(text: userInfo.name);
+    nameController = TextEditingController(text: customUserInfo.name);
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
@@ -71,7 +77,7 @@ class _LessonDetailState extends State<LessonDetail> {
                 builder: (context) => MemberInfo(),
                 // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                 settings: RouteSettings(
-                  arguments: userInfo,
+                  arguments: customUserInfo,
                 ),
               ),
             );
@@ -114,7 +120,7 @@ class _LessonDetailState extends State<LessonDetail> {
 
                         /// 동작 노트
                         Container(
-                          padding: const EdgeInsets.all(21.0),
+                          padding: const EdgeInsets.fromLTRB(21, 21, 2, 21),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.0),
@@ -140,7 +146,7 @@ class _LessonDetailState extends State<LessonDetail> {
                               FutureBuilder<QuerySnapshot>(
                                 future: lessonService.readNotesOfAction(
                                   user.uid,
-                                  userInfo.phoneNumber,
+                                  customUserInfo.phoneNumber,
                                   actionName,
                                 ),
                                 builder: (context, snapshot) {
@@ -194,14 +200,57 @@ class _LessonDetailState extends State<LessonDetail> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              "${lessonDate}   ${apratusName}  ${grade}  ${totalNote}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(
-                                                    fontSize: 12.0,
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "${lessonDate}   ${apratusName}  ${grade}  ${totalNote}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .copyWith(
+                                                        fontSize: 12.0,
+                                                      ),
+                                                ),
+                                                Spacer(),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    print("More");
+                                                    globalFunction
+                                                        .showBottomSheetContent(
+                                                      context,
+                                                      customEditFunction: () {
+                                                        setState(() {
+                                                          buttonString = "수정하기";
+                                                          sliderValue =
+                                                              double.parse(
+                                                                  grade);
+                                                          print(
+                                                              "Edit Function");
+                                                          apratusNameController
+                                                                  .text =
+                                                              apratusName;
+                                                          lessonDateController
+                                                                  .text =
+                                                              lessonDate;
+                                                          gradeController.text =
+                                                              grade;
+                                                          totalNoteController
+                                                              .text = totalNote;
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                      customDeleteFunction: () {
+                                                        print(
+                                                            "Delete Function");
+                                                      },
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.more_horiz_sharp,
+                                                    color: moreButtonColor,
                                                   ),
+                                                ),
+                                              ],
                                             ),
                                             SizedBox(
                                               height: 9,
@@ -292,10 +341,11 @@ class _LessonDetailState extends State<LessonDetail> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Text("저장하기", style: TextStyle(fontSize: 18)),
+                            child: Text(buttonString,
+                                style: TextStyle(fontSize: 18)),
                           ),
                           onPressed: () {
-                            print("저장하기 버튼");
+                            print("${buttonString} 버튼");
                             // create bucket
                             // if (globalFunction.textNullCheck(
                             //         context, lessonDateController, "수업일") &&
@@ -306,58 +356,22 @@ class _LessonDetailState extends State<LessonDetail> {
                             //     globalFunction.textNullCheck(
                             //         context, totalNoteController, "메모"))
 
-                            if (globalFunction.textNullCheck(
-                                    context, lessonDateController, "수업일") &&
-                                globalFunction.textNullCheck(
-                                    context, gradeController, "수행도") &&
-                                globalFunction.textNullCheck(
-                                    context, totalNoteController, "메모")) {
-                              String now = DateFormat("yyyy-MM-dd")
-                                  .format(DateTime.now()); // 오늘 날짜 가져오기
-                              lessonService.create(
-                                  uid: user.uid,
-                                  name: nameController.text,
-                                  phoneNumber: userInfo
-                                      .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
-                                  apratusName:
-                                      apratusNameController.text, //기구이름
-                                  actionName: actionName, //동작이름
-                                  lessonDate: lessonDateController.text, //수업날짜
-                                  grade: gradeController.text, //수행도
-                                  totalNote: totalNoteController.text, //수업총메모
-                                  onSuccess: () {
-                                    // 저장하기 성공
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text("저장하기 성공"),
-                                    ));
-                                    // 저장하기 성공시 MemberInfo로 이동
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MemberInfo(),
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(
-                                          arguments: userInfo,
-                                        ),
-                                      ),
-                                    );
-
-                                    globalFunction.clearTextEditController([
-                                      apratusNameController,
-                                      lessonDateController,
-                                      gradeController,
-                                      totalNoteController
-                                    ]);
-                                  },
-                                  onError: () {
-                                    print("저장하기 ERROR");
-                                  });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("항목을 모두 입력해주세요."),
-                              ));
+                            if (buttonString == "저장하기") {
+                              saveButtonMethod(context, lessonService, user,
+                                  customUserInfo, actionName);
+                            } else if (buttonString == "수정하기") {
+                              if (globalFunction.textNullCheck(
+                                      context, lessonDateController, "수업일") &&
+                                  globalFunction.textNullCheck(
+                                      context, gradeController, "수행도") &&
+                                  globalFunction.textNullCheck(
+                                      context, totalNoteController, "메모")) {
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("항목을 모두 입력해주세요."),
+                                ));
+                              }
                             }
                           },
                         ),
@@ -372,5 +386,55 @@ class _LessonDetailState extends State<LessonDetail> {
         );
       },
     );
+  }
+
+  void saveButtonMethod(BuildContext context, LessonService lessonService,
+      User user, CustomUserInfo.UserInfo userInfo, String actionName) {
+    if (globalFunction.textNullCheck(context, lessonDateController, "수업일") &&
+        globalFunction.textNullCheck(context, gradeController, "수행도") &&
+        globalFunction.textNullCheck(context, totalNoteController, "메모")) {
+      String now =
+          DateFormat("yyyy-MM-dd").format(DateTime.now()); // 오늘 날짜 가져오기
+      lessonService.create(
+          uid: user.uid,
+          name: nameController.text,
+          phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별
+          apratusName: apratusNameController.text, //기구이름
+          actionName: actionName, //동작이름
+          lessonDate: lessonDateController.text, //수업날짜
+          grade: gradeController.text, //수행도
+          totalNote: totalNoteController.text, //수업총메모
+          onSuccess: () {
+            // 저장하기 성공
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("${buttonString} 성공"),
+            ));
+            // 저장하기 성공시 MemberInfo로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberInfo(),
+                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                settings: RouteSettings(
+                  arguments: userInfo,
+                ),
+              ),
+            );
+
+            globalFunction.clearTextEditController([
+              apratusNameController,
+              lessonDateController,
+              gradeController,
+              totalNoteController
+            ]);
+          },
+          onError: () {
+            print("저장하기 ERROR");
+          });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("항목을 모두 입력해주세요."),
+      ));
+    }
   }
 }

@@ -8,47 +8,6 @@ class LessonService extends ChangeNotifier {
 
   GlobalFunction globalFunction = GlobalFunction();
 
-  Future<QuerySnapshot> read(
-    String uid,
-    String phoneNumber,
-  ) async {
-    // 내 bucketList 가져오기
-    // throw UnimplementedError(); // return 값 미구현 에러
-    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return lessonCollection
-        .where('uid', isEqualTo: uid)
-        .where('phoneNumber', isEqualTo: phoneNumber)
-        .get();
-  }
-
-  Future<QuerySnapshot> readNotesOfAction(
-    String uid,
-    String phoneNumber,
-    String actionName,
-  ) async {
-    // 내 bucketList 가져오기
-    // throw UnimplementedError(); // return 값 미구현 에러
-    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return lessonCollection
-        .where('uid', isEqualTo: uid)
-        .where('phoneNumber', isEqualTo: phoneNumber)
-        .where('actionName', isEqualTo: actionName)
-        .get();
-  }
-
-  readEventData(
-    String uid,
-    String phoneNumber,
-    String actionName,
-  ) async {
-    final eventData = await lessonCollection.doc("lesson").get().then((value) {
-      print("value ${value}");
-    });
-
-    // DateTime eventDate = DateTime.parse(formattedString)
-    // globalFunction.eventList
-  }
-
   void create({
     required String uid, // 강사 고유번호
     required String name, //회원이름
@@ -89,12 +48,48 @@ class LessonService extends ChangeNotifier {
       'lessonDate': lessonDate, //수업날짜
       'grade': grade, //수행도
       'totalNote': totalNote, //수업총메모
+      'timestamp': FieldValue.serverTimestamp(),
     });
     notifyListeners(); // 화면 갱신
     onSuccess();
   }
 
+  Future<QuerySnapshot> read(
+    String uid,
+    String phoneNumber,
+  ) async {
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('phoneNumber', isEqualTo: phoneNumber)
+        .get();
+  }
+
+  Future<QuerySnapshot> readNotesOfAction(
+    String uid,
+    String phoneNumber,
+    String actionName,
+  ) async {
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('phoneNumber', isEqualTo: phoneNumber)
+        .where('actionName', isEqualTo: actionName)
+        .get();
+  }
+
   void update(String docId, bool isActive) async {
+    // bucket isActive 업데이트
+
+    await lessonCollection.doc(docId).update({'isActive': isActive});
+    notifyListeners(); // 화면 갱신
+  }
+
+  void updateLesson(String docId, bool isActive) async {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});
