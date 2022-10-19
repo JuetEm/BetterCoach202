@@ -86,6 +86,7 @@ class _LessonAddState extends State<LessonAdd> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        // 기구 입력창
                         BaseModalBottomSheetButton(
                           bottomModalController: apratusNameController,
                           hint: "기구",
@@ -184,10 +185,17 @@ class _LessonAddState extends State<LessonAdd> {
                           onPressed: () {
                             print("저장하기 버튼");
                             // create bucket
-                            if (globalFunction.textNullCheck(
+                            if (globalFunction
+                                    .textNullCheck(context, apratusNameController,
+                                        "기구") &&
+                                globalFunction.textNullCheck(
                                     context, lessonDateController, "수업일") &&
                                 globalFunction.textNullCheck(
-                                    context, actionNameController, "동작이름")) {
+                                    context, actionNameController, "동작이름") &&
+                                globalFunction.textNullCheck(
+                                    context, gradeController, "수행도") &&
+                                globalFunction.textNullCheck(
+                                    context, totalNoteController, "메모")) {
                               // 오늘 날짜 가져오기
                               lessonService.create(
                                   docId: userInfo
@@ -254,7 +262,7 @@ class _LessonAddState extends State<LessonAdd> {
       actionNameController,
       lessonDateController,
       gradeController,
-      totalNoteController,
+      totalNoteController
     ]);
     lessonDateController.text = now;
     setState(() {

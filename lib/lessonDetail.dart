@@ -311,42 +311,38 @@ class _LessonDetailState extends State<LessonDetail> {
                                                             builder:
                                                                 (BuildContext
                                                                     context) {
-                                                              return showAlertDialog(
-                                                                  context,
-                                                                  "정말로 삭제하시겠습니까?",
-                                                                  "동작 정보가 삭제됩니다.");
-                                                              // AlertDialog(
-                                                              //   title:
-                                                              //       Text('삭제'),
-                                                              //   content: Text(
-                                                              //       '동작노트를 삭제하시겠습니까?'),
-                                                              //   actions: <
-                                                              //       Widget>[
-                                                              //     TextButton(
-                                                              //       onPressed:
-                                                              //           () {
-                                                              //         lessonService
-                                                              //             .delete(
-                                                              //                 doc.id);
-                                                              //         Navigator.of(
-                                                              //                 context)
-                                                              //             .pop();
-                                                              //       },
-                                                              //       child: Text(
-                                                              //           '삭제'),
-                                                              //     ),
-                                                              //     TextButton(
-                                                              //       onPressed:
-                                                              //           () {
-                                                              //         Navigator.of(
-                                                              //                 context)
-                                                              //             .pop();
-                                                              //       },
-                                                              //       child: Text(
-                                                              //           '취소'),
-                                                              //     ),
-                                                              //   ],
-                                                              // );
+                                                              return AlertDialog(
+                                                                title:
+                                                                    Text('삭제'),
+                                                                content: Text(
+                                                                    '동작노트를 삭제하시겠습니까?'),
+                                                                actions: <
+                                                                    Widget>[
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      lessonService
+                                                                          .delete(
+                                                                              doc.id);
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Text(
+                                                                        '삭제'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Text(
+                                                                        '취소'),
+                                                                  ),
+                                                                ],
+                                                              );
                                                             });
                                                       },
                                                     );
@@ -508,14 +504,13 @@ class _LessonDetailState extends State<LessonDetail> {
 
   void editButtonMethod(BuildContext context, LessonService lessonService) {
     if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
-      lessonService.update(
-          editDocId,
-          apratusNameController.text,
-          lessonDateController.text,
-          gradeController.text,
-          totalNoteController.text);
-
       setState(() {
+        lessonService.update(
+            editDocId,
+            apratusNameController.text,
+            lessonDateController.text,
+            gradeController.text,
+            totalNoteController.text);
         sliderValue = double.parse(gradeController.text);
         buttonString = "저장하기";
       });
