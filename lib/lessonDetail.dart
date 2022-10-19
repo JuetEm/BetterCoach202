@@ -507,18 +507,15 @@ class _LessonDetailState extends State<LessonDetail> {
   }
 
   void editButtonMethod(BuildContext context, LessonService lessonService) {
-    if (globalFunction.textNullCheck(context, lessonDateController, "수업일") &&
-        globalFunction.textNullCheck(context, gradeController, "수행도") &&
-        globalFunction.textNullCheck(context, totalNoteController, "메모")) {
-      print("editButtonMethod 호출은 되나요?");
+    if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
+      lessonService.update(
+          editDocId,
+          apratusNameController.text,
+          lessonDateController.text,
+          gradeController.text,
+          totalNoteController.text);
 
       setState(() {
-        lessonService.update(
-            editDocId,
-            apratusNameController.text,
-            lessonDateController.text,
-            gradeController.text,
-            totalNoteController.text);
         sliderValue = double.parse(gradeController.text);
         buttonString = "저장하기";
       });
@@ -531,9 +528,7 @@ class _LessonDetailState extends State<LessonDetail> {
 
   void saveButtonMethod(BuildContext context, LessonService lessonService,
       User user, CustomUserInfo.UserInfo userInfo, String actionName) {
-    if (globalFunction.textNullCheck(context, lessonDateController, "수업일") &&
-        globalFunction.textNullCheck(context, gradeController, "수행도") &&
-        globalFunction.textNullCheck(context, totalNoteController, "메모")) {
+    if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
       String now =
           DateFormat("yyyy-MM-dd").format(DateTime.now()); // 오늘 날짜 가져오기
       lessonService.create(

@@ -22,6 +22,7 @@ class MemberService extends ChangeNotifier {
     required String info,
     required String note,
     required String uid,
+    required String comment,
     required Function onSuccess,
     required Function onError,
   }) async {
@@ -53,6 +54,7 @@ class MemberService extends ChangeNotifier {
       'goal': goal, // 운동 목표
       'info': info, // 신체 특이사항/체형분석
       'note': note, // 메모
+      'comment': comment,
       'isActive': true, // 회원권 활성화 여부
     });
     notifyListeners(); // 화면 갱신
@@ -69,6 +71,7 @@ class MemberService extends ChangeNotifier {
     required String info,
     required String note,
     required String uid,
+    required String comment,
     required Function onSuccess,
     required Function onError,
   }) async {
@@ -82,6 +85,7 @@ class MemberService extends ChangeNotifier {
       'goal': goal, // 운동 목표
       'info': info, // 신체 특이사항/체형분석
       'note': note, // 메모
+      'comment': comment,
       'isActive': true, // 회원권 활성화 여부
     });
 

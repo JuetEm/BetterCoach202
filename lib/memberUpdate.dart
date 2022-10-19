@@ -30,6 +30,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
   TextEditingController goalController = TextEditingController();
   TextEditingController infoController = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
     goalController.text = userInfo.goal;
     infoController.text = userInfo.info;
     noteController.text = userInfo.note;
+    commentController.text = userInfo.comment;
 
     String imgUrl =
         "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
@@ -67,7 +69,8 @@ class _MemberUpdateState extends State<MemberUpdate> {
               registerTypeController,
               goalController,
               infoController,
-              noteController
+              noteController,
+              commentController,
             ]);
           }),
           body: SingleChildScrollView(
@@ -154,6 +157,14 @@ class _MemberUpdateState extends State<MemberUpdate> {
                           showArrow: false,
                           customFunction: () {},
                         ),
+
+                        /// 특이사항 입력창
+                        BaseTextField(
+                          customController: commentController,
+                          hint: "특이사항",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
                         Divider(height: 1),
 
                         /// 추가 버튼
@@ -171,19 +182,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                             // create bucket
 
                             if (globalFunction.textNullCheck(
-                                    context, nameController, "이름") &&
-                                globalFunction.textNullCheck(
-                                    context, registerDateController, "등록일") &&
-                                globalFunction.textNullCheck(
-                                    context, phoneNumberController, "전화번호") &&
-                                globalFunction.textNullCheck(
-                                    context, registerTypeController, "등록횟수입력") &&
-                                globalFunction.textNullCheck(
-                                    context, goalController, "운동목표") &&
-                                globalFunction.textNullCheck(
-                                    context, infoController, "통증/상해/병력") &&
-                                globalFunction.textNullCheck(
-                                    context, noteController, "체형분석")) {
+                                context, nameController, "이름")) {
                               memberService.update(
                                   docId: userInfo.docId,
                                   name: nameController.text,
@@ -194,6 +193,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                   info: infoController.text,
                                   note: noteController.text,
                                   uid: user.uid,
+                                  comment: commentController.text,
                                   onSuccess: () {
                                     // 저장하기 성공
                                     ScaffoldMessenger.of(context)
@@ -214,6 +214,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                         goalController.text,
                                         infoController.text,
                                         noteController.text,
+                                        commentController.text,
                                         true);
 
                                     // 저장하기 성공시 MemberInfo로 이동
@@ -235,7 +236,8 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                       registerTypeController,
                                       goalController,
                                       infoController,
-                                      noteController
+                                      noteController,
+                                      commentController,
                                     ]);
                                   },
                                   onError: () {
@@ -294,7 +296,8 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                       registerTypeController,
                                       goalController,
                                       infoController,
-                                      noteController
+                                      noteController,
+                                      commentController,
                                     ]);
                                   },
                                   onError: () {

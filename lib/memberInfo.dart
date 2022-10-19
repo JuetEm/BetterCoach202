@@ -225,6 +225,24 @@ class _MemberInfoState extends State<MemberInfo> {
                                       color: Palette.gray99,
                                     ),
                                   ),
+                                  const SizedBox(height: 20.0),
+                                  Text(
+                                    '특이사항',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.gray66,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    userInfo.comment,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      //fontWeight: FontWeight.bold,
+                                      color: Palette.gray99,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
