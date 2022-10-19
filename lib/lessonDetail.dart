@@ -323,6 +323,9 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
                                                                     },
                                                                     child: Text(
                                                                         '삭제'),
@@ -330,6 +333,9 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                   TextButton(
                                                                     onPressed:
                                                                         () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
@@ -508,8 +514,11 @@ class _LessonDetailState extends State<LessonDetail> {
           lessonDateController.text,
           gradeController.text,
           totalNoteController.text);
-      sliderValue = double.parse(gradeController.text);
-      buttonString = "저장하기";
+
+      setState(() {
+        sliderValue = double.parse(gradeController.text);
+        buttonString = "저장하기";
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("항목을 모두 입력해주세요."),
