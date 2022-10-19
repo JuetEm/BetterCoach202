@@ -303,7 +303,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                                         showDialog(
                                                             context: context,
                                                             barrierDismissible:
-                                                                false,
+                                                                true,
                                                             builder:
                                                                 (BuildContext
                                                                     context) {
@@ -320,6 +320,9 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                       lessonService
                                                                           .delete(
                                                                               doc.id);
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
                                                                     },
                                                                     child: Text(
                                                                         '삭제'),
