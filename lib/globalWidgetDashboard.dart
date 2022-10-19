@@ -45,7 +45,9 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
                 // 동작 DB 밀어넣기
                 //globalfunction.createDummy(actionService);
                 Timestamp timestamp = Timestamp.now();
-                print("timestamp : ${timestamp}");
+
+                print(
+                    "timestamp : ${timestamp}, in one line : ${timestamp.seconds}${timestamp.nanoseconds}");
               },
             ),
 

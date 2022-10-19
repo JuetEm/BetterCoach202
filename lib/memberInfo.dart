@@ -20,6 +20,8 @@ import 'lessonInfo.dart';
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
 
+String lessonNoteId = "";
+
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
 
@@ -261,7 +263,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                         List<dynamic> args = [
                                           userInfo,
                                           value,
-                                          eventList
+                                          eventList,
+                                          lessonNoteId,
                                         ];
 
                                         print("args.length : ${args.length}");
@@ -282,9 +285,11 @@ class _MemberInfoState extends State<MemberInfo> {
                                     ),
                                     itemBuilder:
                                         (BuildContext context, dynamic docs) {
-                                      DateTime eventDate = DateTime.parse(
-                                          docs['lessonDate'].toString());
-                                      eventList.add(eventDate);
+                                      // 달력기능 개발 중
+                                      // DateTime eventDate = DateTime.parse(
+                                      //     docs['lessonDate'].toString());
+                                      // eventList.add(eventDate);
+                                      lessonNoteId = docs["timestamp"];
                                       return ActionContainer(
                                           apratusName: docs['apratusName'],
                                           actionName: docs['actionName'],

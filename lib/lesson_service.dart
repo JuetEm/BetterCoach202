@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'globalFunction.dart';
 
+Timestamp? timestamp = null;
+
 class LessonService extends ChangeNotifier {
   final lessonCollection = FirebaseFirestore.instance.collection('lesson');
 
@@ -39,6 +41,8 @@ class LessonService extends ChangeNotifier {
     //   'totalNote': totalNote, //수업총메모
     // });
 
+    timestamp = Timestamp.now();
+
     await lessonCollection.add({
       'uid': uid, //강사 고유번호
       'name': name, //회원이름
@@ -48,7 +52,7 @@ class LessonService extends ChangeNotifier {
       'lessonDate': lessonDate, //수업날짜
       'grade': grade, //수행도
       'totalNote': totalNote, //수업총메모
-      'timestamp': FieldValue.serverTimestamp(),
+      'timestamp': timestamp.toString(),
     });
     notifyListeners(); // 화면 갱신
     onSuccess();
