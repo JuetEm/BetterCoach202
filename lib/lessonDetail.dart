@@ -454,7 +454,7 @@ class _LessonDetailState extends State<LessonDetail> {
                         ),
 
                         /// 동작 노트
-                        BaseMultiTextField(
+                        BaseTextField(
                           customController: totalNoteController,
                           hint: "노트 입력",
                           showArrow: false,
