@@ -109,20 +109,20 @@ class _MemberAddState extends State<MemberAdd> {
                           customFunction: () {},
                         ),
 
-                        /// 수강권 선택 입력창
+                        /// 등록횟수입력창
                         BaseTextField(
                           customController: registerTypeController,
-                          hint: "수강권 선택",
+                          hint: "등록횟수입력",
                           showArrow: true,
                           customFunction: () {
                             _getMembership(context);
                           },
                         ),
 
-                        /// 목표 입력창
+                        /// 운동목표 입력창
                         BaseTextField(
                           customController: goalController,
-                          hint: "목표",
+                          hint: "운동목표",
                           showArrow: false,
                           customFunction: () {},
                         ),
@@ -130,15 +130,15 @@ class _MemberAddState extends State<MemberAdd> {
                         /// 신체 특이사항/체형분석 입력창
                         BaseTextField(
                           customController: infoController,
-                          hint: "신체 특이사항 / 체형분석",
+                          hint: "통증/상해/병력",
                           showArrow: false,
                           customFunction: () {},
                         ),
 
-                        /// 메모 입력창
+                        /// 체형분석 입력창
                         BaseTextField(
                           customController: noteController,
-                          hint: "메모",
+                          hint: "체형분석",
                           showArrow: false,
                           customFunction: () {},
                         ),
@@ -157,19 +157,20 @@ class _MemberAddState extends State<MemberAdd> {
                           onPressed: () {
                             print("추가 버튼");
                             // create bucket
-                            if (globalFunction.textNullCheck(context, nameController, "이름") &&
+                            if (globalFunction.textNullCheck(
+                                    context, nameController, "이름") &&
                                 globalFunction.textNullCheck(
                                     context, registerDateController, "등록일") &&
                                 globalFunction.textNullCheck(
                                     context, phoneNumberController, "전화번호") &&
                                 globalFunction.textNullCheck(
-                                    context, registerTypeController, "수강권") &&
+                                    context, registerTypeController, "등록횟수입력") &&
                                 globalFunction.textNullCheck(
-                                    context, goalController, "목표") &&
-                                globalFunction.textNullCheck(context,
-                                    infoController, "신체 특이사항 / 체형분석") &&
+                                    context, goalController, "운동목표") &&
                                 globalFunction.textNullCheck(
-                                    context, noteController, "메모")) {
+                                    context, infoController, "통증/상해/병력") &&
+                                globalFunction.textNullCheck(
+                                    context, noteController, "체형분석")) {
                               memberService.create(
                                   name: nameController.text,
                                   registerDate: registerDateController.text,

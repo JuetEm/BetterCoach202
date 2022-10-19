@@ -66,6 +66,8 @@ class _MemberInfoState extends State<MemberInfo> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
+                    //mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Column(
                         children: [
@@ -111,6 +113,18 @@ class _MemberInfoState extends State<MemberInfo> {
                           ),
                         ],
                       ),
+                      Spacer(),
+                      Column(
+                        children: [
+                          Text(
+                            '등록횟수 : ${userInfo.registerType}',
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                //fontWeight: FontWeight.bold,
+                                color: Palette.gray99),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -149,7 +163,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '목표',
+                                      '운동목표',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -167,7 +181,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                     ),
                                     const SizedBox(height: 20.0),
                                     Text(
-                                      '신체특이사항/체형분석',
+                                      '통증/상해/병력',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -184,7 +198,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                     ),
                                     const SizedBox(height: 20.0),
                                     Text(
-                                      '메모',
+                                      '체형분석',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -220,7 +234,7 @@ class _MemberInfoState extends State<MemberInfo> {
                             children: [
                               const SizedBox(height: 10),
                               Text(
-                                '동작',
+                                '레슨노트',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -244,7 +258,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         ),
                                         Center(
                                           child: Text(
-                                              "노트추가 버튼을 눌러 동작을 추가할 수 있습니다"),
+                                              "동작추가 버튼을 눌러 동작을 추가할 수 있습니다"),
                                         ),
                                       ],
                                     );
@@ -330,14 +344,14 @@ class _MemberInfoState extends State<MemberInfo> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "노트추가",
+                            "동작추가",
                             style: TextStyle(fontSize: 18),
                           ),
                         ],
                       ),
                     ),
                     onPressed: () {
-                      print("노트추가");
+                      print("동작추가");
                       // LessonAdd로 이동
                       Navigator.push(
                         context,
