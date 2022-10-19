@@ -105,6 +105,7 @@ class _MemberListState extends State<MemberList> {
                                 String goal = doc.get('goal');
                                 String info = doc.get('info');
                                 String note = doc.get('note');
+                                String comment = doc.get('comment');
                                 bool isActive = doc.get('isActive');
                                 final UserInfo userInfo = UserInfo(
                                   doc.id,
@@ -116,6 +117,7 @@ class _MemberListState extends State<MemberList> {
                                   goal,
                                   info,
                                   note,
+                                  comment,
                                   isActive,
                                 );
                                 return InkWell(

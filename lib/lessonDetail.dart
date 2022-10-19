@@ -505,9 +505,7 @@ class _LessonDetailState extends State<LessonDetail> {
   }
 
   void editButtonMethod(BuildContext context, LessonService lessonService) {
-    if (globalFunction.textNullCheck(context, lessonDateController, "수업일") &&
-        globalFunction.textNullCheck(context, gradeController, "수행도") &&
-        globalFunction.textNullCheck(context, totalNoteController, "메모")) {
+    if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
       lessonService.update(
           editDocId,
           apratusNameController.text,
@@ -528,9 +526,7 @@ class _LessonDetailState extends State<LessonDetail> {
 
   void saveButtonMethod(BuildContext context, LessonService lessonService,
       User user, CustomUserInfo.UserInfo userInfo, String actionName) {
-    if (globalFunction.textNullCheck(context, lessonDateController, "수업일") &&
-        globalFunction.textNullCheck(context, gradeController, "수행도") &&
-        globalFunction.textNullCheck(context, totalNoteController, "메모")) {
+    if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
       String now =
           DateFormat("yyyy-MM-dd").format(DateTime.now()); // 오늘 날짜 가져오기
       lessonService.create(

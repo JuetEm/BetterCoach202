@@ -9,6 +9,7 @@ class UserInfo {
     this.goal,
     this.info,
     this.note,
+    this.comment,
     this.isActive,
   );
   final String docId;
@@ -20,5 +21,6 @@ class UserInfo {
   final String goal;
   final String info;
   final String note;
+  final String comment;
   final bool isActive;
 }

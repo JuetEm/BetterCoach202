@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -31,8 +32,8 @@ class _MemberAddState extends State<MemberAdd> {
   TextEditingController goalController = TextEditingController();
   TextEditingController infoController = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
 
-  @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
@@ -58,7 +59,8 @@ class _MemberAddState extends State<MemberAdd> {
               registerTypeController,
               goalController,
               infoController,
-              noteController
+              noteController,
+              commentController,
             ]);
             registerDateController.text = now;
           }),
@@ -146,6 +148,14 @@ class _MemberAddState extends State<MemberAdd> {
                           showArrow: false,
                           customFunction: () {},
                         ),
+
+                        /// 특이사항 입력창
+                        BaseTextField(
+                          customController: commentController,
+                          hint: "특이사항",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
                         Divider(height: 1),
 
                         /// 추가 버튼
@@ -162,19 +172,19 @@ class _MemberAddState extends State<MemberAdd> {
                             print("추가 버튼");
                             // create bucket
                             if (globalFunction.textNullCheck(
-                                    context, nameController, "이름") &&
-                                globalFunction.textNullCheck(
-                                    context, registerDateController, "등록일") &&
-                                globalFunction.textNullCheck(
-                                    context, phoneNumberController, "전화번호") &&
-                                globalFunction.textNullCheck(
-                                    context, registerTypeController, "등록횟수입력") &&
-                                globalFunction.textNullCheck(
-                                    context, goalController, "운동목표") &&
-                                globalFunction.textNullCheck(
-                                    context, infoController, "통증/상해/병력") &&
-                                globalFunction.textNullCheck(
-                                    context, noteController, "체형분석")) {
+                                context, nameController, "이름")) {
+                              // globalFunction.textNullCheck(
+                              //     context, registerDateController, "등록일") &&
+                              // globalFunction.textNullCheck(
+                              //     context, phoneNumberController, "전화번호") &&
+                              // globalFunction.textNullCheck(
+                              //     context, registerTypeController, "등록횟수입력") &&
+                              // globalFunction.textNullCheck(
+                              //     context, goalController, "운동목표") &&
+                              // globalFunction.textNullCheck(
+                              //     context, infoController, "통증/상해/병력") &&
+                              // globalFunction.textNullCheck(
+                              //     context, noteController, "체형분석")) {
                               memberService.create(
                                   name: nameController.text,
                                   registerDate: registerDateController.text,
@@ -183,6 +193,7 @@ class _MemberAddState extends State<MemberAdd> {
                                   goal: goalController.text,
                                   info: infoController.text,
                                   note: noteController.text,
+                                  comment: commentController.text,
                                   uid: user.uid,
                                   onSuccess: () {
                                     // 저장하기 성공
@@ -204,7 +215,8 @@ class _MemberAddState extends State<MemberAdd> {
                                       registerTypeController,
                                       goalController,
                                       infoController,
-                                      noteController
+                                      noteController,
+                                      commentController,
                                     ]);
                                     registerDateController.text = now;
                                   },
