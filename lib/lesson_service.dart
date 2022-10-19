@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'globalFunction.dart';
+import 'lessonDetail.dart';
 
 Timestamp? timestamp = null;
 
@@ -88,10 +89,22 @@ class LessonService extends ChangeNotifier {
         .get();
   }
 
-  void update(String docId) async {
+  void update(
+    String docId,
+    String apratusName,
+    String lessonDate,
+    String grade,
+    String totalNote,
+  ) async {
     // bucket isActive 업데이트
-
-    // await lessonCollection.doc(docId).update({'isActive': isActive});
+    print(
+        "update docId : ${docId}, apratusName : ${apratusName}, lessonDate ${lessonDate}, totalNote : ${totalNote}");
+    final result = await lessonCollection.doc(docId).update({
+      'apratusName': apratusName,
+      'lessonDate': lessonDate,
+      'grade': grade,
+      'totalNote': totalNote,
+    });
     notifyListeners(); // 화면 갱신
   }
 
