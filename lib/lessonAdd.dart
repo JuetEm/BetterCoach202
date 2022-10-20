@@ -50,10 +50,10 @@ class _LessonAddState extends State<LessonAdd> {
   @override
   Widget build(BuildContext context) {
     if (initState) {
+      print("INIT!!! : ${initState}");
       now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-      TextEditingController lessonDateController =
-          TextEditingController(text: now);
-      TextEditingController gradeController = TextEditingController(text: "50");
+      lessonDateController = TextEditingController(text: now);
+      gradeController = TextEditingController(text: "50");
       initState = !initState;
     }
 
