@@ -162,7 +162,7 @@ class _LessonDetailState extends State<LessonDetail> {
                               FutureBuilder<QuerySnapshot>(
                                 future: lessonService.readNotesOfAction(
                                   user.uid,
-                                  customUserInfo.phoneNumber,
+                                  customUserInfo.docId,
                                   actionName,
                                 ),
                                 builder: (context, snapshot) {

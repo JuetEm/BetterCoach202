@@ -231,6 +231,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     context, lessonDateController, "수업일") &&
                                 globalFunction.textNullCheck(
                                     context, actionNameController, "동작이름")) {
+                              print("userInfo.docId : ${userInfo.docId}");
                               // 오늘 날짜 가져오기
                               lessonService.create(
                                   docId: userInfo

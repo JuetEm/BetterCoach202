@@ -47,9 +47,10 @@ class LessonService extends ChangeNotifier {
     timestamp = Timestamp.now();
 
     await lessonCollection.add({
+      'docId': docId, // 회원 고유번호, 회원(문서번호)번호로 식별
       'uid': uid, //강사 고유번호
       'name': name, //회원이름
-      'phoneNumber': phoneNumber, // 회원 고유번호 => 전화번호로 회원 식별
+      'phoneNumber': phoneNumber, // 회원 고유번호 => 전화번호로 회원 식별 방식 제거
       'apratusName': apratusName, //기구이름
       'actionName': actionName, //동작이름
       'lessonDate': lessonDate, //수업날짜
@@ -63,20 +64,20 @@ class LessonService extends ChangeNotifier {
 
   Future<QuerySnapshot> read(
     String uid,
-    String phoneNumber,
+    String docId,
   ) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
     return lessonCollection
         .where('uid', isEqualTo: uid)
-        .where('phoneNumber', isEqualTo: phoneNumber)
+        .where('docId', isEqualTo: docId)
         .get();
   }
 
   Future<QuerySnapshot> readNotesOfAction(
     String uid,
-    String phoneNumber,
+    String docId,
     String actionName,
   ) async {
     // 내 bucketList 가져오기
@@ -84,7 +85,7 @@ class LessonService extends ChangeNotifier {
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
     return lessonCollection
         .where('uid', isEqualTo: uid)
-        .where('phoneNumber', isEqualTo: phoneNumber)
+        .where('docId', isEqualTo: docId)
         .where('actionName', isEqualTo: actionName)
         .get();
   }
