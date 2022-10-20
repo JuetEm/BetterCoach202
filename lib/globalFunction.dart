@@ -24,12 +24,6 @@ class GlobalFunction {
     );
   }
 
-  void inititalizeBools(List<bool> boolList, bool initState) {
-    for (int i = 0; i < boolList.length; i++) {
-      boolList[i] = initState;
-    }
-  }
-
   void clearTextEditController(List<TextEditingController> controllerList) {
     for (int i = 0; i < controllerList.length; i++) {
       controllerList[i].clear();

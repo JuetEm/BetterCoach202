@@ -50,36 +50,43 @@ class _ActionSelectorState extends State<ActionSelector> {
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     final userInfo = args[0];
     final String currentApparatus = args[1];
+    // initState = args[2];
 
     if (initState) {
       switch (currentApparatus) {
         case "REFORMER":
           isReformerSelected = true;
-          initState = false;
+          initState = !initState;
           break;
         case "CADILLAC":
           isCadillacSelected = true;
-          initState = false;
+          initState = !initState;
+          ;
           break;
         case "CHAIR":
           isChairSelected = true;
-          initState = false;
+          initState = !initState;
+          ;
           break;
         case "LADDER BARREL":
           isLadderBarrelSelected = true;
-          initState = false;
+          initState = !initState;
+          ;
           break;
         case "SPRING BOARD":
           isSpringBoardSelected = true;
-          initState = false;
+          initState = !initState;
+          ;
           break;
         case "SPINE CORRECTOR":
           isSpineCorrectorSelected = true;
-          initState = false;
+          initState = !initState;
+          ;
           break;
         case "MAT":
           isMatSelected = true;
-          initState = false;
+          initState = !initState;
+          ;
           break;
       }
     }
@@ -359,21 +366,23 @@ class _ActionSelectorState extends State<ActionSelector> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", () {
-            globalFunction.inititalizeBools([
-              isReformerSelected,
-              isCadillacSelected,
-              isChairSelected,
-              isLadderBarrelSelected,
-              isSpringBoardSelected,
-              isSpineCorrectorSelected,
-              isMatSelected,
-              isSupineSelected,
-              isSittingSelected,
-              isProneSelected,
-              isKneelingSelected,
-              isSideLyingSelected,
-              isStandingSelected
-            ], false);
+            // 화면 나갈때  chip 변수 초기화
+            isReformerSelected = false;
+            isCadillacSelected = false;
+            isChairSelected = false;
+            isLadderBarrelSelected = false;
+            isSpringBoardSelected = false;
+            isSpineCorrectorSelected = false;
+            isMatSelected = false;
+
+            isSupineSelected = false;
+            isSittingSelected = false;
+            isProneSelected = false;
+            isKneelingSelected = false;
+            isSideLyingSelected = false;
+            isStandingSelected = false;
+
+            initState = !initState;
             Navigator.pop(context);
           }),
           body: Padding(
@@ -530,21 +539,23 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      globalFunction.inititalizeBools([
-                                        isReformerSelected,
-                                        isCadillacSelected,
-                                        isChairSelected,
-                                        isLadderBarrelSelected,
-                                        isSpringBoardSelected,
-                                        isSpineCorrectorSelected,
-                                        isMatSelected,
-                                        isSupineSelected,
-                                        isSittingSelected,
-                                        isProneSelected,
-                                        isKneelingSelected,
-                                        isSideLyingSelected,
-                                        isStandingSelected
-                                      ], false);
+                                      // 화면 나갈때  chip 변수 초기화
+                                      isReformerSelected = false;
+                                      isCadillacSelected = false;
+                                      isChairSelected = false;
+                                      isLadderBarrelSelected = false;
+                                      isSpringBoardSelected = false;
+                                      isSpineCorrectorSelected = false;
+                                      isMatSelected = false;
+
+                                      isSupineSelected = false;
+                                      isSittingSelected = false;
+                                      isProneSelected = false;
+                                      isKneelingSelected = false;
+                                      isSideLyingSelected = false;
+                                      isStandingSelected = false;
+
+                                      initState = !initState;
                                       // 회원 카드 선택시 MemberInfo로 이동
                                       Navigator.pop(context, actionInfo);
                                     },
@@ -592,24 +603,25 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   children: [
                                     InkWell(
                                       onTap: () {
+                                        // 화면 나갈때  chip 변수 초기화
+                                        isReformerSelected = false;
+                                        isCadillacSelected = false;
+                                        isChairSelected = false;
+                                        isLadderBarrelSelected = false;
+                                        isSpringBoardSelected = false;
+                                        isSpineCorrectorSelected = false;
+                                        isMatSelected = false;
+
+                                        isSupineSelected = false;
+                                        isSittingSelected = false;
+                                        isProneSelected = false;
+                                        isKneelingSelected = false;
+                                        isSideLyingSelected = false;
+                                        isStandingSelected = false;
+
+                                        initState = !initState;
                                         // 회원 카드 선택시 MemberInfo로 이동
                                         Navigator.pop(context, actionInfo);
-
-                                        globalFunction.inititalizeBools([
-                                          isReformerSelected,
-                                          isCadillacSelected,
-                                          isChairSelected,
-                                          isLadderBarrelSelected,
-                                          isSpringBoardSelected,
-                                          isSpineCorrectorSelected,
-                                          isMatSelected,
-                                          isSupineSelected,
-                                          isSittingSelected,
-                                          isProneSelected,
-                                          isKneelingSelected,
-                                          isSideLyingSelected,
-                                          isStandingSelected
-                                        ], false);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(

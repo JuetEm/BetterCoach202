@@ -113,6 +113,7 @@ class _LessonAddState extends State<LessonAdd> {
                           showArrow: true,
                           customFunction: () async {
                             String currentAppratus = apratusNameController.text;
+                            bool initState = true;
 
                             final ActionInfo? result = await Navigator.push(
                               context,
@@ -120,8 +121,11 @@ class _LessonAddState extends State<LessonAdd> {
                                 builder: (context) => ActionSelector(),
                                 fullscreenDialog: true,
                                 // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                settings: RouteSettings(
-                                    arguments: [userInfo, currentAppratus]),
+                                settings: RouteSettings(arguments: [
+                                  userInfo,
+                                  currentAppratus,
+                                  initState
+                                ]),
                               ),
                             );
 
