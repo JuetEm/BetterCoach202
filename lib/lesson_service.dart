@@ -55,7 +55,7 @@ class LessonService extends ChangeNotifier {
       'lessonDate': lessonDate, //수업날짜
       'grade': grade, //수행도
       'totalNote': totalNote, //수업총메모
-      'timestamp': timestamp.toString(),
+      'timestamp': timestamp,
     });
     notifyListeners(); // 화면 갱신
     onSuccess();
