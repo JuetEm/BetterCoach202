@@ -383,6 +383,7 @@ class _ActionSelectorState extends State<ActionSelector> {
             isStandingSelected = false;
 
             initState = !initState;
+            positionArray = [];
             Navigator.pop(context);
           }),
           body: Padding(
@@ -555,6 +556,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       isSideLyingSelected = false;
                                       isStandingSelected = false;
 
+                                      positionArray = [];
                                       initState = !initState;
                                       // 회원 카드 선택시 MemberInfo로 이동
                                       Navigator.pop(context, actionInfo);
@@ -619,6 +621,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         isSideLyingSelected = false;
                                         isStandingSelected = false;
 
+                                        positionArray = [];
                                         initState = !initState;
                                         // 회원 카드 선택시 MemberInfo로 이동
                                         Navigator.pop(context, actionInfo);
