@@ -114,7 +114,7 @@ class _LessonAddState extends State<LessonAdd> {
                           customFunction: () async {
                             String currentAppratus = apratusNameController.text;
 
-                            final ActionInfo result = await Navigator.push(
+                            final ActionInfo? result = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ActionSelector(),
@@ -125,12 +125,39 @@ class _LessonAddState extends State<LessonAdd> {
                               ),
                             );
 
-                            print(
-                                "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
+                            if (!(result == null)) {
+                              print(
+                                  "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
 
-                            setState(() {
-                              actionNameController.text = result.actionName;
-                            });
+                              setState(() {
+                                actionNameController.text = result.actionName;
+                                switch (result.apparatus) {
+                                  case "RE":
+                                    apratusNameController.text = "REFORMER";
+                                    break;
+                                  case "CA":
+                                    apratusNameController.text = "CADILLAC";
+                                    break;
+                                  case "CH":
+                                    apratusNameController.text = "CHAIR";
+                                    break;
+                                  case "LA":
+                                    apratusNameController.text =
+                                        "LADDER BARREL";
+                                    break;
+                                  case "SB":
+                                    apratusNameController.text = "SPRING BOARD";
+                                    break;
+                                  case "SC":
+                                    apratusNameController.text =
+                                        "SPINE CORRECTOR";
+                                    break;
+                                  case "MAT":
+                                    apratusNameController.text = "MAT";
+                                    break;
+                                }
+                              });
+                            }
                           },
                         ),
 

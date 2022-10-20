@@ -358,7 +358,24 @@ class _ActionSelectorState extends State<ActionSelector> {
       child: Consumer<ActionService>(builder: (context, actionService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "동작선택", null),
+          appBar: BaseAppBarMethod(context, "동작선택", () {
+            globalFunction.inititalizeBools([
+              isReformerSelected,
+              isCadillacSelected,
+              isChairSelected,
+              isLadderBarrelSelected,
+              isSpringBoardSelected,
+              isSpineCorrectorSelected,
+              isMatSelected,
+              isSupineSelected,
+              isSittingSelected,
+              isProneSelected,
+              isKneelingSelected,
+              isSideLyingSelected,
+              isStandingSelected
+            ], false);
+            Navigator.pop(context);
+          }),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -513,6 +530,21 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 children: [
                                   InkWell(
                                     onTap: () {
+                                      globalFunction.inititalizeBools([
+                                        isReformerSelected,
+                                        isCadillacSelected,
+                                        isChairSelected,
+                                        isLadderBarrelSelected,
+                                        isSpringBoardSelected,
+                                        isSpineCorrectorSelected,
+                                        isMatSelected,
+                                        isSupineSelected,
+                                        isSittingSelected,
+                                        isProneSelected,
+                                        isKneelingSelected,
+                                        isSideLyingSelected,
+                                        isStandingSelected
+                                      ], false);
                                       // 회원 카드 선택시 MemberInfo로 이동
                                       Navigator.pop(context, actionInfo);
                                     },
