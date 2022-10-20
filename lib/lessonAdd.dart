@@ -37,6 +37,8 @@ List<String> dropdownList = [
 
 double sliderValue = 50;
 
+bool initState = true;
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -47,6 +49,14 @@ class LessonAdd extends StatefulWidget {
 class _LessonAddState extends State<LessonAdd> {
   @override
   Widget build(BuildContext context) {
+    if (initState) {
+      now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      TextEditingController lessonDateController =
+          TextEditingController(text: now);
+      TextEditingController gradeController = TextEditingController(text: "50");
+      initState = !initState;
+    }
+
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     // 이전 화면에서 보낸 변수 받기
@@ -74,6 +84,7 @@ class _LessonAddState extends State<LessonAdd> {
             );
             // 페이지 초기화
             initInpuWidget();
+            initState = !initState;
           }),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -254,6 +265,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                     // 화면 초기화
                                     initInpuWidget();
+                                    initState = !initState;
                                   },
                                   onError: () {
                                     print("저장하기 ERROR");
