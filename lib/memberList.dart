@@ -33,6 +33,7 @@ class _MemberListState extends State<MemberList> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+    //user.uid = '11';
 
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
@@ -85,6 +86,8 @@ class _MemberListState extends State<MemberList> {
                           color: Palette.mainBackground,
                         ),
                         child: FutureBuilder<QuerySnapshot>(
+                          //future: memberService.read(
+                          //'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
                           future: memberService.read(user.uid, 'name'),
                           builder: (context, snapshot) {
                             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
