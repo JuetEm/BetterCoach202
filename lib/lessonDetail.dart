@@ -256,6 +256,16 @@ class _LessonDetailState extends State<LessonDetail> {
                                                       ),
                                                 ),
                                                 const SizedBox(width: 15.0),
+                                                Text(
+                                                  grade,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .copyWith(
+                                                        fontSize: 12.0,
+                                                      ),
+                                                ),
+                                                const SizedBox(width: 15.0),
                                                 Expanded(
                                                   child: Text(
                                                     totalNote,

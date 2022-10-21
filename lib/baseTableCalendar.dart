@@ -36,7 +36,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
     return Consumer<CalendarService>(
       builder: (context, calendarService, child) {
         return Scaffold(
-          appBar: widget.pageName == "수업 보기"
+          appBar: widget.pageName == "수업일 선택"
               ? null
               : BaseAppBarMethod(context, "${widget.pageName} 선택", () {
                   Navigator.push(
