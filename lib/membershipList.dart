@@ -6,7 +6,7 @@ import 'color.dart';
 import 'globalWidget.dart';
 
 class MembershipList extends StatefulWidget {
-  const MembershipList({super.key});
+  const MembershipList({super.key, required String lessonCount});
 
   @override
   State<MembershipList> createState() => _MembershipListState();
@@ -51,6 +51,7 @@ class _MembershipListState extends State<MembershipList> {
                   ));
                   // 저장하기 성공시 Home로 이동
                   Navigator.pop(context, membershipController.text);
+                  membershipController.text = "";
                 },
               )
             ],

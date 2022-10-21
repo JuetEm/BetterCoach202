@@ -130,7 +130,8 @@ class _MemberUpdateState extends State<MemberUpdate> {
                           hint: "등록횟수입력",
                           showArrow: true,
                           customFunction: () {
-                            _getMembership(context);
+                            String lessonCount = registerTypeController.text;
+                            _getMembership(context, lessonCount);
                           },
                         ),
 
@@ -322,10 +323,13 @@ class _MemberUpdateState extends State<MemberUpdate> {
     );
   }
 
-  void _getMembership(BuildContext context) async {
+  void _getMembership(BuildContext context, String lessonCount) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => MembershipList()),
+      MaterialPageRoute(
+          builder: (_) => MembershipList(
+                lessonCount: lessonCount,
+              )),
     );
 
     if (!(result == null)) {
