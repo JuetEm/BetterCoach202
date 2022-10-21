@@ -8,6 +8,7 @@ import 'package:web_project/action_service.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -74,6 +75,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +85,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
       theme: ThemeData(fontFamily: 'Pretendard'),
       home: user == null ? LoginPage() : MemberList(),
     );

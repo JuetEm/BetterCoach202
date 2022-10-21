@@ -162,7 +162,7 @@ class _LessonDetailState extends State<LessonDetail> {
                               FutureBuilder<QuerySnapshot>(
                                 future: lessonService.readNotesOfAction(
                                   user.uid,
-                                  customUserInfo.phoneNumber,
+                                  customUserInfo.docId,
                                   actionName,
                                 ),
                                 builder: (context, snapshot) {
@@ -280,9 +280,12 @@ class _LessonDetailState extends State<LessonDetail> {
                                                         setState(() {
                                                           editDocId = doc.id;
                                                           buttonString = "수정하기";
-                                                          sliderValue =
-                                                              double.parse(
-                                                                  grade);
+                                                          if (grade
+                                                              .isNotEmpty) {
+                                                            sliderValue =
+                                                                double.parse(
+                                                                    grade);
+                                                          }
                                                           print(
                                                               "Edit Function");
                                                           apratusNameController
@@ -407,12 +410,12 @@ class _LessonDetailState extends State<LessonDetail> {
                           height: 10,
                         ),
 
-                        /// 기구 입력창
-                        BasePopupMenuButton(
-                          customController: apratusNameController,
+                        // 기구 입력창
+                        BaseModalBottomSheetButton(
+                          bottomModalController: apratusNameController,
                           hint: "기구",
                           showButton: true,
-                          dropdownList: dropdownList,
+                          optionList: dropdownList,
                           customFunction: () {},
                         ),
 
@@ -513,9 +516,15 @@ class _LessonDetailState extends State<LessonDetail> {
             lessonDateController.text,
             gradeController.text,
             totalNoteController.text);
-        sliderValue = double.parse(gradeController.text);
+
+        apratusNameController.text = "";
+        lessonDateController.text = "";
+        gradeController.text = "";
+        totalNoteController.text = "";
+        sliderValue = 50;
         buttonString = "저장하기";
       });
+
       // 저장하기 성공시 MemberInfo로 이동
       Navigator.pushReplacement(
         context,

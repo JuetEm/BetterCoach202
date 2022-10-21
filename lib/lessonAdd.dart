@@ -37,6 +37,8 @@ List<String> dropdownList = [
 
 double sliderValue = 50;
 
+bool initState = true;
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -47,6 +49,14 @@ class LessonAdd extends StatefulWidget {
 class _LessonAddState extends State<LessonAdd> {
   @override
   Widget build(BuildContext context) {
+    if (initState) {
+      print("INIT!!! : ${initState}");
+      now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      lessonDateController = TextEditingController(text: now);
+      gradeController = TextEditingController(text: "50");
+      initState = !initState;
+    }
+
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     // 이전 화면에서 보낸 변수 받기
@@ -74,6 +84,7 @@ class _LessonAddState extends State<LessonAdd> {
             );
             // 페이지 초기화
             initInpuWidget();
+            initState = !initState;
           }),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -113,24 +124,55 @@ class _LessonAddState extends State<LessonAdd> {
                           showArrow: true,
                           customFunction: () async {
                             String currentAppratus = apratusNameController.text;
+                            bool initState = true;
 
-                            final ActionInfo result = await Navigator.push(
+                            final ActionInfo? result = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ActionSelector(),
                                 fullscreenDialog: true,
                                 // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                settings: RouteSettings(
-                                    arguments: [userInfo, currentAppratus]),
+                                settings: RouteSettings(arguments: [
+                                  userInfo,
+                                  currentAppratus,
+                                  initState
+                                ]),
                               ),
                             );
 
-                            print(
-                                "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
+                            if (!(result == null)) {
+                              print(
+                                  "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
 
-                            setState(() {
-                              actionNameController.text = result.actionName;
-                            });
+                              setState(() {
+                                actionNameController.text = result.actionName;
+                                switch (result.apparatus) {
+                                  case "RE":
+                                    apratusNameController.text = "REFORMER";
+                                    break;
+                                  case "CA":
+                                    apratusNameController.text = "CADILLAC";
+                                    break;
+                                  case "CH":
+                                    apratusNameController.text = "CHAIR";
+                                    break;
+                                  case "LA":
+                                    apratusNameController.text =
+                                        "LADDER BARREL";
+                                    break;
+                                  case "SB":
+                                    apratusNameController.text = "SPRING BOARD";
+                                    break;
+                                  case "SC":
+                                    apratusNameController.text =
+                                        "SPINE CORRECTOR";
+                                    break;
+                                  case "MAT":
+                                    apratusNameController.text = "MAT";
+                                    break;
+                                }
+                              });
+                            }
                           },
                         ),
 
@@ -189,6 +231,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     context, lessonDateController, "수업일") &&
                                 globalFunction.textNullCheck(
                                     context, actionNameController, "동작이름")) {
+                              print("userInfo.docId : ${userInfo.docId}");
                               // 오늘 날짜 가져오기
                               lessonService.create(
                                   docId: userInfo
@@ -223,6 +266,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                     // 화면 초기화
                                     initInpuWidget();
+                                    initState = !initState;
                                   },
                                   onError: () {
                                     print("저장하기 ERROR");
