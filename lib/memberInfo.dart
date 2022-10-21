@@ -70,7 +70,7 @@ class _MemberInfoState extends State<MemberInfo> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(22.0),
+                    padding: const EdgeInsets.fromLTRB(22, 22, 22, 11),
                     child: Column(
                       children: [
                         Column(
@@ -538,7 +538,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
               /// 추가 버튼
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 0, 22, 22),
+                padding: const EdgeInsets.fromLTRB(22, 11, 22, 22),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
