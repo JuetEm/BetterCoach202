@@ -265,7 +265,8 @@ class _LessonDetailState extends State<LessonDetail> {
                                                         fontSize: 12.0,
                                                       ),
                                                 ),
-                                                const SizedBox(width: 15.0),
+                                                const SizedBox(
+                                                    width: 15.0), //머지테스트
                                                 Expanded(
                                                   child: Text(
                                                     totalNote,
@@ -436,7 +437,7 @@ class _LessonDetailState extends State<LessonDetail> {
                           showArrow: true,
                           customFunction: () {
                             globalFunction.getDateFromCalendar(
-                                context, lessonDateController, "수업일");
+                                context, lessonDateController, "수업일 선택");
                           },
                         ),
 
