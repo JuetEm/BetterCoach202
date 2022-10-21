@@ -16,7 +16,7 @@ class LessonService extends ChangeNotifier {
         docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
     required String uid, // 강사 고유번호
     required String name, //회원이름
-    required String phoneNumber, // 회원 고유번호 (전화번호로 회원 식별)
+    required String phoneNumber, // 회원 고유번호 (전화번호로 회원 식별) => 전화번호 식별 방식 폐기
     required String apratusName, //기구이름
     required String actionName, //동작이름
     required String lessonDate, //수업날짜
