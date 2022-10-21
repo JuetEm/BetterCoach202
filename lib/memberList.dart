@@ -87,7 +87,7 @@ class _MemberListState extends State<MemberList> {
                         ),
                         child: FutureBuilder<QuerySnapshot>(
                           //future: memberService.read(
-                          //'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
+                          //    'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
                           future: memberService.read(user.uid, 'name'),
                           builder: (context, snapshot) {
                             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
