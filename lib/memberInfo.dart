@@ -351,80 +351,73 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 ],
                                               );
                                             }
-                                            return ConstrainedBox(
-                                              constraints: BoxConstraints(
-                                                minHeight: 0,
-                                                maxHeight: 500,
-                                              ),
-                                              child: GroupedListView(
-                                                shrinkWrap: true,
-                                                elements: docs,
-                                                groupBy: (element) =>
-                                                    element['actionName'],
-                                                groupSeparatorBuilder:
-                                                    (String value) => InkWell(
-                                                  onTap: () {
-                                                    indexCheck = 0;
+                                            return GroupedListView(
+                                              shrinkWrap: true,
+                                              elements: docs,
+                                              groupBy: (element) =>
+                                                  element['actionName'],
+                                              groupSeparatorBuilder:
+                                                  (String value) => InkWell(
+                                                onTap: () {
+                                                  indexCheck = 0;
 
-                                                    // 회원 운동 카드 선택시 MemberInfo로 이동
-                                                    eventList = [];
-                                                    List<dynamic> args = [
-                                                      userInfo,
-                                                      value,
-                                                      eventList,
-                                                      lessonNoteId,
-                                                    ];
-
-                                                    print(
-                                                        "args.length : ${args.length}");
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LessonDetail(),
-                                                        // GlobalWidgetDashboard(), //
-                                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                                        settings: RouteSettings(
-                                                            arguments: args),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: GroupActionContainer(
-                                                      actionName: value),
-                                                ),
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        dynamic ddocs) {
-                                                  // 달력기능 개발 중
-                                                  // DateTime eventDate = DateTime.parse(
-                                                  //     docs['lessonDate'].toString());
-                                                  // eventList.add(eventDate);
+                                                  // 회원 운동 카드 선택시 MemberInfo로 이동
+                                                  eventList = [];
+                                                  List<dynamic> args = [
+                                                    userInfo,
+                                                    value,
+                                                    eventList,
+                                                    lessonNoteId,
+                                                  ];
 
                                                   print(
-                                                      "indexCheck : ${indexCheck}");
-
-                                                  print(
-                                                      "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
-                                                  indexCheck++;
-
-                                                  return ActionContainer(
-                                                      apratusName:
-                                                          ddocs['apratusName'],
-                                                      actionName:
-                                                          ddocs['actionName'],
-                                                      lessonDate:
-                                                          ddocs['lessonDate'],
-                                                      grade: ddocs['grade'],
-                                                      totalNote:
-                                                          ddocs['totalNote']);
+                                                      "args.length : ${args.length}");
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LessonDetail(),
+                                                      // GlobalWidgetDashboard(), //
+                                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                                      settings: RouteSettings(
+                                                          arguments: args),
+                                                    ),
+                                                  );
                                                 },
-                                                itemComparator: (item1,
-                                                        item2) =>
-                                                    item1['lessonDate']
-                                                        .compareTo(item2[
-                                                            'lessonDate']), // optional
-                                                order: GroupedListOrder.DESC,
+                                                child: GroupActionContainer(
+                                                    actionName: value),
                                               ),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      dynamic ddocs) {
+                                                // 달력기능 개발 중
+                                                // DateTime eventDate = DateTime.parse(
+                                                //     docs['lessonDate'].toString());
+                                                // eventList.add(eventDate);
+
+                                                print(
+                                                    "indexCheck : ${indexCheck}");
+
+                                                print(
+                                                    "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+                                                indexCheck++;
+
+                                                return ActionContainer(
+                                                    apratusName:
+                                                        ddocs['apratusName'],
+                                                    actionName:
+                                                        ddocs['actionName'],
+                                                    lessonDate:
+                                                        ddocs['lessonDate'],
+                                                    grade: ddocs['grade'],
+                                                    totalNote:
+                                                        ddocs['totalNote']);
+                                              },
+                                              itemComparator: (item1, item2) =>
+                                                  item1['lessonDate'].compareTo(
+                                                      item2[
+                                                          'lessonDate']), // optional
+                                              order: GroupedListOrder.DESC,
                                             );
                                           },
                                         ),
@@ -558,14 +551,14 @@ class _MemberInfoState extends State<MemberInfo> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "동작추가",
+                          "노트추가",
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
                     ),
                   ),
                   onPressed: () {
-                    print("동작추가");
+                    print("노트추가");
                     // LessonAdd로 이동
                     Navigator.push(
                       context,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/color.dart';
 
+import 'actionAdd.dart';
 import 'actionInfo.dart';
 import 'action_service.dart';
 import 'auth_service.dart';
@@ -24,6 +25,8 @@ bool isProneSelected = false;
 bool isKneelingSelected = false;
 bool isSideLyingSelected = false;
 bool isStandingSelected = false;
+bool isPlankSelected = false;
+bool isQuadrupedSelected = false;
 
 List positionArray = [];
 
@@ -356,6 +359,52 @@ class _ActionSelectorState extends State<ActionSelector> {
           );
         },
       ),
+      FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isPlankSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
+        label: Text("PLANK"),
+        selected: isPlankSelected,
+        showCheckmark: false,
+        onSelected: (value) {
+          setState(
+            () {
+              isPlankSelected = !isPlankSelected;
+              if (isPlankSelected) {
+                positionArray.add("plank");
+              } else {
+                positionArray.remove("plank");
+              }
+              print("isStandingSelected : ${isPlankSelected}");
+              print("positionArray : ${positionArray}");
+            },
+          );
+        },
+      ),
+      FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isQuadrupedSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
+        label: Text("QUADRUPED"),
+        selected: isQuadrupedSelected,
+        showCheckmark: false,
+        onSelected: (value) {
+          setState(
+            () {
+              isQuadrupedSelected = !isQuadrupedSelected;
+              if (isQuadrupedSelected) {
+                positionArray.add("quadruped");
+              } else {
+                positionArray.remove("quadruped");
+              }
+              print("isStandingSelected : ${isPlankSelected}");
+              print("positionArray : ${positionArray}");
+            },
+          );
+        },
+      ),
     ];
 
     return MediaQuery.removePadding(
@@ -381,6 +430,8 @@ class _ActionSelectorState extends State<ActionSelector> {
             isKneelingSelected = false;
             isSideLyingSelected = false;
             isStandingSelected = false;
+            isPlankSelected = false;
+            isQuadrupedSelected = false;
 
             initState = !initState;
             positionArray = [];
@@ -500,12 +551,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                       isSpringBoardSelected,
                       isSpineCorrectorSelected,
                       isMatSelected,
-                      isSupineSelected,
-                      isSittingSelected,
-                      isProneSelected,
-                      isKneelingSelected,
-                      isSideLyingSelected,
-                      isStandingSelected,
                     ),
                     builder: (context, snapshot) {
                       final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
@@ -527,8 +572,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                             String apparatus = doc.get('apparatus');
                             String position = doc.get('position');
                             String name = doc.get('name');
-                            String upperCaseName = doc.get('upperCaseName');
-                            String lowerCaseName = doc.get('lowerCaseName');
                             final ActionInfo actionInfo = ActionInfo(
                               name,
                               apparatus,
@@ -672,7 +715,52 @@ class _ActionSelectorState extends State<ActionSelector> {
                       );
                     },
                   ),
-                )
+                ),
+
+                /// 추가 버튼
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 11, 22, 22),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        color: Palette.buttonOrange,
+                      ),
+                      height: 60,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "동작추가",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onPressed: () {
+                      print("동작추가");
+                      // LessonAdd로 이동
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ActionAdd(),
+                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                          settings: RouteSettings(
+                            arguments: userInfo,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
