@@ -71,6 +71,7 @@ class _MemberInfoState extends State<MemberInfo> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(22, 22, 22, 11),
                     child: Column(
@@ -553,6 +554,7 @@ class _NoteListState extends State<NoteList> {
   Widget build(BuildContext context) {
     return GroupedListView(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       elements: widget.docs,
       groupBy: (element) => element['actionName'],
       groupSeparatorBuilder: (String value) =>
@@ -602,6 +604,7 @@ class _NoteList2State extends State<NoteList2> {
   Widget build(BuildContext context) {
     return GroupedListView(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       elements: widget.docs,
       groupBy: (element) => element['lessonDate'],
       groupSeparatorBuilder: (String value) => InkWell(

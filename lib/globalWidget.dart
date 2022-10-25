@@ -434,6 +434,10 @@ class _BaseTextFieldState extends State<BaseTextField> {
             filled: true,
             contentPadding: EdgeInsets.all(16),
             fillColor: Colors.white),
+        onChanged: (text) {
+          // 현재 텍스트필드의 텍스트를 출력
+          print("First text field: $text");
+        },
       ),
     );
   }

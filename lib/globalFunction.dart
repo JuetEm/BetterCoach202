@@ -83,9 +83,12 @@ class GlobalFunction {
 
       customController.text = formatedDate;
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("${pageName} : ${formatedDate}"),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${pageName} : ${formatedDate}"),
+        ),
+      );
+      (context as Element).reassemble();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("${pageName}을 선택해주세요."),
