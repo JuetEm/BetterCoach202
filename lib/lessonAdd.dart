@@ -70,7 +70,7 @@ class _LessonAddState extends State<LessonAdd> {
       builder: (context, lessonService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "노트 추가", () {
+          appBar: BaseAppBarMethod(context, "노트추가", () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.push(
               context,
@@ -120,7 +120,7 @@ class _LessonAddState extends State<LessonAdd> {
                         /// 동작이름 입력창
                         BaseTextField(
                           customController: actionNameController,
-                          hint: "동작이름",
+                          hint: "동작선택",
                           showArrow: true,
                           customFunction: () async {
                             String currentAppratus = apratusNameController.text;

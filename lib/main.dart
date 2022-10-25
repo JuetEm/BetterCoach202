@@ -330,7 +330,7 @@ class _LoginPageState extends State<LoginPage> {
                 //   ),
                 //   SizedBox(height: 10),
 
-                // /// Cloud Storage 개발화면 버튼
+                /// Cloud Storage 개발화면 버튼
                 // ElevatedButton(
                 //   child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
                 //   onPressed: () {

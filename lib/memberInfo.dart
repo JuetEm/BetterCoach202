@@ -591,14 +591,14 @@ class _MemberInfoState extends State<MemberInfo> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "노트추가",
+                          "동작추가",
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
                     ),
                   ),
                   onPressed: () {
-                    print("노트추가");
+                    print("동작추가");
                     // LessonAdd로 이동
                     Navigator.push(
                       context,

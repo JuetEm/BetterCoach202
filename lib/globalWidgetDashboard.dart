@@ -44,7 +44,7 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
               showArrow: true, // 화살표 보여주기
               customFunction: () {
                 // 동작 DB 밀어넣기
-                //globalfunction.createDummy(actionService);
+                globalfunction.createDummy(actionService);
                 Timestamp timestamp = Timestamp.now();
 
                 print(

@@ -13,12 +13,6 @@ class ActionService extends ChangeNotifier {
     bool isSpringBoardSelected,
     bool isSpineCorrectorSelected,
     bool isMatSelected,
-    bool isSupineSelected,
-    bool isSittingSelected,
-    bool isProneSelected,
-    bool isKneelingSelected,
-    bool isSideLyingSelected,
-    bool isStandingSelected,
   ) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
@@ -57,25 +51,6 @@ class ActionService extends ChangeNotifier {
       apparatus.add("MAT");
     }
 
-    if (isSupineSelected) {
-      actionCollection.where('position', isEqualTo: 'supine');
-    }
-    if (isSittingSelected) {
-      actionCollection.where('position', isEqualTo: 'sitting');
-    }
-    if (isProneSelected) {
-      actionCollection.where('position', isEqualTo: 'prone');
-    }
-    if (isKneelingSelected) {
-      actionCollection.where('position', isEqualTo: 'kneeling');
-    }
-    if (isSideLyingSelected) {
-      actionCollection.where('position', isEqualTo: 'side lying');
-    }
-    if (isStandingSelected) {
-      actionCollection.where('position', isEqualTo: 'standing');
-    }
-
     return actionCollection
         .where("apparatus",
             whereIn: apparatus.isEmpty
@@ -88,6 +63,7 @@ class ActionService extends ChangeNotifier {
     String apparatus,
     String position,
     String name,
+    String author,
     String upperCaseName,
     String lowerCaseName,
   ) async {
@@ -96,6 +72,7 @@ class ActionService extends ChangeNotifier {
       'apparatus': apparatus, // 유저 식별자
       'position': position, // 하고싶은 일
       'name': name, // 완료 여부
+      'author': author,
       'upperCaseName': upperCaseName, // 완료 여부
       'lowerCaseName': lowerCaseName, // 완료 여부
     }).then((value) {
