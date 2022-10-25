@@ -56,6 +56,7 @@ class ActionService extends ChangeNotifier {
             whereIn: apparatus.isEmpty
                 ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT"]
                 : apparatus)
+        .orderBy("name", descending: false)
         .get();
   }
 

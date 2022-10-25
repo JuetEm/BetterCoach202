@@ -441,20 +441,21 @@ class _ActionSelectorState extends State<ActionSelector> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 10),
-                SizedBox(
-                  height: 30,
-                  width: double.infinity,
-                  child: Text(
-                    "기구별",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+                // SizedBox(
+                //   height: 30,
+                //   width: double.infinity,
+                //   child: Text(
+                //     "기구별",
+                //     style: TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //     textAlign: TextAlign.left,
+                //   ),
+                // ),
 
                 Center(
                   child: SingleChildScrollView(
@@ -471,18 +472,18 @@ class _ActionSelectorState extends State<ActionSelector> {
                   ),
                 ),
                 SizedBox(height: 20),
-                SizedBox(
-                  height: 30,
-                  width: double.infinity,
-                  child: Text(
-                    "자세별",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+                // SizedBox(
+                //   height: 30,
+                //   width: double.infinity,
+                //   child: Text(
+                //     "자세별",
+                //     style: TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //     textAlign: TextAlign.left,
+                //   ),
+                // ),
                 Center(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -529,6 +530,27 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //     ),
                 //   ),
                 // ),
+
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "신규 동작 추가",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Palette.grayFF,
+                      ),
+                    ),
+                  ),
+                  onPressed: () async {
+                    print("신규 동작 추가");
+                  },
+                ),
+                SizedBox(height: 20),
                 SizedBox(
                   height: 30,
                   width: double.infinity,
