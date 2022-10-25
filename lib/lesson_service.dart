@@ -90,9 +90,25 @@ class LessonService extends ChangeNotifier {
         .get();
   }
 
+  Future<QuerySnapshot> readNotesOflessonDate(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+  }
+
   void update(
     String docId,
     String apratusName,
+    String actionName,
     String lessonDate,
     String grade,
     String totalNote,
@@ -102,6 +118,7 @@ class LessonService extends ChangeNotifier {
         "update docId : ${docId}, apratusName : ${apratusName}, lessonDate ${lessonDate}, totalNote : ${totalNote}");
     final result = await lessonCollection.doc(docId).update({
       'apratusName': apratusName,
+      'actionName': actionName,
       'lessonDate': lessonDate,
       'grade': grade,
       'totalNote': totalNote,

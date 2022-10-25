@@ -56,14 +56,14 @@ String editGrade = "";
 String editTotalNote = "";
 int lessonListIndex = 0;
 
-class LessonDetail extends StatefulWidget {
-  const LessonDetail({super.key});
+class LessonDetailDate extends StatefulWidget {
+  const LessonDetailDate({super.key});
 
   @override
-  State<LessonDetail> createState() => _LessonDetailState();
+  State<LessonDetailDate> createState() => _LessonDetailDateState();
 }
 
-class _LessonDetailState extends State<LessonDetail> {
+class _LessonDetailDateState extends State<LessonDetailDate> {
   // set double(double value) => setState(() => sliderValue = value);
 
   @override
@@ -74,7 +74,7 @@ class _LessonDetailState extends State<LessonDetail> {
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     CustomUserInfo.UserInfo customUserInfo = argsList[0];
-    String actionName = argsList[1];
+    String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
 
@@ -122,7 +122,7 @@ class _LessonDetailState extends State<LessonDetail> {
 
                         /// Action 제목
                         Text(
-                          actionName,
+                          lessonDate,
                           style:
                               Theme.of(context).textTheme.bodyText1!.copyWith(
                                     fontSize: 24.0,
@@ -160,10 +160,10 @@ class _LessonDetailState extends State<LessonDetail> {
                                 height: 19,
                               ),
                               FutureBuilder<QuerySnapshot>(
-                                future: lessonService.readNotesOfAction(
+                                future: lessonService.readNotesOflessonDate(
                                   user.uid,
                                   customUserInfo.docId,
-                                  actionName,
+                                  lessonDate,
                                 ),
                                 builder: (context, snapshot) {
                                   final docs =
@@ -430,16 +430,75 @@ class _LessonDetailState extends State<LessonDetail> {
                           customFunction: () {},
                         ),
 
-                        /// 수업일 입력창
+                        /// 동작이름 입력창
                         BaseTextField(
-                          customController: lessonDateController,
-                          hint: "수업일",
+                          customController: actionNameController,
+                          hint: "동작이름",
                           showArrow: true,
-                          customFunction: () {
-                            globalFunction.getDateFromCalendar(
-                                context, lessonDateController, "수업일 선택");
+                          customFunction: () async {
+                            String currentAppratus = apratusNameController.text;
+                            bool initState = true;
+
+                            final ActionInfo? result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ActionSelector(),
+                                fullscreenDialog: true,
+                                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                settings: RouteSettings(arguments: [
+                                  customUserInfo,
+                                  currentAppratus,
+                                  initState
+                                ]),
+                              ),
+                            );
+
+                            if (!(result == null)) {
+                              print(
+                                  "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
+
+                              setState(() {
+                                actionNameController.text = result.actionName;
+                                switch (result.apparatus) {
+                                  case "RE":
+                                    apratusNameController.text = "REFORMER";
+                                    break;
+                                  case "CA":
+                                    apratusNameController.text = "CADILLAC";
+                                    break;
+                                  case "CH":
+                                    apratusNameController.text = "CHAIR";
+                                    break;
+                                  case "LA":
+                                    apratusNameController.text =
+                                        "LADDER BARREL";
+                                    break;
+                                  case "SB":
+                                    apratusNameController.text = "SPRING BOARD";
+                                    break;
+                                  case "SC":
+                                    apratusNameController.text =
+                                        "SPINE CORRECTOR";
+                                    break;
+                                  case "MAT":
+                                    apratusNameController.text = "MAT";
+                                    break;
+                                }
+                              });
+                            }
                           },
                         ),
+
+                        /// 수업일 입력창
+                        // BaseTextField(
+                        //   customController: lessonDateController,
+                        //   hint: "수업일",
+                        //   showArrow: true,
+                        //   customFunction: () {
+                        //     globalFunction.getDateFromCalendar(
+                        //         context, lessonDateController, "수업일 선택");
+                        //   },
+                        // ),
 
                         /// 수행도 입력창
                         BaseTextField(
@@ -496,11 +555,11 @@ class _LessonDetailState extends State<LessonDetail> {
                             print("${buttonString} 버튼");
 
                             if (buttonString == "저장하기") {
-                              saveButtonMethod(context, lessonService, user,
-                                  customUserInfo, actionName);
+                              saveButtonMethodDate(context, lessonService, user,
+                                  customUserInfo, lessonDate);
                             } else if (buttonString == "수정하기") {
-                              editButtonMethod(context, lessonService,
-                                  customUserInfo, actionName);
+                              editButtonMethodDate(context, lessonService,
+                                  customUserInfo, lessonDate);
                             }
                           },
                         ),
@@ -517,20 +576,21 @@ class _LessonDetailState extends State<LessonDetail> {
     );
   }
 
-  void editButtonMethod(BuildContext context, LessonService lessonService,
-      CustomUserInfo.UserInfo userInfo, String actionName) {
-    if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
+  void editButtonMethodDate(BuildContext context, LessonService lessonService,
+      CustomUserInfo.UserInfo userInfo, String lessonDate) {
+    if (globalFunction.textNullCheck(context, actionNameController, "동작이름")) {
       setState(() {
         lessonService.update(
             editDocId,
             apratusNameController.text,
-            actionName,
-            lessonDateController.text,
+            actionNameController.text,
+            lessonDate,
             gradeController.text,
             totalNoteController.text);
 
         apratusNameController.text = "";
         lessonDateController.text = "";
+        actionNameController.text = "";
         gradeController.text = "";
         totalNoteController.text = "";
         sliderValue = 50;
@@ -555,9 +615,9 @@ class _LessonDetailState extends State<LessonDetail> {
     }
   }
 
-  void saveButtonMethod(BuildContext context, LessonService lessonService,
-      User user, CustomUserInfo.UserInfo userInfo, String actionName) {
-    if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
+  void saveButtonMethodDate(BuildContext context, LessonService lessonService,
+      User user, CustomUserInfo.UserInfo userInfo, String lessonDate) {
+    if (globalFunction.textNullCheck(context, actionNameController, "동작이름")) {
       String now =
           DateFormat("yyyy-MM-dd").format(DateTime.now()); // 오늘 날짜 가져오기
       lessonService.create(
@@ -566,8 +626,8 @@ class _LessonDetailState extends State<LessonDetail> {
           name: nameController.text,
           phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 => 제거
           apratusName: apratusNameController.text, //기구이름
-          actionName: actionName, //동작이름
-          lessonDate: lessonDateController.text, //수업날짜
+          actionName: actionNameController.text, //동작이름
+          lessonDate: lessonDate, //수업날짜
           grade: gradeController.text, //수행도
           totalNote: totalNoteController.text, //수업총메모
           onSuccess: () {
@@ -590,6 +650,7 @@ class _LessonDetailState extends State<LessonDetail> {
             sliderValue = 50;
             globalFunction.clearTextEditController([
               apratusNameController,
+              actionNameController,
               lessonDateController,
               gradeController,
               totalNoteController

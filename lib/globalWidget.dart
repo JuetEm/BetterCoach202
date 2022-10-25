@@ -719,6 +719,77 @@ class ActionContainer extends StatelessWidget {
   }
 }
 
+class ActionContainerDate extends StatelessWidget {
+  const ActionContainerDate({
+    Key? key,
+    required this.apratusName,
+    required this.actionName,
+    required this.lessonDate,
+    required this.grade,
+    required this.totalNote,
+  }) : super(key: key);
+
+  final String apratusName;
+  final String actionName;
+  final String lessonDate;
+  final String grade;
+  final String totalNote;
+
+  @override
+  Widget build(BuildContext context) {
+    String lessonDateTrim = " ";
+    String apratusNameTrim = " ";
+    // 날짜 글자 자르기
+    if (lessonDate.length > 0) {
+      lessonDateTrim = lessonDate.substring(2, 10);
+    }
+    // 기구 첫두글자 자르기
+    if (apratusName.length > 0) {
+      apratusNameTrim = apratusName.substring(0, 2);
+    }
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 30.0,
+        right: 30.0,
+        top: 5.0,
+      ),
+      child: SizedBox(
+        //height: 20,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              actionName,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(width: 15.0),
+            Text(
+              apratusNameTrim,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(width: 15.0),
+            Expanded(
+              child: Text(
+                totalNote,
+                overflow: TextOverflow.fade,
+                maxLines: 2,
+                softWrap: true,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 12.0,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class GroupActionContainer extends StatelessWidget {
   const GroupActionContainer({
     Key? key,
@@ -753,6 +824,61 @@ class GroupActionContainer extends StatelessWidget {
                 children: [
                   Text(
                     actionName,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Spacer(flex: 1),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Palette.gray99,
+                    size: 12.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class GroupActionContainerDate extends StatelessWidget {
+  const GroupActionContainerDate({
+    Key? key,
+    required this.lessonDate,
+  }) : super(key: key);
+
+  final String lessonDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+            color: Palette.grayEE,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 30.0,
+              right: 16.0,
+            ),
+            child: SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    lessonDate,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
