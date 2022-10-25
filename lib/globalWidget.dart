@@ -759,14 +759,14 @@ class ActionContainerDate extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              actionName,
+              apratusNameTrim,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 12.0,
                   ),
             ),
             const SizedBox(width: 15.0),
             Text(
-              apratusNameTrim,
+              actionName,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     fontSize: 12.0,
                   ),
@@ -830,11 +830,11 @@ class GroupActionContainer extends StatelessWidget {
                         ),
                   ),
                   Spacer(flex: 1),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Palette.gray99,
-                    size: 12.0,
-                  ),
+                  // Icon(
+                  //   Icons.arrow_forward_ios,
+                  //   color: Palette.gray99,
+                  //   size: 12.0,
+                  // ),
                 ],
               ),
             ),

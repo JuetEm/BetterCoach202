@@ -102,7 +102,18 @@ class LessonService extends ChangeNotifier {
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('lessonDate', isEqualTo: lessonDate)
+        .orderBy("pos", descending: false)
         .get();
+  }
+
+  Future<void> updatePos(
+    String docId,
+    int pos,
+  ) async {
+    final result = await lessonCollection.doc(docId).update({
+      'pos': pos,
+    });
+    //notifyListeners(); // 화면 갱신
   }
 
   void update(
@@ -127,6 +138,13 @@ class LessonService extends ChangeNotifier {
   }
 
   void updateLesson(String docId, bool isActive) async {
+    // bucket isActive 업데이트
+
+    await lessonCollection.doc(docId).update({'isActive': isActive});
+    notifyListeners(); // 화면 갱신
+  }
+
+  void updateposition(String docId, bool isActive) async {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});
