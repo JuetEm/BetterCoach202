@@ -501,7 +501,7 @@ class _MemberInfoState extends State<MemberInfo> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "동작추가",
+                          "노트추가",
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
@@ -551,40 +551,34 @@ class NoteList extends StatefulWidget {
 class _NoteListState extends State<NoteList> {
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 0,
-        maxHeight: 500,
-      ),
-      child: GroupedListView(
-        shrinkWrap: true,
-        elements: widget.docs,
-        groupBy: (element) => element['actionName'],
-        groupSeparatorBuilder: (String value) =>
-            GroupActionContainer(actionName: value),
-        itemBuilder: (BuildContext context, dynamic ddocs) {
-          // 달력기능 개발 중
-          // DateTime eventDate = DateTime.parse(
-          //     docs['lessonDate'].toString());
-          // eventList.add(eventDate);
+    return GroupedListView(
+      shrinkWrap: true,
+      elements: widget.docs,
+      groupBy: (element) => element['actionName'],
+      groupSeparatorBuilder: (String value) =>
+          GroupActionContainer(actionName: value),
+      itemBuilder: (BuildContext context, dynamic ddocs) {
+        // 달력기능 개발 중
+        // DateTime eventDate = DateTime.parse(
+        //     docs['lessonDate'].toString());
+        // eventList.add(eventDate);
 
-          print("indexCheck : ${indexCheck}");
+        print("indexCheck : ${indexCheck}");
 
-          print(
-              "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
-          indexCheck++;
+        print(
+            "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+        indexCheck++;
 
-          return ActionContainer(
-              apratusName: ddocs['apratusName'],
-              actionName: ddocs['actionName'],
-              lessonDate: ddocs['lessonDate'],
-              grade: ddocs['grade'],
-              totalNote: ddocs['totalNote']);
-        },
-        itemComparator: (item1, item2) =>
-            item2['lessonDate'].compareTo(item1['lessonDate']), // optional
-        order: GroupedListOrder.ASC,
-      ),
+        return ActionContainer(
+            apratusName: ddocs['apratusName'],
+            actionName: ddocs['actionName'],
+            lessonDate: ddocs['lessonDate'],
+            grade: ddocs['grade'],
+            totalNote: ddocs['totalNote']);
+      },
+      itemComparator: (item1, item2) =>
+          item2['lessonDate'].compareTo(item1['lessonDate']), // optional
+      order: GroupedListOrder.ASC,
     );
   }
 }
@@ -606,64 +600,60 @@ class NoteList2 extends StatefulWidget {
 class _NoteList2State extends State<NoteList2> {
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 0,
-        maxHeight: 500,
-      ),
-      child: GroupedListView(
-        shrinkWrap: true,
-        elements: widget.docs,
-        groupBy: (element) => element['lessonDate'],
-        groupSeparatorBuilder: (String value) => InkWell(
-          onTap: () {
-            indexCheck = 0;
+    return GroupedListView(
+      shrinkWrap: true,
+      elements: widget.docs,
+      groupBy: (element) => element['lessonDate'],
+      groupSeparatorBuilder: (String value) => InkWell(
+        onTap: () {
+          indexCheck = 0;
 
-            // 회원 운동 카드 선택시 MemberInfo로 이동
-            eventList = [];
-            List<dynamic> args = [
-              widget.userInfo,
-              value,
-              eventList,
-              lessonNoteId,
-            ];
+          // 회원 운동 카드 선택시 MemberInfo로 이동
+          eventList = [];
+          List<dynamic> args = [
+            widget.userInfo,
+            value,
+            eventList,
+            lessonNoteId,
+          ];
 
-            print("args.length : ${args.length}");
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LessonDetailDate(),
-                // GlobalWidgetDashboard(), //
-                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                settings: RouteSettings(arguments: args),
-              ),
-            );
-          },
-          child: GroupActionContainerDate(lessonDate: value),
-        ),
-        itemBuilder: (BuildContext context, dynamic ddocs) {
-          // 달력기능 개발 중
-          // DateTime eventDate = DateTime.parse(
-          //     docs['lessonDate'].toString());
-          // eventList.add(eventDate);
-
-          print("indexCheck : ${indexCheck}");
-
-          print(
-              "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
-          indexCheck++;
-
-          return ActionContainerDate(
-              apratusName: ddocs['apratusName'],
-              actionName: ddocs['actionName'],
-              lessonDate: ddocs['lessonDate'],
-              grade: ddocs['grade'],
-              totalNote: ddocs['totalNote']);
+          print("args.length : ${args.length}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonDetailDate(),
+              // GlobalWidgetDashboard(), //
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(arguments: args),
+            ),
+          );
         },
-        itemComparator: (item2, item1) =>
-            item1['actionName'].compareTo(item2['actionName']), // optional
-        order: GroupedListOrder.DESC,
+        child: GroupActionContainerDate(lessonDate: value),
       ),
+      itemBuilder: (BuildContext context, dynamic ddocs) {
+        // 달력기능 개발 중
+        // DateTime eventDate = DateTime.parse(
+        //     docs['lessonDate'].toString());
+        // eventList.add(eventDate);
+
+        //print("indexCheck : ${indexCheck}");
+
+        //print(
+        //    "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+        indexCheck++;
+
+        return ActionContainerDate(
+          apratusName: ddocs['apratusName'],
+          actionName: ddocs['actionName'],
+          lessonDate: ddocs['lessonDate'],
+          grade: ddocs['grade'],
+          totalNote: ddocs['totalNote'],
+          pos: ddocs['pos'],
+        );
+      },
+      itemComparator: (item2, item1) =>
+          item1['pos'].compareTo(item2['pos']), // optional
+      order: GroupedListOrder.DESC,
     );
   }
 }

@@ -727,6 +727,7 @@ class ActionContainerDate extends StatelessWidget {
     required this.lessonDate,
     required this.grade,
     required this.totalNote,
+    required this.pos,
   }) : super(key: key);
 
   final String apratusName;
@@ -734,6 +735,7 @@ class ActionContainerDate extends StatelessWidget {
   final String lessonDate;
   final String grade;
   final String totalNote;
+  final int pos;
 
   @override
   Widget build(BuildContext context) {
@@ -758,6 +760,13 @@ class ActionContainerDate extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            // Text(
+            //   pos.toString(),
+            //   style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            //         fontSize: 12.0,
+            //       ),
+            // ),
+            // const SizedBox(width: 15.0),
             Text(
               apratusNameTrim,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
