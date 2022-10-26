@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
@@ -11,6 +12,8 @@ import 'auth_service.dart';
 import 'color.dart';
 import 'lessonAdd.dart';
 import 'lessonDetail.dart';
+import 'lessonDetailDate.dart';
+
 import 'lesson_service.dart';
 import 'memberAdd.dart';
 import 'memberList.dart';
@@ -21,10 +24,13 @@ import 'lessonInfo.dart';
 
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+String lessonDate = "";
 
 String lessonNoteId = "";
 
 int indexCheck = 0;
+String listMode = "날짜별";
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -69,6 +75,7 @@ class _MemberInfoState extends State<MemberInfo> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(22, 22, 22, 11),
                     child: Column(
@@ -321,13 +328,110 @@ class _MemberInfoState extends State<MemberInfo> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 5),
-                                        Text(
-                                          '레슨노트',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Palette.gray33,
-                                          ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              '레슨노트',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Palette.gray33,
+                                              ),
+                                            ),
+                                            Spacer(
+                                              flex: 1,
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  shadowColor:
+                                                      Colors.transparent,
+                                                  elevation: 0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(10.0),
+                                                  ),
+                                                  color: listMode == "날짜별"
+                                                      ? Palette.buttonOrange
+                                                      : Palette.grayEE,
+                                                ),
+                                                height: 40,
+                                                width: 80,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "날짜별",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: listMode == "날짜별"
+                                                            ? Palette.grayFF
+                                                            : Palette.gray66,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                // 동작별 상태로 변경
+                                                setState(() {
+                                                  listMode = "날짜별";
+                                                });
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  shadowColor:
+                                                      Colors.transparent,
+                                                  elevation: 0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(10.0),
+                                                  ),
+                                                  color: listMode == "동작별"
+                                                      ? Palette.buttonOrange
+                                                      : Palette.grayEE,
+                                                ),
+                                                height: 40,
+                                                width: 80,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "동작별",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: listMode == "동작별"
+                                                            ? Palette.grayFF
+                                                            : Palette.gray66,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                // 동작별 상태로 변경
+                                                setState(() {
+                                                  listMode = "동작별";
+                                                });
+                                              },
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(height: 5.0),
                                         FutureBuilder<QuerySnapshot>(
@@ -351,74 +455,15 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 ],
                                               );
                                             }
-                                            return GroupedListView(
-                                              shrinkWrap: true,
-                                              elements: docs,
-                                              groupBy: (element) =>
-                                                  element['actionName'],
-                                              groupSeparatorBuilder:
-                                                  (String value) => InkWell(
-                                                onTap: () {
-                                                  indexCheck = 0;
-
-                                                  // 회원 운동 카드 선택시 MemberInfo로 이동
-                                                  eventList = [];
-                                                  List<dynamic> args = [
-                                                    userInfo,
-                                                    value,
-                                                    eventList,
-                                                    lessonNoteId,
-                                                  ];
-
-                                                  print(
-                                                      "args.length : ${args.length}");
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          LessonDetail(),
-                                                      // GlobalWidgetDashboard(), //
-                                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                                      settings: RouteSettings(
-                                                          arguments: args),
-                                                    ),
-                                                  );
-                                                },
-                                                child: GroupActionContainer(
-                                                    actionName: value),
-                                              ),
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      dynamic ddocs) {
-                                                // 달력기능 개발 중
-                                                // DateTime eventDate = DateTime.parse(
-                                                //     docs['lessonDate'].toString());
-                                                // eventList.add(eventDate);
-
-                                                print(
-                                                    "indexCheck : ${indexCheck}");
-
-                                                print(
-                                                    "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
-                                                indexCheck++;
-
-                                                return ActionContainer(
-                                                    apratusName:
-                                                        ddocs['apratusName'],
-                                                    actionName:
-                                                        ddocs['actionName'],
-                                                    lessonDate:
-                                                        ddocs['lessonDate'],
-                                                    grade: ddocs['grade'],
-                                                    totalNote:
-                                                        ddocs['totalNote']);
-                                              },
-                                              itemComparator: (item1, item2) =>
-                                                  item1['lessonDate'].compareTo(
-                                                      item2[
-                                                          'lessonDate']), // optional
-                                              order: GroupedListOrder.DESC,
-                                            );
+                                            if (listMode == "동작별") {
+                                              return NoteList(
+                                                  docs: docs,
+                                                  userInfo: userInfo);
+                                            } else {
+                                              return NoteList2(
+                                                  docs: docs,
+                                                  userInfo: userInfo);
+                                            }
                                           },
                                         ),
                                         SizedBox(
@@ -428,98 +473,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                 ),
                               ],
                             ),
-                            // SizedBox(
-                            //   height: 14,
-                            // ),
-
-                            // /// 추가 버튼
-                            // ElevatedButton(
-                            //   style: ElevatedButton.styleFrom(
-                            //     backgroundColor: Colors.transparent,
-                            //     shadowColor: Colors.transparent,
-                            //   ),
-                            //   child: Container(
-                            //     decoration: BoxDecoration(
-                            //       borderRadius: BorderRadius.all(
-                            //         Radius.circular(10.0),
-                            //       ),
-                            //       color: Palette.buttonOrange,
-                            //     ),
-                            //     height: 60,
-                            //     width: double.infinity,
-                            //     child: Column(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       crossAxisAlignment: CrossAxisAlignment.center,
-                            //       children: [
-                            //         Text(
-                            //           "동작추가",
-                            //           style: TextStyle(fontSize: 18),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            //   onPressed: () {
-                            //     print("동작추가");
-                            //     // LessonAdd로 이동
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => LessonAdd(),
-                            //         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                            //         settings: RouteSettings(
-                            //           arguments: userInfo,
-                            //         ),
-                            //       ),
-                            //     );
-                            //   },
-                            // ),
                           ],
                         ),
-                        // SizedBox(
-                        //   height: 14,
-                        // ),
-
-                        // /// 추가 버튼
-                        // ElevatedButton(
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: Colors.transparent,
-                        //     shadowColor: Colors.transparent,
-                        //   ),
-                        //   child: Container(
-                        //     decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.all(
-                        //         Radius.circular(10.0),
-                        //       ),
-                        //       color: Palette.buttonOrange,
-                        //     ),
-                        //     height: 60,
-                        //     width: double.infinity,
-                        //     child: Column(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       crossAxisAlignment: CrossAxisAlignment.center,
-                        //       children: [
-                        //         Text(
-                        //           "동작추가",
-                        //           style: TextStyle(fontSize: 18),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        //   onPressed: () {
-                        //     print("동작추가");
-                        //     // LessonAdd로 이동
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => LessonAdd(),
-                        //         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        //         settings: RouteSettings(
-                        //           arguments: userInfo,
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
                       ],
                     ),
                   ),
@@ -558,16 +513,26 @@ class _MemberInfoState extends State<MemberInfo> {
                     ),
                   ),
                   onPressed: () {
-                    print("노트추가");
+                    print("동작추가");
+
+                    lessonDate =
+                        DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+                    eventList = [];
+                    List<dynamic> args = [
+                      userInfo,
+                      lessonDate,
+                      eventList,
+                      lessonNoteId,
+                    ];
+
                     // LessonAdd로 이동
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LessonAdd(),
                         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        settings: RouteSettings(
-                          arguments: userInfo,
-                        ),
+                        settings: RouteSettings(arguments: args),
                       ),
                     );
                   },
@@ -581,5 +546,131 @@ class _MemberInfoState extends State<MemberInfo> {
         //bottomNavigationBar: BaseBottomAppBar(),
       );
     });
+  }
+}
+
+class NoteList extends StatefulWidget {
+  const NoteList({
+    Key? key,
+    required this.docs,
+    required this.userInfo,
+  }) : super(key: key);
+
+  final List<QueryDocumentSnapshot<Object?>> docs;
+  final UserInfo userInfo;
+
+  @override
+  State<NoteList> createState() => _NoteListState();
+}
+
+class _NoteListState extends State<NoteList> {
+  @override
+  Widget build(BuildContext context) {
+    return GroupedListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      elements: widget.docs,
+      groupBy: (element) => element['actionName'],
+      groupSeparatorBuilder: (String value) =>
+          GroupActionContainer(actionName: value),
+      itemBuilder: (BuildContext context, dynamic ddocs) {
+        // 달력기능 개발 중
+        // DateTime eventDate = DateTime.parse(
+        //     docs['lessonDate'].toString());
+        // eventList.add(eventDate);
+
+        print("indexCheck : ${indexCheck}");
+
+        print(
+            "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+        indexCheck++;
+
+        return ActionContainer(
+            apratusName: ddocs['apratusName'],
+            actionName: ddocs['actionName'],
+            lessonDate: ddocs['lessonDate'],
+            grade: ddocs['grade'],
+            totalNote: ddocs['totalNote']);
+      },
+      itemComparator: (item1, item2) =>
+          item2['lessonDate'].compareTo(item1['lessonDate']), // optional
+      order: GroupedListOrder.ASC,
+    );
+  }
+}
+
+class NoteList2 extends StatefulWidget {
+  const NoteList2({
+    Key? key,
+    required this.docs,
+    required this.userInfo,
+  }) : super(key: key);
+
+  final List<QueryDocumentSnapshot<Object?>> docs;
+  final UserInfo userInfo;
+
+  @override
+  State<NoteList2> createState() => _NoteList2State();
+}
+
+class _NoteList2State extends State<NoteList2> {
+  @override
+  Widget build(BuildContext context) {
+    return GroupedListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      elements: widget.docs,
+      groupBy: (element) => element['lessonDate'],
+      groupSeparatorBuilder: (String value) => InkWell(
+        onTap: () {
+          indexCheck = 0;
+
+          // 회원 운동 카드 선택시 MemberInfo로 이동
+          eventList = [];
+          List<dynamic> args = [
+            widget.userInfo,
+            value,
+            eventList,
+            lessonNoteId,
+          ];
+
+          print("args.length : ${args.length}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonAdd(),
+              // GlobalWidgetDashboard(), //
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(arguments: args),
+            ),
+          );
+        },
+        child: GroupActionContainerDate(lessonDate: value),
+      ),
+      itemBuilder: (BuildContext context, dynamic ddocs) {
+        // 달력기능 개발 중
+        // DateTime eventDate = DateTime.parse(
+        //     docs['lessonDate'].toString());
+        // eventList.add(eventDate);
+
+        //print("indexCheck : ${indexCheck}");
+
+        //print(
+        //    "docID : ??? , apratusName : ${ddocs['apratusName']}, actionName :${ddocs['actionName']}, lessonDate : ${ddocs['lessonDate']}, grade: ${ddocs['grade']}, totalNote : ${ddocs['totalNote']}");
+        indexCheck++;
+
+        return ActionContainerDate(
+          apratusName: ddocs['apratusName'],
+          actionName: ddocs['actionName'],
+          lessonDate: ddocs['lessonDate'],
+          grade: ddocs['grade'],
+          totalNote: ddocs['totalNote'],
+          pos: ddocs['pos'],
+        );
+      },
+      itemComparator: (item2, item1) =>
+          item1['pos'].compareTo(item2['pos']), // optional
+      order: GroupedListOrder.DESC,
+    );
   }
 }

@@ -434,6 +434,63 @@ class _BaseTextFieldState extends State<BaseTextField> {
             filled: true,
             contentPadding: EdgeInsets.all(16),
             fillColor: Colors.white),
+        onChanged: (text) {
+          // 현재 텍스트필드의 텍스트를 출력
+          print("First text field: $text");
+        },
+      ),
+    );
+  }
+}
+
+// Text Field
+
+class DynamicSaveTextField extends StatefulWidget {
+  const DynamicSaveTextField({
+    Key? key,
+    required this.customController,
+    required this.hint,
+    required this.showArrow,
+    required this.customFunction,
+  }) : super(key: key);
+
+  final TextEditingController customController;
+  final String hint;
+  final showArrow;
+  final Function customFunction;
+
+  @override
+  State<DynamicSaveTextField> createState() => _DynamicSaveTextFieldState();
+}
+
+class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 70,
+      ),
+      child: TextField(
+        textInputAction: TextInputAction.done,
+        readOnly: widget.showArrow,
+        controller: widget.customController,
+        decoration: InputDecoration(
+            labelText: widget.hint,
+            hintText: widget.hint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
+        onEditingComplete: () {
+          // 현재 텍스트필드의 텍스트를 출력
+          widget.customFunction();
+        },
       ),
     );
   }
@@ -782,6 +839,86 @@ class ActionContainer extends StatelessWidget {
   }
 }
 
+class ActionContainerDate extends StatelessWidget {
+  const ActionContainerDate({
+    Key? key,
+    required this.apratusName,
+    required this.actionName,
+    required this.lessonDate,
+    required this.grade,
+    required this.totalNote,
+    required this.pos,
+  }) : super(key: key);
+
+  final String apratusName;
+  final String actionName;
+  final String lessonDate;
+  final String grade;
+  final String totalNote;
+  final int pos;
+
+  @override
+  Widget build(BuildContext context) {
+    String lessonDateTrim = " ";
+    String apratusNameTrim = " ";
+    // 날짜 글자 자르기
+    if (lessonDate.length > 0) {
+      lessonDateTrim = lessonDate.substring(2, 10);
+    }
+    // 기구 첫두글자 자르기
+    if (apratusName.length > 0) {
+      apratusNameTrim = apratusName.substring(0, 2);
+    }
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 30.0,
+        right: 30.0,
+        top: 5.0,
+      ),
+      child: SizedBox(
+        //height: 20,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // Text(
+            //   pos.toString(),
+            //   style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            //         fontSize: 12.0,
+            //       ),
+            // ),
+            // const SizedBox(width: 15.0),
+            Text(
+              apratusNameTrim,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(width: 15.0),
+            Text(
+              actionName,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 12.0,
+                  ),
+            ),
+            const SizedBox(width: 15.0),
+            Expanded(
+              child: Text(
+                totalNote,
+                overflow: TextOverflow.fade,
+                maxLines: 2,
+                softWrap: true,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 12.0,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class GroupActionContainer extends StatelessWidget {
   const GroupActionContainer({
     Key? key,
@@ -816,6 +953,61 @@ class GroupActionContainer extends StatelessWidget {
                 children: [
                   Text(
                     actionName,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Spacer(flex: 1),
+                  // Icon(
+                  //   Icons.arrow_forward_ios,
+                  //   color: Palette.gray99,
+                  //   size: 12.0,
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class GroupActionContainerDate extends StatelessWidget {
+  const GroupActionContainerDate({
+    Key? key,
+    required this.lessonDate,
+  }) : super(key: key);
+
+  final String lessonDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+            color: Palette.grayEE,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 30.0,
+              right: 16.0,
+            ),
+            child: SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    lessonDate,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,

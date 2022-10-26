@@ -7,6 +7,7 @@ class LessonInfo {
     this.totalNote,
     this.docId,
     this.uid,
+    this.pos,
   );
 
   String apratusName;
@@ -16,4 +17,5 @@ class LessonInfo {
   String totalNote;
   String docId;
   String uid;
+  int pos;
 }

@@ -8,6 +8,8 @@ Timestamp? timestamp = null;
 
 class LessonService extends ChangeNotifier {
   final lessonCollection = FirebaseFirestore.instance.collection('lesson');
+  final todaylessonCollection =
+      FirebaseFirestore.instance.collection('daylesson');
 
   GlobalFunction globalFunction = GlobalFunction();
 
@@ -44,6 +46,14 @@ class LessonService extends ChangeNotifier {
     //   'totalNote': totalNote, //수업총메모
     // });
 
+    int pos = await countPos(
+      uid,
+      docId,
+      lessonDate,
+    );
+
+    print('pos : ${pos}');
+
     timestamp = Timestamp.now();
 
     await lessonCollection.add({
@@ -57,6 +67,39 @@ class LessonService extends ChangeNotifier {
       'grade': grade, //수행도
       'totalNote': totalNote, //수업총메모
       'timestamp': timestamp,
+      'pos': pos, // 순서
+    });
+    notifyListeners(); // 화면 갱신
+    onSuccess();
+  }
+
+  void createTodaynote({
+    required String
+        docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
+    required String uid, // 강사 고유번호
+    required String name, //회원이름
+    required String lessonDate, //수업날짜
+    required String todayNote, //수업총메모
+
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    // 문서 만들기 set 방식 => 문서 아이디 지정 부여
+    // await bucketCollection.doc("원하는 ID").set({
+    //   'uid': uid, // 유저 식별자
+    //   'job': job, // 하고싶은 일
+    //   'isDone': false, // 완료 여부
+    // });
+
+    timestamp = Timestamp.now();
+
+    await todaylessonCollection.add({
+      'docId': docId, // 회원 고유번호, 회원(문서번호)번호로 식별
+      'uid': uid, //강사 고유번호
+      'name': name, //회원이름
+      'lessonDate': lessonDate, //수업날짜
+      'timestamp': timestamp,
+      'todayNote': todayNote,
     });
     notifyListeners(); // 화면 갱신
     onSuccess();
@@ -90,9 +133,52 @@ class LessonService extends ChangeNotifier {
         .get();
   }
 
-  void update(
+  Future<QuerySnapshot> readNotesOflessonDate(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .orderBy("pos", descending: false)
+        .get();
+  }
+
+  Future<void> updatePos(
+    String docId,
+    int pos,
+  ) async {
+    final result = await lessonCollection.doc(docId).update({
+      'pos': pos,
+    });
+    //notifyListeners(); // 화면 갱신
+  }
+
+  Future<int> countPos(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    QuerySnapshot docRaw = await lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .orderBy("pos", descending: false)
+        .get();
+    List<DocumentSnapshot> docs = docRaw.docs;
+    //print('pos : ${docs.length}');
+    return docs.length;
+  }
+
+  Future<void> update(
     String docId,
     String apratusName,
+    String actionName,
     String lessonDate,
     String grade,
     String totalNote,
@@ -102,6 +188,7 @@ class LessonService extends ChangeNotifier {
         "update docId : ${docId}, apratusName : ${apratusName}, lessonDate ${lessonDate}, totalNote : ${totalNote}");
     final result = await lessonCollection.doc(docId).update({
       'apratusName': apratusName,
+      'actionName': actionName,
       'lessonDate': lessonDate,
       'grade': grade,
       'totalNote': totalNote,
@@ -110,6 +197,13 @@ class LessonService extends ChangeNotifier {
   }
 
   void updateLesson(String docId, bool isActive) async {
+    // bucket isActive 업데이트
+
+    await lessonCollection.doc(docId).update({'isActive': isActive});
+    notifyListeners(); // 화면 갱신
+  }
+
+  void updateposition(String docId, bool isActive) async {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});

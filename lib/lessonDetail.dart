@@ -499,8 +499,8 @@ class _LessonDetailState extends State<LessonDetail> {
                               saveButtonMethod(context, lessonService, user,
                                   customUserInfo, actionName);
                             } else if (buttonString == "수정하기") {
-                              editButtonMethod(
-                                  context, lessonService, customUserInfo);
+                              editButtonMethod(context, lessonService,
+                                  customUserInfo, actionName);
                             }
                           },
                         ),
@@ -518,12 +518,13 @@ class _LessonDetailState extends State<LessonDetail> {
   }
 
   void editButtonMethod(BuildContext context, LessonService lessonService,
-      CustomUserInfo.UserInfo userInfo) {
+      CustomUserInfo.UserInfo userInfo, String actionName) {
     if (globalFunction.textNullCheck(context, lessonDateController, "수업일")) {
       setState(() {
         lessonService.update(
             editDocId,
             apratusNameController.text,
+            actionName,
             lessonDateController.text,
             gradeController.text,
             totalNoteController.text);
