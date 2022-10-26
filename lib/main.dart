@@ -28,6 +28,8 @@ import 'globalWidget.dart';
 /// 브랜치 테스트
 /// /// 브랜치 테스트222
 
+bool adminMode = false;
+
 GlobalFunction globalfunction = GlobalFunction();
 
 late SharedPreferences prefs;
@@ -330,7 +332,7 @@ class _LoginPageState extends State<LoginPage> {
                 //   ),
                 //   SizedBox(height: 10),
 
-                /// Cloud Storage 개발화면 버튼
+                /// 글로벌 대쉬보드 버튼
                 // ElevatedButton(
                 //   child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
                 //   onPressed: () {
