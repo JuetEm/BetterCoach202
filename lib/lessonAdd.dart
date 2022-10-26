@@ -267,7 +267,7 @@ class _LessonAddState extends State<LessonAdd> {
                               return Center(child: Text("동작을 추가해 주세요."));
                             }
 
-                            //로딩바 활용
+                            //로딩바 활
                             if (snapshot.hasData) {
                               //Textfield 생성
                               createControllers(docs.length);
