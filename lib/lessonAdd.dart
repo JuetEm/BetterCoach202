@@ -65,23 +65,39 @@ class LessonAdd extends StatefulWidget {
 class _LessonAddState extends State<LessonAdd> {
   @override
   Widget build(BuildContext context) {
+    // 이전 화면에서 보낸 변수 받기
+    final argsList =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    CustomUserInfo.UserInfo customUserInfo = argsList[0];
+    String lessonDate = argsList[1];
+    List<DateTime> eventList = argsList[2];
+    String lessonNoteId = argsList[3];
+
     if (initState) {
       print("INIT!!! : ${initState}");
       now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-      lessonDateController = TextEditingController(text: now);
+      lessonDateController = TextEditingController(text: lessonDate);
       gradeController = TextEditingController(text: "50");
       initState = !initState;
     }
+    // if (initState) {
+    //   print("INIT!!! : ${initState}");
+    //   now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    //   lessonDateController = TextEditingController(text: now);
+    //   gradeController = TextEditingController(text: "50");
+    //   initState = !initState;
+    // }
 
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
-    // 이전 화면에서 보낸 변수 받기
-    final userInfo =
-        ModalRoute.of(context)!.settings.arguments as CustomUserInfo.UserInfo;
 
-    nameController = TextEditingController(text: userInfo.name);
-    //lessonDateController = TextEditingController(text: now);
-    //gradeController = TextEditingController(text: "50");
+    // // 이전 화면에서 보낸 변수 받기
+    // final userInfo =
+    //     ModalRoute.of(context)!.settings.arguments as CustomUserInfo.UserInfo;
+
+    // nameController = TextEditingController(text: userInfo.name);
+    // //lessonDateController = TextEditingController(text: now);
+    // //gradeController = TextEditingController(text: "50");
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
@@ -95,7 +111,7 @@ class _LessonAddState extends State<LessonAdd> {
                 builder: (context) => MemberInfo(),
                 // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                 settings: RouteSettings(
-                  arguments: userInfo,
+                  arguments: customUserInfo,
                 ),
               ),
             );
@@ -170,7 +186,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     fullscreenDialog: true,
                                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                     settings: RouteSettings(arguments: [
-                                      userInfo,
+                                      customUserInfo,
                                       currentAppratus,
                                       lessonDate,
                                       initState
@@ -242,7 +258,7 @@ class _LessonAddState extends State<LessonAdd> {
                         FutureBuilder<QuerySnapshot>(
                           future: lessonService.readNotesOflessonDate(
                             user.uid,
-                            userInfo.docId,
+                            customUserInfo.docId,
                             lessonDateController.text,
                           ),
                           builder: (context, snapshot) {
@@ -648,10 +664,10 @@ class _LessonAddState extends State<LessonAdd> {
                             // create bucket
                             if (globalFunction.textNullCheck(
                                 context, lessonDateController, "수업일")) {
-                              print("userInfo.docId : ${userInfo.docId}");
+                              print("userInfo.docId : ${customUserInfo.docId}");
 
                               lessonService.createTodaynote(
-                                  docId: userInfo.docId,
+                                  docId: customUserInfo.docId,
                                   uid: user.uid,
                                   name: nameController.text,
                                   lessonDate: lessonDateController.text,
@@ -669,7 +685,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         builder: (context) => MemberInfo(),
                                         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                         settings: RouteSettings(
-                                          arguments: userInfo,
+                                          arguments: customUserInfo,
                                         ),
                                       ),
                                     );

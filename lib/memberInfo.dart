@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
@@ -23,6 +24,8 @@ import 'lessonInfo.dart';
 
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+String lessonDate = "";
 
 String lessonNoteId = "";
 
@@ -511,15 +514,25 @@ class _MemberInfoState extends State<MemberInfo> {
                   ),
                   onPressed: () {
                     print("동작추가");
+
+                    lessonDate =
+                        DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+                    eventList = [];
+                    List<dynamic> args = [
+                      userInfo,
+                      lessonDate,
+                      eventList,
+                      lessonNoteId,
+                    ];
+
                     // LessonAdd로 이동
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LessonAdd(),
                         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        settings: RouteSettings(
-                          arguments: userInfo,
-                        ),
+                        settings: RouteSettings(arguments: args),
                       ),
                     );
                   },
@@ -625,7 +638,7 @@ class _NoteList2State extends State<NoteList2> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonUpdate(),
+              builder: (context) => LessonAdd(),
               // GlobalWidgetDashboard(), //
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
