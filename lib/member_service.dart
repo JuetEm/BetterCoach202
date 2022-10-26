@@ -12,7 +12,7 @@ class MemberService extends ChangeNotifier {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
     return memberCollection
         .where('uid', isEqualTo: uid)
-        //.orderBy("name", descending: true)
+        .orderBy("name", descending: false)
         .get();
   }
 
