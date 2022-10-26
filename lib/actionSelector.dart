@@ -6,6 +6,7 @@ import 'package:web_project/color.dart';
 import 'actionAdd.dart';
 import 'actionInfo.dart';
 import 'action_service.dart';
+import 'lessonInfo.dart';
 import 'lesson_service.dart';
 import 'auth_service.dart';
 import 'globalFunction.dart';
@@ -44,6 +45,14 @@ bool initStateVar = true;
 
 TextEditingController searchController = TextEditingController();
 
+late bool isFloating;
+late int selectedActionCount;
+
+late Color actionTileColor;
+late List<LessonInfo> lessonInfoList;
+late List<TmpLessonInfo> tmpLessonInfoList;
+late List<int> checkedTileList;
+
 class ActionSelector extends StatefulWidget {
   const ActionSelector({super.key});
 
@@ -54,12 +63,49 @@ class ActionSelector extends StatefulWidget {
 class _ActionSelectorState extends State<ActionSelector> {
   @override
   void initState() {
+    isFloating = false;
+    selectedActionCount = 0;
+    actionTileColor = Palette.grayEE;
+    lessonInfoList = [];
+    tmpLessonInfoList = [];
+    checkedTileList = [];
     super.initState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    // 화면 나갈때  chip 변수 초기화
+    isReformerSelected = false;
+    isCadillacSelected = false;
+    isChairSelected = false;
+    isLadderBarrelSelected = false;
+    isSpringBoardSelected = false;
+    isSpineCorrectorSelected = false;
+    isMatSelected = false;
+    isOthersApparatusSelected = false;
+
+    isSupineSelected = false;
+    isSittingSelected = false;
+    isProneSelected = false;
+    isKneelingSelected = false;
+    isSideLyingSelected = false;
+    isStandingSelected = false;
+    isPlankSelected = false;
+    isQuadrupedSelected = false;
+    isOthersPositionSelected = false;
+
+    positionArray = [];
+    initStateVar = !initStateVar;
+
+    searchString = "";
+
+    isFloating = false;
+    selectedActionCount = 0;
+    actionTileColor = Palette.grayEE;
+    lessonInfoList = [];
+    tmpLessonInfoList = [];
+    checkedTileList = [];
     super.dispose();
   }
 
@@ -78,7 +124,8 @@ class _ActionSelectorState extends State<ActionSelector> {
     final String currentApparatus = args[1];
     final String lessonDate = args[2];
 
-    // initState = args[2];
+    // initState = args[3];
+    final String totalNote = args[4];
 
     if (initStateVar) {
       switch (currentApparatus) {
@@ -511,6 +558,15 @@ class _ActionSelectorState extends State<ActionSelector> {
             searchString = "";
             Navigator.pop(context);
           }),
+          floatingActionButton: !isFloating
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: () {
+                    print("Floating Button onPressed Clicked!");
+                  },
+                  label: Text("+${selectedActionCount}"),
+                  isExtended: isFloating,
+                ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -723,298 +779,56 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
-                                return Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        // 화면 나갈때  chip 변수 초기화
-                                        isReformerSelected = false;
-                                        isCadillacSelected = false;
-                                        isChairSelected = false;
-                                        isLadderBarrelSelected = false;
-                                        isSpringBoardSelected = false;
-                                        isSpineCorrectorSelected = false;
-                                        isMatSelected = false;
-                                        isOthersApparatusSelected = false;
-
-                                        isSupineSelected = false;
-                                        isSittingSelected = false;
-                                        isProneSelected = false;
-                                        isKneelingSelected = false;
-                                        isSideLyingSelected = false;
-                                        isStandingSelected = false;
-                                        isPlankSelected = false;
-                                        isQuadrupedSelected = false;
-                                        isOthersPositionSelected = false;
-
-                                        positionArray = [];
-                                        initStateVar = !initStateVar;
-
-                                        searchString = "";
-                                        // 회원 카드 선택시 MemberInfo로 이동
-                                        // Navigator.pop(context, actionInfo);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color: Palette.grayEE,
-                                                    width: 1))),
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: 40,
-                                              child: Text(
-                                                "${apparatus}   ",
-                                                style: TextStyle(
-                                                    color: Palette.gray99),
-                                              ),
-                                            ),
-                                            // Text("${position}"),
-                                            Text(
-                                              "${name}",
-                                              style: TextStyle(
-                                                  color: Palette.gray66,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            // Spacer(),
-                                            // Icon(
-                                            //   Icons.arrow_forward,
-                                            //   color: Palette.gray66,
-                                            // )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
+                                return actionTile(
+                                    apparatus: apparatus,
+                                    name: name,
+                                    lessonDate: lessonDate,
+                                    grade: "50",
+                                    totalNote: totalNote,
+                                    docId: customUserInfo.docId,
+                                    uid: user.uid,
+                                    pos: index);
                               } else {
                                 if (positionArray.contains(position)) {
                                   positionFilteredSize++;
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          // 화면 나갈때  chip 변수 초기화
-                                          isReformerSelected = false;
-                                          isCadillacSelected = false;
-                                          isChairSelected = false;
-                                          isLadderBarrelSelected = false;
-                                          isSpringBoardSelected = false;
-                                          isSpineCorrectorSelected = false;
-                                          isMatSelected = false;
-                                          isOthersApparatusSelected = false;
-
-                                          isSupineSelected = false;
-                                          isSittingSelected = false;
-                                          isProneSelected = false;
-                                          isKneelingSelected = false;
-                                          isSideLyingSelected = false;
-                                          isStandingSelected = false;
-                                          isPlankSelected = false;
-                                          isQuadrupedSelected = false;
-                                          isOthersPositionSelected = false;
-
-                                          positionArray = [];
-                                          initStateVar = !initStateVar;
-
-                                          searchString = "";
-                                          // 회원 카드 선택시 MemberInfo로 이동
-                                          // Navigator.pop(context, actionInfo);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Palette.grayEE,
-                                                      width: 1))),
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: 40,
-                                                child: Text(
-                                                  "${apparatus}   ",
-                                                  style: TextStyle(
-                                                      color: Palette.gray99),
-                                                ),
-                                              ),
-                                              // Text("${position}"),
-                                              Text(
-                                                "${name}",
-                                                style: TextStyle(
-                                                    color: Palette.gray66,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              // Spacer(),
-                                              // Icon(
-                                              //   Icons.arrow_forward,
-                                              //   color: Palette.gray66,
-                                              // )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
+                                  return actionTile(
+                                      apparatus: apparatus,
+                                      name: name,
+                                      lessonDate: lessonDate,
+                                      grade: "50",
+                                      totalNote: totalNote,
+                                      docId: customUserInfo.docId,
+                                      uid: user.uid,
+                                      pos: index);
                                 } else {
                                   return SizedBox.shrink();
                                 }
                               }
                             } else {
                               if (lowerCaseName
-                                      .startsWith(searchString.toLowerCase())
-                                  // .trim()
-                                  // .contains(searchString.toLowerCase())
-                                  ) {
+                                  .startsWith(searchString.toLowerCase())) {
                                 if (positionArray.isEmpty) {
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          // 화면 나갈때  chip 변수 초기화
-                                          isReformerSelected = false;
-                                          isCadillacSelected = false;
-                                          isChairSelected = false;
-                                          isLadderBarrelSelected = false;
-                                          isSpringBoardSelected = false;
-                                          isSpineCorrectorSelected = false;
-                                          isMatSelected = false;
-                                          isOthersApparatusSelected = false;
-
-                                          isSupineSelected = false;
-                                          isSittingSelected = false;
-                                          isProneSelected = false;
-                                          isKneelingSelected = false;
-                                          isSideLyingSelected = false;
-                                          isStandingSelected = false;
-                                          isPlankSelected = false;
-                                          isQuadrupedSelected = false;
-                                          isOthersPositionSelected = false;
-
-                                          positionArray = [];
-                                          initStateVar = !initStateVar;
-
-                                          searchString = "";
-                                          // 회원 카드 선택시 MemberInfo로 이동
-                                          // Navigator.pop(context, actionInfo);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Palette.grayEE,
-                                                      width: 1))),
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: 40,
-                                                child: Text(
-                                                  "${apparatus}   ",
-                                                  style: TextStyle(
-                                                      color: Palette.gray99),
-                                                ),
-                                              ),
-                                              // Text("${position}"),
-                                              Text(
-                                                "${name}",
-                                                style: TextStyle(
-                                                    color: Palette.gray66,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              // Spacer(),
-                                              // Icon(
-                                              //   Icons.arrow_forward,
-                                              //   color: Palette.gray66,
-                                              // )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
+                                  return actionTile(
+                                      apparatus: apparatus,
+                                      name: name,
+                                      lessonDate: lessonDate,
+                                      grade: "50",
+                                      totalNote: totalNote,
+                                      docId: customUserInfo.docId,
+                                      uid: user.uid,
+                                      pos: index);
                                 } else {
                                   if (positionArray.contains(position)) {
                                     positionFilteredSize++;
-                                    return Column(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            // 화면 나갈때  chip 변수 초기화
-                                            isReformerSelected = false;
-                                            isCadillacSelected = false;
-                                            isChairSelected = false;
-                                            isLadderBarrelSelected = false;
-                                            isSpringBoardSelected = false;
-                                            isSpineCorrectorSelected = false;
-                                            isMatSelected = false;
-                                            isOthersApparatusSelected = false;
-
-                                            isSupineSelected = false;
-                                            isSittingSelected = false;
-                                            isProneSelected = false;
-                                            isKneelingSelected = false;
-                                            isSideLyingSelected = false;
-                                            isStandingSelected = false;
-                                            isPlankSelected = false;
-                                            isQuadrupedSelected = false;
-                                            isOthersPositionSelected = false;
-
-                                            positionArray = [];
-                                            initStateVar = !initStateVar;
-
-                                            searchString = "";
-                                            // 회원 카드 선택시 MemberInfo로 이동
-                                            // Navigator.pop(context, actionInfo);
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    bottom: BorderSide(
-                                                        color: Palette.grayEE,
-                                                        width: 1))),
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 40,
-                                                  child: Text(
-                                                    "${apparatus}   ",
-                                                    style: TextStyle(
-                                                        color: Palette.gray99),
-                                                  ),
-                                                ),
-                                                // Text("${position}"),
-                                                Text(
-                                                  "${name}",
-                                                  style: TextStyle(
-                                                      color: Palette.gray66,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                // Spacer(),
-                                                // Icon(
-                                                //   Icons.arrow_forward,
-                                                //   color: Palette.gray66,
-                                                // )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
+                                    return actionTile(
+                                        apparatus: apparatus,
+                                        name: name,
+                                        lessonDate: lessonDate,
+                                        grade: "50",
+                                        totalNote: totalNote,
+                                        docId: customUserInfo.docId,
+                                        uid: user.uid,
+                                        pos: index);
                                   } else {
                                     return SizedBox.shrink();
                                   }
@@ -1071,6 +885,48 @@ class _ActionSelectorState extends State<ActionSelector> {
                           ),
                         ),
                       );
+
+                      // lessonAdd ㅇ묘ㅣㄷㄴ내ㅜ CNRKFHWLR
+                      // if (globalFunction.textNullCheck(
+                      //     context, lessonDateController, "수업일")) {
+                      //   print("userInfo.docId : ${customUserInfo.docId}");
+
+                      //   lessonService.createTodaynote(
+                      //       docId: customUserInfo.docId,
+                      //       uid: user.uid,
+                      //       name: nameController.text,
+                      //       lessonDate: lessonDateController.text,
+                      //       todayNote: todayNoteController.text,
+                      //       onSuccess: () {
+                      //         // 저장하기 성공
+                      //         ScaffoldMessenger.of(context)
+                      //             .showSnackBar(SnackBar(
+                      //           content: Text("저장하기 성공"),
+                      //         ));
+                      //         // 저장하기 성공시 MemberInfo로 이동
+                      //         Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (context) => MemberInfo(),
+                      //             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      //             settings: RouteSettings(
+                      //               arguments: customUserInfo,
+                      //             ),
+                      //           ),
+                      //         );
+
+                      //         // 화면 초기화
+                      //         initInpuWidget();
+                      //         initState = !initState;
+                      //       },
+                      //       onError: () {
+                      //         print("저장하기 ERROR");
+                      //       });
+                      // } else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      //     content: Text("항목을 모두 입력해주세요."),
+                      //   ));
+                      // }
                     },
                   ),
                 ),
@@ -1082,4 +938,158 @@ class _ActionSelectorState extends State<ActionSelector> {
       }),
     );
   }
+}
+
+class actionTile extends StatefulWidget {
+  actionTile({
+    Key? key,
+    required this.apparatus,
+    required this.name,
+    required this.lessonDate,
+    required this.grade,
+    required this.totalNote,
+    required this.docId,
+    required this.uid,
+    required this.pos,
+  }) : super(key: key);
+
+  final String apparatus;
+  final String name;
+  final String lessonDate;
+  final String grade;
+  final String totalNote;
+  final String docId;
+  final String uid;
+  int pos;
+
+  @override
+  State<actionTile> createState() => _actionTileState();
+}
+
+class _actionTileState extends State<actionTile> {
+  @override
+  Widget build(BuildContext context) {
+    TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+        widget.apparatus,
+        widget.name,
+        widget.lessonDate,
+        widget.grade,
+        widget.totalNote,
+        widget.docId,
+        widget.uid);
+
+    // onTap 방식과는 다르게 동작해야 함
+    setState(() {
+      if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
+        actionTileColor = Palette.buttonOrange;
+        print(
+            "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+      } else {
+        actionTileColor = Palette.grayEE;
+        print(
+            "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+      }
+    });
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            print("apparatus : ${widget.apparatus}, name : ${widget.name}");
+            // 회원 카드 선택시 MemberInfo로 이동
+            // Navigator.pop(context, actionInfo);
+
+            if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, true)) {
+              actionTileColor = Palette.grayEE;
+              print(
+                  "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+              // checkedTileList.remove(widget.pos);
+            } else {
+              actionTileColor = Palette.buttonOrange;
+              print(
+                  "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+              // checkedTileList.add(widget.pos);
+            }
+            setState(() {
+              if (tmpLessonInfoList.isNotEmpty) {
+                isFloating = true;
+                selectedActionCount = tmpLessonInfoList.length;
+              } else {
+                isFloating = false;
+              }
+            });
+            for (int i = 0; i < tmpLessonInfoList.length; i++) {
+              print(
+                  "tmpLessonInfoList - apratusName : ${tmpLessonInfoList[i].apparatusName}, name : ${tmpLessonInfoList[i].actionName}");
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Palette.grayEE, width: 1),
+                ),
+                color: actionTileColor),
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 40,
+                  child: Text(
+                    "${widget.apparatus}   ",
+                    style: TextStyle(color: Palette.gray99),
+                  ),
+                ),
+                Text(
+                  "${widget.name}",
+                  style: TextStyle(
+                      color: Palette.gray66, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+bool manageListContaining(List<TmpLessonInfo> tmpLessonInfoList,
+    TmpLessonInfo tmpLessonInfo, bool isEditable) {
+  bool isConatained = false;
+  for (int i = 0; i < tmpLessonInfoList.length; i++) {
+    if (tmpLessonInfoList[i].apparatusName == tmpLessonInfo.apparatusName) {
+      if (tmpLessonInfoList[i].actionName == tmpLessonInfo.actionName) {
+        isConatained = true;
+        if (isEditable) {
+          tmpLessonInfoList.removeAt(i);
+        }
+      }
+    }
+  }
+  if (isEditable) {
+    if (!isConatained) {
+      tmpLessonInfoList.add(tmpLessonInfo);
+    }
+  }
+  return isConatained;
+}
+
+class TmpLessonInfo {
+  TmpLessonInfo(
+    this.apparatusName,
+    this.actionName,
+    this.lessonDate,
+    this.grade,
+    this.totalNote,
+    this.docId,
+    this.uid,
+  );
+
+  String apparatusName;
+  String actionName;
+  String lessonDate;
+  String grade;
+  String totalNote;
+  String docId;
+  String uid;
 }
