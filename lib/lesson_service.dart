@@ -175,7 +175,7 @@ class LessonService extends ChangeNotifier {
     return docs.length;
   }
 
-  void update(
+  Future<void> update(
     String docId,
     String apratusName,
     String actionName,

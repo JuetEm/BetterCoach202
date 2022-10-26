@@ -6,10 +6,12 @@ import 'package:web_project/color.dart';
 import 'actionAdd.dart';
 import 'actionInfo.dart';
 import 'action_service.dart';
+import 'lesson_service.dart';
 import 'auth_service.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
-import 'userInfo.dart';
+import 'package:web_project/userInfo.dart'
+    as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
 bool isReformerSelected = false;
 bool isCadillacSelected = false;
@@ -48,11 +50,17 @@ class _ActionSelectorState extends State<ActionSelector> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+
+    //레슨서비스 활용
+    final lessonService = context.read<LessonService>();
+
     // 이전 화면에서 보낸 변수 받기
     final List<dynamic> args =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-    final userInfo = args[0];
+    final CustomUserInfo.UserInfo customUserInfo = args[0];
     final String currentApparatus = args[1];
+    final String lessonDate = args[2];
+
     // initState = args[2];
 
     if (initState) {
@@ -666,8 +674,27 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                                         positionArray = [];
                                         initState = !initState;
-                                        // 회원 카드 선택시 MemberInfo로 이동
-                                        Navigator.pop(context, actionInfo);
+
+                                        lessonService.create(
+                                            docId: customUserInfo.docId,
+                                            uid: user.uid,
+                                            name: customUserInfo.name,
+                                            phoneNumber:
+                                                customUserInfo.phoneNumber,
+                                            apratusName: apparatus,
+                                            actionName: name,
+                                            lessonDate: lessonDate,
+                                            grade: "50",
+                                            totalNote: "",
+                                            onSuccess: () {
+                                              print("저장하기 성공");
+                                              // 저장 성공후 원래 불렀던 화면으로 이동
+                                              Navigator.pop(
+                                                  context, actionInfo);
+                                            },
+                                            onError: () {
+                                              print("저장하기 ERROR");
+                                            });
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -754,7 +781,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                           builder: (context) => ActionAdd(),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(
-                            arguments: userInfo,
+                            arguments: customUserInfo,
                           ),
                         ),
                       );

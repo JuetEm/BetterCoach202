@@ -159,6 +159,8 @@ class _LessonAddState extends State<LessonAdd> {
                               onTap: () async {
                                 String currentAppratus =
                                     apratusNameController.text;
+                                String lessonDate = lessonDateController.text;
+
                                 bool initState = true;
 
                                 final ActionInfo? result = await Navigator.push(
@@ -170,6 +172,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     settings: RouteSettings(arguments: [
                                       userInfo,
                                       currentAppratus,
+                                      lessonDate,
                                       initState
                                     ]),
                                   ),
@@ -490,8 +493,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                                 index],
                                                         hint: "메모",
                                                         showArrow: false,
-                                                        customFunction: () {
-                                                          lessonService.update(
+                                                        customFunction:
+                                                            () async {
+                                                          await lessonService
+                                                              .update(
                                                             doc.id,
                                                             apratusName,
                                                             actionName,
