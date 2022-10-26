@@ -443,6 +443,59 @@ class _BaseTextFieldState extends State<BaseTextField> {
   }
 }
 
+// Text Field
+
+class DynamicSaveTextField extends StatefulWidget {
+  const DynamicSaveTextField({
+    Key? key,
+    required this.customController,
+    required this.hint,
+    required this.showArrow,
+    required this.customFunction,
+  }) : super(key: key);
+
+  final TextEditingController customController;
+  final String hint;
+  final showArrow;
+  final Function customFunction;
+
+  @override
+  State<DynamicSaveTextField> createState() => _DynamicSaveTextFieldState();
+}
+
+class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 70,
+      ),
+      child: TextField(
+        textInputAction: TextInputAction.done,
+        readOnly: widget.showArrow,
+        controller: widget.customController,
+        decoration: InputDecoration(
+            labelText: widget.hint,
+            hintText: widget.hint,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
+        onEditingComplete: () {
+          // 현재 텍스트필드의 텍스트를 출력
+          widget.customFunction();
+        },
+      ),
+    );
+  }
+}
+
 class BaseMultiTextField extends StatefulWidget {
   const BaseMultiTextField({
     Key? key,

@@ -302,11 +302,6 @@ class _LessonAddState extends State<LessonAdd> {
                                   final doc = docs[index];
                                   //final lessonInfo = docs[index];
 
-                                  final lessonInfos =
-                                      doc.data()! as Map<String, dynamic>;
-                                  print(lessonInfos);
-                                  //Recipe.fromJson(data).copyWith(id: doc.id);
-
                                   String uid = doc.get('uid'); // 강사 고유번호
                                   String name = doc.get('name'); //회원이름
                                   String phoneNumber = doc.get(
@@ -333,6 +328,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     apratusNameTrim =
                                         apratusName.substring(0, 2);
                                   }
+                                  totalNoteControllers[index].text = totalNote;
 
                                   return Column(
                                     key: ValueKey(doc),
@@ -487,13 +483,25 @@ class _LessonAddState extends State<LessonAdd> {
 
                                                     /// 메모 입력창
                                                     Expanded(
-                                                      child: BaseTextField(
+                                                      child:
+                                                          DynamicSaveTextField(
                                                         customController:
                                                             totalNoteControllers[
                                                                 index],
                                                         hint: "메모",
                                                         showArrow: false,
-                                                        customFunction: () {},
+                                                        customFunction: () {
+                                                          lessonService.update(
+                                                            doc.id,
+                                                            apratusName,
+                                                            actionName,
+                                                            lessonDate,
+                                                            "50",
+                                                            totalNoteControllers[
+                                                                    index]
+                                                                .text,
+                                                          );
+                                                        },
                                                       ),
                                                     ),
                                                     //Spacer(flex: 1),
@@ -636,24 +644,6 @@ class _LessonAddState extends State<LessonAdd> {
                             if (globalFunction.textNullCheck(
                                 context, lessonDateController, "수업일")) {
                               print("userInfo.docId : ${userInfo.docId}");
-
-                              for (var i = 0;
-                                  i < totalNoteControllers.length;
-                                  i++) {
-                                //print(lessonInfos);
-
-                                lessonInfos[1]
-                                    .forEach((String key, String value) {
-                                  print(value);
-                                });
-                                // lessonService.update(
-                                //     lessonInfo[i].docId,
-                                //     lessonInfo[i].apratusName,
-                                //     lessonInfo[i].actionName,
-                                //     lessonDateController.text,
-                                //     "50",
-                                //     totalNoteControllers[i].text);
-                              }
 
                               lessonService.createTodaynote(
                                   docId: userInfo.docId,
