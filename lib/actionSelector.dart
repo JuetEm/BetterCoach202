@@ -875,18 +875,18 @@ class _ActionSelectorState extends State<ActionSelector> {
                     onPressed: () {
                       print("동작추가");
                       // LessonAdd로 이동
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ActionAdd(),
-                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                          settings: RouteSettings(
-                            arguments: customUserInfo,
-                          ),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ActionAdd(),
+                      //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      //     settings: RouteSettings(
+                      //       arguments: customUserInfo,
+                      //     ),
+                      //   ),
+                      // );
 
-                      // lessonAdd ㅇ묘ㅣㄷㄴ내ㅜ CNRKFHWLR
+                      // lessonAdd
                       // if (globalFunction.textNullCheck(
                       //     context, lessonDateController, "수업일")) {
                       //   print("userInfo.docId : ${customUserInfo.docId}");
