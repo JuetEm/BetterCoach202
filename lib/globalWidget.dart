@@ -465,35 +465,38 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
         minHeight: 70,
       ),
       child: TextField(
-        minLines: 3,
-        maxLines: 10,
-        keyboardType: TextInputType.multiline,
+        // minLines: 3,
+        // maxLines: 10,
+        // keyboardType: TextInputType.multiline,
         //textInputAction: TextInputAction.done,
-        readOnly: widget.showArrow,
+        // readOnly: widget.showArrow,
+        onChanged: (text) {
+          print("Input Text : ${text}");
+          widget.customFunction();
+        },
         controller: widget.customController,
         decoration: InputDecoration(
-            labelText: widget.hint,
-            suffixIcon: widget.hint == ""
-                ? null
-                : widget.showArrow
-                    ? IconButton(
-                        onPressed: () {
-                          widget.customFunction();
-                        },
-                        icon: Icon(Icons.search),
-                      )
-                    : null,
-            hintText: widget.hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                width: 0,
-                style: BorderStyle.none,
-              ),
+          labelText: widget.hint,
+          suffixIcon: widget.hint == ""
+              ? null
+              : widget.showArrow
+                  ? IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.search),
+                    )
+                  : null,
+          hintText: widget.hint,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              width: 0,
+              style: BorderStyle.none,
             ),
-            filled: true,
-            contentPadding: EdgeInsets.all(16),
-            fillColor: Colors.white),
+          ),
+          filled: true,
+          contentPadding: EdgeInsets.all(16),
+          fillColor: Colors.white,
+        ),
       ),
     );
   }

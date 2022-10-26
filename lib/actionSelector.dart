@@ -18,6 +18,7 @@ bool isLadderBarrelSelected = false;
 bool isSpringBoardSelected = false;
 bool isSpineCorrectorSelected = false;
 bool isMatSelected = false;
+bool isOthersApparatusSelected = false;
 
 bool isSupineSelected = false;
 bool isSittingSelected = false;
@@ -27,6 +28,9 @@ bool isSideLyingSelected = false;
 bool isStandingSelected = false;
 bool isPlankSelected = false;
 bool isQuadrupedSelected = false;
+bool isOthersPositionSelected = false;
+
+String searchString = "";
 
 List positionArray = [];
 
@@ -34,7 +38,9 @@ int positionFilteredSize = 0;
 
 GlobalFunction globalFunction = GlobalFunction();
 
-bool initState = true;
+bool initStateVar = true;
+
+TextEditingController searchController = TextEditingController();
 
 class ActionSelector extends StatefulWidget {
   const ActionSelector({super.key});
@@ -44,6 +50,17 @@ class ActionSelector extends StatefulWidget {
 }
 
 class _ActionSelectorState extends State<ActionSelector> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
@@ -55,41 +72,45 @@ class _ActionSelectorState extends State<ActionSelector> {
     final String currentApparatus = args[1];
     // initState = args[2];
 
-    if (initState) {
+    if (initStateVar) {
       switch (currentApparatus) {
         case "REFORMER":
           isReformerSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           break;
         case "CADILLAC":
           isCadillacSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           ;
           break;
         case "CHAIR":
           isChairSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           ;
           break;
         case "LADDER BARREL":
           isLadderBarrelSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           ;
           break;
         case "SPRING BOARD":
           isSpringBoardSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           ;
           break;
         case "SPINE CORRECTOR":
           isSpineCorrectorSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           ;
           break;
         case "MAT":
           isMatSelected = true;
-          initState = !initState;
+          initStateVar = !initStateVar;
           ;
+          break;
+        case "OTHERS":
+          isOthersApparatusSelected = true;
+          initStateVar = !initStateVar;
           break;
       }
     }
@@ -98,6 +119,24 @@ class _ActionSelectorState extends State<ActionSelector> {
     positionFilteredSize = 0;
 
     final apparatusChips = [
+      FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
+        label: Text("OTHERS"),
+        selected: isOthersApparatusSelected,
+        showCheckmark: false,
+        onSelected: (value) {
+          setState(
+            () {
+              isOthersApparatusSelected = !isOthersApparatusSelected;
+              print(
+                  "isOthersApparatusSelectedSelected : ${isOthersApparatusSelected}");
+            },
+          );
+        },
+      ),
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
@@ -221,6 +260,29 @@ class _ActionSelectorState extends State<ActionSelector> {
     ];
 
     final positionChips = [
+      FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isOthersPositionSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
+        label: Text("OTHERS"),
+        selected: isOthersPositionSelected,
+        showCheckmark: false,
+        onSelected: (value) {
+          setState(
+            () {
+              isOthersPositionSelected = !isOthersPositionSelected;
+              if (isOthersPositionSelected) {
+                positionArray.add("others");
+              } else {
+                positionArray.remove("others");
+              }
+              print("isOthersPositionSelected : ${isOthersPositionSelected}");
+              print("positionArray : ${positionArray}");
+            },
+          );
+        },
+      ),
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
@@ -423,6 +485,7 @@ class _ActionSelectorState extends State<ActionSelector> {
             isSpringBoardSelected = false;
             isSpineCorrectorSelected = false;
             isMatSelected = false;
+            isOthersApparatusSelected = false;
 
             isSupineSelected = false;
             isSittingSelected = false;
@@ -432,9 +495,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             isStandingSelected = false;
             isPlankSelected = false;
             isQuadrupedSelected = false;
+            isOthersPositionSelected = false;
 
-            initState = !initState;
+            initStateVar = !initStateVar;
             positionArray = [];
+
+            searchString = "";
             Navigator.pop(context);
           }),
           body: Padding(
@@ -444,6 +510,17 @@ class _ActionSelectorState extends State<ActionSelector> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 10),
+                BaseSearchTextField(
+                  customController: searchController,
+                  hint: "동작을 검색하세요.",
+                  showArrow: true,
+                  customFunction: () {
+                    setState(() {
+                      searchString = searchController.text;
+                    });
+                  },
+                ),
+                // SizedBox(height: 10),
                 // SizedBox(
                 //   height: 30,
                 //   width: double.infinity,
@@ -531,24 +608,57 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //   ),
                 // ),
 
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "신규 동작 추가",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Palette.grayFF,
+                /// 신규동작추가 버튼
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Palette.buttonOrange,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        color: Colors.transparent,
+                      ),
+                      height: 60,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "신규동작추가",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Palette.buttonOrange,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    onPressed: () async {
+                      print("신규 동작 추가");
+                      // LessonAdd로 이동
+                      final result = await showDialog(
+                        context: context,
+                        builder: (context) => StatefulBuilder(
+                          builder: (context, setState) {
+                            return ActionAdd();
+                          },
+                        ),
+                      );
+                      setState(() {
+                        searchController.text = result;
+                        searchString = result;
+                      });
+                    },
                   ),
-                  onPressed: () async {
-                    print("신규 동작 추가");
-                  },
                 ),
                 SizedBox(height: 20),
                 SizedBox(
@@ -573,6 +683,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                       isSpringBoardSelected,
                       isSpineCorrectorSelected,
                       isMatSelected,
+                      isOthersApparatusSelected,
+                      searchString,
                     ),
                     builder: (context, snapshot) {
                       final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
@@ -594,78 +706,15 @@ class _ActionSelectorState extends State<ActionSelector> {
                             String apparatus = doc.get('apparatus');
                             String position = doc.get('position');
                             String name = doc.get('name');
+                            String lowerCaseName = doc.get('lowerCaseName');
                             final ActionInfo actionInfo = ActionInfo(
                               name,
                               apparatus,
                               position,
                             );
 
-                            if (positionArray.isEmpty) {
-                              return Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      // 화면 나갈때  chip 변수 초기화
-                                      isReformerSelected = false;
-                                      isCadillacSelected = false;
-                                      isChairSelected = false;
-                                      isLadderBarrelSelected = false;
-                                      isSpringBoardSelected = false;
-                                      isSpineCorrectorSelected = false;
-                                      isMatSelected = false;
-
-                                      isSupineSelected = false;
-                                      isSittingSelected = false;
-                                      isProneSelected = false;
-                                      isKneelingSelected = false;
-                                      isSideLyingSelected = false;
-                                      isStandingSelected = false;
-
-                                      positionArray = [];
-                                      initState = !initState;
-                                      // 회원 카드 선택시 MemberInfo로 이동
-                                      Navigator.pop(context, actionInfo);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  color: Palette.grayEE,
-                                                  width: 1))),
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: 40,
-                                            child: Text(
-                                              "${apparatus}   ",
-                                              style: TextStyle(
-                                                  color: Palette.gray99),
-                                            ),
-                                          ),
-                                          // Text("${position}"),
-                                          Text(
-                                            "${name}",
-                                            style: TextStyle(
-                                                color: Palette.gray66,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Spacer(),
-                                          Icon(
-                                            Icons.arrow_forward,
-                                            color: Palette.gray66,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            } else {
-                              if (positionArray.contains(position)) {
-                                positionFilteredSize++;
+                            if (searchString.isEmpty) {
+                              if (positionArray.isEmpty) {
                                 return Column(
                                   children: [
                                     InkWell(
@@ -678,6 +727,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         isSpringBoardSelected = false;
                                         isSpineCorrectorSelected = false;
                                         isMatSelected = false;
+                                        isOthersApparatusSelected = false;
 
                                         isSupineSelected = false;
                                         isSittingSelected = false;
@@ -685,11 +735,16 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         isKneelingSelected = false;
                                         isSideLyingSelected = false;
                                         isStandingSelected = false;
+                                        isPlankSelected = false;
+                                        isQuadrupedSelected = false;
+                                        isOthersPositionSelected = false;
 
                                         positionArray = [];
-                                        initState = !initState;
+                                        initStateVar = !initStateVar;
+
+                                        searchString = "";
                                         // 회원 카드 선택시 MemberInfo로 이동
-                                        Navigator.pop(context, actionInfo);
+                                        // Navigator.pop(context, actionInfo);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -717,17 +772,245 @@ class _ActionSelectorState extends State<ActionSelector> {
                                                   color: Palette.gray66,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Spacer(),
-                                            Icon(
-                                              Icons.arrow_forward,
-                                              color: Palette.gray66,
-                                            )
+                                            // Spacer(),
+                                            // Icon(
+                                            //   Icons.arrow_forward,
+                                            //   color: Palette.gray66,
+                                            // )
                                           ],
                                         ),
                                       ),
                                     ),
                                   ],
                                 );
+                              } else {
+                                if (positionArray.contains(position)) {
+                                  positionFilteredSize++;
+                                  return Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          // 화면 나갈때  chip 변수 초기화
+                                          isReformerSelected = false;
+                                          isCadillacSelected = false;
+                                          isChairSelected = false;
+                                          isLadderBarrelSelected = false;
+                                          isSpringBoardSelected = false;
+                                          isSpineCorrectorSelected = false;
+                                          isMatSelected = false;
+                                          isOthersApparatusSelected = false;
+
+                                          isSupineSelected = false;
+                                          isSittingSelected = false;
+                                          isProneSelected = false;
+                                          isKneelingSelected = false;
+                                          isSideLyingSelected = false;
+                                          isStandingSelected = false;
+                                          isPlankSelected = false;
+                                          isQuadrupedSelected = false;
+                                          isOthersPositionSelected = false;
+
+                                          positionArray = [];
+                                          initStateVar = !initStateVar;
+
+                                          searchString = "";
+                                          // 회원 카드 선택시 MemberInfo로 이동
+                                          // Navigator.pop(context, actionInfo);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Palette.grayEE,
+                                                      width: 1))),
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 40,
+                                                child: Text(
+                                                  "${apparatus}   ",
+                                                  style: TextStyle(
+                                                      color: Palette.gray99),
+                                                ),
+                                              ),
+                                              // Text("${position}"),
+                                              Text(
+                                                "${name}",
+                                                style: TextStyle(
+                                                    color: Palette.gray66,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              // Spacer(),
+                                              // Icon(
+                                              //   Icons.arrow_forward,
+                                              //   color: Palette.gray66,
+                                              // )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return SizedBox.shrink();
+                                }
+                              }
+                            } else {
+                              if (lowerCaseName
+                                      .startsWith(searchString.toLowerCase())
+                                  // .trim()
+                                  // .contains(searchString.toLowerCase())
+                                  ) {
+                                if (positionArray.isEmpty) {
+                                  return Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          // 화면 나갈때  chip 변수 초기화
+                                          isReformerSelected = false;
+                                          isCadillacSelected = false;
+                                          isChairSelected = false;
+                                          isLadderBarrelSelected = false;
+                                          isSpringBoardSelected = false;
+                                          isSpineCorrectorSelected = false;
+                                          isMatSelected = false;
+                                          isOthersApparatusSelected = false;
+
+                                          isSupineSelected = false;
+                                          isSittingSelected = false;
+                                          isProneSelected = false;
+                                          isKneelingSelected = false;
+                                          isSideLyingSelected = false;
+                                          isStandingSelected = false;
+                                          isPlankSelected = false;
+                                          isQuadrupedSelected = false;
+                                          isOthersPositionSelected = false;
+
+                                          positionArray = [];
+                                          initStateVar = !initStateVar;
+
+                                          searchString = "";
+                                          // 회원 카드 선택시 MemberInfo로 이동
+                                          // Navigator.pop(context, actionInfo);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Palette.grayEE,
+                                                      width: 1))),
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 40,
+                                                child: Text(
+                                                  "${apparatus}   ",
+                                                  style: TextStyle(
+                                                      color: Palette.gray99),
+                                                ),
+                                              ),
+                                              // Text("${position}"),
+                                              Text(
+                                                "${name}",
+                                                style: TextStyle(
+                                                    color: Palette.gray66,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              // Spacer(),
+                                              // Icon(
+                                              //   Icons.arrow_forward,
+                                              //   color: Palette.gray66,
+                                              // )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  if (positionArray.contains(position)) {
+                                    positionFilteredSize++;
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            // 화면 나갈때  chip 변수 초기화
+                                            isReformerSelected = false;
+                                            isCadillacSelected = false;
+                                            isChairSelected = false;
+                                            isLadderBarrelSelected = false;
+                                            isSpringBoardSelected = false;
+                                            isSpineCorrectorSelected = false;
+                                            isMatSelected = false;
+                                            isOthersApparatusSelected = false;
+
+                                            isSupineSelected = false;
+                                            isSittingSelected = false;
+                                            isProneSelected = false;
+                                            isKneelingSelected = false;
+                                            isSideLyingSelected = false;
+                                            isStandingSelected = false;
+                                            isPlankSelected = false;
+                                            isQuadrupedSelected = false;
+                                            isOthersPositionSelected = false;
+
+                                            positionArray = [];
+                                            initStateVar = !initStateVar;
+
+                                            searchString = "";
+                                            // 회원 카드 선택시 MemberInfo로 이동
+                                            // Navigator.pop(context, actionInfo);
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    bottom: BorderSide(
+                                                        color: Palette.grayEE,
+                                                        width: 1))),
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: 40,
+                                                  child: Text(
+                                                    "${apparatus}   ",
+                                                    style: TextStyle(
+                                                        color: Palette.gray99),
+                                                  ),
+                                                ),
+                                                // Text("${position}"),
+                                                Text(
+                                                  "${name}",
+                                                  style: TextStyle(
+                                                      color: Palette.gray66,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                // Spacer(),
+                                                // Icon(
+                                                //   Icons.arrow_forward,
+                                                //   color: Palette.gray66,
+                                                // )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return SizedBox.shrink();
+                                  }
+                                }
                               } else {
                                 return SizedBox.shrink();
                               }
@@ -741,7 +1024,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                 /// 추가 버튼
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 11, 22, 22),
+                  padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
