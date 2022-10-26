@@ -609,8 +609,27 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                                       positionArray = [];
                                       initState = !initState;
-                                      // 회원 카드 선택시 MemberInfo로 이동
-                                      Navigator.pop(context, actionInfo);
+
+                                      //동작선택 및 저장
+                                      lessonService.create(
+                                          docId: customUserInfo.docId,
+                                          uid: user.uid,
+                                          name: customUserInfo.name,
+                                          phoneNumber:
+                                              customUserInfo.phoneNumber,
+                                          apratusName: apparatus,
+                                          actionName: name,
+                                          lessonDate: lessonDate,
+                                          grade: "50",
+                                          totalNote: "",
+                                          onSuccess: () {
+                                            print("저장하기 성공");
+                                            // 저장 성공후 원래 불렀던 화면으로 이동
+                                            Navigator.pop(context, actionInfo);
+                                          },
+                                          onError: () {
+                                            print("저장하기 ERROR");
+                                          });
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
