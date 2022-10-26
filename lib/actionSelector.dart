@@ -610,7 +610,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       positionArray = [];
                                       initState = !initState;
 
-                                      //동작선택 및 저장
+                                      //동작
                                       lessonService.create(
                                           docId: customUserInfo.docId,
                                           uid: user.uid,

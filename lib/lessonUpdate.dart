@@ -55,14 +55,14 @@ String editTotalNote = "";
 
 bool initState = true;
 
-class LessonAdd extends StatefulWidget {
-  const LessonAdd({super.key});
+class LessonUpdate extends StatefulWidget {
+  const LessonUpdate({super.key});
 
   @override
-  State<LessonAdd> createState() => _LessonAddState();
+  State<LessonUpdate> createState() => _LessonUpdateState();
 }
 
-class _LessonAddState extends State<LessonAdd> {
+class _LessonUpdateState extends State<LessonUpdate> {
   @override
   Widget build(BuildContext context) {
     // 이전 화면에서 보낸 변수 받기
@@ -75,35 +75,24 @@ class _LessonAddState extends State<LessonAdd> {
 
     if (initState) {
       print("INIT!!! : ${initState}");
-      //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      now = DateFormat("yyyy-MM-dd").format(DateTime.now());
       lessonDateController = TextEditingController(text: lessonDate);
       gradeController = TextEditingController(text: "50");
       initState = !initState;
     }
-    // if (initState) {
-    //   print("INIT!!! : ${initState}");
-    //   now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    //   lessonDateController = TextEditingController(text: now);
-    //   gradeController = TextEditingController(text: "50");
-    //   initState = !initState;
-    // }
 
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
 
-    // // 이전 화면에서 보낸 변수 받기
-    // final userInfo =
-    //     ModalRoute.of(context)!.settings.arguments as CustomUserInfo.UserInfo;
-
-    // nameController = TextEditingController(text: userInfo.name);
-    // //lessonDateController = TextEditingController(text: now);
-    // //gradeController = TextEditingController(text: "50");
+    nameController = TextEditingController(text: customUserInfo.name);
+    //lessonDateController = TextEditingController(text: now);
+    //gradeController = TextEditingController(text: "50");
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "노트추가", () {
+          appBar: BaseAppBarMethod(context, "노트보기", () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.push(
               context,
@@ -175,8 +164,6 @@ class _LessonAddState extends State<LessonAdd> {
                               onTap: () async {
                                 String currentAppratus =
                                     apratusNameController.text;
-                                String lessonDate = lessonDateController.text;
-
                                 bool initState = true;
 
                                 final ActionInfo? result = await Navigator.push(
@@ -188,7 +175,6 @@ class _LessonAddState extends State<LessonAdd> {
                                     settings: RouteSettings(arguments: [
                                       customUserInfo,
                                       currentAppratus,
-                                      lessonDate,
                                       initState
                                     ]),
                                   ),
@@ -266,334 +252,285 @@ class _LessonAddState extends State<LessonAdd> {
                             if (docs.isEmpty) {
                               return Center(child: Text("동작을 추가해 주세요."));
                             }
+                            //Textfield 생성
+                            createControllers(docs.length);
 
-                            //로딩바 활용
-                            if (snapshot.hasData) {
-                              //Textfield 생성
-                              createControllers(docs.length);
-
-                              //reorderable 드래그시 그림자/디자인 조정
-                              Widget proxyDecorator(Widget child, int index,
-                                  Animation<double> animation) {
-                                return AnimatedBuilder(
-                                  animation: animation,
-                                  builder:
-                                      (BuildContext context, Widget? child) {
-                                    return Material(
-                                      elevation: 0,
-                                      color: Colors.transparent,
-                                      child: child,
-                                    );
-                                  },
-                                  child: child,
-                                );
-                              }
-
-                              return Container(
-                                //height: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
+                            return Container(
+                              //height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
                                 ),
+                              ),
+                              //padding: const EdgeInsets.all(20.0),
+                              child: ReorderableListView.builder(
+                                itemCount: docs.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                //buildDefaultDragHandles: false,
+                                onReorder: ((oldIndex, newIndex) =>
+                                    setState(() {
+                                      print(
+                                          'docs0 : ${docs[0].get('actionName')}');
+                                      print(
+                                          'docs1 : ${docs[1].get('actionName')}');
+                                      print(
+                                          'docs2 : ${docs[2].get('actionName')}');
 
-                                child: Theme(
-                                  data: ThemeData(
-                                    canvasColor:
-                                        Colors.transparent, //드래그시 투명하게 만들기 적용
-                                  ),
-                                  child: ReorderableListView.builder(
-                                    proxyDecorator: proxyDecorator,
-                                    itemCount: docs.length,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    //buildDefaultDragHandles: false,
-                                    onReorder: ((oldIndex, newIndex) {
-                                      if (newIndex > docs.length)
-                                        newIndex = docs.length;
                                       if (oldIndex < newIndex) newIndex -= 1;
 
-                                      setState(() {
-                                        // print(
-                                        //     'docs0 : ${docs[0].get('actionName')}');
-                                        // print(
-                                        //     'docs1 : ${docs[1].get('actionName')}');
-                                        // print(
-                                        //     'docs2 : ${docs[2].get('actionName')}');
+                                      print('newIndex : ${newIndex}');
+                                      print('oldIndex : ${oldIndex}');
 
-                                        // print('newIndex : ${newIndex}');
-                                        // print('oldIndex : ${oldIndex}');
+                                      docs.insert(
+                                          newIndex, docs.removeAt(oldIndex));
 
-                                        docs.insert(
-                                            newIndex, docs.removeAt(oldIndex));
+                                      print(
+                                          'docs0 : ${docs[0].get('actionName')}');
+                                      print(
+                                          'docs1 : ${docs[1].get('actionName')}');
+                                      print(
+                                          'docs2 : ${docs[2].get('actionName')}');
 
-                                        // print(
-                                        //     'docs0 : ${docs[0].get('actionName')}');
-                                        // print(
-                                        //     'docs1 : ${docs[1].get('actionName')}');
-                                        // print(
-                                        //     'docs2 : ${docs[2].get('actionName')}');
+                                      final futures = <Future>[];
 
-                                        final futures = <Future>[];
-
-                                        for (int pos = 0;
-                                            pos < docs.length;
-                                            pos++) {
-                                          futures.add(lessonService.updatePos(
-                                              docs[pos].id, pos));
-                                          //print(docs[pos].id);
-                                        }
-                                      });
-                                    }),
-
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      final doc = docs[index];
-
-                                      String uid = doc.get('uid'); // 강사 고유번호
-                                      String name = doc.get('name'); //회원이름
-                                      String phoneNumber = doc.get(
-                                          'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
-                                      String apratusName =
-                                          doc.get('apratusName'); //기구이름
-                                      String actionName =
-                                          doc.get('actionName'); //동작이름
-                                      String lessonDate =
-                                          doc.get('lessonDate'); //수업날짜
-                                      String grade = doc.get('grade'); //수행도
-                                      String totalNote =
-                                          doc.get('totalNote'); //수업총메모
-                                      String lessonDateTrim = " ";
-                                      String apratusNameTrim = " ";
-                                      int pos = doc.get('pos'); //순서
-                                      // 날짜 글자 자르기
-                                      if (lessonDate.length > 0) {
-                                        lessonDateTrim =
-                                            lessonDate.substring(2, 10);
+                                      for (int pos = 0;
+                                          pos < docs.length;
+                                          pos++) {
+                                        futures.add(lessonService.updatePos(
+                                            docs[pos].id, pos));
+                                        print(docs[pos].id);
                                       }
-                                      // 기구 첫두글자 자르기
-                                      if (apratusName.length > 0) {
-                                        apratusNameTrim =
-                                            apratusName.substring(0, 2);
-                                      }
-                                      totalNoteControllers[index].text =
-                                          totalNote; //동작별 노트 가져오기
+                                    })),
 
-                                      return Column(
-                                        key: ValueKey(doc),
+                                itemBuilder: (BuildContext context, int index) {
+                                  final doc = docs[index];
+                                  //final lessonInfo = docs[index];
 
+                                  String uid = doc.get('uid'); // 강사 고유번호
+                                  String name = doc.get('name'); //회원이름
+                                  String phoneNumber = doc.get(
+                                      'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                  String apratusName =
+                                      doc.get('apratusName'); //기구이름
+                                  String actionName =
+                                      doc.get('actionName'); //동작이름
+                                  String lessonDate =
+                                      doc.get('lessonDate'); //수업날짜
+                                  String grade = doc.get('grade'); //수행도
+                                  String totalNote =
+                                      doc.get('totalNote'); //수업총메모
+                                  String lessonDateTrim = " ";
+                                  String apratusNameTrim = " ";
+                                  int pos = doc.get('pos'); //순서
+                                  // 날짜 글자 자르기
+                                  if (lessonDate.length > 0) {
+                                    lessonDateTrim =
+                                        lessonDate.substring(2, 10);
+                                  }
+                                  // 기구 첫두글자 자르기
+                                  if (apratusName.length > 0) {
+                                    apratusNameTrim =
+                                        apratusName.substring(0, 2);
+                                  }
+                                  totalNoteControllers[index].text = totalNote;
+
+                                  return Column(
+                                    key: ValueKey(doc),
+
+                                    children: [
+                                      Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                //color: Colors.red.withOpacity(0),
-                                                margin: const EdgeInsets.only(
-                                                  top: 5,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  color: Palette.grayEE,
-                                                  //color: Colors.red.withOpacity(0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    //top: 5,
-                                                    //bottom: 5,
-                                                    left: 5.0,
-                                                    right: 16.0,
-                                                  ),
-                                                  child: SizedBox(
-                                                    height: 60,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.drag_indicator,
-                                                          color: Palette.gray33,
-                                                          size: 20.0,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          apratusNameTrim,
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        16.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          actionName,
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        16.0,
-                                                                  ),
-                                                        ),
-                                                        Spacer(flex: 1),
-                                                        IconButton(
-                                                          onPressed: () {
-                                                            showDialog(
-                                                              context: context,
-                                                              barrierDismissible:
-                                                                  true,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: Text(
+                                          Container(
+                                            //color: Colors.red.withOpacity(0),
+                                            margin: const EdgeInsets.only(
+                                              top: 5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0),
+                                              ),
+                                              color: Palette.grayEE,
+                                              //color: Colors.red.withOpacity(0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                //top: 5,
+                                                //bottom: 5,
+                                                left: 5.0,
+                                                right: 16.0,
+                                              ),
+                                              child: SizedBox(
+                                                height: 60,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.drag_indicator,
+                                                      color: Palette.gray33,
+                                                      size: 20.0,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      apratusNameTrim,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      actionName,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                            fontSize: 16.0,
+                                                          ),
+                                                    ),
+                                                    Spacer(flex: 1),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              true,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              title: Text('삭제'),
+                                                              content: Text(
+                                                                  '동작노트를 삭제하시겠습니까?'),
+                                                              actions: <Widget>[
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    lessonService
+                                                                        .delete(
+                                                                            doc.id);
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: Text(
                                                                       '삭제'),
-                                                                  content: Text(
-                                                                      '동작노트를 삭제하시겠습니까?'),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    TextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        lessonService
-                                                                            .delete(doc.id);
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                      child: Text(
-                                                                          '삭제'),
-                                                                    ),
-                                                                    TextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                      child: Text(
-                                                                          '취소'),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: Text(
+                                                                      '취소'),
+                                                                ),
+                                                              ],
                                                             );
                                                           },
-                                                          icon: Icon(
-                                                            Icons.remove_circle,
-                                                            color: Palette
-                                                                .statusRed,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                        );
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.remove_circle,
+                                                        color:
+                                                            Palette.statusRed,
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
-                                              Container(
-                                                //color: Colors.red.withOpacity(0),
-                                                margin: const EdgeInsets.only(
-                                                  bottom: 5,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  color: Colors.transparent,
-                                                  //color: Colors.red.withOpacity(0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    //top: 5,
-                                                    //bottom: 5,
-                                                    left: 5.0,
-                                                    right: 16.0,
-                                                  ),
-                                                  child: SizedBox(
-                                                    height: 60,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        // Expanded(
-                                                        //   child: TextField(
-                                                        //     controller:
-                                                        //         totalNoteControllers[
-                                                        //             index],
-                                                        //   ),
-                                                        // ),
+                                            ),
+                                          ),
+                                          Container(
+                                            //color: Colors.red.withOpacity(0),
+                                            margin: const EdgeInsets.only(
+                                              bottom: 5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0),
+                                              ),
+                                              color: Colors.transparent,
+                                              //color: Colors.red.withOpacity(0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                //top: 5,
+                                                //bottom: 5,
+                                                left: 5.0,
+                                                right: 16.0,
+                                              ),
+                                              child: SizedBox(
+                                                height: 60,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    // Expanded(
+                                                    //   child: TextField(
+                                                    //     controller:
+                                                    //         totalNoteControllers[
+                                                    //             index],
+                                                    //   ),
+                                                    // ),
 
-                                                        /// 메모 입력창
-                                                        Expanded(
-                                                          child:
-                                                              DynamicSaveTextField(
-                                                            customController:
-                                                                totalNoteControllers[
-                                                                    index],
-                                                            hint: "메모",
-                                                            showArrow: false,
-                                                            customFunction:
-                                                                () async {
-                                                              await lessonService
-                                                                  .update(
-                                                                doc.id,
-                                                                apratusName,
-                                                                actionName,
-                                                                lessonDate,
-                                                                "50",
-                                                                totalNoteControllers[
-                                                                        index]
-                                                                    .text,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                        //Spacer(flex: 1),
-                                                      ],
+                                                    /// 메모 입력창
+                                                    Expanded(
+                                                      child:
+                                                          DynamicSaveTextField(
+                                                        customController:
+                                                            totalNoteControllers[
+                                                                index],
+                                                        hint: "메모",
+                                                        showArrow: false,
+                                                        customFunction: () {
+                                                          lessonService.update(
+                                                            doc.id,
+                                                            apratusName,
+                                                            actionName,
+                                                            lessonDate,
+                                                            "50",
+                                                            totalNoteControllers[
+                                                                    index]
+                                                                .text,
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
+                                                    //Spacer(flex: 1),
+                                                  ],
                                                 ),
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ],
+                                      ),
+                                    ],
 
-                                        // return ListTile(
-                                        //   key: ValueKey(doc),
-                                        //   title: Text(actionName),
-                                        // leading: Icon(
-                                        //   Icons.arrow_forward_ios,
-                                        //   color: Palette.gray99,
-                                        //   size: 12.0,
-                                        // ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
+                                    // return ListTile(
+                                    //   key: ValueKey(doc),
+                                    //   title: Text(actionName),
+                                    // leading: Icon(
+                                    //   Icons.arrow_forward_ios,
+                                    //   color: Palette.gray99,
+                                    //   size: 12.0,
+                                    // ),
+                                  );
+                                },
+                              ),
+                            );
                           },
                         ),
 
