@@ -12,6 +12,7 @@ import 'color.dart';
 import 'lessonAdd.dart';
 import 'lessonDetail.dart';
 import 'lessonDetailDate.dart';
+import 'lessonUpdate.dart';
 import 'lesson_service.dart';
 import 'memberAdd.dart';
 import 'memberList.dart';
@@ -624,7 +625,7 @@ class _NoteList2State extends State<NoteList2> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonDetailDate(),
+              builder: (context) => LessonUpdate(),
               // GlobalWidgetDashboard(), //
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
