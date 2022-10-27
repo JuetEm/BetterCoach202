@@ -74,6 +74,7 @@ class _LessonAddState extends State<LessonAdd> {
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
     lessonDateController = TextEditingController(text: lessonDate);
+
     if (initState) {
       print("INIT!!! : ${initState}");
       //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
@@ -453,7 +454,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                                       onPressed:
                                                                           () {
                                                                         lessonService
-                                                                            .delete(doc.id);
+                                                                            .delete(
+                                                                          docId:
+                                                                              doc.id,
+                                                                          onSuccess:
+                                                                              () {},
+                                                                          onError:
+                                                                              () {},
+                                                                        );
                                                                         Navigator.of(context)
                                                                             .pop();
                                                                       },

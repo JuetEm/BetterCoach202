@@ -9,6 +9,7 @@ import 'auth_service.dart';
 import 'color.dart';
 import 'lessonAdd.dart';
 
+import 'lessonUpdate.dart';
 import 'lesson_service.dart';
 import 'memberList.dart';
 import 'memberUpdate.dart';
@@ -483,7 +484,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                                   ),
                                                   Center(
                                                     child: Text(
-                                                        "동작추가 버튼을 눌러 동작을 추가할 수 있습니다"),
+                                                        "노트추가 버튼을 눌러 노트작성 해보세요."),
                                                   ),
                                                 ],
                                               );
@@ -671,7 +672,7 @@ class _NoteList2State extends State<NoteList2> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonAdd(),
+              builder: (context) => LessonUpdate(),
               // GlobalWidgetDashboard(), //
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),

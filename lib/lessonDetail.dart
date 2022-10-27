@@ -337,7 +337,13 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                         () {
                                                                       lessonService
                                                                           .delete(
-                                                                              doc.id);
+                                                                        docId: doc
+                                                                            .id,
+                                                                        onSuccess:
+                                                                            () {},
+                                                                        onError:
+                                                                            () {},
+                                                                      );
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
