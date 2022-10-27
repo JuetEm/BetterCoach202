@@ -354,7 +354,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                                   child: Row(
                                                     children: [
                                                       Icon(
-                                                        Icons.find_replace,
+                                                        Icons.sync,
                                                         color: Palette.gray99,
                                                         size: 15.0,
                                                       ),
