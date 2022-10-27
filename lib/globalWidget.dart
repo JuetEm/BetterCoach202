@@ -519,7 +519,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        minHeight: 70,
+        maxHeight: 40,
       ),
       child: TextField(
         // minLines: 3,
@@ -551,7 +551,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
             ),
           ),
           filled: true,
-          contentPadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
           fillColor: Colors.white,
         ),
       ),

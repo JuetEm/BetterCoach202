@@ -106,4 +106,34 @@ class DefaultFirebaseOptions {
         '980690811295-iavlhtq0ts0mdp4ljn9sh2klpuslt2si.apps.googleusercontent.com',
     iosBundleId: 'com.example.webProject',
   );
+
+  // // 개발 서버 설정
+  // static const FirebaseOptions web = FirebaseOptions(
+  //   apiKey: 'AIzaSyBaLXrANizji4uU74knRudK7hAlOrt-Jfw',
+  //   appId: '1:980690811295:web:1ce0edac8212fcf98225aa',
+  //   messagingSenderId: '980690811295',
+  //   projectId: 'webproject-48ca4',
+  //   authDomain: 'webproject-48ca4.firebaseapp.com',
+  //   storageBucket: 'webproject-48ca4.appspot.com',
+  //   measurementId: 'G-MW3Z1TGMSL',
+  // );
+
+  // static const FirebaseOptions android = FirebaseOptions(
+  //   apiKey: 'AIzaSyC6Tasv8GrCTKvcI6J3O8o9YPBnfcx34t4',
+  //   appId: '1:980690811295:android:5f257f5558c310ce8225aa',
+  //   messagingSenderId: '980690811295',
+  //   projectId: 'webproject-48ca4',
+  //   storageBucket: 'webproject-48ca4.appspot.com',
+  // );
+
+  // static const FirebaseOptions ios = FirebaseOptions(
+  //   apiKey: 'AIzaSyAcUR3PRm-spuxKgKqREWs4ZiaRTWoOgMM',
+  //   appId: '1:980690811295:ios:d846e11fb5f9b4718225aa',
+  //   messagingSenderId: '980690811295',
+  //   projectId: 'webproject-48ca4',
+  //   storageBucket: 'webproject-48ca4.appspot.com',
+  //   iosClientId:
+  //       '980690811295-iavlhtq0ts0mdp4ljn9sh2klpuslt2si.apps.googleusercontent.com',
+  //   iosBundleId: 'com.example.webProject',
+  // );
 }

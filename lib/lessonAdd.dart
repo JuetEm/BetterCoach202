@@ -73,12 +73,11 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
-    lessonDateController = TextEditingController(text: lessonDate);
 
     if (initState) {
       print("INIT!!! : ${initState}");
       //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-
+      lessonDateController = TextEditingController(text: lessonDate);
       gradeController = TextEditingController(text: "50");
       initState = !initState;
     }
@@ -327,6 +326,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         lessonService.updatePos(
                                             docs[pos].id, pos);
                                       }
+
                                       //setState(() {});
                                     }),
 
@@ -453,15 +453,13 @@ class _LessonAddState extends State<LessonAdd> {
                                                                     TextButton(
                                                                       onPressed:
                                                                           () {
-                                                                        lessonService
-                                                                            .delete(
-                                                                          docId:
-                                                                              doc.id,
-                                                                          onSuccess:
-                                                                              () {},
-                                                                          onError:
-                                                                              () {},
-                                                                        );
+                                                                        lessonService.delete(
+                                                                            docId: doc
+                                                                                .id,
+                                                                            onSuccess:
+                                                                                () {},
+                                                                            onError:
+                                                                                () {});
                                                                         Navigator.of(context)
                                                                             .pop();
                                                                       },
