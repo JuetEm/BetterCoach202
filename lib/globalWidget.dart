@@ -519,7 +519,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        minHeight: 50,
+        maxHeight: 40,
       ),
       child: TextField(
         // minLines: 3,
