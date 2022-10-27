@@ -145,7 +145,7 @@ class LessonService extends ChangeNotifier {
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('lessonDate', isEqualTo: lessonDate)
-        .orderBy("pos", descending: false)
+        //.orderBy("pos", descending: false)
         .get();
   }
 
