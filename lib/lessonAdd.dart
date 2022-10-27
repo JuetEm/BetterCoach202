@@ -73,11 +73,11 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
-
+    lessonDateController = TextEditingController(text: lessonDate);
     if (initState) {
       print("INIT!!! : ${initState}");
       //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-      lessonDateController = TextEditingController(text: lessonDate);
+
       gradeController = TextEditingController(text: "50");
       initState = !initState;
     }
