@@ -117,6 +117,461 @@ class GlobalFunction {
   }
 
   void createDummy(ActionService actionService) {
+    // DB INSERT NEW TEST
+    // actionService.create("TEST", "TEST", "supine", "TEST", "Ab Prep", "김주아",
+    //     "AB PREP", "ab prep");
+
+    // DB INSERT NEW
+    actionService.create(
+        "MAT", "", "supine", "", "Ab Prep", "김주아", "AB PREP", "ab prep");
+    actionService.create("MAT", "", "sitting", "", "Abs Series", "김주아",
+        "ABS SERIES", "abs series");
+    actionService.create("RE", "", "supine", "", "Adductor Stretch", "김주아",
+        "ADDUCTOR STRETCH", "adductor stretch");
+    actionService.create(
+        "CA", "", "supine", "", "Airplane", "김주아", "AIRPLANE", "airplane");
+    actionService.create("RE", "", "kneeling", "", "Arm Circles", "김주아",
+        "ARM CIRCLES", "arm circles");
+    actionService.create(
+        "CH", "", "standing", "", "Arm Frog", "김주아", "ARM FROG", "arm frog");
+    actionService.create("CA", "", "sitting", "", "Back Rowing", "김주아",
+        "BACK ROWING", "back rowing");
+    actionService.create("RE", "", "sitting", "", "Back Rowing Prep", "김주아",
+        "BACK ROWING PREP", "back rowing prep");
+    actionService.create("CA", "", "sitting", "", "Back Rowing Prep Series",
+        "김주아", "BACK ROWING PREP SERIES", "back rowing prep series");
+    actionService.create("RE", "", "sitting", "", "Balance Control Back", "김주아",
+        "BALANCE CONTROL BACK", "balance control back");
+    actionService.create("RE", "", "plank", "", "Balance Control Front", "김주아",
+        "BALANCE CONTROL FRONT", "balance control front");
+    actionService.create("MAT", "", "sitting", "", "Balance Point", "김주아",
+        "BALANCE POINT", "balance point");
+    actionService.create("BA", "", "standing", "", "Ballet Stretch", "김주아",
+        "BALLET STRETCH", "ballet stretch");
+    actionService.create("RE", "", "supine", "", "Bend&Stretch", "김주아",
+        "BEND&STRETCH", "bend&stretch");
+    actionService.create(
+        "MAT", "", "sitting", "", "Boomerang", "김주아", "BOOMERANG", "boomerang");
+    actionService.create("MAT", "", "prone", "", "Breast Stroke", "김주아",
+        "BREAST STROKE", "breast stroke");
+    actionService.create(
+        "MAT", "", "supine", "", "Breathing", "김주아", "BREATHING", "breathing");
+    actionService.create(
+        "CA", "", "supine", "", "Breathing", "김주아", "BREATHING", "breathing");
+    actionService.create("MAT", "", "quadruped", "", "Cat Stretch", "김주아",
+        "CAT STRETCH", "cat stretch");
+    actionService.create("RE", "", "kneeling", "", "Chest Expansion", "김주아",
+        "CHEST EXPANSION", "chest expansion");
+    actionService.create("MAT", "", "side lying", "", "Clam Shell", "김주아",
+        "CLAM SHELL", "clam shell");
+    actionService.create("MAT", "", "supine", "", "Control Balance", "김주아",
+        "CONTROL BALANCE", "control balance");
+    actionService.create("RE", "", "supine", "", "Coordination", "김주아",
+        "COORDINATION", "coordination");
+    actionService.create(
+        "MAT", "", "supine", "", "Corkscrew", "김주아", "CORKSCREW", "corkscrew");
+    actionService.create(
+        "RE", "", "supine", "", "Corscrew", "김주아", "CORSCREW", "corscrew");
+    actionService.create(
+        "MAT", "", "sitting", "", "Crab", "김주아", "CRAB", "crab");
+    actionService.create("MAT", "", "supine", "", "Criss Cross", "김주아",
+        "CRISS CROSS", "criss cross");
+    actionService.create("MAT", "", "prone", "", "Double Leg Kicks", "김주아",
+        "DOUBLE LEG KICKS", "double leg kicks");
+    actionService.create("MAT", "", "supine", "", "Double Leg Stretch", "김주아",
+        "DOUBLE LEG STRETCH", "double leg stretch");
+    actionService.create("RE", "", "quadruped", "", "Down Stretch", "김주아",
+        "DOWN STRETCH", "down stretch");
+    actionService.create(
+        "RE", "", "standing", "", "Elephant", "김주아", "ELEPHANT", "elephant");
+    actionService.create("RE", "", "supine", "", "Footwork Series", "김주아",
+        "FOOTWORK SERIES", "footwork series");
+    actionService.create("CH", "", "sitting", "", "Footwork Series", "김주아",
+        "FOOTWORK SERIES", "footwork series");
+    actionService.create("RE", "", "supine", "", "Frog", "김주아", "FROG", "frog");
+    actionService.create("MAT", "", "prone", "", "Frog Hip Extension", "김주아",
+        "FROG HIP EXTENSION", "frog hip extension");
+    actionService.create("CA", "", "sitting", "", "Front Rowing", "김주아",
+        "FRONT ROWING", "front rowing");
+    actionService.create("RE", "", "sitting", "", "Front Rowing Prep", "김주아",
+        "FRONT ROWING PREP", "front rowing prep");
+    actionService.create("CA", "", "sitting", "", "Front Rowing Prep Series",
+        "김주아", "FRONT ROWING PREP SERIES", "front rowing prep series");
+    actionService.create("RE", "", "standing", "", "Front Split", "김주아",
+        "FRONT SPLIT", "front split");
+    actionService.create("CA", "", "supine", "", "Full Hanging", "김주아",
+        "FULL HANGING", "full hanging");
+    actionService.create(
+        "CA", "", "prone", "", "Full Swan", "김주아", "FULL SWAN", "full swan");
+    actionService.create("CH", "", "standing", "", "Going Up Front", "김주아",
+        "GOING UP FRONT", "going up front");
+    actionService.create("CH", "", "standing", "", "Going Up Side", "김주아",
+        "GOING UP SIDE", "going up side");
+    actionService.create("CA", "", "supine", "", "Half Hanging", "김주아",
+        "HALF HANGING", "half hanging");
+    actionService.create("MAT", "", "sitting", "", "Half Roll Back", "김주아",
+        "HALF ROLL BACK", "half roll back");
+    actionService.create(
+        "MAT", "", "prone", "", "Half Swan", "김주아", "HALF SWAN", "half swan");
+    actionService.create("CH", "", "supine", "", "Hams Press Hips Down", "김주아",
+        "HAMS PRESS HIPS DOWN", "hams press hips down");
+    actionService.create("CH", "", "supine", "", "Hams Press Hips Up", "김주아",
+        "HAMS PRESS HIPS UP", "hams press hips up");
+    actionService.create("CA", "", "standing", "", "Hanging Pull Ups", "김주아",
+        "HANGING PULL UPS", "hanging pull ups");
+    actionService.create("MAT", "", "supine", "", "High Bicycle", "김주아",
+        "HIGH BICYCLE", "high bicycle");
+    actionService.create("MAT", "", "supine", "", "High Scissors", "김주아",
+        "HIGH SCISSORS", "high scissors");
+    actionService.create("MAT", "", "sitting", "", "Hip Circles", "김주아",
+        "HIP CIRCLES", "hip circles");
+    actionService.create("CA", "", "side lying", "", "Hip Opener", "김주아",
+        "HIP OPENER", "hip opener");
+    actionService.create("MAT", "", "supine", "", "Hip Release", "김주아",
+        "HIP RELEASE", "hip release");
+    actionService.create(
+        "MAT", "", "supine", "", "Hip Roll", "김주아", "HIP ROLL", "hip roll");
+    actionService.create("CH", "", "sitting", "", "Horse Back", "김주아",
+        "HORSE BACK", "horse back");
+    actionService.create("BA", "", "sitting", "", "Horse Back", "김주아",
+        "HORSE BACK", "horse back");
+    actionService.create(
+        "MAT", "", "supine", "", "Hundred", "김주아", "HUNDRED", "hundred");
+    actionService.create(
+        "RE", "", "supine", "", "Hundred", "김주아", "HUNDRED", "hundred");
+    actionService.create("MAT", "", "supine", "", "Imprinting Transition",
+        "김주아", "IMPRINTING TRANSITION", "imprinting transition");
+    actionService.create("MAT", "", "supine", "", "Jack Knife", "김주아",
+        "JACK KNIFE", "jack knife");
+    actionService.create("CH", "", "supine", "", "Jack Knife", "김주아",
+        "JACK KNIFE", "jack knife");
+    actionService.create("CH", "", "standing", "", "Knee Raise Series", "김주아",
+        "KNEE RAISE SERIES", "knee raise series");
+    actionService.create("RE", "", "quadruped", "", "Knee Stretch Arches",
+        "김주아", "KNEE STRETCH ARCHES", "knee stretch arches");
+    actionService.create("RE", "", "quadruped", "", "Knee Stretch Knees Off",
+        "김주아", "KNEE STRETCH KNEES OFF", "knee stretch knees off");
+    actionService.create("RE", "", "quadruped", "", "Knee Stretch Round", "김주아",
+        "KNEE STRETCH ROUND", "knee stretch round");
+    actionService.create("RE", "", "quadruped", "", "Knee Stretch Series",
+        "김주아", "KNEE STRETCH SERIES", "knee stretch series");
+    actionService.create("CA", "", "kneeling", "", "Kneeling Ballet Stretches",
+        "김주아", "KNEELING BALLET STRETCHES", "kneeling ballet stretches");
+    actionService.create("CA", "", "kneeling", "", "Kneeling Cat", "김주아",
+        "KNEELING CAT", "kneeling cat");
+    actionService.create("CA", "", "kneeling", "", "Kneeling Chest Expansion",
+        "김주아", "KNEELING CHEST EXPANSION", "kneeling chest expansion");
+    actionService.create("CH", "", "kneeling", "", "Kneeling Mermaid", "김주아",
+        "KNEELING MERMAID", "kneeling mermaid");
+    actionService.create("MAT", "", "kneeling", "", "Kneeling Side Kick", "김주아",
+        "KNEELING SIDE KICK", "kneeling side kick");
+    actionService.create("CH", "", "kneeling", "", "Kneeling Side Kicks", "김주아",
+        "KNEELING SIDE KICKS", "kneeling side kicks");
+    actionService.create(
+        "BA", "", "standing", "", "Lay Backs", "김주아", "LAY BACKS", "lay backs");
+    actionService.create("RE", "", "supine", "", "Leg Circles", "김주아",
+        "LEG CIRCLES", "leg circles");
+    actionService.create("MAT", "", "plank", "", "Leg Pull Back", "김주아",
+        "LEG PULL BACK", "leg pull back");
+    actionService.create("MAT", "", "plank", "", "Leg Pull Front", "김주아",
+        "LEG PULL FRONT", "leg pull front");
+    actionService.create("CA", "", "supine", "", "Leg Spring Series", "김주아",
+        "LEG SPRING SERIES", "leg spring series");
+    actionService.create(
+        "CA",
+        "",
+        "side lying",
+        "",
+        "Leg Spring Side Kick Series",
+        "김주아",
+        "LEG SPRING SIDE KICK SERIES",
+        "leg spring side kick series");
+    actionService.create("RE", "", "supine", "", "Leg Strap Series", "김주아",
+        "LEG STRAP SERIES", "leg strap series");
+    actionService.create("RE", "", "sitting", "", "Long Back Stretch", "김주아",
+        "LONG BACK STRETCH", "long back stretch");
+    actionService.create("RE", "", "prone", "", "Long Box Backstroke", "김주아",
+        "LONG BOX BACKSTROKE", "long box backstroke");
+    actionService.create("RE", "", "prone", "", "Long Box Horse Back", "김주아",
+        "LONG BOX HORSE BACK", "long box horse back");
+    actionService.create("RE", "", "prone", "", "Long Box Pulling Straps",
+        "김주아", "LONG BOX PULLING STRAPS", "long box pulling straps");
+    actionService.create("RE", "", "prone", "", "Long Box Series", "김주아",
+        "LONG BOX SERIES", "long box series");
+    actionService.create("RE", "", "prone", "", "Long Box T Shape", "김주아",
+        "LONG BOX T SHAPE", "long box t shape");
+    actionService.create("RE", "", "prone", "", "Long Box Teaser", "김주아",
+        "LONG BOX TEASER", "long box teaser");
+    actionService.create("RE", "", "supine", "", "Long Spine Massage", "김주아",
+        "LONG SPINE MASSAGE", "long spine massage");
+    actionService.create("RE", "", "plank", "", "Long Stretch", "김주아",
+        "LONG STRETCH", "long stretch");
+    actionService.create("RE", "", "plank", "", "Long Stretch Series", "김주아",
+        "LONG STRETCH SERIES", "long stretch series");
+    actionService.create("MAT", "", "supine", "", "Lower And Lift", "김주아",
+        "LOWER AND LIFT", "lower and lift");
+    actionService.create("RE", "", "supine", "", "Lower And Lift", "김주아",
+        "LOWER AND LIFT", "lower and lift");
+    actionService.create(
+        "CH", "", "standing", "", "Lunge", "김주아", "LUNGE", "lunge");
+    actionService.create(
+        "MAT", "", "sitting", "", "Mermaid", "김주아", "MERMAID", "mermaid");
+    actionService.create(
+        "CA", "", "sitting", "", "Mermaid", "김주아", "MERMAID", "mermaid");
+    actionService.create(
+        "CH", "", "sitting", "", "Mermaid", "김주아", "MERMAID", "mermaid");
+    actionService.create("CA", "", "supine", "", "Midback Series", "김주아",
+        "MIDBACK SERIES", "midback series");
+    actionService.create(
+        "CA", "", "supine", "", "Monkey", "김주아", "MONKEY", "monkey");
+    actionService.create("CH", "", "standing", "", "Mountain Climb", "김주아",
+        "MOUNTAIN CLIMB", "mountain climb");
+    actionService.create(
+        "MAT", "", "sitting", "", "Neck Pull", "김주아", "NECK PULL", "neck pull");
+    actionService.create("CH", "", "prone", "", "One Arm Press", "김주아",
+        "ONE ARM PRESS", "one arm press");
+    actionService.create("MAT", "", "sitting", "", "Open Leg Rocker", "김주아",
+        "OPEN LEG ROCKER", "open leg rocker");
+    actionService.create(
+        "RE", "", "supine", "", "Overhead", "김주아", "OVERHEAD", "overhead");
+    actionService.create(
+        "CA", "", "supine", "", "Parakeet", "김주아", "PARAKEET", "parakeet");
+    actionService.create("RE", "", "supine", "", "Pelvic Lift", "김주아",
+        "PELVIC LIFT", "pelvic lift");
+    actionService.create("MAT", "", "supine", "", "Pelvic Movement", "김주아",
+        "PELVIC MOVEMENT", "pelvic movement");
+    actionService.create("CA", "", "sitting", "", "Port De Bras", "김주아",
+        "PORT DE BRAS", "port de bras");
+    actionService.create("CH", "", "sitting", "", "Press Down Teaser", "김주아",
+        "PRESS DOWN TEASER", "press down teaser");
+    actionService.create("MAT", "", "prone", "", "Prone Heel Squeeze", "김주아",
+        "PRONE HEEL SQUEEZE", "prone heel squeeze");
+    actionService.create("MAT", "", "prone", "", "Prone Leg Lift Series", "김주아",
+        "PRONE LEG LIFT SERIES", "prone leg lift series");
+    actionService.create("BA", "", "prone", "", "Prone Leg Lift Series", "김주아",
+        "PRONE LEG LIFT SERIES", "prone leg lift series");
+    actionService.create(
+        "CH", "", "standing", "", "Pull Up", "김주아", "PULL UP", "pull up");
+    actionService.create(
+        "CH", "", "standing", "", "Push Down", "김주아", "PUSH DOWN", "push down");
+    actionService.create("CH", "", "standing", "", "Push Down With One Arm",
+        "김주아", "PUSH DOWN WITH ONE ARM", "push down with one arm");
+    actionService.create("CA", "", "sitting", "", "Push Through", "김주아",
+        "PUSH THROUGH", "push through");
+    actionService.create("CA", "", "supine", "", "Push Thru With Feet", "김주아",
+        "PUSH THRU WITH FEET", "push thru with feet");
+    actionService.create(
+        "MAT", "", "plank", "", "Push Ups", "김주아", "PUSH UPS", "push ups");
+    actionService.create(
+        "MAT", "", "prone", "", "Rocking", "김주아", "ROCKING", "rocking");
+    actionService.create("CA", "", "sitting", "", "Roll Back Bar", "김주아",
+        "ROLL BACK BAR", "roll back bar");
+    actionService.create("CA", "", "sitting", "", "Roll Back With One Arm",
+        "김주아", "ROLL BACK WITH ONE ARM", "roll back with one arm");
+    actionService.create(
+        "CA", "", "sitting", "", "Roll Down", "김주아", "ROLL DOWN", "roll down");
+    actionService.create("BA", "", "sitting", "", "Roll Down Round", "김주아",
+        "ROLL DOWN ROUND", "roll down round");
+    actionService.create("BA", "", "sitting", "", "Roll Down Straight", "김주아",
+        "ROLL DOWN STRAIGHT", "roll down straight");
+    actionService.create(
+        "MAT", "", "supine", "", "Roll Over", "김주아", "ROLL OVER", "roll over");
+    actionService.create(
+        "CH", "", "supine", "", "Roll Over", "김주아", "ROLL OVER", "roll over");
+    actionService.create(
+        "CA", "", "supine", "", "Roll Up", "김주아", "ROLL UP", "roll up");
+    actionService.create("MAT", "", "sitting", "", "Rolling Like A Ball", "김주아",
+        "ROLLING LIKE A BALL", "rolling like a ball");
+    actionService.create("RE", "", "sitting", "", "Rowing 90 Degrees", "김주아",
+        "ROWING 90 DEGREES", "rowing 90 degrees");
+    actionService.create("RE", "", "sitting", "", "Rowing From The Chest",
+        "김주아", "ROWING FROM THE CHEST", "rowing from the chest");
+    actionService.create("RE", "", "sitting", "", "Rowing From The Hips", "김주아",
+        "ROWING FROM THE HIPS", "rowing from the hips");
+    actionService.create("RE", "", "sitting", "", "Rowing Hug The Tree", "김주아",
+        "ROWING HUG THE TREE", "rowing hug the tree");
+    actionService.create("RE", "", "sitting", "", "Rowing Into The Sternum",
+        "김주아", "ROWING INTO THE STERNUM", "rowing into the sternum");
+    actionService.create("RE", "", "sitting", "", "Rowing Salute", "김주아",
+        "ROWING SALUTE", "rowing salute");
+    actionService.create("RE", "", "sitting", "", "Rowing Series", "김주아",
+        "ROWING SERIES", "rowing series");
+    actionService.create("RE", "", "sitting", "", "Rowing Shave", "김주아",
+        "ROWING SHAVE", "rowing shave");
+    actionService.create(
+        "RE", "", "supine", "", "Running", "김주아", "RUNNING", "running");
+    actionService.create("RE", "", "standing", "", "Russian Split", "김주아",
+        "RUSSIAN SPLIT", "russian split");
+    actionService.create("MAT", "", "sitting", "", "Saw", "김주아", "SAW", "saw");
+    actionService.create("CH", "", "prone", "", "Scapula Isolation", "김주아",
+        "SCAPULA ISOLATION", "scapula isolation");
+    actionService.create("MAT", "", "supine", "", "Scapula Movement", "김주아",
+        "SCAPULA MOVEMENT", "scapula movement");
+    actionService.create(
+        "MAT", "", "supine", "", "Scissors", "김주아", "SCISSORS", "scissors");
+    actionService.create(
+        "MAT", "", "sitting", "", "Seal", "김주아", "SEAL", "seal");
+    actionService.create("RE", "", "supine", "", "Semi-Circle", "김주아",
+        "SEMI-CIRCLE", "semi-circle");
+    actionService.create("RE", "", "sitting", "", "Short Box Round", "김주아",
+        "SHORT BOX ROUND", "short box round");
+    actionService.create("RE", "", "sitting", "", "Short Box Series", "김주아",
+        "SHORT BOX SERIES", "short box series");
+    actionService.create("BA", "", "sitting", "", "Short Box Series", "김주아",
+        "SHORT BOX SERIES", "short box series");
+    actionService.create("RE", "", "sitting", "", "Short Box Side", "김주아",
+        "SHORT BOX SIDE", "short box side");
+    actionService.create("RE", "", "sitting", "", "Short Box Straight", "김주아",
+        "SHORT BOX STRAIGHT", "short box straight");
+    actionService.create("RE", "", "sitting", "", "Short Box Tree", "김주아",
+        "SHORT BOX TREE", "short box tree");
+    actionService.create("RE", "", "sitting", "", "Short Box Twist", "김주아",
+        "SHORT BOX TWIST", "short box twist");
+    actionService.create("RE", "", "sitting", "", "Short Box Twist And Reach",
+        "김주아", "SHORT BOX TWIST AND REACH", "short box twist and reach");
+    actionService.create("RE", "", "supine", "", "Short Spine Massage", "김주아",
+        "SHORT SPINE MASSAGE", "short spine massage");
+    actionService.create("CA", "", "supine", "", "Shoulder And Chest Opener",
+        "김주아", "SHOULDER AND CHEST OPENER", "shoulder and chest opener");
+    actionService.create("MAT", "", "supine", "", "Shoulder Bridge", "김주아",
+        "SHOULDER BRIDGE", "shoulder bridge");
+    actionService.create("CA", "", "sitting", "", "Side Arm Sitting", "김주아",
+        "SIDE ARM SITTING", "side arm sitting");
+    actionService.create(
+        "MAT", "", "sitting", "", "Side Bend", "김주아", "SIDE BEND", "side bend");
+    actionService.create("CA", "", "side lying", "", "Side Bend", "김주아",
+        "SIDE BEND", "side bend");
+    actionService.create(
+        "BA", "", "standing", "", "Side Bend", "김주아", "SIDE BEND", "side bend");
+    actionService.create("MAT", "", "supine", "", "Side Kick Beats", "김주아",
+        "SIDE KICK BEATS", "side kick beats");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Bicycle",
+        "김주아", "SIDE KICK BICYCLE", "side kick bicycle");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Big Circles",
+        "김주아", "SIDE KICK BIG CIRCLES", "side kick big circles");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Big Scissors",
+        "김주아", "SIDE KICK BIG SCISSORS", "side kick big scissors");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Developpe",
+        "김주아", "SIDE KICK DEVELOPPE", "side kick developpe");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Front Back",
+        "김주아", "SIDE KICK FRONT BACK", "side kick front back");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Hot Potato",
+        "김주아", "SIDE KICK HOT POTATO", "side kick hot potato");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Inner Thigh",
+        "김주아", "SIDE KICK INNER THIGH", "side kick inner thigh");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Series", "김주아",
+        "SIDE KICK SERIES", "side kick series");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Small Circles",
+        "김주아", "SIDE KICK SMALL CIRCLES", "side kick small circles");
+    actionService.create("MAT", "", "side lying", "", "Side Kick Up Down",
+        "김주아", "SIDE KICK UP DOWN", "side kick up down");
+    actionService.create("BA", "", "side lying", "", "Side Leg Lift", "김주아",
+        "SIDE LEG LIFT", "side leg lift");
+    actionService.create("BA", "", "side lying", "", "Side Lying Stretch",
+        "김주아", "SIDE LYING STRETCH", "side lying stretch");
+    actionService.create("BA", "", "standing", "", "Side Sit Up", "김주아",
+        "SIDE SIT UP", "side sit up");
+    actionService.create("RE", "", "standing", "", "Side Split", "김주아",
+        "SIDE SPLIT", "side split");
+    actionService.create("MAT", "", "supine", "", "Single Leg Circles", "김주아",
+        "SINGLE LEG CIRCLES", "single leg circles");
+    actionService.create("MAT", "", "prone", "", "Single Leg Kicks", "김주아",
+        "SINGLE LEG KICKS", "single leg kicks");
+    actionService.create("CH", "", "sitting", "", "Single Leg Press", "김주아",
+        "SINGLE LEG PRESS", "single leg press");
+    actionService.create("MAT", "", "supine", "", "Single Leg Stretch", "김주아",
+        "SINGLE LEG STRETCH", "single leg stretch");
+    actionService.create("CH", "", "sitting", "", "Sitthing Triceps Press",
+        "김주아", "SITTHING TRICEPS PRESS", "sitthing triceps press");
+    actionService.create("CA", "", "sitting", "", "Sitting Cat", "김주아",
+        "SITTING CAT", "sitting cat");
+    actionService.create("BA", "", "sitting", "", "Sitting Leg Series", "김주아",
+        "SITTING LEG SERIES", "sitting leg series");
+    actionService.create(
+        "RE", "", "standing", "", "Snake", "김주아", "SNAKE", "snake");
+    actionService.create("MAT", "", "sitting", "", "Spine Stretch Forward",
+        "김주아", "SPINE STRETCH FORWARD", "spine stretch forward");
+    actionService.create("CH", "", "sitting", "", "Spine Stretch Forward",
+        "김주아", "SPINE STRETCH FORWARD", "spine stretch forward");
+    actionService.create("MAT", "", "sitting", "", "Spine Twist", "김주아",
+        "SPINE TWIST", "spine twist");
+    actionService.create("CA", "", "standing", "", "Spread Eagle", "김주아",
+        "SPREAD EAGLE", "spread eagle");
+    actionService.create(
+        "CA", "", "standing", "", "Squat", "김주아", "SQUAT", "squat");
+    actionService.create("CA", "", "standing", "", "Standing Ballet Stretches",
+        "김주아", "STANDING BALLET STRETCHES", "standing ballet stretches");
+    actionService.create("CA", "", "standing", "", "Standing Cat", "김주아",
+        "STANDING CAT", "standing cat");
+    actionService.create("CA", "", "standing", "", "Standing Chest Expansion",
+        "김주아", "STANDING CHEST EXPANSION", "standing chest expansion");
+    actionService.create("BA", "", "standing", "", "Standing Roll Back", "김주아",
+        "STANDING ROLL BACK", "standing roll back");
+    actionService.create("CH", "", "standing", "", "Standing Roll Down", "김주아",
+        "STANDING ROLL DOWN", "standing roll down");
+    actionService.create("BA", "", "standing", "", "Standing Side Leg Lift",
+        "김주아", "STANDING SIDE LEG LIFT", "standing side leg lift");
+    actionService.create("CH", "", "standing", "", "Standing Single Leg Press",
+        "김주아", "STANDING SINGLE LEG PRESS", "standing single leg press");
+    actionService.create("CA", "", "standing", "", "Standing Spred Eagle",
+        "김주아", "STANDING SPRED EAGLE", "standing spred eagle");
+    actionService.create("RE", "", "sitting", "", "Stomach Massage Reach Up",
+        "김주아", "STOMACH MASSAGE REACH UP", "stomach massage reach up");
+    actionService.create("RE", "", "sitting", "", "Stomach Massage Round",
+        "김주아", "STOMACH MASSAGE ROUND", "stomach massage round");
+    actionService.create("RE", "", "sitting", "", "Stomach Massage Series",
+        "김주아", "STOMACH MASSAGE SERIES", "stomach massage series");
+    actionService.create("RE", "", "sitting", "", "Stomach Massage Straight",
+        "김주아", "STOMACH MASSAGE STRAIGHT", "stomach massage straight");
+    actionService.create("RE", "", "sitting", "", "Stomach Massage Twist",
+        "김주아", "STOMACH MASSAGE TWIST", "stomach massage twist");
+    actionService.create("MAT", "", "prone", "", "Swan", "김주아", "SWAN", "swan");
+    actionService.create("RE", "", "prone", "", "Swan", "김주아", "SWAN", "swan");
+    actionService.create("CA", "", "prone", "", "Swan", "김주아", "SWAN", "swan");
+    actionService.create("BA", "", "prone", "", "Swan", "김주아", "SWAN", "swan");
+    actionService.create(
+        "MAT", "", "prone", "", "Swan Dive", "김주아", "SWAN DIVE", "swan dive");
+    actionService.create(
+        "CH", "", "prone", "", "Swan Dive", "김주아", "SWAN DIVE", "swan dive");
+    actionService.create(
+        "BA", "", "prone", "", "Swan Dive", "김주아", "SWAN DIVE", "swan dive");
+    actionService.create("CH", "", "prone", "", "Swan Dive From Floor", "김주아",
+        "SWAN DIVE FROM FLOOR", "swan dive from floor");
+    actionService.create("BA", "", "standing", "", "Swedish Bar Stretch", "김주아",
+        "SWEDISH BAR STRETCH", "swedish bar stretch");
+    actionService.create(
+        "MAT", "", "prone", "", "Swimming", "김주아", "SWIMMING", "swimming");
+    actionService.create(
+        "MAT", "", "supine", "", "Teaser", "김주아", "TEASER", "teaser");
+    actionService.create(
+        "CA", "", "supine", "", "Teaser", "김주아", "TEASER", "teaser");
+    actionService.create("RE", "", "standing", "", "Tendon Stretch", "김주아",
+        "TENDON STRETCH", "tendon stretch");
+    actionService.create("CH", "", "standing", "", "Tendon Stretch", "김주아",
+        "TENDON STRETCH", "tendon stretch");
+    actionService.create("MAT", "", "supine", "", "The Hundred", "김주아",
+        "THE HUNDRED", "the hundred");
+    actionService.create("MAT", "", "supine", "", "The Roll Up", "김주아",
+        "THE ROLL UP", "the roll up");
+    actionService.create("MAT", "", "kneeling", "", "Thigh Stretch", "김주아",
+        "THIGH STRETCH", "thigh stretch");
+    actionService.create("RE", "", "kneeling", "", "Thigh Stretch", "김주아",
+        "THIGH STRETCH", "thigh stretch");
+    actionService.create("CA", "", "kneeling", "", "Thigh Stretch", "김주아",
+        "THIGH STRETCH", "thigh stretch");
+    actionService.create(
+        "MAT", "", "supine", "", "Toe Tap", "김주아", "TOE TAP", "toe tap");
+    actionService.create(
+        "CA", "", "supine", "", "Tower", "김주아", "TOWER", "tower");
+    actionService.create(
+        "CH", "", "prone", "", "Triceps", "김주아", "TRICEPS", "triceps");
+    actionService.create(
+        "RE", "", "standing", "", "Twist", "김주아", "TWIST", "twist");
+    actionService.create("RE", "", "standing", "", "Up Stretch", "김주아",
+        "UP STRETCH", "up stretch");
+    actionService.create("CA", "", "supine", "", "Upper Abs Curl", "김주아",
+        "UPPER ABS CURL", "upper abs curl");
+
     // DB INSERT TEST
     // actionService.create(
     //     "TEST", "supine", "Ab Prep", "김주아", "AB PREP", "ab prep");

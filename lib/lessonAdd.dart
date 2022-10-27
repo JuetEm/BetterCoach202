@@ -42,7 +42,8 @@ List<String> dropdownList = [
   'LADDER BARREL',
   'SPRING BOARD',
   'SPINE CORRECTOR',
-  'MAT'
+  'MAT',
+  'OTHERS',
 ];
 
 double sliderValue = 50;
@@ -176,6 +177,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 String currentAppratus =
                                     apratusNameController.text;
                                 String lessonDate = lessonDateController.text;
+                                String totalNote = todayNoteController.text;
 
                                 bool initState = true;
 
@@ -189,7 +191,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       customUserInfo,
                                       currentAppratus,
                                       lessonDate,
-                                      initState
+                                      initState,
+                                      totalNote
                                     ]),
                                   ),
                                 );
@@ -225,6 +228,9 @@ class _LessonAddState extends State<LessonAdd> {
                                         break;
                                       case "MAT":
                                         apratusNameController.text = "MAT";
+                                        break;
+                                      case "OT":
+                                        apratusNameController.text = "OTHERS";
                                         break;
                                     }
                                   });
