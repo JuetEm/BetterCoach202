@@ -783,6 +783,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 return ActionTile(
                                     apparatus: apparatus,
                                     name: name,
+                                    phoneNumber: "temp",
                                     lessonDate: lessonDate,
                                     grade: "50",
                                     totalNote: totalNote,
@@ -795,6 +796,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   return ActionTile(
                                       apparatus: apparatus,
                                       name: name,
+                                      phoneNumber: "temp",
                                       lessonDate: lessonDate,
                                       grade: "50",
                                       totalNote: totalNote,
@@ -812,6 +814,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   return ActionTile(
                                       apparatus: apparatus,
                                       name: name,
+                                      phoneNumber: "temp",
                                       lessonDate: lessonDate,
                                       grade: "50",
                                       totalNote: totalNote,
@@ -824,6 +827,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     return ActionTile(
                                         apparatus: apparatus,
                                         name: name,
+                                        phoneNumber: "temp",
                                         lessonDate: lessonDate,
                                         grade: "50",
                                         totalNote: totalNote,
@@ -952,6 +956,7 @@ class ActionTile extends StatefulWidget {
     Key? key,
     required this.apparatus,
     required this.name,
+    required this.phoneNumber,
     required this.lessonDate,
     required this.grade,
     required this.totalNote,
@@ -962,6 +967,7 @@ class ActionTile extends StatefulWidget {
 
   final String apparatus;
   final String name;
+  final String phoneNumber;
   final String lessonDate;
   final String grade;
   final String totalNote;
@@ -984,7 +990,8 @@ class _ActionTileState extends State<ActionTile> {
         widget.totalNote,
         widget.docId,
         widget.uid);
-
+    //레슨서비스 활용
+    final lessonService = context.read<LessonService>();
     // onTap 방식과는 다르게 동작해야 함
     // setState(() {
     if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
