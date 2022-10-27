@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/globalWidget.dart';
 
+import 'actionSelector.dart';
 import 'auth_service.dart';
 import 'color.dart';
 import 'lessonAdd.dart';
@@ -510,12 +511,14 @@ class _MemberInfoState extends State<MemberInfo> {
                     lessonDate =
                         DateFormat("yyyy-MM-dd").format(DateTime.now());
 
+                    List<TmpLessonInfo> tmpLessonInfoList = [];
                     eventList = [];
                     List<dynamic> args = [
                       userInfo,
                       lessonDate,
                       eventList,
                       lessonNoteId,
+                      tmpLessonInfoList,
                     ];
 
                     // LessonAdd로 이동

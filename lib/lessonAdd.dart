@@ -56,6 +56,8 @@ String editTotalNote = "";
 
 bool initState = true;
 
+List<TmpLessonInfo> tmpLessonInfoList = [];
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -73,6 +75,7 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
+    tmpLessonInfoList = argsList[4];
 
     if (initState) {
       print("INIT!!! : ${initState}");
@@ -159,7 +162,7 @@ class _LessonAddState extends State<LessonAdd> {
                           customFunction: () {},
                         ),
 
-                        // 동작입력 버튼
+                        // 동작선택 버튼
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
@@ -192,7 +195,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       currentAppratus,
                                       lessonDate,
                                       initState,
-                                      totalNote
+                                      totalNote,
+                                      tmpLessonInfoList,
                                     ]),
                                   ),
                                 );
@@ -350,6 +354,18 @@ class _LessonAddState extends State<LessonAdd> {
                                       String lessonDateTrim = " ";
                                       String apratusNameTrim = " ";
                                       int pos = doc.get('pos'); //순서
+
+                                      TmpLessonInfo tmpLessonInfo =
+                                          TmpLessonInfo(
+                                              apratusName,
+                                              actionName,
+                                              name,
+                                              lessonDate,
+                                              grade,
+                                              totalNote,
+                                              customUserInfo.docId,
+                                              uid);
+                                      tmpLessonInfoList.add(tmpLessonInfo);
                                       // 날짜 글자 자르기
                                       if (lessonDate.length > 0) {
                                         lessonDateTrim =
@@ -453,6 +469,18 @@ class _LessonAddState extends State<LessonAdd> {
                                                                     TextButton(
                                                                       onPressed:
                                                                           () {
+                                                                        for (int i =
+                                                                                0;
+                                                                            i < tmpLessonInfoList.length;
+                                                                            i++) {
+                                                                          if (tmpLessonInfoList[i].apparatusName ==
+                                                                              apratusName) {
+                                                                            if (tmpLessonInfoList[i].actionName ==
+                                                                                actionName) {
+                                                                              tmpLessonInfoList.removeAt(i);
+                                                                            }
+                                                                          }
+                                                                        }
                                                                         lessonService
                                                                             .delete(doc.id);
                                                                         Navigator.of(context)

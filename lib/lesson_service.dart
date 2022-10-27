@@ -45,12 +45,16 @@ class LessonService extends ChangeNotifier {
     //   'grade': grade, //수행도
     //   'totalNote': totalNote, //수업총메모
     // });
-    pos ??
-        await countPos(
-          uid,
-          docId,
-          lessonDate,
-        );
+
+    print("Create Called!!");
+    if (pos == null) {
+      pos = await countPos(
+        uid,
+        docId,
+        lessonDate,
+      );
+      print("pos Null change : ${pos}");
+    }
 
     print('pos : ${pos}');
 
@@ -68,9 +72,14 @@ class LessonService extends ChangeNotifier {
       'totalNote': totalNote, //수업총메모
       'timestamp': timestamp,
       'pos': pos, // 순서
+    }).then((value) {
+      print("value : ${value}");
+      onSuccess();
+    }).onError((error, stackTrace) {
+      print("error : ${error}");
+      onError();
     });
     notifyListeners(); // 화면 갱신
-    onSuccess();
   }
 
   void createTodaynote({
@@ -171,7 +180,8 @@ class LessonService extends ChangeNotifier {
         .orderBy("pos", descending: false)
         .get();
     List<DocumentSnapshot> docs = docRaw.docs;
-    //print('pos : ${docs.length}');
+    print('pos : ${docs.length}');
+
     return docs.length;
   }
 
@@ -212,7 +222,31 @@ class LessonService extends ChangeNotifier {
 
   void delete(String docId) async {
     // bucket 삭제
-    await lessonCollection.doc(docId).delete();
+    await lessonCollection.doc(docId).delete().then((value) {
+      print("delete then");
+    }).onError((error, stackTrace) {
+      print("delete error : ${error}");
+    });
     notifyListeners(); // 화면 갱신
+  }
+
+  Future<void> deleteFromActionSelect(String uid, String docId,
+      String lessonDate, String apparatusName, String actionName) async {
+    QuerySnapshot docRaw = await lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .where('apratusName', isEqualTo: apparatusName)
+        .where('actionName', isEqualTo: actionName)
+        .get();
+
+    String noteId = docRaw.docs.first.id;
+    print(
+        "noteId : ${noteId}, lessonDate : ${lessonDate}, apparatusName : ${apparatusName}, actionName : ${actionName}");
+    await lessonCollection.doc(noteId).delete().then((value) {
+      print("delete then");
+    }).onError((error, stackTrace) {
+      print("delete error : ${error}");
+    });
   }
 }

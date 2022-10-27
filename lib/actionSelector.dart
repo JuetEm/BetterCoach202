@@ -47,7 +47,7 @@ bool initStateVar = true;
 TextEditingController searchController = TextEditingController();
 
 late bool isFloating;
-late int selectedActionCount;
+late int selectedActionCount = -1;
 
 late Color actionTileColor;
 late List<LessonInfo> lessonInfoList;
@@ -127,6 +127,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     // initState = args[3];
     final String totalNote = args[4];
+    tmpLessonInfoList = args[5];
 
     if (initStateVar) {
       switch (currentApparatus) {
@@ -530,6 +531,11 @@ class _ActionSelectorState extends State<ActionSelector> {
       removeTop: true,
       removeBottom: true,
       child: Consumer<ActionService>(builder: (context, actionService, child) {
+        if (tmpLessonInfoList.isNotEmpty) {
+          selectedActionCount = tmpLessonInfoList.length;
+          print(
+              "selectedActionCount : ${selectedActionCount}, tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
+        }
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", () {
@@ -564,17 +570,18 @@ class _ActionSelectorState extends State<ActionSelector> {
               : FloatingActionButton.extended(
                   isExtended: isFloating,
                   onPressed: () {
-                    print("Floating Button onPressed Clicked!");
+                    print(
+                        "Floating Button onPressed Clicked! +${selectedActionCount}");
                   },
                   label: Text("+${selectedActionCount}"),
                 ),
           body: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 10),
+                // SizedBox(height: 10),
                 BaseSearchTextField(
                   customController: searchController,
                   hint: "동작을 검색하세요.",
@@ -599,21 +606,24 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //   ),
                 // ),
 
-                Center(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        for (final chip in apparatusChips)
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: chip,
-                          ),
-                      ],
+                SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (final chip in apparatusChips)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                              child: chip,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 5),
                 // SizedBox(
                 //   height: 30,
                 //   width: double.infinity,
@@ -626,21 +636,24 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //     textAlign: TextAlign.left,
                 //   ),
                 // ),
-                Center(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        for (final chip in positionChips)
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: chip,
-                          ),
-                      ],
+                SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (final chip in positionChips)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                              child: chip,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 5),
                 // SizedBox(
                 //   height: 50,
                 //   child: Padding(
@@ -674,58 +687,61 @@ class _ActionSelectorState extends State<ActionSelector> {
                 // ),
 
                 /// 신규동작추가 버튼
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Palette.buttonOrange,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                        color: Colors.transparent,
+                SizedBox(
+                  height: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                       ),
-                      height: 60,
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "신규동작추가",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Palette.buttonOrange,
-                            ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Palette.buttonOrange,
                           ),
-                        ],
-                      ),
-                    ),
-                    onPressed: () async {
-                      print("신규 동작 추가");
-                      // LessonAdd로 이동
-                      final result = await showDialog(
-                        context: context,
-                        builder: (context) => StatefulBuilder(
-                          builder: (context, setState) {
-                            return ActionAdd();
-                          },
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          color: Colors.transparent,
                         ),
-                      );
-                      setState(() {
-                        searchController.text = result;
-                        searchString = result;
-                      });
-                    },
+                        height: 60,
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "신규동작추가",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Palette.buttonOrange,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onPressed: () async {
+                        print("신규 동작 추가");
+                        // LessonAdd로 이동
+                        final result = await showDialog(
+                          context: context,
+                          builder: (context) => StatefulBuilder(
+                            builder: (context, setState) {
+                              return ActionAdd();
+                            },
+                          ),
+                        );
+                        setState(() {
+                          searchController.text = result;
+                          searchString = result;
+                        });
+                      },
+                    ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 SizedBox(
                   height: 30,
                   width: double.infinity,
@@ -768,6 +784,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                           itemCount: docs.length,
                           itemBuilder: (BuildContext context, int index) {
                             final doc = docs[index];
+                            String noteId = doc.id;
                             String apparatus = doc.get('apparatus');
                             String position = doc.get('position');
                             String name = doc.get('name');
@@ -778,11 +795,15 @@ class _ActionSelectorState extends State<ActionSelector> {
                               position,
                             );
 
+                            print(
+                                "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}");
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
+                                    noteId: noteId,
                                     apparatus: apparatus,
-                                    name: name,
+                                    actionName: name,
+                                    name: customUserInfo.name,
                                     phoneNumber: "temp",
                                     lessonDate: lessonDate,
                                     grade: "50",
@@ -794,8 +815,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 if (positionArray.contains(position)) {
                                   positionFilteredSize++;
                                   return ActionTile(
+                                      noteId: noteId,
                                       apparatus: apparatus,
-                                      name: name,
+                                      actionName: name,
+                                      name: customUserInfo.name,
                                       phoneNumber: "temp",
                                       lessonDate: lessonDate,
                                       grade: "50",
@@ -812,8 +835,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   .startsWith(searchString.toLowerCase())) {
                                 if (positionArray.isEmpty) {
                                   return ActionTile(
+                                      noteId: noteId,
                                       apparatus: apparatus,
-                                      name: name,
+                                      actionName: name,
+                                      name: customUserInfo.name,
                                       phoneNumber: "temp",
                                       lessonDate: lessonDate,
                                       grade: "50",
@@ -825,8 +850,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   if (positionArray.contains(position)) {
                                     positionFilteredSize++;
                                     return ActionTile(
+                                        noteId: noteId,
                                         apparatus: apparatus,
-                                        name: name,
+                                        actionName: name,
+                                        name: customUserInfo.name,
                                         phoneNumber: "temp",
                                         lessonDate: lessonDate,
                                         grade: "50",
@@ -895,29 +922,30 @@ class _ActionSelectorState extends State<ActionSelector> {
                       if (tmpLessonInfoList.isNotEmpty) {
                         print("userInfo.docId : ${customUserInfo.docId}");
 
-                        for (int i = 0; i < tmpLessonInfoList.length; i++) {
-                          lessonService.create(
-                            docId: customUserInfo.docId,
-                            uid: user.uid,
-                            name: customUserInfo.name,
-                            phoneNumber: customUserInfo.phoneNumber,
-                            apratusName: tmpLessonInfoList[i].apparatusName,
-                            actionName: tmpLessonInfoList[i].actionName,
-                            lessonDate: lessonDate,
-                            grade: "50",
-                            totalNote: totalNote,
-                            pos: i,
-                            onSuccess: () {
-                              print(
-                                  "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                            },
-                            onError: () {
-                              print(
-                                  "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                            },
-                          );
-                        }
+                        // for (int i = 0; i < tmpLessonInfoList.length; i++) {
+                        //   lessonService.create(
+                        //     docId: customUserInfo.docId,
+                        //     uid: user.uid,
+                        //     name: customUserInfo.name,
+                        //     phoneNumber: customUserInfo.phoneNumber,
+                        //     apratusName: tmpLessonInfoList[i].apparatusName,
+                        //     actionName: tmpLessonInfoList[i].actionName,
+                        //     lessonDate: lessonDate,
+                        //     grade: "50",
+                        //     totalNote: totalNote,
+                        //     pos: i,
+                        //     onSuccess: () {
+                        //       print(
+                        //           "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                        //     },
+                        //     onError: () {
+                        //       print(
+                        //           "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                        //     },
+                        //   );
+                        // }
 
+                        List<DateTime> tmpEventList = [];
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("동작추가 성공"),
                         ));
@@ -928,7 +956,13 @@ class _ActionSelectorState extends State<ActionSelector> {
                             builder: (context) => LessonAdd(),
                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                             settings: RouteSettings(
-                              arguments: customUserInfo,
+                              arguments: [
+                                customUserInfo,
+                                lessonDate,
+                                tmpEventList,
+                                "",
+                                tmpLessonInfoList
+                              ],
                             ),
                           ),
                         );
@@ -954,7 +988,9 @@ class _ActionSelectorState extends State<ActionSelector> {
 class ActionTile extends StatefulWidget {
   ActionTile({
     Key? key,
+    required this.noteId,
     required this.apparatus,
+    required this.actionName,
     required this.name,
     required this.phoneNumber,
     required this.lessonDate,
@@ -965,7 +1001,9 @@ class ActionTile extends StatefulWidget {
     required this.pos,
   }) : super(key: key);
 
+  final String noteId;
   final String apparatus;
+  final String actionName;
   final String name;
   final String phoneNumber;
   final String lessonDate;
@@ -984,6 +1022,7 @@ class _ActionTileState extends State<ActionTile> {
   Widget build(BuildContext context) {
     TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
         widget.apparatus,
+        widget.actionName,
         widget.name,
         widget.lessonDate,
         widget.grade,
@@ -993,22 +1032,24 @@ class _ActionTileState extends State<ActionTile> {
     //레슨서비스 활용
     final lessonService = context.read<LessonService>();
     // onTap 방식과는 다르게 동작해야 함
+
     // setState(() {
     if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
       actionTileColor = Palette.buttonOrange;
       print(
-          "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+          "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
     } else {
       actionTileColor = Palette.grayEE;
       print(
-          "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+          "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
     }
     // });
     return Column(
       children: [
         InkWell(
           onTap: () {
-            print("apparatus : ${widget.apparatus}, name : ${widget.name}");
+            print(
+                "apparatus : ${widget.apparatus}, actionName : ${widget.actionName}");
             // 회원 카드 선택시 MemberInfo로 이동
             // Navigator.pop(context, actionInfo);
             setState(() {
@@ -1016,13 +1057,37 @@ class _ActionTileState extends State<ActionTile> {
                   tmpLessonInfoList, tmpLessonInfo, true)) {
                 actionTileColor = Palette.grayEE;
                 print(
-                    "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+                    "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.remove(widget.pos);
+
+                lessonService.deleteFromActionSelect(widget.uid, widget.docId,
+                    widget.lessonDate, widget.apparatus, widget.actionName);
               } else {
                 actionTileColor = Palette.buttonOrange;
                 print(
-                    "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+                    "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.add(widget.pos);
+
+                lessonService.create(
+                  docId: widget.docId,
+                  uid: widget.uid,
+                  name: widget.name,
+                  phoneNumber: widget.phoneNumber,
+                  apratusName: widget.apparatus,
+                  actionName: widget.actionName,
+                  lessonDate: widget.lessonDate,
+                  grade: "50",
+                  totalNote: widget.totalNote,
+                  pos: null,
+                  onSuccess: () {
+                    print(
+                        "동작추가 성공 : widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+                  },
+                  onError: () {
+                    print(
+                        "동작추가 에러 : widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+                  },
+                );
               }
 
               if (tmpLessonInfoList.isNotEmpty) {
@@ -1038,7 +1103,7 @@ class _ActionTileState extends State<ActionTile> {
             });
             for (int i = 0; i < tmpLessonInfoList.length; i++) {
               print(
-                  "tmpLessonInfoList - apratusName : ${tmpLessonInfoList[i].apparatusName}, name : ${tmpLessonInfoList[i].actionName}");
+                  "tmpLessonInfoList - apratusName : ${tmpLessonInfoList[i].apparatusName}, actionName : ${tmpLessonInfoList[i].actionName}");
             }
           },
           child: Container(
@@ -1059,7 +1124,7 @@ class _ActionTileState extends State<ActionTile> {
                   ),
                 ),
                 Text(
-                  "${widget.name}",
+                  "${widget.actionName}",
                   style: TextStyle(
                       color: Palette.gray66, fontWeight: FontWeight.bold),
                 ),
@@ -1097,6 +1162,7 @@ class TmpLessonInfo {
   TmpLessonInfo(
     this.apparatusName,
     this.actionName,
+    this.name,
     this.lessonDate,
     this.grade,
     this.totalNote,
@@ -1106,6 +1172,7 @@ class TmpLessonInfo {
 
   String apparatusName;
   String actionName;
+  String name;
   String lessonDate;
   String grade;
   String totalNote;
