@@ -114,6 +114,18 @@ class LessonService extends ChangeNotifier {
     onSuccess();
   }
 
+  void deleteTodayNoe({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    // bucket 삭제
+    await todaylessonCollection.doc(docId).delete();
+    notifyListeners(); // 화면 갱신
+
+    onSuccess(); // 화면 갱신
+  }
+
   Future<QuerySnapshot> read(
     String uid,
     String docId,
@@ -220,7 +232,11 @@ class LessonService extends ChangeNotifier {
     notifyListeners(); // 화면 갱신
   }
 
-  void delete(String docId) async {
+  void delete({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
     // bucket 삭제
     await lessonCollection.doc(docId).delete().then((value) {
       print("delete then");
@@ -228,6 +244,8 @@ class LessonService extends ChangeNotifier {
       print("delete error : ${error}");
     });
     notifyListeners(); // 화면 갱신
+
+    onSuccess(); // 화면 갱신
   }
 
   Future<void> deleteFromActionSelect(String uid, String docId,

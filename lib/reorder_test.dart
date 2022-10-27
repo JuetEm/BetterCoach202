@@ -103,8 +103,6 @@ class _ReorderableFirebaseListState extends State<ReorderableFirebaseList> {
   void _onReorder(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) newIndex -= 1;
 
-    
-
     docs.insert(newIndex, docs.removeAt(oldIndex));
     final futures = <Future>[];
     for (int pos = 0; pos < docs.length; pos++) {

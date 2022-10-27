@@ -10,6 +10,7 @@ import 'auth_service.dart';
 import 'color.dart';
 import 'lessonAdd.dart';
 
+import 'lessonUpdate.dart';
 import 'lesson_service.dart';
 import 'memberList.dart';
 import 'memberUpdate.dart';
@@ -336,94 +337,135 @@ class _MemberInfoState extends State<MemberInfo> {
                                             Spacer(
                                               flex: 1,
                                             ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  shadowColor:
-                                                      Colors.transparent,
-                                                  elevation: 0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  color: listMode == "날짜별"
-                                                      ? Palette.buttonOrange
-                                                      : Palette.grayEE,
-                                                ),
-                                                height: 40,
-                                                width: 80,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "날짜별",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: listMode == "날짜별"
-                                                            ? Palette.grayFF
-                                                            : Palette.gray66,
+                                            Container(
+                                              //color: Colors.red,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (listMode == "동작별") {
+                                                    setState(() {
+                                                      listMode = "날짜별";
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      listMode = "동작별";
+                                                    });
+                                                  }
+                                                  ;
+                                                },
+                                                child: SizedBox(
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.sync,
+                                                        color: Palette.gray99,
+                                                        size: 15.0,
                                                       ),
-                                                    ),
-                                                  ],
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        listMode == "동작별"
+                                                            ? "날짜별"
+                                                            : "동작별",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Palette.gray66,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                              onPressed: () {
-                                                // 동작별 상태로 변경
-                                                setState(() {
-                                                  listMode = "날짜별";
-                                                });
-                                              },
                                             ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  shadowColor:
-                                                      Colors.transparent,
-                                                  elevation: 0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  color: listMode == "동작별"
-                                                      ? Palette.buttonOrange
-                                                      : Palette.grayEE,
-                                                ),
-                                                height: 40,
-                                                width: 80,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "동작별",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: listMode == "동작별"
-                                                            ? Palette.grayFF
-                                                            : Palette.gray66,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                // 동작별 상태로 변경
-                                                setState(() {
-                                                  listMode = "동작별";
-                                                });
-                                              },
-                                            ),
+                                            // ElevatedButton(
+                                            //   style: ElevatedButton.styleFrom(
+                                            //       backgroundColor:
+                                            //           Colors.transparent,
+                                            //       shadowColor:
+                                            //           Colors.transparent,
+                                            //       elevation: 0),
+                                            //   child: Container(
+                                            //     decoration: BoxDecoration(
+                                            //       borderRadius:
+                                            //           BorderRadius.all(
+                                            //         Radius.circular(10.0),
+                                            //       ),
+                                            //       color: listMode == "날짜별"
+                                            //           ? Palette.buttonOrange
+                                            //           : Palette.grayEE,
+                                            //     ),
+                                            //     height: 40,
+                                            //     width: 80,
+                                            //     child: Column(
+                                            //       mainAxisAlignment:
+                                            //           MainAxisAlignment.center,
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.center,
+                                            //       children: [
+                                            //         Text(
+                                            //           "날짜별",
+                                            //           style: TextStyle(
+                                            //             fontSize: 14,
+                                            //             color: listMode == "날짜별"
+                                            //                 ? Palette.grayFF
+                                            //                 : Palette.gray66,
+                                            //           ),
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            //   onPressed: () {
+                                            //     // 동작별 상태로 변경
+                                            //     setState(() {
+                                            //       listMode = "날짜별";
+                                            //     });
+                                            //   },
+                                            // ),
+
+                                            // ElevatedButton(
+                                            //   style: ElevatedButton.styleFrom(
+                                            //       backgroundColor:
+                                            //           Colors.transparent,
+                                            //       shadowColor:
+                                            //           Colors.transparent,
+                                            //       elevation: 0),
+                                            //   child: Container(
+                                            //     decoration: BoxDecoration(
+                                            //       borderRadius:
+                                            //           BorderRadius.all(
+                                            //         Radius.circular(10.0),
+                                            //       ),
+                                            //       color: listMode == "동작별"
+                                            //           ? Palette.buttonOrange
+                                            //           : Palette.grayEE,
+                                            //     ),
+                                            //     height: 40,
+                                            //     width: 80,
+                                            //     child: Column(
+                                            //       mainAxisAlignment:
+                                            //           MainAxisAlignment.center,
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.center,
+                                            //       children: [
+                                            //         Text(
+                                            //           "동작별",
+                                            //           style: TextStyle(
+                                            //             fontSize: 14,
+                                            //             color: listMode == "동작별"
+                                            //                 ? Palette.grayFF
+                                            //                 : Palette.gray66,
+                                            //           ),
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            //   onPressed: () {
+                                            //     // 동작별 상태로 변경
+                                            //     setState(() {
+                                            //       listMode = "동작별";
+                                            //     });
+                                            //   },
+                                            // ),
                                           ],
                                         ),
                                         const SizedBox(height: 5.0),
@@ -443,7 +485,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                                   ),
                                                   Center(
                                                     child: Text(
-                                                        "동작추가 버튼을 눌러 동작을 추가할 수 있습니다"),
+                                                        "노트추가 버튼을 눌러 노트작성 해보세요."),
                                                   ),
                                                 ],
                                               );
@@ -633,7 +675,7 @@ class _NoteList2State extends State<NoteList2> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonAdd(),
+              builder: (context) => LessonUpdate(),
               // GlobalWidgetDashboard(), //
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
