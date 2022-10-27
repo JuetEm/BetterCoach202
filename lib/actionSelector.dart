@@ -114,9 +114,6 @@ class _ActionSelectorState extends State<ActionSelector> {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
 
-    //레슨서비스 활용
-    final lessonService = context.read<LessonService>();
-
     // 이전 화면에서 보낸 변수 받기
     final List<dynamic> args =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
@@ -782,6 +779,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 return actionTile(
                                     apparatus: apparatus,
                                     name: name,
+                                    phoneNumber: "temp",
                                     lessonDate: lessonDate,
                                     grade: "50",
                                     totalNote: totalNote,
@@ -794,6 +792,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   return actionTile(
                                       apparatus: apparatus,
                                       name: name,
+                                      phoneNumber: "temp",
                                       lessonDate: lessonDate,
                                       grade: "50",
                                       totalNote: totalNote,
@@ -811,6 +810,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   return actionTile(
                                       apparatus: apparatus,
                                       name: name,
+                                      phoneNumber: "temp",
                                       lessonDate: lessonDate,
                                       grade: "50",
                                       totalNote: totalNote,
@@ -823,6 +823,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     return actionTile(
                                         apparatus: apparatus,
                                         name: name,
+                                        phoneNumber: "temp",
                                         lessonDate: lessonDate,
                                         grade: "50",
                                         totalNote: totalNote,
@@ -945,6 +946,7 @@ class actionTile extends StatefulWidget {
     Key? key,
     required this.apparatus,
     required this.name,
+    required this.phoneNumber,
     required this.lessonDate,
     required this.grade,
     required this.totalNote,
@@ -955,6 +957,7 @@ class actionTile extends StatefulWidget {
 
   final String apparatus;
   final String name;
+  final String phoneNumber;
   final String lessonDate;
   final String grade;
   final String totalNote;
@@ -977,7 +980,8 @@ class _actionTileState extends State<actionTile> {
         widget.totalNote,
         widget.docId,
         widget.uid);
-
+    //레슨서비스 활용
+    final lessonService = context.read<LessonService>();
     // onTap 방식과는 다르게 동작해야 함
     setState(() {
       if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
@@ -1008,6 +1012,26 @@ class _actionTileState extends State<actionTile> {
               print(
                   "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
               // checkedTileList.add(widget.pos);
+              //동작선택 및 저장
+
+              lessonService.create(
+                  docId: widget.docId,
+                  uid: widget.uid,
+                  name: widget.name,
+                  phoneNumber: widget.phoneNumber,
+                  apratusName: widget.apparatus,
+                  actionName: widget.name,
+                  lessonDate: widget.lessonDate,
+                  grade: "50",
+                  totalNote: "",
+                  onSuccess: () {
+                    print("저장하기 성공");
+                    // 저장 성공후 원래 불렀던 화면으로 이동
+                    //Navigator.pop(context, actionInfo);
+                  },
+                  onError: () {
+                    print("저장하기 ERROR");
+                  });
             }
             setState(() {
               if (tmpLessonInfoList.isNotEmpty) {

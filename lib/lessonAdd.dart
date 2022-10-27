@@ -318,38 +318,16 @@ class _LessonAddState extends State<LessonAdd> {
                                       if (newIndex > docs.length)
                                         newIndex = docs.length;
                                       if (oldIndex < newIndex) newIndex -= 1;
+                                      docs.insert(
+                                          newIndex, docs.removeAt(oldIndex));
+                                      for (int pos = 0;
+                                          pos < docs.length;
+                                          pos++) {
+                                        lessonService.updatePos(
+                                            docs[pos].id, pos);
+                                      }
 
-                                      setState(() {
-                                        // print(
-                                        //     'docs0 : ${docs[0].get('actionName')}');
-                                        // print(
-                                        //     'docs1 : ${docs[1].get('actionName')}');
-                                        // print(
-                                        //     'docs2 : ${docs[2].get('actionName')}');
-
-                                        // print('newIndex : ${newIndex}');
-                                        // print('oldIndex : ${oldIndex}');
-
-                                        docs.insert(
-                                            newIndex, docs.removeAt(oldIndex));
-
-                                        // print(
-                                        //     'docs0 : ${docs[0].get('actionName')}');
-                                        // print(
-                                        //     'docs1 : ${docs[1].get('actionName')}');
-                                        // print(
-                                        //     'docs2 : ${docs[2].get('actionName')}');
-
-                                        final futures = <Future>[];
-
-                                        for (int pos = 0;
-                                            pos < docs.length;
-                                            pos++) {
-                                          futures.add(lessonService.updatePos(
-                                              docs[pos].id, pos));
-                                          //print(docs[pos].id);
-                                        }
-                                      });
+                                      //setState(() {});
                                     }),
 
                                     itemBuilder:
@@ -881,7 +859,7 @@ class _LessonAddState extends State<LessonAdd> {
           docId: userInfo.docId, // 회권 고유번호 => 회원번호(문서고유번호)로 회원 식별
           uid: user.uid,
           name: nameController.text,
-          phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 => 제거
+          phoneNumber: userInfo.phoneNumber,
           apratusName: apratusNameController.text, //기구이름
           actionName: actionNameController.text, //동작이름
           lessonDate: lessonDate, //수업날짜

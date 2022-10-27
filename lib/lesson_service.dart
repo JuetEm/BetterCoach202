@@ -60,7 +60,7 @@ class LessonService extends ChangeNotifier {
       'docId': docId, // 회원 고유번호, 회원(문서번호)번호로 식별
       'uid': uid, //강사 고유번호
       'name': name, //회원이름
-      'phoneNumber': phoneNumber, // 회원 고유번호 => 전화번호로 회원 식별 방식 제거
+      'phoneNumber': phoneNumber,
       'apratusName': apratusName, //기구이름
       'actionName': actionName, //동작이름
       'lessonDate': lessonDate, //수업날짜
@@ -145,7 +145,7 @@ class LessonService extends ChangeNotifier {
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('lessonDate', isEqualTo: lessonDate)
-        //.orderBy("pos", descending: false)
+        .orderBy("pos", descending: false)
         .get();
   }
 

@@ -812,7 +812,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
           docId: userInfo.docId, // 회권 고유번호 => 회원번호(문서고유번호)로 회원 식별
           uid: user.uid,
           name: nameController.text,
-          phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 => 제거
+          //phoneNumber: userInfo.phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 => 제거
           apratusName: apratusNameController.text, //기구이름
           actionName: actionNameController.text, //동작이름
           lessonDate: lessonDate, //수업날짜
