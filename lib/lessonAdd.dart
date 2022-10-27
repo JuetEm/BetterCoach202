@@ -56,6 +56,8 @@ String editTotalNote = "";
 
 bool initState = true;
 
+List<TmpLessonInfo> tmpLessonInfoList = [];
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -73,6 +75,7 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
+    tmpLessonInfoList = argsList[4];
 
     if (initState) {
       print("INIT!!! : ${initState}");
@@ -192,7 +195,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       currentAppratus,
                                       lessonDate,
                                       initState,
-                                      totalNote
+                                      totalNote,
+                                      tmpLessonInfoList
                                     ]),
                                   ),
                                 );
