@@ -73,8 +73,10 @@ class ActionService extends ChangeNotifier {
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
+          .where("lowerCaseName", arrayContainsAny: [searchString])
           .orderBy("lowerCaseName", descending: false)
-          .startAt([searchString]).get();
+          // .startAt([searchString]).get();
+          .get();
     }
 
     // notifyListeners(); // 화면 갱신

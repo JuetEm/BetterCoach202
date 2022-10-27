@@ -24,7 +24,7 @@ class LessonService extends ChangeNotifier {
     required String lessonDate, //수업날짜
     required String grade, //수행도
     required String totalNote, //수업총메모
-
+    int? pos,
     required Function onSuccess,
     required Function onError,
   }) async {
@@ -45,12 +45,12 @@ class LessonService extends ChangeNotifier {
     //   'grade': grade, //수행도
     //   'totalNote': totalNote, //수업총메모
     // });
-
-    int pos = await countPos(
-      uid,
-      docId,
-      lessonDate,
-    );
+    pos ??
+        await countPos(
+          uid,
+          docId,
+          lessonDate,
+        );
 
     print('pos : ${pos}');
 

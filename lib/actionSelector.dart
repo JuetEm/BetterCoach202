@@ -6,6 +6,7 @@ import 'package:web_project/color.dart';
 import 'actionAdd.dart';
 import 'actionInfo.dart';
 import 'action_service.dart';
+import 'lessonAdd.dart';
 import 'lessonInfo.dart';
 import 'lesson_service.dart';
 import 'auth_service.dart';
@@ -177,17 +178,33 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray66),
+            color: isMatSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
-        label: Text("OTHERS"),
-        selected: isOthersApparatusSelected,
+        label: Text("MAT"),
+        selected: isMatSelected,
         showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
-              isOthersApparatusSelected = !isOthersApparatusSelected;
-              print(
-                  "isOthersApparatusSelectedSelected : ${isOthersApparatusSelected}");
+              isMatSelected = !isMatSelected;
+              print("isMatSelected : ${isMatSelected}");
+            },
+          );
+        },
+      ),
+      FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isReformerSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
+        label: Text("REFORMER"),
+        selected: isReformerSelected,
+        showCheckmark: false,
+        onSelected: (value) {
+          setState(
+            () {
+              isReformerSelected = !isReformerSelected;
+              print("isReformerSelected : ${isReformerSelected}");
             },
           );
         },
@@ -206,23 +223,6 @@ class _ActionSelectorState extends State<ActionSelector> {
               isCadillacSelected = !isCadillacSelected;
               print(
                   "isSupineisCadillacSelectedSelected : ${isCadillacSelected}");
-            },
-          );
-        },
-      ),
-      FilterChip(
-        labelStyle: TextStyle(
-            fontSize: 12,
-            color: isReformerSelected ? Palette.grayFF : Palette.gray66),
-        selectedColor: Palette.buttonOrange,
-        label: Text("REFORMER"),
-        selected: isReformerSelected,
-        showCheckmark: false,
-        onSelected: (value) {
-          setState(
-            () {
-              isReformerSelected = !isReformerSelected;
-              print("isReformerSelected : ${isReformerSelected}");
             },
           );
         },
@@ -298,16 +298,17 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isMatSelected ? Palette.grayFF : Palette.gray66),
+            color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
-        label: Text("MAT"),
-        selected: isMatSelected,
+        label: Text("OTHERS"),
+        selected: isOthersApparatusSelected,
         showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
-              isMatSelected = !isMatSelected;
-              print("isMatSelected : ${isMatSelected}");
+              isOthersApparatusSelected = !isOthersApparatusSelected;
+              print(
+                  "isOthersApparatusSelectedSelected : ${isOthersApparatusSelected}");
             },
           );
         },
@@ -315,29 +316,6 @@ class _ActionSelectorState extends State<ActionSelector> {
     ];
 
     final positionChips = [
-      FilterChip(
-        labelStyle: TextStyle(
-            fontSize: 12,
-            color: isOthersPositionSelected ? Palette.grayFF : Palette.gray66),
-        selectedColor: Palette.buttonOrange,
-        label: Text("OTHERS"),
-        selected: isOthersPositionSelected,
-        showCheckmark: false,
-        onSelected: (value) {
-          setState(
-            () {
-              isOthersPositionSelected = !isOthersPositionSelected;
-              if (isOthersPositionSelected) {
-                positionArray.add("others");
-              } else {
-                positionArray.remove("others");
-              }
-              print("isOthersPositionSelected : ${isOthersPositionSelected}");
-              print("positionArray : ${positionArray}");
-            },
-          );
-        },
-      ),
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
@@ -356,6 +334,29 @@ class _ActionSelectorState extends State<ActionSelector> {
                 positionArray.remove("supine");
               }
               print("isSupineSelected : ${isSupineSelected}");
+              print("positionArray : ${positionArray}");
+            },
+          );
+        },
+      ),
+      FilterChip(
+        labelStyle: TextStyle(
+            fontSize: 12,
+            color: isProneSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,
+        label: Text("PRONE"),
+        selected: isProneSelected,
+        showCheckmark: false,
+        onSelected: (value) {
+          setState(
+            () {
+              isProneSelected = !isProneSelected;
+              if (isProneSelected) {
+                positionArray.add("prone");
+              } else {
+                positionArray.remove("prone");
+              }
+              print("isProneSelected : ${isProneSelected}");
               print("positionArray : ${positionArray}");
             },
           );
@@ -387,21 +388,21 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isProneSelected ? Palette.grayFF : Palette.gray66),
+            color: isStandingSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
-        label: Text("PRONE"),
-        selected: isProneSelected,
+        label: Text("STANDING"),
+        selected: isStandingSelected,
         showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
-              isProneSelected = !isProneSelected;
-              if (isProneSelected) {
-                positionArray.add("prone");
+              isStandingSelected = !isStandingSelected;
+              if (isStandingSelected) {
+                positionArray.add("standing");
               } else {
-                positionArray.remove("prone");
+                positionArray.remove("standing");
               }
-              print("isProneSelected : ${isProneSelected}");
+              print("isStandingSelected : ${isStandingSelected}");
               print("positionArray : ${positionArray}");
             },
           );
@@ -456,21 +457,21 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isStandingSelected ? Palette.grayFF : Palette.gray66),
+            color: isQuadrupedSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
-        label: Text("STANDING"),
-        selected: isStandingSelected,
+        label: Text("QUADRUPED"),
+        selected: isQuadrupedSelected,
         showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
-              isStandingSelected = !isStandingSelected;
-              if (isStandingSelected) {
-                positionArray.add("standing");
+              isQuadrupedSelected = !isQuadrupedSelected;
+              if (isQuadrupedSelected) {
+                positionArray.add("quadruped");
               } else {
-                positionArray.remove("standing");
+                positionArray.remove("quadruped");
               }
-              print("isStandingSelected : ${isStandingSelected}");
+              print("isStandingSelected : ${isPlankSelected}");
               print("positionArray : ${positionArray}");
             },
           );
@@ -502,21 +503,21 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isQuadrupedSelected ? Palette.grayFF : Palette.gray66),
+            color: isOthersPositionSelected ? Palette.grayFF : Palette.gray66),
         selectedColor: Palette.buttonOrange,
-        label: Text("QUADRUPED"),
-        selected: isQuadrupedSelected,
+        label: Text("OTHERS"),
+        selected: isOthersPositionSelected,
         showCheckmark: false,
         onSelected: (value) {
           setState(
             () {
-              isQuadrupedSelected = !isQuadrupedSelected;
-              if (isQuadrupedSelected) {
-                positionArray.add("quadruped");
+              isOthersPositionSelected = !isOthersPositionSelected;
+              if (isOthersPositionSelected) {
+                positionArray.add("others");
               } else {
-                positionArray.remove("quadruped");
+                positionArray.remove("others");
               }
-              print("isStandingSelected : ${isPlankSelected}");
+              print("isOthersPositionSelected : ${isOthersPositionSelected}");
               print("positionArray : ${positionArray}");
             },
           );
@@ -558,14 +559,14 @@ class _ActionSelectorState extends State<ActionSelector> {
             searchString = "";
             Navigator.pop(context);
           }),
-          floatingActionButton: !isFloating
+          floatingActionButton: tmpLessonInfoList.isEmpty
               ? null
               : FloatingActionButton.extended(
+                  isExtended: isFloating,
                   onPressed: () {
                     print("Floating Button onPressed Clicked!");
                   },
                   label: Text("+${selectedActionCount}"),
-                  isExtended: isFloating,
                 ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -779,7 +780,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
-                                return actionTile(
+                                return ActionTile(
                                     apparatus: apparatus,
                                     name: name,
                                     lessonDate: lessonDate,
@@ -791,7 +792,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                               } else {
                                 if (positionArray.contains(position)) {
                                   positionFilteredSize++;
-                                  return actionTile(
+                                  return ActionTile(
                                       apparatus: apparatus,
                                       name: name,
                                       lessonDate: lessonDate,
@@ -808,7 +809,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                               if (lowerCaseName
                                   .startsWith(searchString.toLowerCase())) {
                                 if (positionArray.isEmpty) {
-                                  return actionTile(
+                                  return ActionTile(
                                       apparatus: apparatus,
                                       name: name,
                                       lessonDate: lessonDate,
@@ -820,7 +821,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 } else {
                                   if (positionArray.contains(position)) {
                                     positionFilteredSize++;
-                                    return actionTile(
+                                    return ActionTile(
                                         apparatus: apparatus,
                                         name: name,
                                         lessonDate: lessonDate,
@@ -887,46 +888,52 @@ class _ActionSelectorState extends State<ActionSelector> {
                       // );
 
                       // lessonAdd
-                      // if (globalFunction.textNullCheck(
-                      //     context, lessonDateController, "수업일")) {
-                      //   print("userInfo.docId : ${customUserInfo.docId}");
+                      if (tmpLessonInfoList.isNotEmpty) {
+                        print("userInfo.docId : ${customUserInfo.docId}");
 
-                      //   lessonService.createTodaynote(
-                      //       docId: customUserInfo.docId,
-                      //       uid: user.uid,
-                      //       name: nameController.text,
-                      //       lessonDate: lessonDateController.text,
-                      //       todayNote: todayNoteController.text,
-                      //       onSuccess: () {
-                      //         // 저장하기 성공
-                      //         ScaffoldMessenger.of(context)
-                      //             .showSnackBar(SnackBar(
-                      //           content: Text("저장하기 성공"),
-                      //         ));
-                      //         // 저장하기 성공시 MemberInfo로 이동
-                      //         Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //             builder: (context) => MemberInfo(),
-                      //             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                      //             settings: RouteSettings(
-                      //               arguments: customUserInfo,
-                      //             ),
-                      //           ),
-                      //         );
+                        for (int i = 0; i < tmpLessonInfoList.length; i++) {
+                          lessonService.create(
+                            docId: customUserInfo.docId,
+                            uid: user.uid,
+                            name: customUserInfo.name,
+                            phoneNumber: customUserInfo.phoneNumber,
+                            apratusName: tmpLessonInfoList[i].apparatusName,
+                            actionName: tmpLessonInfoList[i].actionName,
+                            lessonDate: lessonDate,
+                            grade: "50",
+                            totalNote: totalNote,
+                            pos: i,
+                            onSuccess: () {
+                              print(
+                                  "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                            },
+                            onError: () {
+                              print(
+                                  "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                            },
+                          );
+                        }
 
-                      //         // 화면 초기화
-                      //         initInpuWidget();
-                      //         initState = !initState;
-                      //       },
-                      //       onError: () {
-                      //         print("저장하기 ERROR");
-                      //       });
-                      // } else {
-                      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //     content: Text("항목을 모두 입력해주세요."),
-                      //   ));
-                      // }
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("동작추가 성공"),
+                        ));
+                        // 저장하기 성공시 MemberInfo로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonAdd(),
+                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                            settings: RouteSettings(
+                              arguments: customUserInfo,
+                            ),
+                          ),
+                        );
+                        initStateVar = !initStateVar;
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("동작을 선택해주세요."),
+                        ));
+                      }
                     },
                   ),
                 ),
@@ -940,8 +947,8 @@ class _ActionSelectorState extends State<ActionSelector> {
   }
 }
 
-class actionTile extends StatefulWidget {
-  actionTile({
+class ActionTile extends StatefulWidget {
+  ActionTile({
     Key? key,
     required this.apparatus,
     required this.name,
@@ -963,10 +970,10 @@ class actionTile extends StatefulWidget {
   int pos;
 
   @override
-  State<actionTile> createState() => _actionTileState();
+  State<ActionTile> createState() => _ActionTileState();
 }
 
-class _actionTileState extends State<actionTile> {
+class _ActionTileState extends State<ActionTile> {
   @override
   Widget build(BuildContext context) {
     TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
@@ -979,17 +986,17 @@ class _actionTileState extends State<actionTile> {
         widget.uid);
 
     // onTap 방식과는 다르게 동작해야 함
-    setState(() {
-      if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
-        actionTileColor = Palette.buttonOrange;
-        print(
-            "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
-      } else {
-        actionTileColor = Palette.grayEE;
-        print(
-            "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
-      }
-    });
+    // setState(() {
+    if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
+      actionTileColor = Palette.buttonOrange;
+      print(
+          "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+    } else {
+      actionTileColor = Palette.grayEE;
+      print(
+          "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+    }
+    // });
     return Column(
       children: [
         InkWell(
@@ -997,24 +1004,29 @@ class _actionTileState extends State<actionTile> {
             print("apparatus : ${widget.apparatus}, name : ${widget.name}");
             // 회원 카드 선택시 MemberInfo로 이동
             // Navigator.pop(context, actionInfo);
-
-            if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, true)) {
-              actionTileColor = Palette.grayEE;
-              print(
-                  "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
-              // checkedTileList.remove(widget.pos);
-            } else {
-              actionTileColor = Palette.buttonOrange;
-              print(
-                  "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
-              // checkedTileList.add(widget.pos);
-            }
             setState(() {
+              if (manageListContaining(
+                  tmpLessonInfoList, tmpLessonInfo, true)) {
+                actionTileColor = Palette.grayEE;
+                print(
+                    "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+                // checkedTileList.remove(widget.pos);
+              } else {
+                actionTileColor = Palette.buttonOrange;
+                print(
+                    "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.name : ${widget.name}");
+                // checkedTileList.add(widget.pos);
+              }
+
               if (tmpLessonInfoList.isNotEmpty) {
                 isFloating = true;
                 selectedActionCount = tmpLessonInfoList.length;
+                print(
+                    "isFloating isNotEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
               } else {
                 isFloating = false;
+                print(
+                    "isFloating isEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
               }
             });
             for (int i = 0; i < tmpLessonInfoList.length; i++) {
