@@ -326,7 +326,6 @@ class _LessonAddState extends State<LessonAdd> {
                                         lessonService.updatePos(
                                             docs[pos].id, pos);
                                       }
-
                                       //setState(() {});
                                     }),
 
