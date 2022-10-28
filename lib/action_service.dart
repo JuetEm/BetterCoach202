@@ -21,7 +21,7 @@ class ActionService extends ChangeNotifier {
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
 
     List apparatus = [];
-    List searchKeyword = [];
+    List searchKeywordArray = [];
 
     print("Search Called!! : ${searchString}");
 
@@ -69,8 +69,14 @@ class ActionService extends ChangeNotifier {
           .orderBy("nGramizedLowerCaseName", descending: false)
           .get();
     } else {
-      searchKeyword.add(searchString);
-      print("searchKeyword : ${searchKeyword}");
+      if (searchString.trim().contains(" ")) {
+        searchKeywordArray = searchString.toLowerCase().split(" ");
+      } else {
+        searchKeywordArray.add(searchString.toLowerCase());
+      }
+
+      print("searchString : ${searchString}");
+      print("searchKeyword : ${searchKeywordArray}");
       print("Search String Not Empty 울립니다! START");
       result = await actionCollection
           // .where("apparatus", whereIn: [searchString])
@@ -101,6 +107,9 @@ class ActionService extends ChangeNotifier {
     String upperCaseName,
     String lowerCaseName,
   ) async {
+    List<String> nGramizedLowerCaseName = [];
+    nGramizedLowerCaseName = lowerCaseName.split(" ");
+    print("nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
     // bucket 만들기
     await actionCollection.add({
       'apparatus': apparatus, // 기구 카테고리 구분자
@@ -111,6 +120,7 @@ class ActionService extends ChangeNotifier {
       'author': author, // 동작 등록인 구분자
       'upperCaseName': upperCaseName, // 대분자 동작 이름
       'lowerCaseName': lowerCaseName, // 소문자 동작 이름
+      'nGramizedLowerCaseName': nGramizedLowerCaseName,
     }).then((value) {
       print("Successfully completed");
     }, onError: (e) {

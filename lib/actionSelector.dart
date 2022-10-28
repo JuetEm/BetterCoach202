@@ -592,7 +592,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   showArrow: true,
                   customFunction: () {
                     setState(() {
-                      searchString = searchController.text;
+                      searchString = searchController.text.toLowerCase();
                     });
                   },
                 ),
@@ -739,8 +739,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                           ),
                         );
                         setState(() {
-                          searchController.text = result;
-                          searchString = result;
+                          searchController.text =
+                              result.toString().toLowerCase().split(" ")[0];
+                          searchString =
+                              result.toString().toLowerCase().split(" ")[0];
                         });
                       },
                     ),
