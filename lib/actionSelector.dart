@@ -946,27 +946,40 @@ class _ActionSelectorState extends State<ActionSelector> {
                         // }
 
                         List<DateTime> tmpEventList = [];
+
+                        List<TmpLessonInfo> tmpLessonInfoList = [];
+
+                        List<dynamic> args = [
+                          customUserInfo,
+                          lessonDate,
+                          tmpEventList,
+                          "",
+                          tmpLessonInfoList,
+                        ];
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("동작추가 성공"),
                         ));
                         // 저장하기 성공시 MemberInfo로 이동
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LessonAdd(),
-                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                            settings: RouteSettings(
-                              arguments: [
-                                customUserInfo,
-                                lessonDate,
-                                tmpEventList,
-                                "",
-                                tmpLessonInfoList
-                              ],
-                            ),
-                          ),
-                        );
+                        Navigator.pop(context, tmpLessonInfoList);
                         initStateVar = !initStateVar;
+                        //Navigator.pop(context);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => LessonAdd(),
+                        //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                        //     settings: RouteSettings(
+                        //       arguments: [
+                        //         customUserInfo,
+                        //         lessonDate,
+                        //         tmpEventList,
+                        //         "",
+                        //         tmpLessonInfoList
+                        //       ],
+                        //     ),
+                        //   ),
+                        // );
+                        // initStateVar = !initStateVar;
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("동작을 선택해주세요."),

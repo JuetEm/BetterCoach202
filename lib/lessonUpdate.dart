@@ -58,6 +58,8 @@ String editTotalNote = "";
 
 bool initState = true;
 
+List<TmpLessonInfo> tmpLessonInfoList = [];
+
 class LessonUpdate extends StatefulWidget {
   const LessonUpdate({super.key});
 
@@ -74,9 +76,8 @@ class _LessonUpdateState extends State<LessonUpdate> {
     CustomUserInfo.UserInfo customUserInfo = argsList[0];
     String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
-    String lessonNoteId = argsList[3];
+    tmpLessonInfoList = argsList[3];
 
-    lessonDateController = TextEditingController(text: lessonDate);
     if (initState) {
       print("INIT!!! : ${initState}");
       //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
@@ -102,6 +103,12 @@ class _LessonUpdateState extends State<LessonUpdate> {
     // nameController = TextEditingController(text: userInfo.name);
     // //lessonDateController = TextEditingController(text: now);
     // //gradeController = TextEditingController(text: "50");
+
+    //초기값 넣어주기
+    lessonDateController = TextEditingController(text: lessonDate);
+
+    String todayNotedocId = "";
+    bool ActionNullCheck = true;
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
@@ -155,11 +162,38 @@ class _LessonUpdateState extends State<LessonUpdate> {
                         ),
 
                         /// 메모 입력창
-                        BaseTextField(
-                          customController: todayNoteController,
-                          hint: "일별 메모",
-                          showArrow: false,
-                          customFunction: () {},
+                        FutureBuilder<QuerySnapshot>(
+                          future: lessonService.readTodayNoteOflessonDate(
+                            user.uid,
+                            customUserInfo.docId,
+                            lessonDateController.text,
+                          ),
+                          builder: (context, snapshot) {
+                            final docsTodayNote =
+                                snapshot.data?.docs ?? []; // 문서들 가져오기
+
+                            if (docsTodayNote.isEmpty) {
+                              todayNoteController.text = "";
+                              todayNotedocId = "";
+
+                              return BaseTextField(
+                                customController: todayNoteController,
+                                hint: "일별 메모",
+                                showArrow: false,
+                                customFunction: () {},
+                              );
+                            } else {
+                              todayNoteController.text =
+                                  docsTodayNote[0].get('todayNote');
+                              todayNotedocId = docsTodayNote[0].id;
+                              return BaseTextField(
+                                customController: todayNoteController,
+                                hint: "일별 메모",
+                                showArrow: false,
+                                customFunction: () {},
+                              );
+                            }
+                          },
                         ),
 
                         // 동작입력 버튼
@@ -195,7 +229,8 @@ class _LessonUpdateState extends State<LessonUpdate> {
                                       currentAppratus,
                                       lessonDate,
                                       initState,
-                                      totalNote
+                                      totalNote,
+                                      tmpLessonInfoList,
                                     ]),
                                   ),
                                 );
@@ -706,42 +741,75 @@ class _LessonUpdateState extends State<LessonUpdate> {
                           ),
                           onPressed: () {
                             print("저장하기 버튼");
+
                             // create bucket
                             if (globalFunction.textNullCheck(
-                                context, lessonDateController, "수업일")) {
+                                    context, lessonDateController, "수업일") &&
+                                ActionNullCheck == false) {
                               print("userInfo.docId : ${customUserInfo.docId}");
 
-                              lessonService.createTodaynote(
-                                  docId: customUserInfo.docId,
-                                  uid: user.uid,
-                                  name: nameController.text,
-                                  lessonDate: lessonDateController.text,
-                                  todayNote: todayNoteController.text,
-                                  onSuccess: () {
-                                    // 저장하기 성공
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text("저장하기 성공"),
-                                    ));
-                                    // 저장하기 성공시 MemberInfo로 이동
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MemberInfo(),
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(
-                                          arguments: customUserInfo,
+                              if (todayNotedocId == "") {
+                                lessonService.createTodaynote(
+                                    docId: customUserInfo.docId,
+                                    uid: user.uid,
+                                    name: customUserInfo.name,
+                                    lessonDate: lessonDateController.text,
+                                    todayNote: todayNoteController.text,
+                                    onSuccess: () {
+                                      // 저장하기 성공
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("저장하기 성공"),
+                                      ));
+                                      // 저장하기 성공시 MemberInfo로 이동
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MemberInfo(),
+                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                          settings: RouteSettings(
+                                            arguments: customUserInfo,
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
 
-                                    // 화면 초기화
-                                    initInpuWidget();
-                                    initState = !initState;
-                                  },
-                                  onError: () {
-                                    print("저장하기 ERROR");
-                                  });
+                                      // 화면 초기화
+                                      initInpuWidget();
+                                      initState = !initState;
+                                    },
+                                    onError: () {
+                                      print("저장하기 ERROR");
+                                    });
+                              } else {
+                                lessonService.updateTodayNote(
+                                    docId: todayNotedocId,
+                                    todayNote: todayNoteController.text,
+                                    onSuccess: () {
+                                      // 저장하기 성공
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("저장하기 성공"),
+                                      ));
+                                      // 저장하기 성공시 MemberInfo로 이동
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MemberInfo(),
+                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                          settings: RouteSettings(
+                                            arguments: customUserInfo,
+                                          ),
+                                        ),
+                                      );
+
+                                      // 화면 초기화
+                                      initInpuWidget();
+                                      initState = !initState;
+                                    },
+                                    onError: () {
+                                      print("저장하기 ERROR");
+                                    });
+                              }
 
                               // // 오늘 날짜 가져오기
                               // lessonService.create(
@@ -809,7 +877,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
                             final retvaldelte = await showAlertDialog(
                                 context, '정말로 삭제하시겠습니까?', '레슨노트를 삭제합니다.');
                             if (retvaldelte == "OK") {
-                              lessonService.deleteTodayNoe(
+                              lessonService.deleteTodayNote(
                                 docId: customUserInfo.docId,
                                 onSuccess: () {},
                                 onError: () {},

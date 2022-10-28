@@ -495,9 +495,14 @@ class _MemberInfoState extends State<MemberInfo> {
                                                   docs: docs,
                                                   userInfo: userInfo);
                                             } else {
+                                              List<TmpLessonInfo>
+                                                  tmpLessonInfoList = [];
                                               return NoteList2(
-                                                  docs: docs,
-                                                  userInfo: userInfo);
+                                                docs: docs,
+                                                userInfo: userInfo,
+                                                tmpLessonInfoList:
+                                                    tmpLessonInfoList,
+                                              );
                                             }
                                           },
                                         ),
@@ -641,10 +646,12 @@ class NoteList2 extends StatefulWidget {
     Key? key,
     required this.docs,
     required this.userInfo,
+    required this.tmpLessonInfoList,
   }) : super(key: key);
 
   final List<QueryDocumentSnapshot<Object?>> docs;
   final UserInfo userInfo;
+  final tmpLessonInfoList;
 
   @override
   State<NoteList2> createState() => _NoteList2State();
@@ -668,7 +675,7 @@ class _NoteList2State extends State<NoteList2> {
             widget.userInfo,
             value,
             eventList,
-            lessonNoteId,
+            widget.tmpLessonInfoList,
           ];
 
           print("args.length : ${args.length}");
