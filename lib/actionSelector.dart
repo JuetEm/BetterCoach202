@@ -961,7 +961,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                         ));
                         // 저장하기 성공시 MemberInfo로 이동
                         Navigator.pop(context, tmpLessonInfoList);
-                        initStateVar = !initStateVar;
+                        //initStateVar = !initStateVar;
                         //Navigator.pop(context);
                         // Navigator.push(
                         //   context,
@@ -974,12 +974,13 @@ class _ActionSelectorState extends State<ActionSelector> {
                         //         lessonDate,
                         //         tmpEventList,
                         //         "",
+                        //         "",
                         //         tmpLessonInfoList
                         //       ],
                         //     ),
                         //   ),
                         // );
-                        // initStateVar = !initStateVar;
+                        initStateVar = !initStateVar;
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("동작을 선택해주세요."),
