@@ -789,6 +789,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                             String position = doc.get('position');
                             String name = doc.get('name');
                             String lowerCaseName = doc.get('lowerCaseName');
+                            List<dynamic> nGramizedLowerCaseName =
+                                doc.get('nGramizedLowerCaseName');
+                            ;
                             final ActionInfo actionInfo = ActionInfo(
                               name,
                               apparatus,
@@ -796,7 +799,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                             );
 
                             print(
-                                "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}");
+                                "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(

@@ -65,7 +65,7 @@ class ActionService extends ChangeNotifier {
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
-          .orderBy("name", descending: false)
+          .orderBy("nGramizedLowerCaseName", descending: false)
           .get();
     } else {
       result = actionCollection
@@ -73,7 +73,7 @@ class ActionService extends ChangeNotifier {
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
-          .where("nGramizedLowerCaseName", arrayContains: searchString)
+          .where("nGramizedLowerCaseName", arrayContainsAny: [searchString])
           .orderBy("nGramizedLowerCaseName", descending: false)
           // .orderBy("lowerCaseName", descending: false)
           .get();
