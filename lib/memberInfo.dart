@@ -22,6 +22,7 @@ String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 String lessonDate = "";
 
 String lessonNoteId = "";
+String lessonAddMode = "";
 
 int indexCheck = 0;
 String listMode = "날짜별";
@@ -560,11 +561,13 @@ class _MemberInfoState extends State<MemberInfo> {
 
                     List<TmpLessonInfo> tmpLessonInfoList = [];
                     eventList = [];
+                    lessonAddMode = "노트추가";
                     List<dynamic> args = [
                       userInfo,
                       lessonDate,
                       eventList,
                       lessonNoteId,
+                      lessonAddMode,
                       tmpLessonInfoList,
                     ];
 
@@ -669,12 +672,15 @@ class _NoteList2State extends State<NoteList2> {
         onTap: () {
           indexCheck = 0;
 
-          // 회원 운동 카드 선택시 MemberInfo로 이동
+          List<TmpLessonInfo> tmpLessonInfoList = [];
           eventList = [];
+          lessonAddMode = "노트추가";
           List<dynamic> args = [
             widget.userInfo,
             value,
             eventList,
+            lessonNoteId,
+            lessonAddMode,
             widget.tmpLessonInfoList,
           ];
 
@@ -682,7 +688,7 @@ class _NoteList2State extends State<NoteList2> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonUpdate(),
+              builder: (context) => LessonAdd(),
               // GlobalWidgetDashboard(), //
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),

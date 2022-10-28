@@ -30,7 +30,13 @@ TextEditingController totalNoteController = TextEditingController();
 // 가변적으로 만들어지는 TextFields
 var totalNoteControllers = [];
 
+// 가변적으로 만들어지는 TextFields DocId 집합
+List<String> updateTextFieldDocId = new List.empty(growable: true);
+
 final lessonInfos = [];
+
+// 노트삭제를 위한 변수 선언
+List<String> deleteDocId = new List.empty(growable: true);
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -58,6 +64,9 @@ bool initState = true;
 
 List<TmpLessonInfo> tmpLessonInfoList = [];
 
+// 동작리스트 없을 경우 저장되지 않도록
+String ActionNullCheck = "Null";
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -75,7 +84,8 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonDate = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
-    tmpLessonInfoList = argsList[4];
+    String lessonAddMode = argsList[4];
+    tmpLessonInfoList = argsList[5];
 
     if (initState) {
       print("INIT!!! : ${initState}");
@@ -105,12 +115,13 @@ class _LessonAddState extends State<LessonAdd> {
 
     String todayNotedocId = "";
     bool ActionNullCheck = true;
+    print('화면 리프레시 ActionNullCheck : ${ActionNullCheck}');
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "노트추가", () {
+          appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.push(
               context,
@@ -296,331 +307,333 @@ class _LessonAddState extends State<LessonAdd> {
                         const SizedBox(height: 5),
 
                         FutureBuilder<QuerySnapshot>(
-                          future: lessonService.readNotesOflessonDate(
-                            user.uid,
-                            customUserInfo.docId,
-                            lessonDateController.text,
-                          ),
-                          builder: (context, snapshot) {
-                            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                            if (docs.isEmpty) {
-                              bool ActionNullCheck = true;
-                              return Center(child: Text("동작을 추가해 주세요."));
-                            }
+                            future: lessonService.readNotesOflessonDate(
+                              user.uid,
+                              customUserInfo.docId,
+                              lessonDateController.text,
+                            ),
+                            builder: (context, snapshot) {
+                              final docs =
+                                  snapshot.data?.docs ?? []; // 문서들 가져오기
+                              if (docs.isEmpty) {
+                                ActionNullCheck = true;
+                                print(
+                                    '문서 비워져 있을경우 ActionNullCheck : ${ActionNullCheck}');
+                                return Center(child: Text("동작을 추가해 주세요."));
+                              } else {
+                                ActionNullCheck = false;
+                                print(
+                                    '문서가 있는 경우 ActionNullCheck : ${ActionNullCheck}');
 
-                            //로딩바 활
-                            if (snapshot.hasData) {
-                              bool ActionNullCheck = false;
-                              //Textfield 생성
-                              createControllers(docs.length);
+                                //Textfield 생성
+                                createControllers(docs.length);
 
-                              //reorderable 드래그시 그림자/디자인 조정
-                              Widget proxyDecorator(Widget child, int index,
-                                  Animation<double> animation) {
-                                return AnimatedBuilder(
-                                  animation: animation,
-                                  builder:
-                                      (BuildContext context, Widget? child) {
-                                    return Material(
-                                      elevation: 0,
-                                      color: Colors.transparent,
-                                      child: child,
-                                    );
-                                  },
-                                  child: child,
-                                );
-                              }
-
-                              return Container(
-                                //height: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                ),
-
-                                child: Theme(
-                                  data: ThemeData(
-                                    canvasColor:
-                                        Colors.transparent, //드래그시 투명하게 만들기 적용
-                                  ),
-                                  child: ReorderableListView.builder(
-                                    proxyDecorator: proxyDecorator,
-                                    itemCount: docs.length,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    //buildDefaultDragHandles: false,
-                                    onReorder: ((oldIndex, newIndex) {
-                                      if (newIndex > docs.length)
-                                        newIndex = docs.length;
-                                      if (oldIndex < newIndex) newIndex -= 1;
-                                      docs.insert(
-                                          newIndex, docs.removeAt(oldIndex));
-                                      for (int pos = 0;
-                                          pos < docs.length;
-                                          pos++) {
-                                        lessonService.updatePos(
-                                            docs[pos].id, pos);
-                                      }
-
-                                      //setState(() {});
-                                    }),
-
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      final doc = docs[index];
-
-                                      String uid = doc.get('uid'); // 강사 고유번호
-                                      String name = doc.get('name'); //회원이름
-                                      String phoneNumber = doc.get(
-                                          'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
-                                      String apratusName =
-                                          doc.get('apratusName'); //기구이름
-                                      String actionName =
-                                          doc.get('actionName'); //동작이름
-                                      String lessonDate =
-                                          doc.get('lessonDate'); //수업날짜
-                                      String grade = doc.get('grade'); //수행도
-                                      String totalNote =
-                                          doc.get('totalNote'); //수업총메모
-                                      String lessonDateTrim = " ";
-                                      String apratusNameTrim = " ";
-                                      int pos = doc.get('pos'); //순서
-                                      // 날짜 글자 자르기
-                                      if (lessonDate.length > 0) {
-                                        lessonDateTrim =
-                                            lessonDate.substring(2, 10);
-                                      }
-                                      // 기구 첫두글자 자르기
-                                      if (apratusName.length > 0) {
-                                        apratusNameTrim =
-                                            apratusName.substring(0, 2);
-                                      }
-                                      totalNoteControllers[index].text =
-                                          totalNote; //동작별 노트 가져오기
-
-                                      return Column(
-                                        key: ValueKey(doc),
-
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                //color: Colors.red.withOpacity(0),
-                                                margin: const EdgeInsets.only(
-                                                  top: 5,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  color: Palette.grayEE,
-                                                  //color: Colors.red.withOpacity(0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    //top: 5,
-                                                    //bottom: 5,
-                                                    left: 5.0,
-                                                    right: 16.0,
-                                                  ),
-                                                  child: SizedBox(
-                                                    height: 60,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.drag_indicator,
-                                                          color: Palette.gray33,
-                                                          size: 20.0,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          apratusNameTrim,
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        16.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          actionName,
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        16.0,
-                                                                  ),
-                                                        ),
-                                                        Spacer(flex: 1),
-                                                        IconButton(
-                                                          onPressed: () {
-                                                            showDialog(
-                                                              context: context,
-                                                              barrierDismissible:
-                                                                  true,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: Text(
-                                                                      '삭제'),
-                                                                  content: Text(
-                                                                      '동작노트를 삭제하시겠습니까?'),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    TextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        lessonService.delete(
-                                                                            docId: doc
-                                                                                .id,
-                                                                            onSuccess:
-                                                                                () {},
-                                                                            onError:
-                                                                                () {});
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                      child: Text(
-                                                                          '삭제'),
-                                                                    ),
-                                                                    TextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                      child: Text(
-                                                                          '취소'),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
-                                                            );
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.remove_circle,
-                                                            color: Palette
-                                                                .statusRed,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                //color: Colors.red.withOpacity(0),
-                                                margin: const EdgeInsets.only(
-                                                  bottom: 5,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  color: Colors.transparent,
-                                                  //color: Colors.red.withOpacity(0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    //top: 5,
-                                                    //bottom: 5,
-                                                    left: 5.0,
-                                                    right: 16.0,
-                                                  ),
-                                                  child: SizedBox(
-                                                    height: 60,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        // Expanded(
-                                                        //   child: TextField(
-                                                        //     controller:
-                                                        //         totalNoteControllers[
-                                                        //             index],
-                                                        //   ),
-                                                        // ),
-
-                                                        /// 메모 입력창
-                                                        Expanded(
-                                                          child:
-                                                              DynamicSaveTextField(
-                                                            customController:
-                                                                totalNoteControllers[
-                                                                    index],
-                                                            hint: "메모",
-                                                            showArrow: false,
-                                                            customFunction:
-                                                                () async {
-                                                              await lessonService
-                                                                  .update(
-                                                                doc.id,
-                                                                apratusName,
-                                                                actionName,
-                                                                lessonDate,
-                                                                "50",
-                                                                totalNoteControllers[
-                                                                        index]
-                                                                    .text,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                        //Spacer(flex: 1),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-
-                                        // return ListTile(
-                                        //   key: ValueKey(doc),
-                                        //   title: Text(actionName),
-                                        // leading: Icon(
-                                        //   Icons.arrow_forward_ios,
-                                        //   color: Palette.gray99,
-                                        //   size: 12.0,
-                                        // ),
+                                //reorderable 드래그시 그림자/디자인 조정
+                                Widget proxyDecorator(Widget child, int index,
+                                    Animation<double> animation) {
+                                  return AnimatedBuilder(
+                                    animation: animation,
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Material(
+                                        elevation: 0,
+                                        color: Colors.transparent,
+                                        child: child,
                                       );
                                     },
+                                    child: child,
+                                  );
+                                }
+
+                                //노트 삭제를 위한 변수 초기화
+                                deleteDocId = List<String>.filled(
+                                    docs.length, "",
+                                    growable: true);
+
+                                //가변적으로 변하는 텍스트 필드 docID초기화
+                                updateTextFieldDocId = List<String>.filled(
+                                    docs.length, "",
+                                    growable: true);
+
+                                return Container(
+                                  //height: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
                                   ),
-                                ),
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
+
+                                  child: Theme(
+                                    data: ThemeData(
+                                      canvasColor:
+                                          Colors.transparent, //드래그시 투명하게 만들기 적용
+                                    ),
+                                    child: ReorderableListView.builder(
+                                      proxyDecorator: proxyDecorator,
+                                      itemCount: docs.length,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      //buildDefaultDragHandles: false,
+                                      onReorder: ((oldIndex, newIndex) {
+                                        if (newIndex > docs.length)
+                                          newIndex = docs.length;
+                                        if (oldIndex < newIndex) newIndex -= 1;
+                                        docs.insert(
+                                            newIndex, docs.removeAt(oldIndex));
+                                        for (int pos = 0;
+                                            pos < docs.length;
+                                            pos++) {
+                                          lessonService.updatePos(
+                                              docs[pos].id, pos);
+                                        }
+
+                                        //setState(() {});
+                                      }),
+
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final doc = docs[index];
+
+                                        //일괄 textfeild 저장하기 위해 docID저장
+                                        updateTextFieldDocId[index] = doc.id;
+                                        deleteDocId[index] = doc.id;
+
+                                        String uid = doc.get('uid'); // 강사 고유번호
+                                        String name = doc.get('name'); //회원이름
+                                        String phoneNumber = doc.get(
+                                            'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                        String apratusName =
+                                            doc.get('apratusName'); //기구이름
+                                        String actionName =
+                                            doc.get('actionName'); //동작이름
+                                        String lessonDate =
+                                            doc.get('lessonDate'); //수업날짜
+                                        String grade = doc.get('grade'); //수행도
+                                        String totalNote =
+                                            doc.get('totalNote'); //수업총메모
+                                        String lessonDateTrim = " ";
+                                        String apratusNameTrim = " ";
+                                        int pos = doc.get('pos'); //순서
+                                        // 날짜 글자 자르기
+                                        if (lessonDate.length > 0) {
+                                          lessonDateTrim =
+                                              lessonDate.substring(2, 10);
+                                        }
+                                        // 기구 첫두글자 자르기
+                                        if (apratusName.length > 0) {
+                                          apratusNameTrim =
+                                              apratusName.substring(0, 2);
+                                        }
+                                        totalNoteControllers[index].text =
+                                            totalNote; //동작별 노트 가져오기
+
+                                        return Column(
+                                          key: ValueKey(doc),
+
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  //color: Colors.red.withOpacity(0),
+                                                  margin: const EdgeInsets.only(
+                                                    top: 5,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    color: Palette.grayEE,
+                                                    //color: Colors.red.withOpacity(0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      //top: 5,
+                                                      //bottom: 5,
+                                                      left: 5.0,
+                                                      right: 16.0,
+                                                    ),
+                                                    child: SizedBox(
+                                                      height: 60,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .drag_indicator,
+                                                            color:
+                                                                Palette.gray33,
+                                                            size: 20.0,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            apratusNameTrim,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1!
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            actionName,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1!
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                ),
+                                                          ),
+                                                          Spacer(flex: 1),
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    true,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: Text(
+                                                                        '삭제'),
+                                                                    content: Text(
+                                                                        '동작노트를 삭제하시겠습니까?'),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          lessonService.delete(
+                                                                              docId: doc.id,
+                                                                              onSuccess: () {},
+                                                                              onError: () {});
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: Text(
+                                                                            '삭제'),
+                                                                      ),
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: Text(
+                                                                            '취소'),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .remove_circle,
+                                                              color: Palette
+                                                                  .statusRed,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  //color: Colors.red.withOpacity(0),
+                                                  margin: const EdgeInsets.only(
+                                                    bottom: 5,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    color: Colors.transparent,
+                                                    //color: Colors.red.withOpacity(0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      //top: 5,
+                                                      //bottom: 5,
+                                                      left: 5.0,
+                                                      right: 16.0,
+                                                    ),
+                                                    child: SizedBox(
+                                                      height: 60,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          // Expanded(
+                                                          //   child: TextField(
+                                                          //     controller:
+                                                          //         totalNoteControllers[
+                                                          //             index],
+                                                          //   ),
+                                                          // ),
+
+                                                          /// 메모 입력창
+                                                          Expanded(
+                                                            child:
+                                                                BaseTextField(
+                                                              customController:
+                                                                  totalNoteControllers[
+                                                                      index],
+                                                              hint: "메모",
+                                                              showArrow: false,
+                                                              customFunction:
+                                                                  () {},
+                                                            ),
+                                                          ),
+                                                          //Spacer(flex: 1),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+
+                                          // return ListTile(
+                                          //   key: ValueKey(doc),
+                                          //   title: Text(actionName),
+                                          // leading: Icon(
+                                          //   Icons.arrow_forward_ios,
+                                          //   color: Palette.gray99,
+                                          //   size: 12.0,
+                                          // ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }
+                              ;
+                            }),
 
                         // /// 동작이름 입력창
                         // BaseTextField(
@@ -731,9 +744,9 @@ class _LessonAddState extends State<LessonAdd> {
                             padding: const EdgeInsets.all(16.0),
                             child: Text("저장하기", style: TextStyle(fontSize: 18)),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             print("저장하기 버튼");
-                            print("ActionNullCheck : ${ActionNullCheck}");
+                            print("저장직전 ActionNullCheck : ${ActionNullCheck}");
                             // create bucket
                             if (globalFunction.textNullCheck(
                                     context, lessonDateController, "수업일") &&
@@ -741,6 +754,14 @@ class _LessonAddState extends State<LessonAdd> {
                               print("userInfo.docId : ${customUserInfo.docId}");
 
                               if (todayNotedocId == "") {
+                                // for (int idx = 0;
+                                //     idx < updateTextFieldDocId.length;
+                                //     idx++) {
+                                //   await lessonService.updateTotalNote(
+                                //     updateTextFieldDocId[idx],
+                                //     totalNoteControllers[idx].text,
+                                //   );
+                                // }
                                 lessonService.createTodaynote(
                                     docId: customUserInfo.docId,
                                     uid: user.uid,
@@ -773,6 +794,17 @@ class _LessonAddState extends State<LessonAdd> {
                                       print("저장하기 ERROR");
                                     });
                               } else {
+                                print("문서가 있는 경우.. 노트 저장");
+
+                                for (int idx = 0;
+                                    idx < updateTextFieldDocId.length;
+                                    idx++) {
+                                  await lessonService.updateTotalNote(
+                                    updateTextFieldDocId[idx],
+                                    totalNoteControllers[idx].text,
+                                  );
+                                }
+
                                 lessonService.updateTodayNote(
                                     docId: todayNotedocId,
                                     todayNote: todayNoteController.text,
@@ -850,6 +882,12 @@ class _LessonAddState extends State<LessonAdd> {
                             }
                           },
                         ),
+                        const SizedBox(height: 15),
+                        lessonAddMode == "수정"
+                            ? DeleteButton(
+                                customUserInfo: customUserInfo,
+                                lessonService: lessonService)
+                            : const SizedBox(height: 15),
                       ],
                     ),
                   ),
@@ -874,9 +912,13 @@ class _LessonAddState extends State<LessonAdd> {
       totalNoteController
     ]);
     lessonDateController.text = now;
-    setState(() {
-      sliderValue = 50;
-    });
+    sliderValue = 50;
+    // 에러 발생해서 정리..
+//     The following assertion was thrown while dispatching notifications for TextEditingController:
+// setState() or markNeedsBuild() called during build.
+    // setState(() {
+    //   sliderValue = 50;
+    // });
   }
 
   //Textfield 생성
@@ -974,5 +1016,73 @@ class _LessonAddState extends State<LessonAdd> {
         content: Text("항목을 모두 입력해주세요."),
       ));
     }
+  }
+}
+
+// 삭제버튼
+
+class DeleteButton extends StatefulWidget {
+  const DeleteButton({
+    Key? key,
+    required this.customUserInfo,
+    required this.lessonService,
+  }) : super(key: key);
+
+  final CustomUserInfo.UserInfo customUserInfo;
+  final LessonService lessonService;
+
+  @override
+  State<DeleteButton> createState() => _DeleteButtonState();
+}
+
+class _DeleteButtonState extends State<DeleteButton> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: Palette.mainBackground,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text("삭제하기",
+            style: TextStyle(fontSize: 18, color: Palette.textRed)),
+      ),
+      onPressed: () async {
+        // create bucket
+        final retvaldelte =
+            await showAlertDialog(context, '정말로 삭제하시겠습니까?', '레슨노트를 삭제합니다.');
+        if (retvaldelte == "OK") {
+          widget.lessonService.deleteTodayNote(
+            docId: widget.customUserInfo.docId,
+            onSuccess: () {},
+            onError: () {},
+          );
+          for (int idx = 0; idx < deleteDocId.length; idx++) {
+            //print(deleteDocId[idx]);
+            widget.lessonService.delete(
+              docId: deleteDocId[idx],
+              onSuccess: () {},
+              onError: () {},
+            );
+          }
+
+          // 삭제하기 성공시 MemberList로 이동
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MemberInfo(),
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(
+                arguments: widget.customUserInfo,
+              ),
+            ),
+          );
+        }
+
+        //if (showAlertDialog(context) == "OK"){
+        //
+      },
+    );
   }
 }

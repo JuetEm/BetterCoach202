@@ -140,7 +140,8 @@ class LessonService extends ChangeNotifier {
       'timestamp': timestamp,
       'todayNote': todayNote,
     });
-    notifyListeners(); // 화면 갱신
+    notifyListeners();
+    onSuccess(); // 화면 갱신
   }
 
   void deleteTodayNote({
@@ -245,6 +246,16 @@ class LessonService extends ChangeNotifier {
       'totalNote': totalNote,
     });
     notifyListeners(); // 화면 갱신
+  }
+
+  Future<void> updateTotalNote(
+    String docId,
+    String totalNote,
+  ) async {
+    final result = await lessonCollection.doc(docId).update({
+      'totalNote': totalNote,
+    });
+    //notifyListeners(); // 화면 갱신
   }
 
   void updateLesson(String docId, bool isActive) async {
