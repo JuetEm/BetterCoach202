@@ -901,6 +901,8 @@ class _LessonUpdateState extends State<LessonUpdate> {
   }
 }
 
+// 삭제버튼
+
 class DeleteButton extends StatefulWidget {
   const DeleteButton({
     Key? key,

@@ -674,7 +674,7 @@ class _NoteList2State extends State<NoteList2> {
 
           List<TmpLessonInfo> tmpLessonInfoList = [];
           eventList = [];
-          lessonAddMode = "노트추가";
+          lessonAddMode = "노트보기";
           List<dynamic> args = [
             widget.userInfo,
             value,

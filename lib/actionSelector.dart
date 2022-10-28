@@ -1084,7 +1084,7 @@ class _ActionTileState extends State<ActionTile> {
                   actionName: widget.actionName,
                   lessonDate: widget.lessonDate,
                   grade: "50",
-                  totalNote: widget.totalNote,
+                  totalNote: "",
                   pos: null,
                   onSuccess: () {
                     print(
