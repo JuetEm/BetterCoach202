@@ -21,6 +21,7 @@ class ActionService extends ChangeNotifier {
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
 
     List apparatus = [];
+    List searchKeyword = [];
 
     print("Search Called!! : ${searchString}");
 
@@ -60,7 +61,7 @@ class ActionService extends ChangeNotifier {
     }
     final result;
     if (searchString.isEmpty) {
-      result = actionCollection
+      result = await actionCollection
           .where("apparatus",
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
@@ -68,32 +69,23 @@ class ActionService extends ChangeNotifier {
           .orderBy("nGramizedLowerCaseName", descending: false)
           .get();
     } else {
-      print("Search String Not Empty 울립니다!");
-      result = actionCollection
+      searchKeyword.add(searchString);
+      print("searchKeyword : ${searchKeyword}");
+      print("Search String Not Empty 울립니다! START");
+      result = await actionCollection
+          // .where("apparatus", whereIn: [searchString])
+          .where("nGramizedLowerCaseName", arrayContains: searchString)
           .where("apparatus",
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
-          .where("nGramizedLowerCaseName", arrayContainsAny: [searchString])
           // .orderBy("nGramizedLowerCaseName", descending: false)
-          // .orderBy("lowerCaseName", descending: false)
-          .get()
-          .then((value) {
-            print("CREATE THEN : ${value}!");
-          })
-          .onError((error, stackTrace) {
-            print("CREATE ERROR : ${error}!");
-            print("stackTrace \r\n ${stackTrace}");
-          })
-          .whenComplete(() {
-            print("CREATE COMPLETED!");
-          });
-      // .startAt([searchString]).get();
-      List<QuerySnapshot> docRaw = result;
-      print("docRaw.length : ${docRaw.length}");
-      print("result.toString() : ${result}");
+          .orderBy("lowerCaseName", descending: false)
+          .get();
+      print("Search String Not Empty 울립니다! END");
     }
 
+    print("ORDERS?!?!");
     // notifyListeners(); // 화면 갱신
 
     return result;
