@@ -25,23 +25,23 @@ TextEditingController actionNameController = TextEditingController();
 TextEditingController lessonDateController = TextEditingController(text: now);
 TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController todayNoteController = TextEditingController();
-TextEditingController totalNoteController = TextEditingController();
 
-// 가변적으로 만들어지는 TextFields
+// 가변적으로 TextFields
 List<TextEditingController> totalNoteControllers = [];
 
-// 가변적으로 만들어지는 TextFields DocId 집합
-List<String> updateTextFieldDocId = new List.empty(growable: true);
-
-final lessonInfos = [];
-
-// 노트삭제를 위한 변수 선언
-List<String> deleteDocId = new List.empty(growable: true);
+// 가변적으로 TextFields DocId 집합
+List<String> totalNoteTextFieldDocId = new List.empty(growable: true);
 
 GlobalFunction globalFunction = GlobalFunction();
 
 //예외처리 : 동작선택으로 넘어갈 경우 일별노트 Null값 처리하지 않음.
 bool ActionSelectMode = false;
+
+//초기상태
+bool initState = true;
+
+//가변 텍스트 필드 첫 화면 출력시에만
+bool initStateTextfield = true;
 
 String selectedDropdown = '기구';
 List<String> dropdownList = [
@@ -63,9 +63,6 @@ String editLessonDate = "";
 String editGrade = "";
 String editTotalNote = "";
 
-bool initState = true;
-bool initStateTextfield = true;
-
 List<TmpLessonInfo> tmpLessonInfoList = [];
 
 class LessonAdd extends StatefulWidget {
@@ -82,37 +79,29 @@ class _LessonAddState extends State<LessonAdd> {
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     CustomUserInfo.UserInfo customUserInfo = argsList[0];
-    String lessonDate = argsList[1];
+    String lessonDate = argsList[1]; //노트보기의 경우 레슨날짜를 받아옴
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
     String lessonAddMode = argsList[4];
     tmpLessonInfoList = argsList[5];
 
+    if (lessonAddMode == "노트보기") {
+      lessonDateController = TextEditingController(text: lessonDate);
+    } else {
+      lessonDateController = TextEditingController(text: now);
+    }
+
     if (initState) {
       print("INIT!!! : ${initState}");
       //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-      lessonDateController = TextEditingController(text: lessonDate);
+      print("Date : ${lessonDate}");
       gradeController = TextEditingController(text: "50");
       initState = !initState;
+      initStateTextfield = true;
     }
-    // if (initState) {
-    //   print("INIT!!! : ${initState}");
-    //   now = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    //   lessonDateController = TextEditingController(text: now);
-    //   gradeController = TextEditingController(text: "50");
-    //   initState = !initState;
-    // }
 
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
-
-    // // 이전 화면에서 보낸 변수 받기
-    // final userInfo =
-    //     ModalRoute.of(context)!.settings.arguments as CustomUserInfo.UserInfo;
-
-    // nameController = TextEditingController(text: userInfo.name);
-    // //lessonDateController = TextEditingController(text: now);
-    // //gradeController = TextEditingController(text: "50");
 
     String todayNotedocId = "";
     bool ActionNullCheck = true;
@@ -124,19 +113,9 @@ class _LessonAddState extends State<LessonAdd> {
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MemberInfo(),
-                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                settings: RouteSettings(
-                  arguments: customUserInfo,
-                ),
-              ),
-            );
+            Navigator.pop(context);
             // 페이지 초기화
             initInpuWidget();
-            initState = !initState;
           }),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -169,7 +148,7 @@ class _LessonAddState extends State<LessonAdd> {
                           },
                         ),
 
-                        /// 메모 입력창
+                        /// 일별 메모 입력창
                         FutureBuilder<QuerySnapshot>(
                           future: lessonService.readTodayNoteOflessonDate(
                             user.uid,
@@ -180,32 +159,29 @@ class _LessonAddState extends State<LessonAdd> {
                             final docsTodayNote =
                                 snapshot.data?.docs ?? []; // 문서들 가져오기
 
+                            // 기존 저장된 값이 없으면 초기화, 동작선택모드 일경우
                             if (docsTodayNote.isEmpty) {
-                              print(
-                                  "체크전 ActionSelectMode : ${ActionSelectMode}");
                               if (ActionSelectMode) {
                               } else {
                                 todayNoteController.text = "";
                               }
                               todayNotedocId = "";
-
-                              return DynamicSaveTextField(
-                                customController: todayNoteController,
-                                hint: "일별 메모",
-                                showArrow: false,
-                                customFunction: () {},
-                              );
                             } else {
                               todayNoteController.text =
                                   docsTodayNote[0].get('todayNote');
                               todayNotedocId = docsTodayNote[0].id;
-                              return BaseTextField(
-                                customController: todayNoteController,
-                                hint: "일별 메모",
-                                showArrow: false,
-                                customFunction: () {},
-                              );
                             }
+
+                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //   content: Text("텍스트필드!!"),
+                            // ));
+
+                            return DynamicSaveTextField(
+                              customController: todayNoteController,
+                              hint: "일별 메모",
+                              showArrow: false,
+                              customFunction: () {},
+                            );
                           },
                         ),
 
@@ -229,10 +205,9 @@ class _LessonAddState extends State<LessonAdd> {
                                 String lessonDate = lessonDateController.text;
                                 String totalNote = "";
 
-                                bool initState = true;
+                                //동작선택 모드
+                                //bool initState = true;
                                 ActionSelectMode = true;
-                                print(
-                                    "진입전 ActionSelectMode : ${ActionSelectMode}");
 
                                 final List<TmpLessonInfo> result =
                                     await Navigator.push(
@@ -319,6 +294,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                         const SizedBox(height: 5),
 
+                        // 재정렬 가능한 리스트 시작
                         FutureBuilder<QuerySnapshot>(
                             future: lessonService.readNotesOflessonDate(
                               user.uid,
@@ -359,12 +335,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 }
 
                                 //노트 삭제를 위한 변수 초기화
-                                deleteDocId = List<String>.filled(
-                                    docs.length, "",
-                                    growable: true);
-
-                                //가변적으로 변하는 텍스트 필드 docID초기화
-                                updateTextFieldDocId = List<String>.filled(
+                                totalNoteTextFieldDocId = List<String>.filled(
                                     docs.length, "",
                                     growable: true);
 
@@ -408,8 +379,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         final doc = docs[index];
 
                                         //일괄 textfeild 저장하기 위해 docID저장
-                                        updateTextFieldDocId[index] = doc.id;
-                                        deleteDocId[index] = doc.id;
+                                        totalNoteTextFieldDocId[index] = doc.id;
 
                                         String uid = doc.get('uid'); // 강사 고유번호
                                         String name = doc.get('name'); //회원이름
@@ -438,16 +408,26 @@ class _LessonAddState extends State<LessonAdd> {
                                               apratusName.substring(0, 2);
                                         }
 
+                                        // 첫 화면에서
+
+                                        // ScaffoldMessenger.of(context)
+                                        //     .showSnackBar(SnackBar(
+                                        //   content: Text(
+                                        //       "텍스트필드!!${initStateTextfield}"),
+                                        // ));
+
                                         if (initStateTextfield) {
                                           totalNoteControllers[index].text =
                                               totalNote;
-                                          initStateTextfield =
-                                              !initStateTextfield; //동작별 노트 가져오기
+                                          if (index == (docs.length - 1)) {
+                                            initStateTextfield = false;
+                                            print(
+                                                '이제안바꿔 : ${initStateTextfield}');
+                                          }
                                         }
 
                                         return Column(
                                           key: ValueKey(doc),
-
                                           children: [
                                             Column(
                                               children: [
@@ -635,15 +615,6 @@ class _LessonAddState extends State<LessonAdd> {
                                               ],
                                             ),
                                           ],
-
-                                          // return ListTile(
-                                          //   key: ValueKey(doc),
-                                          //   title: Text(actionName),
-                                          // leading: Icon(
-                                          //   Icons.arrow_forward_ios,
-                                          //   color: Palette.gray99,
-                                          //   size: 12.0,
-                                          // ),
                                         );
                                       },
                                     ),
@@ -652,103 +623,6 @@ class _LessonAddState extends State<LessonAdd> {
                               }
                               ;
                             }),
-
-                        // /// 동작이름 입력창
-                        // BaseTextField(
-                        //   customController: actionNameController,
-                        //   hint: "동작선택",
-                        //   showArrow: true,
-                        //   customFunction: () async {
-                        //     String currentAppratus = apratusNameController.text;
-                        //     bool initState = true;
-
-                        //     final ActionInfo? result = await Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => ActionSelector(),
-                        //         fullscreenDialog: true,
-                        //         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        //         settings: RouteSettings(arguments: [
-                        //           userInfo,
-                        //           currentAppratus,
-                        //           initState
-                        //         ]),
-                        //       ),
-                        //     );
-
-                        //     if (!(result == null)) {
-                        //       print(
-                        //           "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
-
-                        //       setState(() {
-                        //         actionNameController.text = result.actionName;
-                        //         switch (result.apparatus) {
-                        //           case "RE":
-                        //             apratusNameController.text = "REFORMER";
-                        //             break;
-                        //           case "CA":
-                        //             apratusNameController.text = "CADILLAC";
-                        //             break;
-                        //           case "CH":
-                        //             apratusNameController.text = "CHAIR";
-                        //             break;
-                        //           case "LA":
-                        //             apratusNameController.text =
-                        //                 "LADDER BARREL";
-                        //             break;
-                        //           case "SB":
-                        //             apratusNameController.text = "SPRING BOARD";
-                        //             break;
-                        //           case "SC":
-                        //             apratusNameController.text =
-                        //                 "SPINE CORRECTOR";
-                        //             break;
-                        //           case "MAT":
-                        //             apratusNameController.text = "MAT";
-                        //             break;
-                        //         }
-                        //       });
-                        //     }
-                        //   },
-                        // ),
-
-                        // /// 수행도 입력창
-                        // BaseTextField(
-                        //   customController: gradeController,
-                        //   hint: "수행도",
-                        //   showArrow: true,
-                        //   customFunction: () {},
-                        // ),
-
-                        // Container(
-                        //   // color: Colors.red,
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     children: [
-                        //       Slider(
-                        //           value: sliderValue,
-                        //           min: 0,
-                        //           max: 100,
-                        //           divisions: 10,
-                        //           onChanged: (value) {
-                        //             setState(() {
-                        //               sliderValue = value;
-                        //               gradeController.text =
-                        //                   sliderValue.clamp(0, 100).toString();
-                        //               print(sliderValue.toString());
-                        //             });
-                        //           }),
-                        //     ],
-                        //   ),
-                        // ),
-
-                        // /// 메모 입력창
-                        // BaseTextField(
-                        //   customController: totalNoteController,
-                        //   hint: "메모",
-                        //   showArrow: false,
-                        //   customFunction: () {},
-                        // ),
 
                         const SizedBox(height: 15),
 
@@ -765,21 +639,22 @@ class _LessonAddState extends State<LessonAdd> {
                           onPressed: () async {
                             print("저장하기 버튼");
                             print("저장직전 ActionNullCheck : ${ActionNullCheck}");
-                            // create bucket
+                            // 수업일, 동작선택, 필수 입력
                             if (globalFunction.textNullCheck(
                                     context, lessonDateController, "수업일") &&
                                 ActionNullCheck == false) {
-                              print("userInfo.docId : ${customUserInfo.docId}");
-
+                              //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
                               if (todayNotedocId == "") {
+                                // 동작별 노트 업데이트
+                                for (int idx = 0;
+                                    idx < totalNoteTextFieldDocId.length;
+                                    idx++) {
+                                  await lessonService.updateTotalNote(
+                                    totalNoteTextFieldDocId[idx],
+                                    totalNoteControllers[idx].text,
+                                  );
+                                }
                                 // for (int idx = 0;
-                                //     idx < updateTextFieldDocId.length;
-                                //     idx++) {
-                                //   await lessonService.updateTotalNote(
-                                //     updateTextFieldDocId[idx],
-                                //     totalNoteControllers[idx].text,
-                                //   );
-                                // }
                                 lessonService.createTodaynote(
                                     docId: customUserInfo.docId,
                                     uid: user.uid,
@@ -792,21 +667,11 @@ class _LessonAddState extends State<LessonAdd> {
                                           .showSnackBar(SnackBar(
                                         content: Text("새로운 노트 작성"),
                                       ));
-                                      // 저장하기 성공시 MemberInfo로 이동
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MemberInfo(),
-                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                          settings: RouteSettings(
-                                            arguments: customUserInfo,
-                                          ),
-                                        ),
-                                      );
 
                                       // 화면 초기화
                                       initInpuWidget();
-                                      initState = !initState;
+                                      // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
+                                      Navigator.pop(context);
                                     },
                                     onError: () {
                                       print("저장하기 ERROR");
@@ -814,11 +679,12 @@ class _LessonAddState extends State<LessonAdd> {
                               } else {
                                 print("문서가 있는 경우.. 노트 저장");
 
+                                // 동작별 노트 업데이트
                                 for (int idx = 0;
-                                    idx < updateTextFieldDocId.length;
+                                    idx < totalNoteTextFieldDocId.length;
                                     idx++) {
                                   await lessonService.updateTotalNote(
-                                    updateTextFieldDocId[idx],
+                                    totalNoteTextFieldDocId[idx],
                                     totalNoteControllers[idx].text,
                                   );
                                 }
@@ -830,72 +696,22 @@ class _LessonAddState extends State<LessonAdd> {
                                       // 저장하기 성공
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
-                                        content: Text("저장하기 성공"),
+                                        content: Text("노트수정 완료"),
                                       ));
-                                      // 저장하기 성공시 MemberInfo로 이동
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MemberInfo(),
-                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                          settings: RouteSettings(
-                                            arguments: customUserInfo,
-                                          ),
-                                        ),
-                                      );
-
                                       // 화면 초기화
                                       initInpuWidget();
-                                      initState = !initState;
+
+                                      // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
+                                      Navigator.pop(context);
                                     },
                                     onError: () {
                                       print("저장하기 ERROR");
                                     });
                               }
-
-                              // // 오늘 날짜 가져오기
-                              // lessonService.create(
-                              //     docId: userInfo
-                              //         .docId, // 회권 고유번호 => 회원번호(문서고유번호)로 회원 식별
-                              //     uid: user.uid,
-                              //     name: nameController.text,
-                              //     phoneNumber: userInfo
-                              //         .phoneNumber, // 회권 고유번호 => 전화번호로 회원 식별 방식 제거
-                              //     apratusName:
-                              //         apratusNameController.text, //기구이름
-                              //     actionName: actionNameController.text, //동작이름
-                              //     lessonDate: lessonDateController.text, //수업날짜
-                              //     grade: gradeController.text, //수행도
-                              //     totalNote: totalNoteController.text, //수업총메모
-                              //     onSuccess: () {
-                              //       // 저장하기 성공
-                              //       ScaffoldMessenger.of(context)
-                              //           .showSnackBar(SnackBar(
-                              //         content: Text("저장하기 성공"),
-                              //       ));
-                              //       // 저장하기 성공시 MemberInfo로 이동
-                              //       Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //           builder: (context) => MemberInfo(),
-                              //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                              //           settings: RouteSettings(
-                              //             arguments: userInfo,
-                              //           ),
-                              //         ),
-                              //       );
-
-                              //       // 화면 초기화
-                              //       initInpuWidget();
-                              //       initState = !initState;
-                              //     },
-                              //     onError: () {
-                              //       print("저장하기 ERROR");
-                              //     });
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                content: Text("항목을 모두 입력해주세요."),
+                                content: Text("날짜, 동작은 꼭 입력해주세요."),
                               ));
                             }
                           },
@@ -904,7 +720,10 @@ class _LessonAddState extends State<LessonAdd> {
                         lessonAddMode == "노트보기"
                             ? DeleteButton(
                                 customUserInfo: customUserInfo,
-                                lessonService: lessonService)
+                                lessonService: lessonService,
+                                totalNoteTextFieldDocId:
+                                    totalNoteTextFieldDocId,
+                              )
                             : const SizedBox(height: 15),
                       ],
                     ),
@@ -919,26 +738,6 @@ class _LessonAddState extends State<LessonAdd> {
     );
   }
 
-//   void initInpuWidget() {
-//     globalFunction.clearTextEditController([
-//       nameController,
-//       apratusNameController,
-//       actionNameController,
-//       lessonDateController,
-//       todayNoteController,
-//       gradeController,
-//       totalNoteController
-//     ]);
-//     lessonDateController.text = now;
-//     sliderValue = 50;
-//     // 에러 발생해서 정리..
-// //     The following assertion was thrown while dispatching notifications for TextEditingController:
-// // setState() or markNeedsBuild() called during build.
-//     // setState(() {
-//     //   sliderValue = 50;
-//     // });
-//   }
-
   //Textfield 생성
   void createControllers(length) {
     DynamicController dynamicController;
@@ -951,16 +750,31 @@ class _LessonAddState extends State<LessonAdd> {
   }
 }
 
+//Textfield 생성
+void deleteControllers() {
+  //print('before:${totalNoteControllers}');
+  totalNoteControllers = [];
+  //print('after:${totalNoteControllers}');
+}
+
+class DynamicController {
+  DynamicController(this.dynamicClassName);
+  TextEditingController dynamicController = TextEditingController();
+  String dynamicClassName = "";
+}
+
 // 삭제버튼
 class DeleteButton extends StatefulWidget {
   const DeleteButton({
     Key? key,
     required this.customUserInfo,
     required this.lessonService,
+    required this.totalNoteTextFieldDocId,
   }) : super(key: key);
 
   final CustomUserInfo.UserInfo customUserInfo;
   final LessonService lessonService;
+  final List<String> totalNoteTextFieldDocId;
 
   @override
   State<DeleteButton> createState() => _DeleteButtonState();
@@ -989,30 +803,21 @@ class _DeleteButtonState extends State<DeleteButton> {
             onSuccess: () {},
             onError: () {},
           );
-          for (int idx = 0; idx < deleteDocId.length; idx++) {
-            //print(deleteDocId[idx]);
+          for (int idx = 0;
+              idx < widget.totalNoteTextFieldDocId.length;
+              idx++) {
             widget.lessonService.delete(
-              docId: deleteDocId[idx],
+              docId: widget.totalNoteTextFieldDocId[idx],
               onSuccess: () {},
               onError: () {},
             );
           }
 
-          // 삭제하기 성공시 MemberList로 이동
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MemberInfo(),
-              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-              settings: RouteSettings(
-                arguments: widget.customUserInfo,
-              ),
-            ),
-          );
-
           // 페이지 초기화
           initInpuWidget();
-          initState = !initState;
+
+          // 삭제하기 성공시 MemberList로 이동
+          Navigator.pop(context);
         }
 
         //if (showAlertDialog(context) == "OK"){
@@ -1020,12 +825,6 @@ class _DeleteButtonState extends State<DeleteButton> {
       },
     );
   }
-}
-
-class DynamicController {
-  DynamicController(this.dynamicClassName);
-  TextEditingController dynamicController = TextEditingController();
-  String dynamicClassName = "";
 }
 
 void initInpuWidget() {
@@ -1036,11 +835,16 @@ void initInpuWidget() {
     lessonDateController,
     todayNoteController,
     gradeController,
-    totalNoteController
   ]);
+  //추가 : totalNoteControllers들은 어떻게 초기화.??
+  deleteControllers();
   lessonDateController.text = now;
   sliderValue = 50;
-  initStateTextfield = !initStateTextfield;
+
+  //가변 텍스트필드 초기에 DB값 불러와서 뿌려줌.
+  print('바꿈 : ${initStateTextfield}');
+  initState = !initState;
+
   // 에러 발생해서 정리..
 //     The following assertion was thrown while dispatching notifications for TextEditingController:
 // setState() or markNeedsBuild() called during build.

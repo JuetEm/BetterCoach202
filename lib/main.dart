@@ -25,9 +25,6 @@ import 'memberList.dart';
 import 'member_service.dart';
 import 'globalWidget.dart';
 
-/// 브랜치 테스트
-/// /// 브랜치 테스트222
-
 bool adminMode = false;
 
 GlobalFunction globalfunction = GlobalFunction();

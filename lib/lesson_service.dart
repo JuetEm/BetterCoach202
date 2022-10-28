@@ -124,22 +124,28 @@ class LessonService extends ChangeNotifier {
       'lessonDate': lessonDate, //수업날짜
       'timestamp': timestamp,
       'todayNote': todayNote,
+    }).then((value) {
+      print("value : ${value}");
+      onSuccess();
+    }).onError((error, stackTrace) {
+      print("error : ${error}");
+      onError();
     });
     notifyListeners(); // 화면 갱신
-    onSuccess();
   }
 
   Future<void> updateTodayNote({
-    required String docId, //수업날짜
+    required String docId, //일별메모문서번호
     required String todayNote, //수업메모
     required Function onSuccess,
-    required Function onError, //수업총메모
+    required Function onError,
   }) async {
     await todaylessonCollection.doc(docId).update({
       //수업날짜
       'timestamp': timestamp,
       'todayNote': todayNote,
     });
+
     notifyListeners();
     onSuccess(); // 화면 갱신
   }
