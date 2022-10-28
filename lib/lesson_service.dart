@@ -82,6 +82,21 @@ class LessonService extends ChangeNotifier {
     notifyListeners(); // 화면 갱신
   }
 
+  Future<QuerySnapshot> readTodayNoteOflessonDate(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+  }
+
   void createTodaynote({
     required String
         docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
@@ -114,7 +129,21 @@ class LessonService extends ChangeNotifier {
     onSuccess();
   }
 
-  void deleteTodayNoe({
+  Future<void> updateTodayNote({
+    required String docId, //수업날짜
+    required String todayNote, //수업메모
+    required Function onSuccess,
+    required Function onError, //수업총메모
+  }) async {
+    await todaylessonCollection.doc(docId).update({
+      //수업날짜
+      'timestamp': timestamp,
+      'todayNote': todayNote,
+    });
+    notifyListeners(); // 화면 갱신
+  }
+
+  void deleteTodayNote({
     required String docId,
     required Function onSuccess,
     required Function onError,
