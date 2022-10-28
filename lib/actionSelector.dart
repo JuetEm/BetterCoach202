@@ -949,7 +949,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("동작추가 성공"),
                         ));
-                        // 저장하기 성공시 MemberInfo로 이동
+                        // 저장하기 성공시 lessonAdd로 이동
                         Navigator.push(
                           context,
                           MaterialPageRoute(
