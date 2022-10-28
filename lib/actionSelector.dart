@@ -798,8 +798,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                               position,
                             );
 
-                            print(
-                                "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+                            // print(
+                            //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
@@ -834,9 +834,24 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 }
                               }
                             } else {
-                              if (lowerCaseName
-                                  .startsWith(searchString.toLowerCase())) {
-                                if (positionArray.isEmpty) {
+                              // if (lowerCaseName
+                              //     .startsWith(searchString.toLowerCase())) {
+                              if (positionArray.isEmpty) {
+                                return ActionTile(
+                                    noteId: noteId,
+                                    apparatus: apparatus,
+                                    actionName: name,
+                                    name: customUserInfo.name,
+                                    phoneNumber: "temp",
+                                    lessonDate: lessonDate,
+                                    grade: "50",
+                                    totalNote: totalNote,
+                                    docId: customUserInfo.docId,
+                                    uid: user.uid,
+                                    pos: index);
+                              } else {
+                                if (positionArray.contains(position)) {
+                                  positionFilteredSize++;
                                   return ActionTile(
                                       noteId: noteId,
                                       apparatus: apparatus,
@@ -850,27 +865,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       uid: user.uid,
                                       pos: index);
                                 } else {
-                                  if (positionArray.contains(position)) {
-                                    positionFilteredSize++;
-                                    return ActionTile(
-                                        noteId: noteId,
-                                        apparatus: apparatus,
-                                        actionName: name,
-                                        name: customUserInfo.name,
-                                        phoneNumber: "temp",
-                                        lessonDate: lessonDate,
-                                        grade: "50",
-                                        totalNote: totalNote,
-                                        docId: customUserInfo.docId,
-                                        uid: user.uid,
-                                        pos: index);
-                                  } else {
-                                    return SizedBox.shrink();
-                                  }
+                                  return SizedBox.shrink();
                                 }
-                              } else {
-                                return SizedBox.shrink();
                               }
+                              // } else {
+                              //   return SizedBox.shrink();
+                              // }
                             }
                           },
                         ),

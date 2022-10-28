@@ -68,16 +68,30 @@ class ActionService extends ChangeNotifier {
           .orderBy("nGramizedLowerCaseName", descending: false)
           .get();
     } else {
+      print("Search String Not Empty 울립니다!");
       result = actionCollection
           .where("apparatus",
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
           .where("nGramizedLowerCaseName", arrayContainsAny: [searchString])
-          .orderBy("nGramizedLowerCaseName", descending: false)
+          // .orderBy("nGramizedLowerCaseName", descending: false)
           // .orderBy("lowerCaseName", descending: false)
-          .get();
+          .get()
+          .then((value) {
+            print("CREATE THEN : ${value}!");
+          })
+          .onError((error, stackTrace) {
+            print("CREATE ERROR : ${error}!");
+            print("stackTrace \r\n ${stackTrace}");
+          })
+          .whenComplete(() {
+            print("CREATE COMPLETED!");
+          });
       // .startAt([searchString]).get();
+      List<QuerySnapshot> docRaw = result;
+      print("docRaw.length : ${docRaw.length}");
+      print("result.toString() : ${result}");
     }
 
     // notifyListeners(); // 화면 갱신
