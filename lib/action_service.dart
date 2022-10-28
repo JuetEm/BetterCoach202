@@ -74,7 +74,8 @@ class ActionService extends ChangeNotifier {
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
           .where("nGramizedLowerCaseName", arrayContains: searchString)
-          .orderBy("lowerCaseName", descending: false)
+          .orderBy("nGramizedLowerCaseName", descending: false)
+          // .orderBy("lowerCaseName", descending: false)
           .get();
       // .startAt([searchString]).get();
     }
