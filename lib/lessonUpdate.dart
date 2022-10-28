@@ -861,55 +861,9 @@ class _LessonUpdateState extends State<LessonUpdate> {
 
                         SizedBox(height: 20),
 
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: Palette.mainBackground,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text("삭제하기",
-                                style: TextStyle(
-                                    fontSize: 18, color: Palette.textRed)),
-                          ),
-                          onPressed: () async {
-                            // create bucket
-                            final retvaldelte = await showAlertDialog(
-                                context, '정말로 삭제하시겠습니까?', '레슨노트를 삭제합니다.');
-                            if (retvaldelte == "OK") {
-                              lessonService.deleteTodayNote(
-                                docId: customUserInfo.docId,
-                                onSuccess: () {},
-                                onError: () {},
-                              );
-                              for (int idx = 0;
-                                  idx < deleteDocId.length;
-                                  idx++) {
-                                //print(deleteDocId[idx]);
-                                lessonService.delete(
-                                  docId: deleteDocId[idx],
-                                  onSuccess: () {},
-                                  onError: () {},
-                                );
-                              }
-
-                              // 삭제하기 성공시 MemberList로 이동
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MemberInfo(),
-                                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                  settings: RouteSettings(
-                                    arguments: customUserInfo,
-                                  ),
-                                ),
-                              );
-                            }
-
-                            //if (showAlertDialog(context) == "OK"){
-                            //
-                          },
-                        ),
+                        DeleteButton(
+                            customUserInfo: customUserInfo,
+                            lessonService: lessonService),
                       ],
                     ),
                   ),
@@ -944,5 +898,71 @@ class _LessonUpdateState extends State<LessonUpdate> {
     for (var i = 0; i < length; i++) {
       totalNoteControllers.add(TextEditingController());
     }
+  }
+}
+
+class DeleteButton extends StatefulWidget {
+  const DeleteButton({
+    Key? key,
+    required this.customUserInfo,
+    required this.lessonService,
+  }) : super(key: key);
+
+  final CustomUserInfo.UserInfo customUserInfo;
+  final LessonService lessonService;
+
+  @override
+  State<DeleteButton> createState() => _DeleteButtonState();
+}
+
+class _DeleteButtonState extends State<DeleteButton> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: Palette.mainBackground,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text("삭제하기",
+            style: TextStyle(fontSize: 18, color: Palette.textRed)),
+      ),
+      onPressed: () async {
+        // create bucket
+        final retvaldelte =
+            await showAlertDialog(context, '정말로 삭제하시겠습니까?', '레슨노트를 삭제합니다.');
+        if (retvaldelte == "OK") {
+          widget.lessonService.deleteTodayNote(
+            docId: widget.customUserInfo.docId,
+            onSuccess: () {},
+            onError: () {},
+          );
+          for (int idx = 0; idx < deleteDocId.length; idx++) {
+            //print(deleteDocId[idx]);
+            widget.lessonService.delete(
+              docId: deleteDocId[idx],
+              onSuccess: () {},
+              onError: () {},
+            );
+          }
+
+          // 삭제하기 성공시 MemberList로 이동
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MemberInfo(),
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(
+                arguments: widget.customUserInfo,
+              ),
+            ),
+          );
+        }
+
+        //if (showAlertDialog(context) == "OK"){
+        //
+      },
+    );
   }
 }

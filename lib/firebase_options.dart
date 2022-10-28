@@ -47,7 +47,7 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // // 테스트 서버 설정
+  // 테스트 서버 설정
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDwOr0n-ZLITyT6s-Kw-cUMI7ZZ1BnWSWE',
     appId: '1:417922293739:web:ab19a65f42557996e103ae',
