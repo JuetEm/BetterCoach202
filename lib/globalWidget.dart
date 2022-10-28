@@ -499,7 +499,7 @@ class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
             contentPadding: EdgeInsets.all(16),
             fillColor: Palette.grayFA),
         onEditingComplete: () {
-          textFocus.unfocus();
+          FocusScope.of(context).unfocus();
         },
         // onEditingComplete: () {
         //   // 현재 텍스트필드의 텍스트를 출력

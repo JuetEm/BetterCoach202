@@ -164,16 +164,29 @@ class _LessonAddState extends State<LessonAdd> {
                                   snapshot.data?.docs ?? []; // 문서들 가져오기
 
                               // 기존 저장된 값이 없으면 초기화, 동작선택모드 일경우
-                              if (docsTodayNote.isEmpty) {
-                                if (ActionSelectMode) {
+                              // if (docsTodayNote.isEmpty) {
+                              //   if (ActionSelectMode) {
+                              //   } else {
+                              //     todayNoteController.text = "";
+                              //   }
+                              //   todayNotedocId = "";
+                              // } else {
+                              //   todayNoteController.text =
+                              //       docsTodayNote[0].get('todayNote');
+                              //   todayNotedocId = docsTodayNote[0].id;
+                              // }
+
+                              print("첨에만 뿌린다 : ${initStateTextfield}");
+
+                              if (initStateTextfield) {
+                                if (docsTodayNote.isEmpty) {
+                                  todayNotedocId = "";
                                 } else {
-                                  todayNoteController.text = "";
+                                  todayNoteController.text =
+                                      docsTodayNote[0].get('todayNote');
+                                  todayNotedocId = docsTodayNote[0].id;
                                 }
-                                todayNotedocId = "";
-                              } else {
-                                todayNoteController.text =
-                                    docsTodayNote[0].get('todayNote');
-                                todayNotedocId = docsTodayNote[0].id;
+                                //initStateTextfield = false;
                               }
 
                               // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -184,7 +197,9 @@ class _LessonAddState extends State<LessonAdd> {
                                 customController: todayNoteController,
                                 hint: "일별 메모",
                                 showArrow: false,
-                                customFunction: () {},
+                                customFunction: () {
+                                  FocusScope.of(context).unfocus();
+                                },
                               );
                             },
                           ),
@@ -538,6 +553,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                                 docId: doc.id,
                                                                                 onSuccess: () {},
                                                                                 onError: () {});
+                                                                            totalNoteControllers.removeAt(index);
                                                                             Navigator.of(context).pop();
                                                                           },
                                                                           child:
@@ -615,7 +631,11 @@ class _LessonAddState extends State<LessonAdd> {
                                                                 showArrow:
                                                                     false,
                                                                 customFunction:
-                                                                    () {},
+                                                                    () {
+                                                                  FocusScope.of(
+                                                                          context)
+                                                                      .unfocus();
+                                                                },
                                                               ),
                                                             ),
                                                             //Spacer(flex: 1),
