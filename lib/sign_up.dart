@@ -19,6 +19,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordCheckController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
 
   final sameColor = Colors.black;
   final diffColor = Colors.red;
@@ -97,6 +98,15 @@ class _SignUpState extends State<SignUp> {
 
                     setTextColor();
                   },
+                ),
+
+                /// 이메일
+                TextField(
+                  controller: phoneNumberController,
+                  keyboardType: TextInputType.phone,
+                  autocorrect: true,
+                  // inputFormatters: [ (RegExp('[0-9]')),],
+                  decoration: InputDecoration(hintText: "전화번호"),
                 ),
                 SizedBox(height: 32),
 

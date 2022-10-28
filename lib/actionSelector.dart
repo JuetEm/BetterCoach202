@@ -950,22 +950,24 @@ class _ActionSelectorState extends State<ActionSelector> {
                           content: Text("동작추가 성공"),
                         ));
                         // 저장하기 성공시 lessonAdd로 이동
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LessonAdd(),
-                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                            settings: RouteSettings(
-                              arguments: [
-                                customUserInfo,
-                                lessonDate,
-                                tmpEventList,
-                                "",
-                                tmpLessonInfoList
-                              ],
-                            ),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => LessonAdd(),
+                        //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                        //     settings: RouteSettings(
+                        //       arguments: [
+                        //         customUserInfo,
+                        //         lessonDate,
+                        //         tmpEventList,
+                        //         "",
+                        //         tmpLessonInfoList
+                        //       ],
+                        //     ),
+                        //   ),
+                        // );
+                        // 저장하기 성공시 MemberAdd로 이동
+                        Navigator.pop(context, tmpLessonInfoList);
                         initStateVar = !initStateVar;
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
