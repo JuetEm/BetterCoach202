@@ -401,11 +401,14 @@ class BaseTextField extends StatefulWidget {
 class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
+    FocusNode textFocus = FocusNode();
+
     return Container(
       constraints: BoxConstraints(
         minHeight: 70,
       ),
       child: TextField(
+        focusNode: textFocus,
         textInputAction: TextInputAction.done,
         readOnly: widget.showArrow,
         controller: widget.customController,
@@ -438,6 +441,9 @@ class _BaseTextFieldState extends State<BaseTextField> {
           // 현재 텍스트필드의 텍스트를 출력
           print("First text field: $text");
         },
+        onEditingComplete: () {
+          textFocus.unfocus();
+        },
       ),
     );
   }
@@ -466,6 +472,7 @@ class DynamicSaveTextField extends StatefulWidget {
 class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
   @override
   Widget build(BuildContext context) {
+    FocusNode textFocus = FocusNode();
     return Container(
       constraints: BoxConstraints(
         minHeight: 70,
@@ -488,9 +495,12 @@ class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
             contentPadding: EdgeInsets.all(16),
             fillColor: Colors.white),
         onEditingComplete: () {
-          // 현재 텍스트필드의 텍스트를 출력
-          widget.customFunction();
+          textFocus.unfocus();
         },
+        // onEditingComplete: () {
+        //   // 현재 텍스트필드의 텍스트를 출력
+        //   widget.customFunction();
+        // },
       ),
     );
   }

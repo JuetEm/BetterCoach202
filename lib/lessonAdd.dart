@@ -40,6 +40,9 @@ List<String> deleteDocId = new List.empty(growable: true);
 
 GlobalFunction globalFunction = GlobalFunction();
 
+//예외처리 : 동작선택으로 넘어갈 경우 일별노트 Null값 처리하지 않음.
+bool ActionSelectMode = false;
+
 String selectedDropdown = '기구';
 List<String> dropdownList = [
   'REFORMER',
@@ -61,11 +64,9 @@ String editGrade = "";
 String editTotalNote = "";
 
 bool initState = true;
+bool initStateTextfield = true;
 
 List<TmpLessonInfo> tmpLessonInfoList = [];
-
-// 동작리스트 없을 경우 저장되지 않도록
-String ActionNullCheck = "Null";
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
@@ -180,10 +181,15 @@ class _LessonAddState extends State<LessonAdd> {
                                 snapshot.data?.docs ?? []; // 문서들 가져오기
 
                             if (docsTodayNote.isEmpty) {
-                              //todayNoteController.text = "";
+                              print(
+                                  "체크전 ActionSelectMode : ${ActionSelectMode}");
+                              if (ActionSelectMode) {
+                              } else {
+                                todayNoteController.text = "";
+                              }
                               todayNotedocId = "";
 
-                              return BaseTextField(
+                              return DynamicSaveTextField(
                                 customController: todayNoteController,
                                 hint: "일별 메모",
                                 showArrow: false,
@@ -221,9 +227,12 @@ class _LessonAddState extends State<LessonAdd> {
                                 String currentAppratus =
                                     apratusNameController.text;
                                 String lessonDate = lessonDateController.text;
-                                String totalNote = todayNoteController.text;
+                                String totalNote = "";
 
                                 bool initState = true;
+                                ActionSelectMode = true;
+                                print(
+                                    "진입전 ActionSelectMode : ${ActionSelectMode}");
 
                                 final List<TmpLessonInfo> result =
                                     await Navigator.push(
@@ -244,6 +253,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 );
 
                                 tmpLessonInfoList = result;
+                                ActionSelectMode = !ActionSelectMode;
 
                                 // if (!(result == null)) {
                                 //   print(
@@ -427,8 +437,13 @@ class _LessonAddState extends State<LessonAdd> {
                                           apratusNameTrim =
                                               apratusName.substring(0, 2);
                                         }
-                                        totalNoteControllers[index].text =
-                                            totalNote; //동작별 노트 가져오기
+
+                                        if (initStateTextfield) {
+                                          totalNoteControllers[index].text =
+                                              totalNote;
+                                          initStateTextfield =
+                                              !initStateTextfield; //동작별 노트 가져오기
+                                        }
 
                                         return Column(
                                           key: ValueKey(doc),
@@ -601,7 +616,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                           /// 메모 입력창
                                                           Expanded(
                                                             child:
-                                                                BaseTextField(
+                                                                DynamicSaveTextField(
                                                               customController:
                                                                   totalNoteControllers[
                                                                       index],
@@ -886,7 +901,7 @@ class _LessonAddState extends State<LessonAdd> {
                           },
                         ),
                         const SizedBox(height: 15),
-                        lessonAddMode == "수정"
+                        lessonAddMode == "노트보기"
                             ? DeleteButton(
                                 customUserInfo: customUserInfo,
                                 lessonService: lessonService)
@@ -904,25 +919,25 @@ class _LessonAddState extends State<LessonAdd> {
     );
   }
 
-  void initInpuWidget() {
-    globalFunction.clearTextEditController([
-      nameController,
-      apratusNameController,
-      actionNameController,
-      lessonDateController,
-      todayNoteController,
-      gradeController,
-      totalNoteController
-    ]);
-    lessonDateController.text = now;
-    sliderValue = 50;
-    // 에러 발생해서 정리..
-//     The following assertion was thrown while dispatching notifications for TextEditingController:
-// setState() or markNeedsBuild() called during build.
-    // setState(() {
-    //   sliderValue = 50;
-    // });
-  }
+//   void initInpuWidget() {
+//     globalFunction.clearTextEditController([
+//       nameController,
+//       apratusNameController,
+//       actionNameController,
+//       lessonDateController,
+//       todayNoteController,
+//       gradeController,
+//       totalNoteController
+//     ]);
+//     lessonDateController.text = now;
+//     sliderValue = 50;
+//     // 에러 발생해서 정리..
+// //     The following assertion was thrown while dispatching notifications for TextEditingController:
+// // setState() or markNeedsBuild() called during build.
+//     // setState(() {
+//     //   sliderValue = 50;
+//     // });
+//   }
 
   //Textfield 생성
   void createControllers(length) {
@@ -931,99 +946,9 @@ class _LessonAddState extends State<LessonAdd> {
       totalNoteControllers.add(TextEditingController());
     }
   }
-
-  void editButtonMethodDate(BuildContext context, LessonService lessonService,
-      CustomUserInfo.UserInfo userInfo, String lessonDate) {
-    if (globalFunction.textNullCheck(context, actionNameController, "동작이름")) {
-      setState(() {
-        lessonService.update(
-            editDocId,
-            apratusNameController.text,
-            actionNameController.text,
-            lessonDate,
-            gradeController.text,
-            totalNoteController.text);
-
-        apratusNameController.text = "";
-        lessonDateController.text = "";
-        actionNameController.text = "";
-        gradeController.text = "";
-        totalNoteController.text = "";
-        sliderValue = 50;
-      });
-
-      // 저장하기 성공시 MemberInfo로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MemberInfo(),
-          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-          settings: RouteSettings(
-            arguments: userInfo,
-          ),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("항목을 모두 입력해주세요."),
-      ));
-    }
-  }
-
-  void saveButtonMethodDate(BuildContext context, LessonService lessonService,
-      User user, CustomUserInfo.UserInfo userInfo, String lessonDate) {
-    if (globalFunction.textNullCheck(context, actionNameController, "동작이름")) {
-      String now =
-          DateFormat("yyyy-MM-dd").format(DateTime.now()); // 오늘 날짜 가져오기
-      lessonService.create(
-          docId: userInfo.docId, // 회권 고유번호 => 회원번호(문서고유번호)로 회원 식별
-          uid: user.uid,
-          name: nameController.text,
-          phoneNumber: userInfo.phoneNumber,
-          apratusName: apratusNameController.text, //기구이름
-          actionName: actionNameController.text, //동작이름
-          lessonDate: lessonDate, //수업날짜
-          grade: gradeController.text, //수행도
-          totalNote: totalNoteController.text, //수업총메모
-          onSuccess: () {
-            // 저장하기 성공
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("저장하기 성공"),
-            ));
-            // 저장하기 성공시 MemberInfo로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MemberInfo(),
-                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                settings: RouteSettings(
-                  arguments: userInfo,
-                ),
-              ),
-            );
-
-            sliderValue = 50;
-            globalFunction.clearTextEditController([
-              apratusNameController,
-              actionNameController,
-              lessonDateController,
-              gradeController,
-              totalNoteController
-            ]);
-          },
-          onError: () {
-            print("저장하기 ERROR");
-          });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("항목을 모두 입력해주세요."),
-      ));
-    }
-  }
 }
 
 // 삭제버튼
-
 class DeleteButton extends StatefulWidget {
   const DeleteButton({
     Key? key,
@@ -1081,6 +1006,10 @@ class _DeleteButtonState extends State<DeleteButton> {
               ),
             ),
           );
+
+          // 페이지 초기화
+          initInpuWidget();
+          initState = !initState;
         }
 
         //if (showAlertDialog(context) == "OK"){
@@ -1088,4 +1017,25 @@ class _DeleteButtonState extends State<DeleteButton> {
       },
     );
   }
+}
+
+void initInpuWidget() {
+  globalFunction.clearTextEditController([
+    nameController,
+    apratusNameController,
+    actionNameController,
+    lessonDateController,
+    todayNoteController,
+    gradeController,
+    totalNoteController
+  ]);
+  lessonDateController.text = now;
+  sliderValue = 50;
+  initStateTextfield = !initStateTextfield;
+  // 에러 발생해서 정리..
+//     The following assertion was thrown while dispatching notifications for TextEditingController:
+// setState() or markNeedsBuild() called during build.
+  // setState(() {
+  //   sliderValue = 50;
+  // });
 }
