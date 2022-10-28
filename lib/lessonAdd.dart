@@ -187,16 +187,18 @@ class _LessonAddState extends State<LessonAdd> {
 
                         // 동작입력 버튼
                         Container(
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
+                            border: Border.all(color: Palette.gray99, width: 1),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.0),
                             ),
-                            color: Palette.buttonOrange,
+                            color: Palette.secondaryBackground,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              left: 30.0,
-                              right: 16.0,
+                              top: 5,
+                              bottom: 5,
                             ),
                             child: InkWell(
                               onTap: () async {
@@ -272,17 +274,16 @@ class _LessonAddState extends State<LessonAdd> {
                               child: SizedBox(
                                 height: 40,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '동작선택',
+                                      '동작 추가',
                                       style: TextStyle(
-                                          fontSize: 16, color: Palette.grayFA),
+                                          fontSize: 16, color: Palette.gray66),
                                     ),
-                                    Spacer(flex: 1),
                                     Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Palette.grayFA,
+                                      Icons.add,
+                                      color: Palette.gray66,
                                       size: 12.0,
                                     ),
                                   ],
@@ -437,13 +438,18 @@ class _LessonAddState extends State<LessonAdd> {
                                                     top: 5,
                                                   ),
                                                   decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(10.0),
-                                                    ),
-                                                    color: Palette.grayEE,
-                                                    //color: Colors.red.withOpacity(0),
-                                                  ),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                10.0),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                10.0),
+                                                      ),
+                                                      color: Palette.grayEE
+                                                      //color: Colors.red.withOpacity(0),
+                                                      ),
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -453,7 +459,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                       right: 16.0,
                                                     ),
                                                     child: SizedBox(
-                                                      height: 60,
+                                                      height: 50,
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -555,6 +561,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                   ),
                                                 ),
                                                 Container(
+                                                  height: 1,
+                                                  color: Palette.grayEE,
+                                                ),
+                                                Container(
                                                   //color: Colors.red.withOpacity(0),
                                                   margin: const EdgeInsets.only(
                                                     bottom: 5,
@@ -568,13 +578,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     //color: Colors.red.withOpacity(0),
                                                   ),
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      //top: 5,
-                                                      //bottom: 5,
-                                                      left: 5.0,
-                                                      right: 16.0,
-                                                    ),
+                                                    padding: EdgeInsets.zero,
                                                     child: SizedBox(
                                                       height: 60,
                                                       child: Row(
@@ -582,9 +586,6 @@ class _LessonAddState extends State<LessonAdd> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
                                                           // Expanded(
                                                           //   child: TextField(
                                                           //     controller:
@@ -600,7 +601,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                               customController:
                                                                   totalNoteControllers[
                                                                       index],
-                                                              hint: "메모",
+                                                              hint:
+                                                                  "동작별 메모를 남겨보세요.",
                                                               showArrow: false,
                                                               customFunction:
                                                                   () {},

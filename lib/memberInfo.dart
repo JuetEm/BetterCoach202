@@ -129,6 +129,13 @@ class _MemberInfoState extends State<MemberInfo> {
                                 Spacer(),
                                 Column(
                                   children: [
+                                    // Text(
+                                    //   '남은횟수 : ${userInfo.registerType}',
+                                    //   style: TextStyle(
+                                    //       fontSize: 14.0,
+                                    //       //fontWeight: FontWeight.bold,
+                                    //       color: Palette.gray99),
+                                    // ),
                                     Text(
                                       '등록횟수 : ${userInfo.registerType}',
                                       style: TextStyle(
@@ -485,8 +492,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                                     height: 16,
                                                   ),
                                                   Center(
-                                                    child: Text(
-                                                        "노트추가 버튼을 눌러 노트작성 해보세요."),
+                                                    child:
+                                                        Text("첫번째 노트를 작성해보세요!"),
                                                   ),
                                                 ],
                                               );
@@ -527,7 +534,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
               /// 추가 버튼
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 11, 22, 22),
+                padding: const EdgeInsets.fromLTRB(5, 11, 5, 24),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -547,7 +554,7 @@ class _MemberInfoState extends State<MemberInfo> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "노트추가",
+                          "노트 추가",
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
@@ -561,7 +568,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
                     List<TmpLessonInfo> tmpLessonInfoList = [];
                     eventList = [];
-                    lessonAddMode = "노트추가";
+                    lessonAddMode = "노트 추가";
                     List<dynamic> args = [
                       userInfo,
                       lessonDate,
