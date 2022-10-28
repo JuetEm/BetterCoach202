@@ -50,6 +50,8 @@ late bool isFloating;
 late int selectedActionCount = -1;
 
 late Color actionTileColor;
+late Color apparatusTextColor;
+late Color actionNameTextColor;
 late List<LessonInfo> lessonInfoList;
 late List<TmpLessonInfo> tmpLessonInfoList;
 late List<int> checkedTileList;
@@ -66,6 +68,8 @@ class _ActionSelectorState extends State<ActionSelector> {
   void initState() {
     isFloating = false;
     selectedActionCount = 0;
+    apparatusTextColor = Palette.gray99;
+    actionNameTextColor = Palette.gray66;
     actionTileColor = Palette.grayEE;
     lessonInfoList = [];
     tmpLessonInfoList = [];
@@ -688,14 +692,15 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                 /// 신규동작추가 버튼
                 SizedBox(
-                  height: 30,
+                  height: 40,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                      ),
+                          padding: EdgeInsets.all(0),
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          elevation: 0),
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -713,9 +718,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "신규동작추가",
+                              "신규 동작 생성 +",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: Palette.buttonOrange,
                               ),
                             ),
@@ -881,6 +886,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                     ),
@@ -1040,10 +1046,14 @@ class _ActionTileState extends State<ActionTile> {
     // setState(() {
     if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
       actionTileColor = Palette.buttonOrange;
+      apparatusTextColor = Palette.grayFF;
+      actionNameTextColor = Palette.grayFF;
       print(
           "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
     } else {
-      actionTileColor = Palette.grayEE;
+      actionTileColor = Palette.grayFA;
+      apparatusTextColor = Palette.gray99;
+      actionNameTextColor = Palette.gray66;
       print(
           "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
     }
@@ -1059,7 +1069,10 @@ class _ActionTileState extends State<ActionTile> {
             setState(() {
               if (manageListContaining(
                   tmpLessonInfoList, tmpLessonInfo, true)) {
-                actionTileColor = Palette.grayEE;
+                actionTileColor = Palette.grayFA;
+                apparatusTextColor = Palette.gray99;
+                actionNameTextColor = Palette.gray66;
+
                 print(
                     "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.remove(widget.pos);
@@ -1068,6 +1081,9 @@ class _ActionTileState extends State<ActionTile> {
                     widget.lessonDate, widget.apparatus, widget.actionName);
               } else {
                 actionTileColor = Palette.buttonOrange;
+                apparatusTextColor = Palette.grayFF;
+                actionNameTextColor = Palette.grayFF;
+
                 print(
                     "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.add(widget.pos);
@@ -1124,13 +1140,13 @@ class _ActionTileState extends State<ActionTile> {
                   width: 40,
                   child: Text(
                     "${widget.apparatus}   ",
-                    style: TextStyle(color: Palette.gray99),
+                    style: TextStyle(color: apparatusTextColor),
                   ),
                 ),
                 Text(
                   "${widget.actionName}",
                   style: TextStyle(
-                      color: Palette.gray66, fontWeight: FontWeight.bold),
+                      color: actionNameTextColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

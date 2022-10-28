@@ -474,6 +474,7 @@ class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
   Widget build(BuildContext context) {
     FocusNode textFocus = FocusNode();
     return Container(
+      width: double.infinity,
       constraints: BoxConstraints(
         minHeight: 70,
       ),
@@ -485,7 +486,10 @@ class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
             labelText: widget.hint,
             hintText: widget.hint,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
               borderSide: BorderSide(
                 width: 0,
                 style: BorderStyle.none,
@@ -493,7 +497,7 @@ class _DynamicSaveTextFieldState extends State<DynamicSaveTextField> {
             ),
             filled: true,
             contentPadding: EdgeInsets.all(16),
-            fillColor: Colors.white),
+            fillColor: Palette.grayFA),
         onEditingComplete: () {
           textFocus.unfocus();
         },
