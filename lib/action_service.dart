@@ -73,9 +73,11 @@ class ActionService extends ChangeNotifier {
               whereIn: apparatus.isEmpty
                   ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
                   : apparatus)
-          // .where("lowerCaseName", arrayContainsAny: [searchString])
-          .orderBy("lowerCaseName", descending: false)
-          .startAt([searchString]).get();
+          .where("nGramizedLowerCaseName", arrayContains: searchString)
+          .orderBy("nGramizedLowerCaseName", descending: false)
+          // .orderBy("lowerCaseName", descending: false)
+          .get();
+      // .startAt([searchString]).get();
     }
 
     // notifyListeners(); // 화면 갱신
@@ -103,6 +105,36 @@ class ActionService extends ChangeNotifier {
       'author': author, // 동작 등록인 구분자
       'upperCaseName': upperCaseName, // 대분자 동작 이름
       'lowerCaseName': lowerCaseName, // 소문자 동작 이름
+    }).then((value) {
+      print("Successfully completed");
+    }, onError: (e) {
+      print("Error completing: ${e}");
+    });
+    notifyListeners(); // 화면 갱신
+  }
+
+  void createDummy(
+    String apparatus,
+    String otherApparatusName,
+    String position,
+    String otherPositionName,
+    String name,
+    String author,
+    String upperCaseName,
+    String lowerCaseName,
+    List<String> nGramizedLowerCaseName,
+  ) async {
+    // bucket 만들기
+    await actionCollection.add({
+      'apparatus': apparatus, // 기구 카테고리 구분자
+      'otherApparatusName': otherApparatusName, // 기구명 전체
+      'position': position, // 자세 구분자
+      'otherPositionName': otherPositionName,
+      'name': name, // 동작 이름
+      'author': author, // 동작 등록인 구분자
+      'upperCaseName': upperCaseName, // 대분자 동작 이름
+      'lowerCaseName': lowerCaseName, // 소문자 동작 이름
+      'nGramizedLowerCaseName': nGramizedLowerCaseName,
     }).then((value) {
       print("Successfully completed");
     }, onError: (e) {

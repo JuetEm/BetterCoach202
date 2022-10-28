@@ -28,7 +28,7 @@ TextEditingController todayNoteController = TextEditingController();
 TextEditingController totalNoteController = TextEditingController();
 
 // 가변적으로 만들어지는 TextFields
-var totalNoteControllers = [];
+List<TextEditingController> totalNoteControllers = [];
 
 // 가변적으로 만들어지는 TextFields DocId 집합
 List<String> updateTextFieldDocId = new List.empty(growable: true);
@@ -941,9 +941,12 @@ class _LessonAddState extends State<LessonAdd> {
 
   //Textfield 생성
   void createControllers(length) {
-    totalNoteControllers = [];
+    DynamicController dynamicController;
+    TextEditingController tmpTextEditingController;
     for (var i = 0; i < length; i++) {
-      totalNoteControllers.add(TextEditingController());
+      dynamicController = DynamicController("dynamicController-${i}");
+      tmpTextEditingController = dynamicController.dynamicController;
+      totalNoteControllers.add(tmpTextEditingController);
     }
   }
 }
@@ -1017,6 +1020,12 @@ class _DeleteButtonState extends State<DeleteButton> {
       },
     );
   }
+}
+
+class DynamicController {
+  DynamicController(this.dynamicClassName);
+  TextEditingController dynamicController = TextEditingController();
+  String dynamicClassName = "";
 }
 
 void initInpuWidget() {

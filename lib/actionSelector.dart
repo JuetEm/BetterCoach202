@@ -946,16 +946,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                         // }
 
                         List<DateTime> tmpEventList = [];
-
-                        List<TmpLessonInfo> tmpLessonInfoList = [];
-
-                        List<dynamic> args = [
-                          customUserInfo,
-                          lessonDate,
-                          tmpEventList,
-                          "",
-                          tmpLessonInfoList,
-                        ];
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("동작추가 성공"),
                         ));

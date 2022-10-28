@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.webProject',
   );
 
-  // // 개발 서버 설정
+  // 개발 서버 설정
   // static const FirebaseOptions web = FirebaseOptions(
   //   apiKey: 'AIzaSyBaLXrANizji4uU74knRudK7hAlOrt-Jfw',
   //   appId: '1:980690811295:web:1ce0edac8212fcf98225aa',
