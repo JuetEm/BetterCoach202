@@ -592,7 +592,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   showArrow: true,
                   customFunction: () {
                     setState(() {
-                      searchString = searchController.text;
+                      searchString = searchController.text.toLowerCase();
                     });
                   },
                 ),
@@ -739,8 +739,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                           ),
                         );
                         setState(() {
-                          searchController.text = result;
-                          searchString = result;
+                          searchController.text =
+                              result.toString().toLowerCase().split(" ")[0];
+                          searchString =
+                              result.toString().toLowerCase().split(" ")[0];
                         });
                       },
                     ),
@@ -794,14 +796,17 @@ class _ActionSelectorState extends State<ActionSelector> {
                             String position = doc.get('position');
                             String name = doc.get('name');
                             String lowerCaseName = doc.get('lowerCaseName');
+                            List<dynamic> nGramizedLowerCaseName =
+                                doc.get('nGramizedLowerCaseName');
+                            ;
                             final ActionInfo actionInfo = ActionInfo(
                               name,
                               apparatus,
                               position,
                             );
 
-                            print(
-                                "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}");
+                            // print(
+                            //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
@@ -836,9 +841,24 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 }
                               }
                             } else {
-                              if (lowerCaseName
-                                  .startsWith(searchString.toLowerCase())) {
-                                if (positionArray.isEmpty) {
+                              // if (lowerCaseName
+                              //     .startsWith(searchString.toLowerCase())) {
+                              if (positionArray.isEmpty) {
+                                return ActionTile(
+                                    noteId: noteId,
+                                    apparatus: apparatus,
+                                    actionName: name,
+                                    name: customUserInfo.name,
+                                    phoneNumber: "temp",
+                                    lessonDate: lessonDate,
+                                    grade: "50",
+                                    totalNote: totalNote,
+                                    docId: customUserInfo.docId,
+                                    uid: user.uid,
+                                    pos: index);
+                              } else {
+                                if (positionArray.contains(position)) {
+                                  positionFilteredSize++;
                                   return ActionTile(
                                       noteId: noteId,
                                       apparatus: apparatus,
@@ -852,27 +872,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       uid: user.uid,
                                       pos: index);
                                 } else {
-                                  if (positionArray.contains(position)) {
-                                    positionFilteredSize++;
-                                    return ActionTile(
-                                        noteId: noteId,
-                                        apparatus: apparatus,
-                                        actionName: name,
-                                        name: customUserInfo.name,
-                                        phoneNumber: "temp",
-                                        lessonDate: lessonDate,
-                                        grade: "50",
-                                        totalNote: totalNote,
-                                        docId: customUserInfo.docId,
-                                        uid: user.uid,
-                                        pos: index);
-                                  } else {
-                                    return SizedBox.shrink();
-                                  }
+                                  return SizedBox.shrink();
                                 }
-                              } else {
-                                return SizedBox.shrink();
                               }
+                              // } else {
+                              //   return SizedBox.shrink();
+                              // }
                             }
                           },
                         ),
