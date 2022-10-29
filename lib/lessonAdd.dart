@@ -121,6 +121,7 @@ class _LessonAddState extends State<LessonAdd> {
               // 페이지 초기화
               initInpuWidget();
             }),
+            resizeToAvoidBottomInset: true,
             body: SafeArea(
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
