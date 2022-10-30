@@ -379,7 +379,6 @@ class _BaseModalBottomSheetButton extends State<BaseModalBottomSheetButton> {
 }
 
 // Text Field
-
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
     Key? key,

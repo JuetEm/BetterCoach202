@@ -13,7 +13,7 @@ class LessonService extends ChangeNotifier {
 
   GlobalFunction globalFunction = GlobalFunction();
 
-  void create({
+  Future<void> create({
     required String
         docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
     required String uid, // 강사 고유번호
@@ -87,17 +87,21 @@ class LessonService extends ChangeNotifier {
     String docId,
     String lessonDate,
   ) async {
+    final result;
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return todaylessonCollection
+
+    result = await todaylessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('lessonDate', isEqualTo: lessonDate)
         .get();
+
+    return result;
   }
 
-  void createTodaynote({
+  Future<void> createTodaynote({
     required String
         docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
     required String uid, // 강사 고유번호
@@ -150,7 +154,7 @@ class LessonService extends ChangeNotifier {
     onSuccess(); // 화면 갱신
   }
 
-  void deleteTodayNote({
+  Future<void> deleteTodayNote({
     required String docId,
     required Function onSuccess,
     required Function onError,
@@ -264,21 +268,21 @@ class LessonService extends ChangeNotifier {
     //notifyListeners(); // 화면 갱신
   }
 
-  void updateLesson(String docId, bool isActive) async {
+  Future<void> updateLesson(String docId, bool isActive) async {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});
     notifyListeners(); // 화면 갱신
   }
 
-  void updateposition(String docId, bool isActive) async {
+  Future<void> updateposition(String docId, bool isActive) async {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});
     notifyListeners(); // 화면 갱신
   }
 
-  void delete({
+  Future<void> delete({
     required String docId,
     required Function onSuccess,
     required Function onError,
@@ -286,12 +290,11 @@ class LessonService extends ChangeNotifier {
     // bucket 삭제
     await lessonCollection.doc(docId).delete().then((value) {
       print("delete then");
+      onSuccess(); // 화면 갱신
+      notifyListeners(); // 화면 갱신
     }).onError((error, stackTrace) {
       print("delete error : ${error}");
     });
-    notifyListeners(); // 화면 갱신
-
-    onSuccess(); // 화면 갱신
   }
 
   Future<void> deleteFromActionSelect(String uid, String docId,

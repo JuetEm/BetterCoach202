@@ -82,13 +82,18 @@ class MyApp extends StatelessWidget {
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
-      theme: ThemeData(fontFamily: 'Pretendard'),
-      home: user == null ? LoginPage() : MemberList(),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
+        theme: ThemeData(fontFamily: 'Pretendard'),
+        home: user == null ? LoginPage() : MemberList(),
+      ),
     );
   }
 }

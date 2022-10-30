@@ -85,7 +85,7 @@ class GlobalFunction {
     return notEmpty;
   }
 
-  void getDateFromCalendar(BuildContext context,
+  Future<void> getDateFromCalendar(BuildContext context,
       TextEditingController customController, String pageName) async {
     final result = await Navigator.push(
         context,

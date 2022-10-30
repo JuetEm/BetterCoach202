@@ -15,6 +15,15 @@ import 'userInfo.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
 
+TextEditingController nameController = TextEditingController();
+TextEditingController registerDateController = TextEditingController();
+TextEditingController phoneNumberController = TextEditingController();
+TextEditingController registerTypeController = TextEditingController();
+TextEditingController goalController = TextEditingController();
+TextEditingController infoController = TextEditingController();
+TextEditingController noteController = TextEditingController();
+TextEditingController commentController = TextEditingController();
+
 class MemberUpdate extends StatefulWidget {
   const MemberUpdate({super.key});
 
@@ -23,15 +32,6 @@ class MemberUpdate extends StatefulWidget {
 }
 
 class _MemberUpdateState extends State<MemberUpdate> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController registerDateController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController registerTypeController = TextEditingController();
-  TextEditingController goalController = TextEditingController();
-  TextEditingController infoController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
-  TextEditingController commentController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();

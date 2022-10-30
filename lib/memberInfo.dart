@@ -561,7 +561,7 @@ class _MemberInfoState extends State<MemberInfo> {
                     ),
                   ),
                   onPressed: () {
-                    print("동작추가");
+                    print("노트 추가");
 
                     lessonDate =
                         DateFormat("yyyy-MM-dd").format(DateTime.now());
