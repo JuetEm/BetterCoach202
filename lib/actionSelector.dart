@@ -1093,7 +1093,7 @@ class _ActionTileState extends State<ActionTile> {
                     "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.add(widget.pos);
 
-                lessonService.create(
+                lessonService.createFromActionSelect(
                   docId: widget.docId,
                   uid: widget.uid,
                   name: widget.name,

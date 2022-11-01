@@ -47,6 +47,7 @@ bool DateChangeMode = false;
 bool flagIndexErr = true;
 
 String lessonDate = now;
+int additionalActionlength = 0;
 
 //가변 텍스트 필드 첫 화면 출력시에만 (추후 개선 필요)
 bool initStateTextfield = true;
@@ -73,6 +74,7 @@ String editGrade = "";
 String editTotalNote = "";
 
 bool keyboardOpenBefore = false;
+String todayNotedocId = "";
 
 List<TmpLessonInfo> tmpLessonInfoList = [];
 
@@ -107,7 +109,6 @@ class _LessonAddState extends State<LessonAdd> {
     super.dispose();
   }
 
-  String todayNotedocId = "";
   bool ActionNullCheck = true;
 
   @override
@@ -271,21 +272,30 @@ class _LessonAddState extends State<LessonAdd> {
                               //   todayNotedocId = docsTodayNote[0].id;
                               // }
 
-                              print("첨에만 뿌린다 : ${initStateTextfield}");
-
-                              if (initStateTextfield) {
-                                if (docsTodayNote.isEmpty) {
-                                  todayNotedocId = "";
-                                  todayNoteController.text = "";
-                                  print("뿌릴 일별 노트 없음");
-                                } else {
-                                  todayNoteController.text =
-                                      docsTodayNote[0].get('todayNote');
-                                  todayNotedocId = docsTodayNote[0].id;
-                                  print("뿌릴 일별 노트 출력 완료");
-                                }
-                                //initStateTextfield = false;
+                              // print("첨에만 뿌린다 : ${initStateTextfield}");
+                              if (docsTodayNote.isEmpty) {
+                                todayNotedocId = "";
+                                todayNoteController.text = "";
+                                print("뿌릴 일별 노트 없음");
+                              } else {
+                                todayNoteController.text =
+                                    docsTodayNote[0].get('todayNote');
+                                todayNotedocId = docsTodayNote[0].id;
+                                print("뿌릴 일별 노트 출력 완료");
                               }
+                              // if (initStateTextfield) {
+                              //   if (docsTodayNote.isEmpty) {
+                              //     todayNotedocId = "";
+                              //     todayNoteController.text = "";
+                              //     print("뿌릴 일별 노트 없음");
+                              //   } else {
+                              //     todayNoteController.text =
+                              //         docsTodayNote[0].get('todayNote');
+                              //     todayNotedocId = docsTodayNote[0].id;
+                              //     print("뿌릴 일별 노트 출력 완료");
+                              //   }
+                              //   //initStateTextfield = false;
+                              // }
 
                               // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               //   content: Text("텍스트필드!!"),
@@ -350,7 +360,8 @@ class _LessonAddState extends State<LessonAdd> {
                                   tmpLessonInfoList = result;
 
                                   print(
-                                      "tmpLessonInfoList:${tmpLessonInfoList}");
+                                      "추가된 동작 개수 : ${tmpLessonInfoList.length.toString()}");
+
                                   // 동작추가시에 textcontroller 추가 생성
                                   createControllers(tmpLessonInfoList.length);
 
@@ -363,9 +374,9 @@ class _LessonAddState extends State<LessonAdd> {
                                   print(
                                       "동작추가시노트아이디:${totalNoteTextFieldDocId}");
 
-                                  ActionSelectMode = !ActionSelectMode;
-
                                   lessonService.notifyListeners();
+
+                                  ActionSelectMode = !ActionSelectMode;
 
                                   // if (!(result == null)) {
                                   //   print(
@@ -498,6 +509,12 @@ class _LessonAddState extends State<LessonAdd> {
                                               newIndex,
                                               totalNoteControllers
                                                   .removeAt(oldIndex));
+                                          //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
+                                          totalNoteTextFieldDocId.insert(
+                                              newIndex,
+                                              totalNoteTextFieldDocId
+                                                  .removeAt(oldIndex));
+
                                           for (int pos = 0;
                                               pos < docs.length;
                                               pos++) {
@@ -513,21 +530,26 @@ class _LessonAddState extends State<LessonAdd> {
                                           final doc = docs[index];
                                           print('에러포인트시작 : ${index}');
 
+                                          totalNoteTextFieldDocId[index] =
+                                              doc.id;
+                                          print(
+                                              "total노트 : ${totalNoteTextFieldDocId}");
+
                                           //일괄 textfeild 저장하기 위해 docID저장
                                           //예외처리 ::
-                                          if ((totalNoteTextFieldDocId.length -
-                                                  1) >=
-                                              index) {
-                                            totalNoteTextFieldDocId[index] =
-                                                doc.id;
-                                            flagIndexErr = true;
-                                          } else {
-                                            flagIndexErr = false;
-                                          }
-                                          print(
-                                              '에러방지실행 : ${flagIndexErr},${totalNoteTextFieldDocId.length},${index}');
+                                          // if ((totalNoteTextFieldDocId.length -
+                                          //         1) >=
+                                          //     index) {
+                                          //   totalNoteTextFieldDocId[index] =
+                                          //       doc.id;
+                                          //   flagIndexErr = true;
+                                          // } else {
+                                          //   flagIndexErr = false;
+                                          // }
+                                          // print(
+                                          //     '에러방지실행 : ${flagIndexErr},${totalNoteTextFieldDocId.length},${index}');
 
-                                          print('에러포인트끝 : ${index}');
+                                          // print('에러포인트끝 : ${index}');
 
                                           String uid =
                                               doc.get('uid'); // 강사 고유번호
@@ -565,27 +587,30 @@ class _LessonAddState extends State<LessonAdd> {
                                           //       "텍스트필드!!${initStateTextfield}"),
                                           // ));
                                           print(
-                                              '텍스트필드채움 : ${initStateTextfield}');
+                                              '텍스트필드채움 : ActionSelectMode-${ActionSelectMode}, ${initStateTextfield}');
 
-                                          if (initStateTextfield) {
-                                            //예외처리 ::
-                                            if (totalNoteTextFieldDocId.length >
-                                                index) {
-                                              totalNoteControllers[index].text =
-                                                  totalNote;
-                                            }
+                                          totalNoteControllers[index].text =
+                                              totalNote;
 
-                                            if (index == (docs.length - 1)) {
-                                              if (initStateTextfieldCnt > 2) {
-                                                initStateTextfield = false;
-                                                initStateTextfieldCnt = 0;
-                                              } else {
-                                                initStateTextfieldCnt++;
-                                              }
-                                              print(
-                                                  '이제안바꿔 : ${initStateTextfield}');
-                                            }
-                                          }
+                                          // if (initStateTextfield) {
+                                          //   //예외처리 ::
+                                          //   if (totalNoteTextFieldDocId.length >
+                                          //       index) {
+                                          //     totalNoteControllers[index].text =
+                                          //         totalNote;
+                                          //   }
+
+                                          //   if (index == (docs.length - 1)) {
+                                          //     if (initStateTextfieldCnt > 2) {
+                                          //       initStateTextfield = false;
+                                          //       initStateTextfieldCnt = 0;
+                                          //     } else {
+                                          //       initStateTextfieldCnt++;
+                                          //     }
+                                          //     print(
+                                          //         '이제안바꿔 : ${initStateTextfield}');
+                                          //   }
+                                          // }
 
                                           return Column(
                                             key: ValueKey(doc),
@@ -844,6 +869,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             .showSnackBar(SnackBar(
                                           content: Text("새로운 노트 작성"),
                                         ));
+                                        lessonService.notifyListeners();
 
                                         // 화면 초기화
                                         //initInpuWidget();
@@ -896,7 +922,7 @@ class _LessonAddState extends State<LessonAdd> {
                           const SizedBox(height: 15),
                           lessonAddMode == "노트보기"
                               ? DeleteButton(
-                                  customUserInfo: customUserInfo,
+                                  todayNotedocId: todayNotedocId,
                                   lessonService: lessonService,
                                   totalNoteTextFieldDocId:
                                       totalNoteTextFieldDocId,
@@ -950,12 +976,12 @@ class DynamicController {
 class DeleteButton extends StatefulWidget {
   const DeleteButton({
     Key? key,
-    required this.customUserInfo,
+    required this.todayNotedocId,
     required this.lessonService,
     required this.totalNoteTextFieldDocId,
   }) : super(key: key);
 
-  final CustomUserInfo.UserInfo customUserInfo;
+  final String todayNotedocId;
   final LessonService lessonService;
   final List<String> totalNoteTextFieldDocId;
 
@@ -982,7 +1008,7 @@ class _DeleteButtonState extends State<DeleteButton> {
             await showAlertDialog(context, '정말로 삭제하시겠습니까?', '레슨노트를 삭제합니다.');
         if (retvaldelte == "OK") {
           await widget.lessonService.deleteTodayNote(
-            docId: widget.customUserInfo.docId,
+            docId: widget.todayNotedocId,
             onSuccess: () {},
             onError: () {},
           );
@@ -995,7 +1021,6 @@ class _DeleteButtonState extends State<DeleteButton> {
               onError: () {},
             );
           }
-          setState(() {});
 
           // 페이지 초기화
           //initInpuWidget();

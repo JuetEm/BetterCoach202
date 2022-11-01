@@ -171,6 +171,7 @@ class LessonService extends ChangeNotifier {
     required Function onSuccess,
     required Function onError,
   }) async {
+    print("deleteTodayNote - docId:${docId}");
     // bucket 삭제
     await todaylessonCollection.doc(docId).delete().then((value) {
       print("delete todaylesson");
@@ -178,7 +179,7 @@ class LessonService extends ChangeNotifier {
       print("error : ${error}");
       onError();
     });
-    //notifyListeners(); // 화면 갱신
+    notifyListeners(); // 화면 갱신
 
     //onSuccess(); // 화면 갱신
   }
@@ -284,7 +285,8 @@ class LessonService extends ChangeNotifier {
     final result = await lessonCollection.doc(docId).update({
       'totalNote': totalNote,
     });
-    //notifyListeners(); // 화면 갱신
+    print("Total Note업데이트 : ${docId} - ${totalNote}");
+    // 화면 갱신
   }
 
   Future<void> updateLesson(String docId, bool isActive) async {
@@ -327,7 +329,8 @@ class LessonService extends ChangeNotifier {
     await lessonCollection.doc(docId).delete().then((value) {
       print("delete then");
       onSuccess(); // 화면 갱신
-      //notifyListeners(); // 화면 갱신
+      notifyListeners();
+      // 화면 갱신
     }).onError((error, stackTrace) {
       print("delete error : ${error}");
     });
@@ -351,5 +354,56 @@ class LessonService extends ChangeNotifier {
     }).onError((error, stackTrace) {
       print("delete error : ${error}");
     });
+  }
+
+  Future<void> createFromActionSelect({
+    required String
+        docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
+    required String uid, // 강사 고유번호
+    required String name, //회원이름
+    required String phoneNumber, // 회원 고유번호 (전화번호로 회원 식별) => 전화번호 식별 방식 폐기
+    required String apratusName, //기구이름
+    required String actionName, //동작이름
+    required String lessonDate, //수업날짜
+    required String grade, //수행도
+    required String totalNote, //수업총메모
+    int? pos,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    print("Create Called!!");
+    if (pos == null) {
+      pos = await countPos(
+        uid,
+        docId,
+        lessonDate,
+      );
+      print("pos Null change : ${pos}");
+    }
+
+    print('pos : ${pos}');
+
+    timestamp = Timestamp.now();
+
+    await lessonCollection.add({
+      'docId': docId, // 회원 고유번호, 회원(문서번호)번호로 식별
+      'uid': uid, //강사 고유번호
+      'name': name, //회원이름
+      'phoneNumber': phoneNumber,
+      'apratusName': apratusName, //기구이름
+      'actionName': actionName, //동작이름
+      'lessonDate': lessonDate, //수업날짜
+      'grade': grade, //수행도
+      'totalNote': totalNote, //수업총메모
+      'timestamp': timestamp,
+      'pos': pos, // 순서
+    }).then((value) {
+      print("value : ${value}");
+      onSuccess();
+    }).onError((error, stackTrace) {
+      print("error : ${error}");
+      onError();
+    });
+    //notifyListeners(); // 화면 갱신
   }
 }
