@@ -9,6 +9,7 @@ import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:web_project/testShowDialog.dart';
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -380,6 +381,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => MemberList()),
+            //MaterialPageRoute(builder: (_) => Mainpage()),
           );
 
           emailController.clear();

@@ -31,6 +31,7 @@ List<TextEditingController> totalNoteControllers = [];
 
 // 가변적으로 TextFields DocId 집합
 List<String> totalNoteTextFieldDocId = new List.empty(growable: true);
+List<String> totalNotes = new List.empty(growable: true);
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -75,6 +76,7 @@ String editTotalNote = "";
 
 bool keyboardOpenBefore = false;
 String todayNotedocId = "";
+String todayNoteView = "";
 
 List<TmpLessonInfo> tmpLessonInfoList = [];
 
@@ -155,6 +157,8 @@ class _LessonAddState extends State<LessonAdd> {
         createControllers(val);
         //노트 삭제를 위한 변수 초기화
         totalNoteTextFieldDocId = List<String>.filled(val, "", growable: true);
+        //노트 삭제를 위한 변수 초기화
+        totalNotes = List<String>.filled(val, "", growable: true);
       }).catchError((error) {
         // error가 해당 에러를 출력
         print('error: $error');
@@ -188,7 +192,7 @@ class _LessonAddState extends State<LessonAdd> {
             // 페이지 초기화
             //initInpuWidget();
           }),
-          resizeToAvoidBottomInset: true,
+          resizeToAvoidBottomInset: false,
           body: SafeArea(
             child: SingleChildScrollView(
               //keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -275,10 +279,10 @@ class _LessonAddState extends State<LessonAdd> {
                               // print("첨에만 뿌린다 : ${initStateTextfield}");
                               if (docsTodayNote.isEmpty) {
                                 todayNotedocId = "";
-                                todayNoteController.text = "";
+                                todayNoteView = "";
                                 print("뿌릴 일별 노트 없음");
                               } else {
-                                todayNoteController.text =
+                                todayNoteView =
                                     docsTodayNote[0].get('todayNote');
                                 todayNotedocId = docsTodayNote[0].id;
                                 print("뿌릴 일별 노트 출력 완료");
@@ -300,17 +304,185 @@ class _LessonAddState extends State<LessonAdd> {
                               // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               //   content: Text("텍스트필드!!"),
                               // ));
+                              // 텍스트 필드 이전
+                              // return DynamicSaveTextField(
+                              //   customController: todayNoteController,
+                              //   hint: "일별 메모",
+                              //   showArrow: false,
+                              //   customFunction: () {
+                              //     FocusScope.of(context).unfocus();
+                              //   },
+                              // );
 
-                              return DynamicSaveTextField(
-                                customController: todayNoteController,
-                                hint: "일별 메모",
-                                showArrow: false,
-                                customFunction: () {
-                                  FocusScope.of(context).unfocus();
-                                },
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    //top: 5,
+                                    //bottom: 5,
+                                    ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Palette.grayFF, width: 1),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
+                                    color: Palette.grayFF,
+                                  ),
+                                  height: 50,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "일별메모",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        Text(
+                                          todayNoteView,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                fontSize: 15.0,
+                                                //fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        Spacer(flex: 1),
+                                        IconButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: true,
+                                              // ignore: unnecessary_new
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10.0))),
+                                                  //title: Text('일별 메모 작성'),
+                                                  content: Builder(
+                                                    builder: (context) {
+                                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                      var height =
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .height;
+                                                      var width =
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width;
+
+                                                      return Container(
+                                                        height: 40,
+                                                        width: width - 100,
+                                                        child: PopupTextField(
+                                                          customController:
+                                                              todayNoteController,
+                                                          hint: "일별 메모",
+                                                          showArrow: false,
+                                                          customFunction:
+                                                              () async {
+                                                            //일별 노트 저장
+                                                            await todayNoteSave(
+                                                                lessonService,
+                                                                customUserInfo,
+                                                                context);
+                                                          },
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                  // actions: <Widget>[
+                                                  //   TextButton(
+                                                  //     onPressed: () async {
+                                                  //       if (globalFunction
+                                                  //               .textNullCheck(
+                                                  //                   context,
+                                                  //                   todayNoteController,
+                                                  //                   "일별") &&
+                                                  //           ActionNullCheck ==
+                                                  //               false) {
+                                                  //         //일별 노트 저장
+                                                  //         await todayNoteSave(
+                                                  //             lessonService,
+                                                  //             customUserInfo,
+                                                  //             context);
+                                                  //       }
+                                                  //     },
+                                                  //     child: Text('저장'),
+                                                  //   ),
+                                                  //   TextButton(
+                                                  //     onPressed: () {
+                                                  //       Navigator.of(context)
+                                                  //           .pop();
+                                                  //     },
+                                                  //     child: Text('취소'),
+                                                  //   ),
+                                                  // ],
+                                                );
+                                              },
+                                            );
+                                            //   showDialog(
+                                            //     context: context,
+                                            //     barrierDismissible: true,
+                                            //     builder: (BuildContext context) {
+                                            //       return AlertDialog(
+                                            //         title: Text('일별 메모 작성'),
+                                            //         content: DynamicSaveTextField(
+                                            //           customController:
+                                            //               todayNoteController,
+                                            //           hint: "일별 메모",
+                                            //           showArrow: false,
+                                            //           customFunction: () {
+                                            //             FocusScope.of(context)
+                                            //                 .unfocus();
+                                            //           },
+                                            //         ),
+                                            //         actions: <Widget>[
+                                            //           TextButton(
+                                            //             onPressed: () {
+                                            //               Navigator.of(context)
+                                            //                   .pop();
+                                            //             },
+                                            //             child: Text('저장'),
+                                            //           ),
+                                            //           TextButton(
+                                            //             onPressed: () {
+                                            //               Navigator.of(context)
+                                            //                   .pop();
+                                            //             },
+                                            //             child: Text('취소'),
+                                            //           ),
+                                            //         ],
+                                            //       );
+                                            //     },
+                                            //  );
+                                          },
+                                          icon: Icon(
+                                            Icons.mode_edit,
+                                            color: Palette.gray66,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               );
                             },
                           ),
+                          const SizedBox(height: 20),
 
                           // 동작입력 버튼
                           Container(
@@ -450,6 +622,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 lessonDateController.text,
                               ),
                               builder: (context, snapshot) {
+                                print("재정렬 기능 시작");
                                 final docs =
                                     snapshot.data?.docs ?? []; // 문서들 가져오기
                                 if (docs.isEmpty) {
@@ -565,6 +738,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           String grade = doc.get('grade'); //수행도
                                           String totalNote =
                                               doc.get('totalNote'); //수업총메모
+                                          totalNotes[index] =
+                                              doc.get('totalNote'); //수업총메모
                                           String lessonDateTrim = " ";
                                           String apratusNameTrim = " ";
                                           int pos = doc.get('pos'); //순서
@@ -589,8 +764,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           print(
                                               '텍스트필드채움 : ActionSelectMode-${ActionSelectMode}, ${initStateTextfield}');
 
-                                          totalNoteControllers[index].text =
-                                              totalNote;
+                                          // totalNoteControllers[index].text =
+                                          //     totalNote;
 
                                           // if (initStateTextfield) {
                                           //   //예외처리 ::
@@ -756,62 +931,185 @@ class _LessonAddState extends State<LessonAdd> {
                                                     color: Palette.grayEE,
                                                   ),
                                                   Container(
-                                                    //color: Colors.red.withOpacity(0),
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      bottom: 5,
-                                                    ),
+                                                    height: 50,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(10.0),
-                                                      ),
-                                                      color: Colors.transparent,
-                                                      //color: Colors.red.withOpacity(0),
-                                                    ),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  10.0),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  10.0),
+                                                        ),
+                                                        color: Palette.grayFA
+                                                        //color: Colors.red.withOpacity(0),
+                                                        ),
+                                                    //color: Palette.grayEE,
                                                     child: Padding(
-                                                      padding: EdgeInsets.zero,
-                                                      child: SizedBox(
-                                                        height: 60,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            // Expanded(
-                                                            //   child: TextField(
-                                                            //     controller:
-                                                            //         totalNoteControllers[
-                                                            //             index],
-                                                            //   ),
-                                                            // ),
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          15, 0, 15, 5),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "동작별메모",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1!
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                          ),
+                                                          SizedBox(width: 20),
+                                                          Text(
+                                                            totalNote,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1!
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      15.0,
+                                                                  color: Palette
+                                                                      .gray66,
 
-                                                            /// 메모 입력창
-                                                            flagIndexErr
-                                                                ? Expanded(
-                                                                    child:
-                                                                        DynamicSaveTextField(
-                                                                      customController:
-                                                                          totalNoteControllers[
-                                                                              index],
-                                                                      hint:
-                                                                          "동작별 메모를 남겨보세요.",
-                                                                      showArrow:
-                                                                          false,
-                                                                      customFunction:
-                                                                          () {
-                                                                        FocusScope.of(context)
-                                                                            .unfocus();
+                                                                  //fontWeight: FontWeight.bold,
+                                                                ),
+                                                          ),
+                                                          Spacer(flex: 1),
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    true,
+                                                                // ignore: unnecessary_new
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(10.0))),
+                                                                    //title: Text('일별 메모 작성'),
+                                                                    content:
+                                                                        Builder(
+                                                                      builder:
+                                                                          (context) {
+                                                                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                        var height = MediaQuery.of(context)
+                                                                            .size
+                                                                            .height;
+                                                                        var width = MediaQuery.of(context)
+                                                                            .size
+                                                                            .width;
+                                                                        totalNoteControllers[index].text =
+                                                                            totalNote;
+
+                                                                        return Container(
+                                                                          height:
+                                                                              40,
+                                                                          width:
+                                                                              width - 100,
+                                                                          child:
+                                                                              PopupTextField(
+                                                                            customController:
+                                                                                totalNoteControllers[index],
+                                                                            hint:
+                                                                                "동작별 메모",
+                                                                            showArrow:
+                                                                                false,
+                                                                            customFunction:
+                                                                                () async {
+                                                                              //일별 노트 저장
+                                                                              await totalNoteSingleSave(lessonService, totalNoteTextFieldDocId[index], totalNoteControllers[index].text, context, index);
+                                                                            },
+                                                                          ),
+                                                                        );
                                                                       },
                                                                     ),
-                                                                  )
-                                                                : Text("")
-                                                            //Spacer(flex: 1),
-                                                          ],
-                                                        ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.mode_edit,
+                                                              color: Palette
+                                                                  .gray66,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
+                                                  // 이전 텍스트 필드
+                                                  // Container(
+                                                  //   //color: Colors.red.withOpacity(0),
+                                                  //   margin:
+                                                  //       const EdgeInsets.only(
+                                                  //     bottom: 5,
+                                                  //   ),
+                                                  //   decoration: BoxDecoration(
+                                                  //     borderRadius:
+                                                  //         BorderRadius.all(
+                                                  //       Radius.circular(10.0),
+                                                  //     ),
+                                                  //     color: Colors.transparent,
+                                                  //     //color: Colors.red.withOpacity(0),
+                                                  //   ),
+                                                  //   child: Padding(
+                                                  //     padding: EdgeInsets.zero,
+                                                  //     child: SizedBox(
+                                                  //       height: 60,
+                                                  //       child: Row(
+                                                  //         mainAxisAlignment:
+                                                  //             MainAxisAlignment
+                                                  //                 .start,
+                                                  //         children: [
+                                                  //           // Expanded(
+                                                  //           //   child: TextField(
+                                                  //           //     controller:
+                                                  //           //         totalNoteControllers[
+                                                  //           //             index],
+                                                  //           //   ),
+                                                  //           // ),
+
+                                                  //           /// 메모 입력창
+                                                  //           flagIndexErr
+                                                  //               ? Expanded(
+                                                  //                   child:
+                                                  //                       DynamicSaveTextField(
+                                                  //                     customController:
+                                                  //                         totalNoteControllers[
+                                                  //                             index],
+                                                  //                     hint:
+                                                  //                         "동작별 메모를 남겨보세요.",
+                                                  //                     showArrow:
+                                                  //                         false,
+                                                  //                     customFunction:
+                                                  //                         () {
+                                                  //                       FocusScope.of(context)
+                                                  //                           .unfocus();
+                                                  //                     },
+                                                  //                   ),
+                                                  //                 )
+                                                  //               : Text("")
+                                                  //           //Spacer(flex: 1),
+                                                  //         ],
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               ),
                                             ],
@@ -846,71 +1144,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       context, lessonDateController, "수업일") &&
                                   ActionNullCheck == false) {
                                 //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                                if (todayNotedocId == "") {
-                                  // 동작별 노트 업데이트
-                                  for (int idx = 0;
-                                      idx < totalNoteTextFieldDocId.length;
-                                      idx++) {
-                                    await lessonService.updateTotalNote(
-                                      totalNoteTextFieldDocId[idx],
-                                      totalNoteControllers[idx].text,
-                                    );
-                                  }
-                                  // for (int idx = 0;
-                                  await lessonService.createTodaynote(
-                                      docId: customUserInfo.docId,
-                                      uid: customUserInfo.uid,
-                                      name: customUserInfo.name,
-                                      lessonDate: lessonDateController.text,
-                                      todayNote: todayNoteController.text,
-                                      onSuccess: () {
-                                        // 저장하기 성공
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("새로운 노트 작성"),
-                                        ));
-                                        lessonService.notifyListeners();
-
-                                        // 화면 초기화
-                                        //initInpuWidget();
-                                        // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
-                                        Navigator.pop(context);
-                                      },
-                                      onError: () {
-                                        print("저장하기 ERROR");
-                                      });
-                                } else {
-                                  print("문서가 있는 경우.. 노트 저장");
-
-                                  // 동작별 노트 업데이트
-                                  for (int idx = 0;
-                                      idx < totalNoteTextFieldDocId.length;
-                                      idx++) {
-                                    await lessonService.updateTotalNote(
-                                      totalNoteTextFieldDocId[idx],
-                                      totalNoteControllers[idx].text,
-                                    );
-                                  }
-
-                                  await lessonService.updateTodayNote(
-                                      docId: todayNotedocId,
-                                      todayNote: todayNoteController.text,
-                                      onSuccess: () {
-                                        // 저장하기 성공
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("노트수정 완료"),
-                                        ));
-                                        // 화면 초기화
-                                        //initInpuWidget();
-
-                                        // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
-                                        Navigator.pop(context);
-                                      },
-                                      onError: () {
-                                        print("저장하기 ERROR");
-                                      });
-                                }
+                                await todayNoteSave(
+                                    lessonService, customUserInfo, context);
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -940,6 +1175,127 @@ class _LessonAddState extends State<LessonAdd> {
         );
       },
     );
+  }
+
+  Future<void> totalNoteSave(LessonService lessonService,
+      CustomUserInfo.UserInfo customUserInfo, BuildContext context) async {
+    if (todayNotedocId == "") {
+      // 동작별 노트 업데이트
+      for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+        await lessonService.updateTotalNote(
+          totalNoteTextFieldDocId[idx],
+          totalNoteControllers[idx].text,
+        );
+      }
+      // for (int idx = 0;
+      await lessonService.createTodaynote(
+          docId: customUserInfo.docId,
+          uid: customUserInfo.uid,
+          name: customUserInfo.name,
+          lessonDate: lessonDateController.text,
+          todayNote: todayNoteController.text,
+          onSuccess: () {
+            // 저장하기 성공
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("새로운 노트 작성"),
+            ));
+            lessonService.notifyListeners();
+
+            // 화면 초기화
+            //initInpuWidget();
+            // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
+            Navigator.pop(context);
+          },
+          onError: () {
+            print("저장하기 ERROR");
+          });
+    } else {
+      print("문서가 있는 경우.. 노트 저장");
+
+      // 동작별 노트 업데이트
+      for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+        await lessonService.updateTotalNote(
+          totalNoteTextFieldDocId[idx],
+          totalNoteControllers[idx].text,
+        );
+      }
+
+      await lessonService.updateTodayNote(
+          docId: todayNotedocId,
+          todayNote: todayNoteController.text,
+          onSuccess: () {
+            // 저장하기 성공
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("노트수정 완료"),
+            ));
+            // 화면 초기화
+            //initInpuWidget();
+
+            // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
+            Navigator.pop(context);
+          },
+          onError: () {
+            print("저장하기 ERROR");
+          });
+    }
+  }
+}
+
+Future<void> totalNoteSingleSave(
+  LessonService lessonService,
+  String totalNoteTextFieldDocId,
+  String totalNote,
+  BuildContext context,
+  int index,
+) async {
+  await lessonService.updateTotalNote(
+    totalNoteTextFieldDocId,
+    totalNote,
+  );
+  totalNoteControllers[index].clear();
+  Navigator.pop(context);
+  lessonService.notifyListeners();
+}
+
+Future<void> todayNoteSave(LessonService lessonService,
+    CustomUserInfo.UserInfo customUserInfo, BuildContext context) async {
+  if (todayNotedocId == "") {
+    // for (int idx = 0;
+    await lessonService.createTodaynote(
+        docId: customUserInfo.docId,
+        uid: customUserInfo.uid,
+        name: customUserInfo.name,
+        lessonDate: lessonDateController.text,
+        todayNote: todayNoteController.text,
+        onSuccess: () {
+          // 저장하기 성공
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("일별노트 저장"),
+          ));
+          lessonService.notifyListeners();
+          Navigator.pop(context);
+        },
+        onError: () {
+          print("저장하기 ERROR");
+        });
+  } else {
+    print("문서가 있는 경우.. 노트 저장");
+
+    await lessonService.updateTodayNote(
+        docId: todayNotedocId,
+        todayNote: todayNoteController.text,
+        onSuccess: () {
+          // 저장하기 성공
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("일별노트 수정"),
+          ));
+
+          // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
+          Navigator.pop(context);
+        },
+        onError: () {
+          print("저장하기 ERROR");
+        });
   }
 }
 
