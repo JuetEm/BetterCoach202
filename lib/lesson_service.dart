@@ -101,6 +101,18 @@ class LessonService extends ChangeNotifier {
     return result;
   }
 
+  Future<QuerySnapshot> readTodaynote(
+    String uid,
+    String docId,
+  ) async {
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return await todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .orderBy("lessonDate", descending: true)
+        .get();
+  }
+
   Future<void> createTodaynote({
     required String
         docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
@@ -160,10 +172,15 @@ class LessonService extends ChangeNotifier {
     required Function onError,
   }) async {
     // bucket 삭제
-    await todaylessonCollection.doc(docId).delete();
-    notifyListeners(); // 화면 갱신
+    await todaylessonCollection.doc(docId).delete().then((value) {
+      print("delete todaylesson");
+    }).onError((error, stackTrace) {
+      print("error : ${error}");
+      onError();
+    });
+    //notifyListeners(); // 화면 갱신
 
-    onSuccess(); // 화면 갱신
+    //onSuccess(); // 화면 갱신
   }
 
   Future<QuerySnapshot> read(
@@ -173,7 +190,7 @@ class LessonService extends ChangeNotifier {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return lessonCollection
+    return await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .get();
@@ -187,7 +204,7 @@ class LessonService extends ChangeNotifier {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return lessonCollection
+    return await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('actionName', isEqualTo: actionName)
@@ -202,11 +219,13 @@ class LessonService extends ChangeNotifier {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return lessonCollection
+    print(
+        "날짜별 데이터 읽기 : uid : ${uid}-docId : ${docId}-lessonDate : ${lessonDate}");
+    return await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('lessonDate', isEqualTo: lessonDate)
-        .orderBy("pos", descending: false)
+        .orderBy('pos', descending: true)
         .get();
   }
 
@@ -291,7 +310,7 @@ class LessonService extends ChangeNotifier {
     await lessonCollection.doc(docId).delete().then((value) {
       print("delete then");
       onSuccess(); // 화면 갱신
-      notifyListeners(); // 화면 갱신
+      //notifyListeners(); // 화면 갱신
     }).onError((error, stackTrace) {
       print("delete error : ${error}");
     });

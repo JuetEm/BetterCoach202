@@ -14,6 +14,16 @@ import 'membershipList.dart';
 GlobalFunction globalFunction = GlobalFunction();
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+TextEditingController nameController = TextEditingController();
+TextEditingController registerDateController = TextEditingController(text: now);
+TextEditingController phoneNumberController = TextEditingController();
+TextEditingController registerTypeController = TextEditingController();
+TextEditingController goalController = TextEditingController();
+TextEditingController infoController = TextEditingController();
+TextEditingController noteController = TextEditingController();
+TextEditingController commentController = TextEditingController();
+
+bool keyboardOpenBefore = false;
 
 class MemberAdd extends StatefulWidget {
   const MemberAdd({super.key});
@@ -23,16 +33,6 @@ class MemberAdd extends StatefulWidget {
 }
 
 class _MemberAddState extends State<MemberAdd> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController registerDateController =
-      TextEditingController(text: now);
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController registerTypeController = TextEditingController();
-  TextEditingController goalController = TextEditingController();
-  TextEditingController infoController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
-  TextEditingController commentController = TextEditingController();
-
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
@@ -41,7 +41,19 @@ class _MemberAddState extends State<MemberAdd> {
         "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
+        // if (MediaQuery.of(context).viewInsets.bottom == 0) {
+        //   if (keyboardOpenBefore) {
+        //     FocusScopeNode currentFocus = FocusScope.of(context);
+        //     if (!currentFocus.hasPrimaryFocus) {
+        //       currentFocus.unfocus();
+        //     } // 키보드 닫기 이벤트
+        //     keyboardOpenBefore = false;
+        //   }
+        // } else {
+        //   keyboardOpenBefore = true;
+        // }
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원 추가", () {
             Navigator.push(
