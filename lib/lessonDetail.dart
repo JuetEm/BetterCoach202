@@ -336,7 +336,7 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                     onPressed:
                                                                         () {
                                                                       lessonService
-                                                                          .delete(
+                                                                          .deleteSinglelesson(
                                                                         docId: doc
                                                                             .id,
                                                                         onSuccess:

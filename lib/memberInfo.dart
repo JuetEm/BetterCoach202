@@ -753,10 +753,11 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
           builder: (context, snapshot) {
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
             if (docs.isEmpty) {
-              return Center(child: Text("목록 준비 중입니다."));
+              return Center(child: Text(" "));
             }
             return ListView.separated(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: docs.length,
               itemBuilder: (BuildContext context, int index) {
                 final doc = docs[index];
@@ -766,7 +767,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 String todayNote = doc.get('todayNote');
 
                 return LessonCard(
-                  uid: widget.userInfo.uid,
+                  userInfo: widget.userInfo,
                   memberId: memberId,
                   lessonDate: lessonDate,
                   todayNote: todayNote,
@@ -787,14 +788,14 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
 class LessonCard extends StatelessWidget {
   const LessonCard({
     Key? key,
-    required this.uid,
+    required this.userInfo,
     required this.memberId,
     required this.lessonDate,
     required this.todayNote,
     required this.lessonService,
   }) : super(key: key);
 
-  final String uid;
+  final UserInfo userInfo;
   final String memberId;
   final String lessonDate;
   final String todayNote;
@@ -812,33 +813,71 @@ class LessonCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(color: Palette.grayEE
-                  //color: Colors.red.withOpacity(0),
+            InkWell(
+              onTap: () {
+                List<TmpLessonInfo> tmpLessonInfoList = [];
+                eventList = [];
+                lessonAddMode = "노트보기";
+                List<dynamic> args = [
+                  userInfo,
+                  lessonDate,
+                  eventList,
+                  lessonNoteId,
+                  lessonAddMode,
+                  tmpLessonInfoList,
+                ];
+                print("args.length : ${args.length}");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LessonAdd(),
+                    // GlobalWidgetDashboard(), //
+                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                    settings: RouteSettings(arguments: args),
                   ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  //top: 5,
-                  //bottom: 5,
-                  left: 30.0,
-                  right: 16.0,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  height: 38,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${lessonDate}",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Palette.gray66,
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(color: Palette.grayEE
+                    //color: Colors.red.withOpacity(0),
+                    ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    //top: 5,
+                    //bottom: 5,
+                    left: 30.0,
+                    right: 16.0,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    height: 38,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              lessonDate,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            Spacer(flex: 1),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: Palette.gray99,
+                              size: 12.0,
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -889,17 +928,18 @@ class LessonCard extends StatelessWidget {
             ),
             FutureBuilder<QuerySnapshot>(
               future: lessonService.readNotesOflessonDate(
-                uid,
+                userInfo.uid,
                 memberId,
                 lessonDate,
               ),
               builder: (context, snapshot) {
                 final lessonData = snapshot.data?.docs ?? []; // 문서들 가져오기
                 if (lessonData.isEmpty) {
-                  return Center(child: Text("목록 준비 중입니다."));
+                  return Center(child: Text(""));
                 }
                 return ListView.separated(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: lessonData.length,
                   itemBuilder: (BuildContext context, int index) {
                     final doc = lessonData[index];

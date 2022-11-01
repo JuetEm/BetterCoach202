@@ -496,7 +496,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
                                                                       onPressed:
                                                                           () {
                                                                         lessonService
-                                                                            .delete(
+                                                                            .deleteSinglelesson(
                                                                           docId:
                                                                               doc.id,
                                                                           onSuccess:
@@ -942,7 +942,7 @@ class _DeleteButtonState extends State<DeleteButton> {
           );
           for (int idx = 0; idx < deleteDocId.length; idx++) {
             //print(deleteDocId[idx]);
-            widget.lessonService.delete(
+            widget.lessonService.deleteMultilesson(
               docId: deleteDocId[idx],
               onSuccess: () {},
               onError: () {},

@@ -219,13 +219,13 @@ class LessonService extends ChangeNotifier {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    print(
-        "날짜별 데이터 읽기 : uid : ${uid}-docId : ${docId}-lessonDate : ${lessonDate}");
+    // print(
+    //     "날짜별 데이터 읽기 : uid : ${uid}-docId : ${docId}-lessonDate : ${lessonDate}");
     return await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('lessonDate', isEqualTo: lessonDate)
-        .orderBy('pos', descending: true)
+        .orderBy('pos', descending: false)
         .get();
   }
 
@@ -301,7 +301,24 @@ class LessonService extends ChangeNotifier {
     notifyListeners(); // 화면 갱신
   }
 
-  Future<void> delete({
+  Future<void> deleteSinglelesson({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    print("삭제할 docId : ${docId}");
+    // bucket 삭제
+    await lessonCollection.doc(docId).delete().then((value) {
+      print("delete then");
+      onSuccess(); // 화면 갱신
+    }).onError((error, stackTrace) {
+      print("delete error : ${error}");
+    });
+    notifyListeners(); // 화면 갱신
+    print("화면갱신");
+  }
+
+  Future<void> deleteMultilesson({
     required String docId,
     required Function onSuccess,
     required Function onError,

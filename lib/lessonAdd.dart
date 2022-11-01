@@ -685,17 +685,17 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         TextButton(
                                                                           onPressed:
                                                                               () async {
-                                                                            await lessonService.delete(
+                                                                            await lessonService.deleteSinglelesson(
                                                                                 docId: doc.id,
                                                                                 onSuccess: () {
                                                                                   totalNoteControllers.removeAt(index);
                                                                                   totalNoteTextFieldDocId.removeAt(index);
                                                                                   tmpLessonInfoList.removeAt(index);
-                                                                                  print("삭제시시컨트롤러:${totalNoteControllers}");
-                                                                                  print("삭제시노트아이디:${totalNoteTextFieldDocId}");
+
+                                                                                  //print("삭제시시컨트롤러:${totalNoteControllers}");
+                                                                                  //print("삭제시노트아이디:${totalNoteTextFieldDocId}");
                                                                                 },
                                                                                 onError: () {});
-
                                                                             Navigator.of(context).pop();
                                                                           },
                                                                           child:
@@ -989,12 +989,13 @@ class _DeleteButtonState extends State<DeleteButton> {
           for (int idx = 0;
               idx < widget.totalNoteTextFieldDocId.length;
               idx++) {
-            await widget.lessonService.delete(
+            await widget.lessonService.deleteMultilesson(
               docId: widget.totalNoteTextFieldDocId[idx],
               onSuccess: () {},
               onError: () {},
             );
           }
+          setState(() {});
 
           // 페이지 초기화
           //initInpuWidget();
