@@ -13,18 +13,17 @@ class ActionService extends ChangeNotifier {
     bool isSpringBoardSelected,
     bool isSpineCorrectorSelected,
     bool isMatSelected,
-    bool isSupineSelected,
-    bool isSittingSelected,
-    bool isProneSelected,
-    bool isKneelingSelected,
-    bool isSideLyingSelected,
-    bool isStandingSelected,
+    bool isOthersApparatusSelected,
+    String searchString,
   ) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
 
     List apparatus = [];
+    List searchKeywordArray = [];
+
+    print("Search Called!! : ${searchString}");
 
     // 기구 필터 쿼리
     if (isReformerSelected) {
@@ -56,48 +55,102 @@ class ActionService extends ChangeNotifier {
       actionCollection.where('apparatus', isEqualTo: 'MAT');
       apparatus.add("MAT");
     }
+    if (isOthersApparatusSelected) {
+      actionCollection.where('apparatus', isEqualTo: 'OT');
+      apparatus.add("OT");
+    }
+    final result;
+    if (searchString.isEmpty) {
+      result = await actionCollection
+          .where("apparatus",
+              whereIn: apparatus.isEmpty
+                  ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
+                  : apparatus)
+          .orderBy("nGramizedLowerCaseName", descending: false)
+          .get();
+    } else {
+      if (searchString.trim().contains(" ")) {
+        searchKeywordArray = searchString.toLowerCase().split(" ");
+      } else {
+        searchKeywordArray.add(searchString.toLowerCase());
+      }
 
-    if (isSupineSelected) {
-      actionCollection.where('position', isEqualTo: 'supine');
-    }
-    if (isSittingSelected) {
-      actionCollection.where('position', isEqualTo: 'sitting');
-    }
-    if (isProneSelected) {
-      actionCollection.where('position', isEqualTo: 'prone');
-    }
-    if (isKneelingSelected) {
-      actionCollection.where('position', isEqualTo: 'kneeling');
-    }
-    if (isSideLyingSelected) {
-      actionCollection.where('position', isEqualTo: 'side lying');
-    }
-    if (isStandingSelected) {
-      actionCollection.where('position', isEqualTo: 'standing');
+      print("searchString : ${searchString}");
+      print("searchKeyword : ${searchKeywordArray}");
+      print("Search String Not Empty 울립니다! START");
+      result = await actionCollection
+          // .where("apparatus", whereIn: [searchString])
+          .where("nGramizedLowerCaseName", arrayContains: searchString)
+          .where("apparatus",
+              whereIn: apparatus.isEmpty
+                  ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT", "OT"]
+                  : apparatus)
+          // .orderBy("nGramizedLowerCaseName", descending: false)
+          .orderBy("lowerCaseName", descending: false)
+          .get();
+      print("Search String Not Empty 울립니다! END");
     }
 
-    return actionCollection
-        .where("apparatus",
-            whereIn: apparatus.isEmpty
-                ? ["RE", "CA", "CH", "BA", "SB", "SC", "MAT"]
-                : apparatus)
-        .get();
+    print("ORDERS?!?!");
+    // notifyListeners(); // 화면 갱신
+
+    return result;
   }
 
   void create(
     String apparatus,
+    String otherApparatusName,
     String position,
+    String otherPositionName,
     String name,
+    String author,
     String upperCaseName,
     String lowerCaseName,
   ) async {
+    List<String> nGramizedLowerCaseName = [];
+    nGramizedLowerCaseName = lowerCaseName.split(" ");
+    print("nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
     // bucket 만들기
     await actionCollection.add({
-      'apparatus': apparatus, // 유저 식별자
-      'position': position, // 하고싶은 일
-      'name': name, // 완료 여부
-      'upperCaseName': upperCaseName, // 완료 여부
-      'lowerCaseName': lowerCaseName, // 완료 여부
+      'apparatus': apparatus, // 기구 카테고리 구분자
+      'otherApparatusName': otherApparatusName, // 기구명 전체
+      'position': position, // 자세 구분자
+      'otherPositionName': otherPositionName,
+      'name': name, // 동작 이름
+      'author': author, // 동작 등록인 구분자
+      'upperCaseName': upperCaseName, // 대분자 동작 이름
+      'lowerCaseName': lowerCaseName, // 소문자 동작 이름
+      'nGramizedLowerCaseName': nGramizedLowerCaseName,
+    }).then((value) {
+      print("Successfully completed");
+    }, onError: (e) {
+      print("Error completing: ${e}");
+    });
+    notifyListeners(); // 화면 갱신
+  }
+
+  void createDummy(
+    String apparatus,
+    String otherApparatusName,
+    String position,
+    String otherPositionName,
+    String name,
+    String author,
+    String upperCaseName,
+    String lowerCaseName,
+    List<String> nGramizedLowerCaseName,
+  ) async {
+    // bucket 만들기
+    await actionCollection.add({
+      'apparatus': apparatus, // 기구 카테고리 구분자
+      'otherApparatusName': otherApparatusName, // 기구명 전체
+      'position': position, // 자세 구분자
+      'otherPositionName': otherPositionName,
+      'name': name, // 동작 이름
+      'author': author, // 동작 등록인 구분자
+      'upperCaseName': upperCaseName, // 대분자 동작 이름
+      'lowerCaseName': lowerCaseName, // 소문자 동작 이름
+      'nGramizedLowerCaseName': nGramizedLowerCaseName,
     }).then((value) {
       print("Successfully completed");
     }, onError: (e) {

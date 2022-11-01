@@ -8,6 +8,8 @@ import 'main.dart';
 
 bool isSame = true;
 
+String gender = "";
+
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -19,6 +21,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordCheckController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
 
   final sameColor = Colors.black;
   final diffColor = Colors.red;
@@ -98,6 +101,43 @@ class _SignUpState extends State<SignUp> {
                     setTextColor();
                   },
                 ),
+
+                /// 전화번호
+                // TextField(
+                //   controller: phoneNumberController,
+                //   keyboardType: TextInputType.phone,
+                //   autocorrect: true,
+                //   // inputFormatters: [ (RegExp('[0-9]')),],
+                //   decoration: InputDecoration(hintText: "전화번호"),
+                // ),
+
+                // Row(
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [
+                //     RadioListTile(
+                //       title: Text("여자"),
+                //       value: "WOMAN",
+                //       groupValue: gender,
+                //       onChanged: (value) {
+                //         setState(() {
+                //           gender = value!;
+                //         });
+                //       },
+                //     ),
+                //     RadioListTile(
+                //       title: Text("여자"),
+                //       value: "MAN",
+                //       groupValue: gender,
+                //       onChanged: (value) {
+                //         setState(() {
+                //           gender = value!;
+                //         });
+                //       },
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 32),
 
                 /// 회원가입 버튼

@@ -107,7 +107,7 @@ class _HomeState extends State<Home> {
               child: Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: FutureBuilder<QuerySnapshot>(
-                    future: memberService.read(user.uid,'name'),
+                    future: memberService.read(user.uid, 'name'),
                     builder: (context, snapshot) {
                       final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
                       if (docs.isEmpty) {
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
                           bool isActive = doc.get('isActive');
                           return InkWell(
                             onTap: () {
-                              memberService.update(doc.id, !isActive);
+                              //memberService.update(doc.id, !isActive);
                             },
                             child: BaseContainer(
                                 name: name,

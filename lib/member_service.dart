@@ -10,7 +10,10 @@ class MemberService extends ChangeNotifier {
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
 
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
-    return memberCollection.where('uid', isEqualTo: uid).get();
+    return memberCollection
+        .where('uid', isEqualTo: uid)
+        .orderBy("name", descending: false)
+        .get();
   }
 
   void create({
@@ -22,6 +25,7 @@ class MemberService extends ChangeNotifier {
     required String info,
     required String note,
     required String uid,
+    required String comment,
     required Function onSuccess,
     required Function onError,
   }) async {
@@ -44,7 +48,7 @@ class MemberService extends ChangeNotifier {
     //   'note': note, // 메모
     //   'isActive': true, // 회원권 활성화 여부
     // });
-    await memberCollection.doc(phoneNumber).set({
+    await memberCollection.add({
       'uid': uid, // 유저(강사) 식별자
       'name': name, // 회원 이름
       'registerDate': registerDate, // 회원 등록일
@@ -53,22 +57,54 @@ class MemberService extends ChangeNotifier {
       'goal': goal, // 운동 목표
       'info': info, // 신체 특이사항/체형분석
       'note': note, // 메모
+      'comment': comment,
       'isActive': true, // 회원권 활성화 여부
     });
     notifyListeners(); // 화면 갱신
     onSuccess();
   }
 
-  void update(String docId, bool isActive) async {
-    // bucket isActive 업데이트
+  void update({
+    required String docId,
+    required String name,
+    required String registerDate,
+    required String phoneNumber,
+    required String registerType,
+    required String goal,
+    required String info,
+    required String note,
+    required String uid,
+    required String comment,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    // 업데이트
+    await memberCollection.doc(docId).update({
+      'uid': uid, // 유저(강사) 식별자
+      'name': name, // 회원 이름
+      'registerDate': registerDate, // 회원 등록일
+      'phoneNumber': phoneNumber, // 회원 전화번호
+      'registerType': registerType, // 수강권 종류
+      'goal': goal, // 운동 목표
+      'info': info, // 신체 특이사항/체형분석
+      'note': note, // 메모
+      'comment': comment,
+      'isActive': true, // 회원권 활성화 여부
+    });
 
-    await memberCollection.doc(docId).update({'isActive': isActive});
-    notifyListeners(); // 화면 갱신
+    notifyListeners();
+    onSuccess(); // 화면 갱신
   }
 
-  void delete(String docId) async {
+  void delete({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
     // bucket 삭제
     await memberCollection.doc(docId).delete();
-    notifyListeners(); // 화면 갱신
+    notifyListeners();
+    // 화면 갱신
+    onSuccess(); // 화면 갱신
   }
 }

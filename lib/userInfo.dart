@@ -1,5 +1,6 @@
 class UserInfo {
   const UserInfo(
+    this.docId,
     this.uid,
     this.name,
     this.registerDate,
@@ -8,8 +9,10 @@ class UserInfo {
     this.goal,
     this.info,
     this.note,
+    this.comment,
     this.isActive,
   );
+  final String docId;
   final String uid;
   final String name;
   final String registerDate;
@@ -18,5 +21,6 @@ class UserInfo {
   final String goal;
   final String info;
   final String note;
+  final String comment;
   final bool isActive;
 }

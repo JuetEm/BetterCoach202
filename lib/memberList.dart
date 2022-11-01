@@ -33,6 +33,7 @@ class _MemberListState extends State<MemberList> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+    //user.uid = '11';
 
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
@@ -85,6 +86,8 @@ class _MemberListState extends State<MemberList> {
                           color: Palette.mainBackground,
                         ),
                         child: FutureBuilder<QuerySnapshot>(
+                          //future: memberService.read(
+                          //    'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
                           future: memberService.read(user.uid, 'name'),
                           builder: (context, snapshot) {
                             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
@@ -97,6 +100,7 @@ class _MemberListState extends State<MemberList> {
                               itemCount: docs.length,
                               itemBuilder: (BuildContext context, int index) {
                                 final doc = docs[index];
+                                String docId = doc.id;
                                 String name = doc.get('name');
                                 String registerDate = doc.get('registerDate');
                                 String phoneNumber = doc.get('phoneNumber');
@@ -104,8 +108,10 @@ class _MemberListState extends State<MemberList> {
                                 String goal = doc.get('goal');
                                 String info = doc.get('info');
                                 String note = doc.get('note');
+                                String comment = doc.get('comment');
                                 bool isActive = doc.get('isActive');
                                 final UserInfo userInfo = UserInfo(
+                                  doc.id,
                                   user.uid,
                                   name,
                                   registerDate,
@@ -114,6 +120,7 @@ class _MemberListState extends State<MemberList> {
                                   goal,
                                   info,
                                   note,
+                                  comment,
                                   isActive,
                                 );
                                 return InkWell(
@@ -155,6 +162,8 @@ class _MemberListState extends State<MemberList> {
                     /// 추가 버튼
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(0),
+                        elevation: 0,
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
                       ),

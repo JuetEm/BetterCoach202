@@ -8,6 +8,8 @@ import 'package:web_project/action_service.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:web_project/testShowDialog.dart';
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -24,8 +26,7 @@ import 'memberList.dart';
 import 'member_service.dart';
 import 'globalWidget.dart';
 
-/// 브랜치 테스트
-/// /// 브랜치 테스트222
+bool adminMode = false;
 
 GlobalFunction globalfunction = GlobalFunction();
 
@@ -74,6 +75,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +83,18 @@ class MyApp extends StatelessWidget {
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Pretendard'),
-      home: user == null ? LoginPage() : MemberList(),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
+        theme: ThemeData(fontFamily: 'Pretendard'),
+        home: user == null ? LoginPage() : MemberList(),
+      ),
     );
   }
 }
@@ -325,20 +335,20 @@ class _LoginPageState extends State<LoginPage> {
                 //   ),
                 //   SizedBox(height: 10),
 
-                //   /// Cloud Storage 개발화면 버튼
-                //   ElevatedButton(
-                //     child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
-                //     onPressed: () {
-                //       // 회원가입
-                //       print("global widget");
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //           builder: (_) => GlobalWidgetDashboard(),
-                //         ),
-                //       );
-                //     },
-                //   ),
+                /// 글로벌 대쉬보드 버튼
+                ElevatedButton(
+                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
+                  onPressed: () {
+                    // 회원가입
+                    print("global widget");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => GlobalWidgetDashboard(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -371,6 +381,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => MemberList()),
+            //MaterialPageRoute(builder: (_) => Mainpage()),
           );
 
           emailController.clear();
