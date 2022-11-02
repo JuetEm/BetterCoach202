@@ -743,14 +743,16 @@ class _LessonAddState extends State<LessonAdd> {
 
                                           TmpLessonInfo tmpLessonInfo =
                                               TmpLessonInfo(
-                                                  apratusName,
-                                                  actionName,
-                                                  name,
-                                                  lessonDate,
-                                                  grade,
-                                                  totalNote,
-                                                  doc.id,
-                                                  uid);
+                                            apratusName,
+                                            actionName,
+                                            name,
+                                            lessonDate,
+                                            grade,
+                                            totalNote,
+                                            doc.id,
+                                            uid,
+                                            true,
+                                          );
 
                                           tmpLessonInfoList.add(tmpLessonInfo);
 

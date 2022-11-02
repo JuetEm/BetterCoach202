@@ -730,17 +730,14 @@ class _LoginTextFieldState extends State<LoginTextField> {
       obscureText: widget.isSecure, // 비밀번호여부
       style: TextStyle(color: normalColor),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Palette.grayFA,
         labelText: widget.hint,
         labelStyle:
             TextStyle(color: myFocusNode.hasFocus ? focusColor : normalColor),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Palette.grayEE, width: 0),
-            borderRadius: BorderRadius.circular(10)),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Palette.gray33, width: 0),
+        ),
         focusColor: focusColor,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+        focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: focusColor,
           ),
