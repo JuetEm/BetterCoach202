@@ -449,6 +449,69 @@ class _BaseTextFieldState extends State<BaseTextField> {
 }
 
 // Text Field
+class PopupTextField extends StatefulWidget {
+  const PopupTextField({
+    Key? key,
+    required this.customController,
+    required this.hint,
+    required this.showArrow,
+    required this.customFunction,
+  }) : super(key: key);
+
+  final TextEditingController customController;
+  final String hint;
+  final showArrow;
+  final Function customFunction;
+
+  @override
+  State<PopupTextField> createState() => _PopupTextFieldState();
+}
+
+class _PopupTextFieldState extends State<PopupTextField> {
+  @override
+  Widget build(BuildContext context) {
+    //FocusNode textFocus = FocusNode();
+
+    return Container(
+      //color: Colors.red,
+      constraints: BoxConstraints(
+        minHeight: 40,
+      ),
+      child: TextField(
+        autofocus: true,
+        //focusNode: textFocus,
+        textInputAction: TextInputAction.done,
+        readOnly: widget.showArrow,
+        controller: widget.customController,
+        decoration: InputDecoration(
+            //labelText: widget.hint,
+            //hintText: widget.hint,
+
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 1,
+                color: Palette.grayEE,
+                style: BorderStyle.solid,
+              ),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: Colors.white),
+        onChanged: (text) {
+          // 현재 텍스트필드의 텍스트를 출력
+          //print("First text field: $text");
+        },
+        onEditingComplete: () {
+          widget.customFunction();
+          //textFocus.unfocus();
+        },
+      ),
+    );
+  }
+}
+
+// Text Field
 
 class DynamicSaveTextField extends StatefulWidget {
   const DynamicSaveTextField({
