@@ -184,6 +184,26 @@ class LessonService extends ChangeNotifier {
     //onSuccess(); // 화면 갱신
   }
 
+  Future<void> clearTodayNote({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    print("deleteTodayNote - docId:${docId}");
+    // bucket 삭제
+    await todaylessonCollection
+        .doc(docId)
+        .update({'todayNote': ""}).then((value) {
+      print("clear todaylesson");
+    }).onError((error, stackTrace) {
+      print("error : ${error}");
+      onError();
+    });
+    notifyListeners(); // 화면 갱신
+
+    //onSuccess(); // 화면 갱신
+  }
+
   Future<QuerySnapshot> read(
     String uid,
     String docId,
