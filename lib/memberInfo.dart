@@ -29,6 +29,7 @@ String listMode = "날짜별";
 String viewMode = "기본정보";
 String lessonDateTrim = "";
 String apratusNameTrim = "";
+int dayNotelessonCnt = 0;
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -50,6 +51,23 @@ class _MemberInfoState extends State<MemberInfo> {
     if (userInfo.name.length > 0) {
       nameFirst = userInfo.name.substring(0, 1);
     }
+
+    final lessonService = context.read<LessonService>();
+
+    Future<int> daylessonCnt = lessonService.countTodaynote(
+      user.uid,
+      userInfo.docId,
+    );
+
+    daylessonCnt.then((val) {
+      // int가 나오면 해당 값을 출력
+      print('[MI] 오늘 노트 개수 출력 : $val');
+      dayNotelessonCnt = val;
+      //Textfield 생성
+    }).catchError((error) {
+      // error가 해당 에러를 출력
+      print('error: $error');
+    });
 
     return Consumer<LessonService>(builder: (context, lessonService, child) {
       // lessonService
@@ -512,8 +530,9 @@ class _LessonNoteViewState extends State<LessonNoteView> {
           ),
           builder: (context, snapshot) {
             final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
-            //print("첫번째 노트 작성 안내 - doc:${doc.get('uid')}");
-            if (doc.isEmpty) {
+            print(
+                "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
+            if (doc.isEmpty && dayNotelessonCnt == 0) {
               return Column(
                 children: [
                   SizedBox(
@@ -524,6 +543,28 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                   ),
                 ],
               );
+            } else if (doc.isEmpty && dayNotelessonCnt > 0) {
+              print("동작은 없는데, 일별노트는 있는 경우");
+              if (listMode == "동작별") {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Center(
+                      child: Text("노트에서 동작을 추가해보세요!"),
+                    ),
+                  ],
+                );
+              } else {
+                List<TmpLessonInfo> tmpLessonInfoList = [];
+                return NoteListDateCategory(
+                  docs: doc,
+                  userInfo: widget.userInfo,
+                  lessonService: widget.lessonService,
+                  tmpLessonInfoList: tmpLessonInfoList,
+                );
+              }
             } else {
               print("왜가리지?");
               if (listMode == "동작별") {
@@ -802,6 +843,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
           ),
           builder: (context, snapshot) {
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+
             if (docs.isEmpty) {
               return Center(child: Text(" "));
             }

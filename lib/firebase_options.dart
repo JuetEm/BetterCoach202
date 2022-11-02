@@ -47,7 +47,7 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // // 테스트 서버 설정
+  // 테스트 서버 설정
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDwOr0n-ZLITyT6s-Kw-cUMI7ZZ1BnWSWE',
     appId: '1:417922293739:web:ab19a65f42557996e103ae',
@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.webProject',
   );
 
-  //개발 서버 설정
+  // //개발 서버 설정
   // static const FirebaseOptions web = FirebaseOptions(
   //   apiKey: 'AIzaSyBaLXrANizji4uU74knRudK7hAlOrt-Jfw',
   //   appId: '1:980690811295:web:1ce0edac8212fcf98225aa',

@@ -113,6 +113,20 @@ class LessonService extends ChangeNotifier {
         .get();
   }
 
+  Future<int> countTodaynote(
+    String uid,
+    String docId,
+  ) async {
+    QuerySnapshot docRaw = await todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .get();
+    List<DocumentSnapshot> docs = docRaw.docs;
+    print('pos : ${docs.length}');
+
+    return docs.length;
+  }
+
   Future<void> createTodaynote({
     required String
         docId, // 회원 교유번호, firebase에서 생성하는 회원 (문서) 고유번호를 통해 회원 식별, 기존 전화번호르 회원 식별하는 것에서 변경
@@ -179,7 +193,20 @@ class LessonService extends ChangeNotifier {
       print("error : ${error}");
       onError();
     });
-    notifyListeners(); // 화면 갱신
+    //notifyListeners(); // 화면 갱신
+
+    //onSuccess(); // 화면 갱신
+  }
+
+  Future<void> clearTodayNote({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    print("deleteTodayNote - docId:${docId}");
+    // bucket 삭제
+    await todaylessonCollection.doc(docId).update({'todayNote': ""});
+    //notifyListeners(); // 화면 갱신
 
     //onSuccess(); // 화면 갱신
   }
@@ -201,6 +228,8 @@ class LessonService extends ChangeNotifier {
     String uid,
     String docId,
     String actionName,
+    Function onSuccess,
+    Function onError,
   ) async {
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러
@@ -222,6 +251,7 @@ class LessonService extends ChangeNotifier {
     // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
     // print(
     //     "날짜별 데이터 읽기 : uid : ${uid}-docId : ${docId}-lessonDate : ${lessonDate}");
+    print("readNotesOflessonDate : ${lessonDate}");
     return await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)

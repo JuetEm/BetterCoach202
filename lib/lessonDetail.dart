@@ -164,6 +164,8 @@ class _LessonDetailState extends State<LessonDetail> {
                                   user.uid,
                                   customUserInfo.docId,
                                   actionName,
+                                  () {},
+                                  () {},
                                 ),
                                 builder: (context, snapshot) {
                                   final docs =
