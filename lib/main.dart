@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 100,
                         child:
-                            Image.asset("assets/images/logo.png", width: 100),
+                            Image.asset("assets/images/logo.png", width: 130),
                       ),
                     ],
                   ),
@@ -221,6 +221,26 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
+                SizedBox(height: 32),
+
+                /// 기능 없는 텍스트
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '회원가입',
+                      style: TextStyle(fontSize: 14, color: Palette.gray33),
+                    ),
+                    Text(' | ',
+                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                    Text('로그인',
+                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                    Text(' | ',
+                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                    Text('이메일/비밀번호 찾기',
+                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                  ],
+                ),
                 SizedBox(height: 32),
 
                 /// 로그인 버튼

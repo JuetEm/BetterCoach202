@@ -201,7 +201,6 @@ class _LessonAddState extends State<LessonAdd> {
                       // padding: EdgeInsets.fromLTRB(14.0, 14.0, 14.0,
                       //     MediaQuery.of(context).viewInsets.bottom + 14),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // Text(
                           //     "변경 : ${MediaQuery.of(context).viewInsets.bottom.toString()}"),
@@ -1197,7 +1196,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                           const SizedBox(height: 15),
 
-                          /// 추가 버튼
+                          /// 추가버튼 UI 수정
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 0,

@@ -62,7 +62,7 @@ AppBar BaseAppBarMethod(
       style: Theme.of(context).textTheme.bodyText1!.copyWith(
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
-            color: Palette.gray66,
+            color: Palette.gray00,
           ),
     ),
     centerTitle: true,
@@ -82,14 +82,14 @@ AppBar BaseAppBarMethod(
 
 AppBar MainAppBarMethod(BuildContext context, String pageName) {
   return AppBar(
-    elevation: 1,
+    elevation: 0,
     backgroundColor: Palette.mainBackground,
     title: Text(
       pageName,
       style: Theme.of(context).textTheme.bodyText1!.copyWith(
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
-            color: Palette.gray66,
+            color: Palette.gray00,
           ),
     ),
     centerTitle: true,
@@ -98,6 +98,7 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
     //   icon: Icon(Icons.calendar_month),
     // ),
     actions: [
+      // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined))
       // IconButton(
       //   onPressed: () {
       //     print('profile');
@@ -404,7 +405,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
 
     return Container(
       constraints: BoxConstraints(
-        minHeight: 70,
+        minHeight: 60,
       ),
       child: TextField(
         focusNode: textFocus,
@@ -412,30 +413,33 @@ class _BaseTextFieldState extends State<BaseTextField> {
         readOnly: widget.showArrow,
         controller: widget.customController,
         decoration: InputDecoration(
-            labelText: widget.hint,
-            suffixIcon: widget.hint == "수행도"
-                ? null
-                : widget.hint == ""
-                    ? null
-                    : widget.showArrow
-                        ? IconButton(
-                            onPressed: () {
-                              widget.customFunction();
-                            },
-                            icon: Icon(Icons.navigate_next),
-                          )
-                        : null,
-            hintText: widget.hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                width: 0,
-                style: BorderStyle.none,
-              ),
+          labelText: widget.hint,
+          suffixIcon: widget.hint == "수행도"
+              ? null
+              : widget.hint == ""
+                  ? null
+                  : widget.showArrow
+                      ? IconButton(
+                          onPressed: () {
+                            widget.customFunction();
+                          },
+                          icon: Icon(Icons.navigate_next),
+                        )
+                      : null,
+          hintText: widget.hint,
+          hintStyle: TextStyle(
+            fontSize: 14,
+            color: Palette.gray95,
+          ),
+          border: UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              width: 1,
+              style: BorderStyle.none,
             ),
-            filled: true,
-            contentPadding: EdgeInsets.all(16),
-            fillColor: Colors.white),
+          ),
+          contentPadding: EdgeInsets.all(16),
+        ),
         onChanged: (text) {
           // 현재 텍스트필드의 텍스트를 출력
           print("First text field: $text");
@@ -774,33 +778,46 @@ class BaseContainer extends StatelessWidget {
       nameFirst = name.substring(0, 1);
     }
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(0, 20, 20, 20),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        //color: Palette.backgroundPink,
-        border: Border(
-          bottom: BorderSide(width: 1, color: Palette.grayEE),
-        ),
-      ),
-      height: 81,
+          color: Palette.mainBackground,
+          //color: Palette.backgroundPink,
+          borderRadius: BorderRadius.circular(10)),
+      height: 90,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             children: [
               Column(
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Palette.grayEE,
-                    // backgroundImage: NetworkImage(
-                    //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
-                    child: Text(
-                      nameFirst,
-                      //name == null ? "N" : name.substring(0, 1),
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Palette.gray33),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            right:
+                                BorderSide(width: 1, color: Palette.grayF5))),
+                    height: 50,
+                    width: 60,
+                    child: Icon(
+                      Icons.star_outline_rounded,
+                      size: 40,
+                      color: Palette.grayB4,
                     ),
-                  ),
+                  )
+                  // CircleAvatar(
+                  //   backgroundColor: Palette.grayEE,
+                  //   // backgroundImage: NetworkImage(
+                  //   //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
+                  //   child: Text(
+                  //     nameFirst,
+                  //     //name == null ? "N" : name.substring(0, 1),
+                  //     style: TextStyle(
+                  //         fontSize: 20.0,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Palette.gray33),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(width: 15),
@@ -813,16 +830,16 @@ class BaseContainer extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
-                      color: Palette.gray33,
+                      color: Palette.gray00,
                     ),
                   ),
                   const SizedBox(height: 5.0),
                   Text(
                     '등록일 : ${registerDate}',
                     style: TextStyle(
-                      fontSize: 12.0,
+                      fontSize: 12,
                       //fontWeight: FontWeight.bold,
-                      color: Palette.gray99,
+                      color: Palette.grayB4,
                     ),
                   ),
                 ],
@@ -830,7 +847,7 @@ class BaseContainer extends StatelessWidget {
               Spacer(flex: 1),
               Icon(
                 Icons.arrow_forward_ios,
-                color: Palette.gray99,
+                color: Palette.gray95,
                 size: 22.0,
               ),
             ],

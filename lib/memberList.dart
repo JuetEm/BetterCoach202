@@ -41,7 +41,7 @@ class _MemberListState extends State<MemberList> {
           child: Scaffold(
             backgroundColor: Palette.secondaryBackground,
             key: _scaffoldKey,
-            appBar: MainAppBarMethod(context, "회원리스트"),
+            appBar: MainAppBarMethod(context, "회원목록"),
             endDrawer: Container(
               child: Drawer(
                 child: Center(
@@ -77,125 +77,150 @@ class _MemberListState extends State<MemberList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Row(
+                      children: [
+                        Text(
+                          '총 N명',
+                          style: TextStyle(color: Palette.gray7B),
+                        ),
+                        Spacer(),
+                        Text(
+                          '최근 수업순',
+                          style: TextStyle(color: Palette.gray7B),
+                        ),
+                        Icon(Icons.keyboard_arrow_down_outlined)
+                      ],
+                    ),
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          color: Palette.mainBackground,
-                        ),
-                        child: FutureBuilder<QuerySnapshot>(
-                          //future: memberService.read(
-                          //    'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
-                          future: memberService.read(user.uid, 'name'),
-                          builder: (context, snapshot) {
-                            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                            if (docs.isEmpty) {
-                              return Center(child: Text("회원 목록을 준비 중입니다."));
-                            }
-                            return ListView.separated(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: docs.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final doc = docs[index];
-                                String docId = doc.id;
-                                String name = doc.get('name');
-                                String registerDate = doc.get('registerDate');
-                                String phoneNumber = doc.get('phoneNumber');
-                                String registerType = doc.get('registerType');
-                                String goal = doc.get('goal');
-                                String info = doc.get('info');
-                                String note = doc.get('note');
-                                String comment = doc.get('comment');
-                                bool isActive = doc.get('isActive');
-                                final UserInfo userInfo = UserInfo(
-                                  doc.id,
-                                  user.uid,
-                                  name,
-                                  registerDate,
-                                  phoneNumber,
-                                  registerType,
-                                  goal,
-                                  info,
-                                  note,
-                                  comment,
-                                  isActive,
-                                );
-                                return InkWell(
-                                  onTap: () {
-                                    // 회원 카드 선택시 MemberInfo로 이동
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MemberInfo(),
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(
-                                          arguments: userInfo,
-                                        ),
+                      child: FutureBuilder<QuerySnapshot>(
+                        //future: memberService.read(
+                        //    'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
+                        future: memberService.read(user.uid, 'name'),
+                        builder: (context, snapshot) {
+                          final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                          if (docs.isEmpty) {
+                            return Center(child: Text("회원 목록을 준비 중입니다."));
+                          }
+                          return ListView.separated(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final doc = docs[index];
+                              String docId = doc.id;
+                              String name = doc.get('name');
+                              String registerDate = doc.get('registerDate');
+                              String phoneNumber = doc.get('phoneNumber');
+                              String registerType = doc.get('registerType');
+                              String goal = doc.get('goal');
+                              String info = doc.get('info');
+                              String note = doc.get('note');
+                              String comment = doc.get('comment');
+                              bool isActive = doc.get('isActive');
+                              final UserInfo userInfo = UserInfo(
+                                doc.id,
+                                user.uid,
+                                name,
+                                registerDate,
+                                phoneNumber,
+                                registerType,
+                                goal,
+                                info,
+                                note,
+                                comment,
+                                isActive,
+                              );
+                              return InkWell(
+                                onTap: () {
+                                  // 회원 카드 선택시 MemberInfo로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MemberInfo(),
+                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                      settings: RouteSettings(
+                                        arguments: userInfo,
                                       ),
-                                    );
-                                  },
-                                  child: BaseContainer(
-                                      name: name,
-                                      registerDate: registerDate,
-                                      goal: goal,
-                                      info: info,
-                                      note: note,
-                                      phoneNumber: phoneNumber,
-                                      isActive: isActive),
-                                );
-                              },
-                              separatorBuilder: ((context, index) => Divider(
-                                    height: 0,
-                                  )),
-                            );
-                          },
-                        ),
+                                    ),
+                                  );
+                                },
+                                child: BaseContainer(
+                                    name: name,
+                                    registerDate: registerDate,
+                                    goal: goal,
+                                    info: info,
+                                    note: note,
+                                    phoneNumber: phoneNumber,
+                                    isActive: isActive),
+                              );
+                            },
+                            separatorBuilder: ((context, index) => Divider(
+                                  height: 0,
+                                )),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(
                       height: 14,
                     ),
 
-                    /// 추가 버튼
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(0),
-                        elevation: 0,
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          color: Palette.buttonOrange,
+                    //추가버튼 FloatingActionbutton으로 변경
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FloatingActionButton(
+                          onPressed: () {
+                            print("회원추가");
+                            // 저장하기 성공시 Home로 이동
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => MemberAdd()),
+                            );
+                          },
+                          child: Icon(Icons.person_add),
+                          backgroundColor: Palette.buttonOrange,
                         ),
-                        height: 60,
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "회원추가",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () {
-                        print("회원추가");
-                        // 저장하기 성공시 Home로 이동
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => MemberAdd()),
-                        );
-                      },
+                      ],
                     ),
+
+                    /// 추가 버튼
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     padding: EdgeInsets.all(0),
+                    //     elevation: 0,
+                    //     backgroundColor: Colors.transparent,
+                    //     shadowColor: Colors.transparent,
+                    //   ),
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(10.0),
+                    //       ),
+                    //       color: Palette.buttonOrange,
+                    //     ),
+                    //     height: 60,
+                    //     width: double.infinity,
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         Text(
+                    //           "회원추가",
+                    //           style: TextStyle(fontSize: 18),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    //   onPressed: () {
+                    //     print("회원추가");
+                    //     // 저장하기 성공시 Home로 이동
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (_) => MemberAdd()),
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
               ),
