@@ -55,7 +55,7 @@ AppBar BaseAppBarMethod(
     BuildContext context, String pageName, Function? customFunction) {
   return AppBar(
     // key: appBapKey,
-    elevation: 1,
+    elevation: 0,
     backgroundColor: Palette.mainBackground,
     title: Text(
       pageName,
@@ -792,6 +792,8 @@ class BaseContainer extends StatelessWidget {
             children: [
               Column(
                 children: [
+                  /// 별모양
+
                   Container(
                     decoration: BoxDecoration(
                         border: Border(
@@ -1118,3 +1120,6 @@ class GroupActionContainerDate extends StatelessWidget {
     );
   }
 }
+
+/// 별모양 위젯
+

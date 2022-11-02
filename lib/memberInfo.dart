@@ -198,7 +198,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         ;
                                       },
                                       child: Container(
-                                        height: 60,
+                                        height: 50,
                                         decoration: BoxDecoration(
                                           border: Border(
                                             bottom: BorderSide(
@@ -217,11 +217,11 @@ class _MemberInfoState extends State<MemberInfo> {
                                           child: Text(
                                             "기본정보",
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                               color: viewMode == "기본정보"
                                                   ? Palette.gray33
-                                                  : Palette.gray66,
+                                                  : Palette.gray99,
                                             ),
                                           ),
                                         ),
@@ -240,7 +240,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         ;
                                       },
                                       child: Container(
-                                        height: 60,
+                                        height: 50,
                                         decoration: BoxDecoration(
                                           border: Border(
                                             bottom: BorderSide(
@@ -259,11 +259,11 @@ class _MemberInfoState extends State<MemberInfo> {
                                           child: Text(
                                             "레슨노트",
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                               color: viewMode == "레슨노트"
                                                   ? Palette.gray33
-                                                  : Palette.gray66,
+                                                  : Palette.gray99,
                                             ),
                                           ),
                                         ),
