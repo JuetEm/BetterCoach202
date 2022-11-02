@@ -339,8 +339,6 @@ class _MemberInfoState extends State<MemberInfo> {
                     child: Text("노트추가", style: TextStyle(fontSize: 16)),
                   ),
                   onPressed: () {
-                    print("노트 추가");
-
                     lessonDate =
                         DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -355,7 +353,8 @@ class _MemberInfoState extends State<MemberInfo> {
                       lessonAddMode,
                       tmpLessonInfoList,
                     ];
-
+                    print(
+                        "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
                     // LessonAdd로 이동
                     Navigator.push(
                       context,

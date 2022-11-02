@@ -79,6 +79,7 @@ class LessonService extends ChangeNotifier {
       print("error : ${error}");
       onError();
     });
+    print("[LS] lessonNote create NofityLisners실행");
     notifyListeners(); // 화면 갱신
   }
 
@@ -161,6 +162,7 @@ class LessonService extends ChangeNotifier {
       print("error : ${error}");
       onError();
     });
+    print("[LS] createTodaynote NofityLisners실행");
     notifyListeners(); // 화면 갱신
   }
 
@@ -175,7 +177,7 @@ class LessonService extends ChangeNotifier {
       'timestamp': timestamp,
       'todayNote': todayNote,
     });
-
+    print("[LS] updateTodayNote NofityLisners실행");
     notifyListeners();
     onSuccess(); // 화면 갱신
   }
@@ -282,7 +284,7 @@ class LessonService extends ChangeNotifier {
         .orderBy("pos", descending: false)
         .get();
     List<DocumentSnapshot> docs = docRaw.docs;
-    print('pos : ${docs.length}');
+    print('[LS] countPos 실행 - pos : ${docs.length}');
 
     return docs.length;
   }
@@ -305,6 +307,7 @@ class LessonService extends ChangeNotifier {
       'grade': grade,
       'totalNote': totalNote,
     });
+    print('[LS] lesson Note 실행 - NotifyListner');
     notifyListeners(); // 화면 갱신
   }
 
@@ -315,7 +318,7 @@ class LessonService extends ChangeNotifier {
     final result = await lessonCollection.doc(docId).update({
       'totalNote': totalNote,
     });
-    print("Total Note업데이트 : ${docId} - ${totalNote}");
+    print('[LS] updateTotalNote : ${docId} - ${totalNote}');
     // 화면 갱신
   }
 
@@ -323,6 +326,7 @@ class LessonService extends ChangeNotifier {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});
+    print('[LS] updateLesson 실행 - NotifyListner');
     notifyListeners(); // 화면 갱신
   }
 
@@ -330,6 +334,7 @@ class LessonService extends ChangeNotifier {
     // bucket isActive 업데이트
 
     await lessonCollection.doc(docId).update({'isActive': isActive});
+    print('[LS] updateposition 실행 - NotifyListner');
     notifyListeners(); // 화면 갱신
   }
 
@@ -341,13 +346,13 @@ class LessonService extends ChangeNotifier {
     print("삭제할 docId : ${docId}");
     // bucket 삭제
     await lessonCollection.doc(docId).delete().then((value) {
-      print("delete then");
+      print("[LS] deleteSinglelesson 실행 - delete then");
       onSuccess(); // 화면 갱신
     }).onError((error, stackTrace) {
-      print("delete error : ${error}");
+      print("[LS] deleteSinglelesson 실행 - delete error : ${error}");
     });
+    print('[LS] deleteSinglelesson 실행 - NotifyListner');
     notifyListeners(); // 화면 갱신
-    print("화면갱신");
   }
 
   Future<void> deleteMultilesson({
@@ -357,12 +362,13 @@ class LessonService extends ChangeNotifier {
   }) async {
     // bucket 삭제
     await lessonCollection.doc(docId).delete().then((value) {
-      print("delete then");
+      print("[LS] deleteMultilesson 실행 - delete then");
       onSuccess(); // 화면 갱신
+      print('[LS] deleteMultilesson 실행 - notifyListeners');
       notifyListeners();
       // 화면 갱신
     }).onError((error, stackTrace) {
-      print("delete error : ${error}");
+      print("[LS] deleteMultilesson 실행 - delete error : ${error}");
     });
   }
 
@@ -378,11 +384,11 @@ class LessonService extends ChangeNotifier {
 
     String noteId = docRaw.docs.first.id;
     print(
-        "noteId : ${noteId}, lessonDate : ${lessonDate}, apparatusName : ${apparatusName}, actionName : ${actionName}");
+        "[LS] deleteFromActionSelect - noteId : ${noteId}, lessonDate : ${lessonDate}, apparatusName : ${apparatusName}, actionName : ${actionName}");
     await lessonCollection.doc(noteId).delete().then((value) {
-      print("delete then");
+      print("[LS] deleteFromActionSelect - delete then");
     }).onError((error, stackTrace) {
-      print("delete error : ${error}");
+      print("[LS] deleteFromActionSelect - delete error : ${error}");
     });
   }
 
@@ -401,7 +407,7 @@ class LessonService extends ChangeNotifier {
     required Function onSuccess,
     required Function onError,
   }) async {
-    print("Create Called!!");
+    print("[LS] createFromActionSelect - Create Called!!");
     if (pos == null) {
       pos = await countPos(
         uid,
@@ -428,10 +434,11 @@ class LessonService extends ChangeNotifier {
       'timestamp': timestamp,
       'pos': pos, // 순서
     }).then((value) {
-      print("value : ${value}");
+      print("[LS] createFromActionSelect then - value : ${value}");
+
       onSuccess();
     }).onError((error, stackTrace) {
-      print("error : ${error}");
+      print("[LS] createFromActionSelect then - error : ${error}");
       onError();
     });
     //notifyListeners(); // 화면 갱신
