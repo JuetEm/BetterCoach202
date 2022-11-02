@@ -87,29 +87,12 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   height: 200,
-                        //   width: 200,
-                        //   child: ClipRRect(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //     child: Image.network(
-                        //       imgUrl,
-                        //       fit: BoxFit.fill,
-                        //     ),
-                        //   ),
-                        // ),
-
-                        /// Title
-
                         Row(
                           children: [
-                            SizedBox(
-                              width: 10,
-                            ),
                             Text(
                               '기본정보',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.gray00,
                               ),
@@ -121,9 +104,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   color: Palette.buttonOrange,
                                 ))
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
 
                         /// 이름 입력창
@@ -158,7 +138,7 @@ class _MemberAddState extends State<MemberAdd> {
                 ),
                 SizedBox(height: 10),
 
-                /// 입력창2
+                /// 입력창_수강정보
                 Container(
                   color: Palette.mainBackground,
                   padding: const EdgeInsets.all(20),
@@ -166,29 +146,14 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   height: 200,
-                        //   width: 200,
-                        //   child: ClipRRect(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //     child: Image.network(
-                        //       imgUrl,
-                        //       fit: BoxFit.fill,
-                        //     ),
-                        //   ),
-                        // ),
-
                         /// Title
 
                         Row(
                           children: [
-                            SizedBox(
-                              width: 10,
-                            ),
                             Text(
                               '수강정보',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.gray00,
                               ),
@@ -197,7 +162,7 @@ class _MemberAddState extends State<MemberAdd> {
                             Text(
                               '추가',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Palette.gray00,
                               ),
                             ),
@@ -205,9 +170,6 @@ class _MemberAddState extends State<MemberAdd> {
                               width: 10,
                             )
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
 
                         /// 등록횟수입력창
@@ -234,29 +196,14 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   height: 200,
-                        //   width: 200,
-                        //   child: ClipRRect(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //     child: Image.network(
-                        //       imgUrl,
-                        //       fit: BoxFit.fill,
-                        //     ),
-                        //   ),
-                        // ),
-
                         /// Title
 
                         Row(
                           children: [
-                            SizedBox(
-                              width: 10,
-                            ),
                             Text(
                               '운동목표',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.gray00,
                               ),
@@ -271,9 +218,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   color: Palette.gray66,
                                 )),
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
 
                         /// 운동목표 입력창
@@ -289,7 +233,7 @@ class _MemberAddState extends State<MemberAdd> {
                 ),
                 SizedBox(height: 10),
 
-                /// 체형분석
+                /// 입력창_체형분석
                 Container(
                   color: Palette.mainBackground,
                   padding: const EdgeInsets.all(20),
@@ -297,29 +241,14 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   height: 200,
-                        //   width: 200,
-                        //   child: ClipRRect(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //     child: Image.network(
-                        //       imgUrl,
-                        //       fit: BoxFit.fill,
-                        //     ),
-                        //   ),
-                        // ),
-
                         /// Title
 
                         Row(
                           children: [
-                            SizedBox(
-                              width: 10,
-                            ),
                             Text(
                               '체형분석',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.gray00,
                               ),
@@ -334,9 +263,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   color: Palette.gray66,
                                 )),
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
 
                         /// 체형분석 입력창
@@ -360,29 +286,14 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   height: 200,
-                        //   width: 200,
-                        //   child: ClipRRect(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //     child: Image.network(
-                        //       imgUrl,
-                        //       fit: BoxFit.fill,
-                        //     ),
-                        //   ),
-                        // ),
-
                         /// Title
 
                         Row(
                           children: [
-                            SizedBox(
-                              width: 10,
-                            ),
                             Text(
                               '통증/상해/병력',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.gray00,
                               ),
@@ -397,9 +308,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   color: Palette.gray66,
                                 )),
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
 
                         /// 통증/상해/병력 입력창
@@ -415,7 +323,7 @@ class _MemberAddState extends State<MemberAdd> {
                 ),
                 SizedBox(height: 10),
 
-                ///특이사항
+                /// 입력창_특이사항
                 Container(
                   color: Palette.mainBackground,
                   padding: const EdgeInsets.all(20),
@@ -423,30 +331,14 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // SizedBox(
-                        //   height: 200,
-                        //   width: 200,
-                        //   child: ClipRRect(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //     child: Image.network(
-                        //       imgUrl,
-                        //       fit: BoxFit.fill,
-                        //     ),
-                        //   ),
-                        // ),
-
                         /// Title
 
-                        SizedBox(height: 10),
                         Row(
                           children: [
-                            SizedBox(
-                              width: 10,
-                            ),
                             Text(
                               '특이사항',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.gray00,
                               ),
@@ -461,9 +353,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   color: Palette.gray66,
                                 )),
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
 
                         /// 특이사항 입력창

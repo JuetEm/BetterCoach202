@@ -261,6 +261,20 @@ class _LessonAddState extends State<LessonAdd> {
                               // });
                             },
                           ),
+                          SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Text(
+                                '수업메모',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Palette.gray00,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 14),
 
                           /// 일별 메모 입력창
                           FutureBuilder<QuerySnapshot>(
@@ -361,7 +375,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         (todayNoteView == "")
                                             ? Text("일별 메모를 남겨보세요.",
                                                 style: TextStyle(
-                                                  fontSize: 16.0,
+                                                  fontSize: 14.0,
                                                   //fontWeight:
                                                   //FontWeight.bold,
                                                   color: Palette.gray99,
@@ -369,7 +383,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             : Text(
                                                 todayNoteView,
                                                 style: TextStyle(
-                                                  fontSize: 15.0,
+                                                  fontSize: 14.0,
                                                   //fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -509,8 +523,8 @@ class _LessonAddState extends State<LessonAdd> {
                           Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Palette.gray99, width: 1),
+                              border: Border.all(
+                                  color: Palette.buttonOrange, width: 1),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               ),
@@ -518,8 +532,8 @@ class _LessonAddState extends State<LessonAdd> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                top: 5,
-                                bottom: 5,
+                                top: 4,
+                                bottom: 4,
                               ),
                               child: InkWell(
                                 onTap: () async {
@@ -624,12 +638,12 @@ class _LessonAddState extends State<LessonAdd> {
                                       Text(
                                         '동작 추가',
                                         style: TextStyle(
-                                            fontSize: 16,
-                                            color: Palette.gray66),
+                                            fontSize: 14,
+                                            color: Palette.buttonOrange),
                                       ),
                                       Icon(
                                         Icons.add,
-                                        color: Palette.gray66,
+                                        color: Palette.buttonOrange,
                                         size: 12.0,
                                       ),
                                     ],
@@ -639,7 +653,7 @@ class _LessonAddState extends State<LessonAdd> {
                             ),
                           ),
 
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
 
                           // 재정렬 가능한 리스트 시작
                           FutureBuilder<QuerySnapshot>(
@@ -669,7 +683,11 @@ class _LessonAddState extends State<LessonAdd> {
 
                                   print("total노트 : ${totalNoteTextFieldDocId}");
 
-                                  return Center(child: Text("동작을 추가해 주세요."));
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 40),
+                                    child: Center(child: Text("동작을 추가해 주세요.")),
+                                  );
                                 } else {
                                   actionNullCheck = false;
                                   print(
@@ -899,7 +917,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     //color: Colors.red.withOpacity(0),
                                                     margin:
                                                         const EdgeInsets.only(
-                                                      top: 5,
+                                                      top: 10,
                                                     ),
                                                     decoration: BoxDecoration(
                                                         borderRadius:
@@ -911,7 +929,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                               Radius.circular(
                                                                   10.0),
                                                         ),
-                                                        color: Palette.grayEE
+                                                        color: Palette
+                                                            .backgroundOrange
                                                         //color: Colors.red.withOpacity(0),
                                                         ),
                                                     child: Padding(
@@ -919,11 +938,11 @@ class _LessonAddState extends State<LessonAdd> {
                                                           const EdgeInsets.only(
                                                         //top: 5,
                                                         //bottom: 5,
-                                                        left: 5.0,
-                                                        right: 16.0,
+                                                        left: 10.0,
+                                                        right: 10.0,
                                                       ),
                                                       child: SizedBox(
-                                                        height: 50,
+                                                        height: 40,
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -931,7 +950,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                           children: [
                                                             Icon(
                                                               Icons
-                                                                  .drag_indicator,
+                                                                  .drag_handle_outlined,
                                                               color: Palette
                                                                   .gray33,
                                                               size: 20.0,
@@ -942,7 +961,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                             Text(
                                                               apratusNameTrim,
                                                               style: TextStyle(
-                                                                fontSize: 16.0,
+                                                                fontSize: 14.0,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -954,7 +973,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                             Text(
                                                               actionName,
                                                               style: TextStyle(
-                                                                fontSize: 16.0,
+                                                                fontSize: 14.0,
                                                               ),
                                                             ),
                                                             Spacer(flex: 1),
@@ -1024,7 +1043,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     color: Palette.grayEE,
                                                   ),
                                                   Container(
-                                                    height: 50,
+                                                    height: 40,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius.only(
@@ -1042,7 +1061,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     child: Padding(
                                                       padding: const EdgeInsets
                                                               .fromLTRB(
-                                                          15, 0, 15, 5),
+                                                          14, 0, 14, 5),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -1054,7 +1073,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
-                                                                        16.0,
+                                                                        14.0,
                                                                     //fontWeight:
                                                                     //FontWeight.bold,
                                                                     color: Palette
@@ -1065,7 +1084,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                           Text(
                                                             totalNote,
                                                             style: TextStyle(
-                                                              fontSize: 15.0,
+                                                              fontSize: 14.0,
                                                               color: Palette
                                                                   .gray66,
 

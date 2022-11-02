@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/color.dart';
@@ -405,9 +406,10 @@ class _BaseTextFieldState extends State<BaseTextField> {
 
     return Container(
       constraints: BoxConstraints(
-        minHeight: 60,
+        minHeight: 40,
       ),
       child: TextField(
+        style: TextStyle(fontSize: 14),
         focusNode: textFocus,
         textInputAction: TextInputAction.done,
         readOnly: widget.showArrow,
@@ -438,7 +440,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
               style: BorderStyle.none,
             ),
           ),
-          contentPadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.all(4),
         ),
         onChanged: (text) {
           // 현재 텍스트필드의 텍스트를 출력
@@ -602,6 +604,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
         maxHeight: 40,
       ),
       child: TextField(
+        style: TextStyle(fontSize: 14),
         // minLines: 3,
         // maxLines: 10,
         // keyboardType: TextInputType.multiline,
@@ -751,7 +754,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
   }
 }
 
-class BaseContainer extends StatelessWidget {
+class BaseContainer extends StatefulWidget {
   const BaseContainer({
     Key? key,
     required this.name,
@@ -772,11 +775,19 @@ class BaseContainer extends StatelessWidget {
   final bool isActive;
 
   @override
+  State<BaseContainer> createState() => _BaseContainerState();
+}
+
+class _BaseContainerState extends State<BaseContainer> {
+  bool favoriteMember = false;
+
+  @override
   Widget build(BuildContext context) {
     String nameFirst = ' ';
-    if (name.length > 0) {
-      nameFirst = name.substring(0, 1);
+    if (widget.name.length > 0) {
+      nameFirst = widget.name.substring(0, 1);
     }
+
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 20, 20, 20),
       margin: const EdgeInsets.symmetric(vertical: 5),
@@ -801,11 +812,26 @@ class BaseContainer extends StatelessWidget {
                                 BorderSide(width: 1, color: Palette.grayF5))),
                     height: 50,
                     width: 60,
-                    child: Icon(
-                      Icons.star_outline_rounded,
-                      size: 40,
-                      color: Palette.grayB4,
+                    child: IconButton(
+                      icon: SvgPicture.asset(
+                        favoriteMember
+                            ? "assets/icons/favorite_selected.svg"
+                            : "assets/icons/favorite_unselected.svg",
+                      ),
+                      iconSize: 40,
+                      onPressed: () {
+                        setState(() {
+                          favoriteMember
+                              ? favoriteMember = false
+                              : favoriteMember = true;
+                        });
+                      },
                     ),
+                    // child: Image.asset(
+                    //     true
+                    //         ? "assets/icons/favorite_selected.svg"
+                    //         : "assets/icons/favorite_unselected.svg",
+                    //     width: 130),
                   )
                   // CircleAvatar(
                   //   backgroundColor: Palette.grayEE,
@@ -828,7 +854,7 @@ class BaseContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${name}',
+                    '${widget.name}',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -837,7 +863,7 @@ class BaseContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 5.0),
                   Text(
-                    '등록일 : ${registerDate}',
+                    '등록일 : ${widget.registerDate}',
                     style: TextStyle(
                       fontSize: 12,
                       //fontWeight: FontWeight.bold,
@@ -888,10 +914,10 @@ class ActionContainer extends StatelessWidget {
     if (apratusName.length > 0) {
       apratusNameTrim = apratusName.substring(0, 2);
     }
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(
-        left: 30.0,
-        right: 30.0,
+        left: 14.0,
+        right: 14.0,
         top: 5.0,
       ),
       child: SizedBox(
@@ -1028,15 +1054,16 @@ class GroupActionContainer extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.0),
+              topRight: Radius.circular(10.0),
             ),
             color: Palette.grayEE,
           ),
           child: Padding(
             padding: const EdgeInsets.only(
-              left: 30.0,
-              right: 16.0,
+              left: 14.0,
+              right: 14.0,
             ),
             child: SizedBox(
               height: 40,
@@ -1046,7 +1073,7 @@ class GroupActionContainer extends StatelessWidget {
                   Text(
                     actionName,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 16.0,
+                          fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
