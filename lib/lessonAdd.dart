@@ -31,7 +31,7 @@ List<TextEditingController> totalNoteControllers = [];
 
 // 가변적으로 TextFields DocId 집합
 List<String> totalNoteTextFieldDocId = new List.empty(growable: true);
-List<String> totalNotes = new List.empty(growable: true);
+//List<String> totalNotes = new List.empty(growable: true);
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -104,8 +104,8 @@ class _LessonAddState extends State<LessonAdd> {
   @override
   void dispose() {
     // TODO: implement dispose
-    //lessonDateController.dispose();
-    //todayNoteController.dispose();
+    lessonDateController.clear();
+    todayNoteController.clear();
     //deleteControllers();
     initState = !initState;
     super.dispose();
@@ -158,7 +158,7 @@ class _LessonAddState extends State<LessonAdd> {
         //노트 삭제를 위한 변수 초기화
         totalNoteTextFieldDocId = List<String>.filled(val, "", growable: true);
         //노트 삭제를 위한 변수 초기화
-        totalNotes = List<String>.filled(val, "", growable: true);
+        //totalNotes = List<String>.filled(val, "", growable: true);
       }).catchError((error) {
         // error가 해당 에러를 출력
         print('error: $error');
@@ -189,8 +189,6 @@ class _LessonAddState extends State<LessonAdd> {
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
-            // 페이지 초기화
-            //initInpuWidget();
           }),
           resizeToAvoidBottomInset: false,
           body: SafeArea(
@@ -280,11 +278,14 @@ class _LessonAddState extends State<LessonAdd> {
                               if (docsTodayNote.isEmpty) {
                                 todayNotedocId = "";
                                 todayNoteView = "";
+                                todayNoteController.clear;
                                 print("뿌릴 일별 노트 없음");
                               } else {
                                 todayNoteView =
                                     docsTodayNote[0].get('todayNote');
                                 todayNotedocId = docsTodayNote[0].id;
+                                todayNoteController.text =
+                                    docsTodayNote[0].get('todayNote');
                                 print("뿌릴 일별 노트 출력 완료");
                               }
                               // if (initStateTextfield) {
@@ -336,30 +337,27 @@ class _LessonAddState extends State<LessonAdd> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "일별메모",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
+                                        (todayNoteView == "")
+                                            ? Text("일별 메모를 남겨보세요.",
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  //fontWeight:
+                                                  //FontWeight.bold,
+                                                  color: Palette.gray99,
+                                                ))
+                                            : Text(
+                                                todayNoteView,
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  //fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                        ),
                                         SizedBox(width: 20),
-                                        Text(
-                                          todayNoteView,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(
-                                                fontSize: 15.0,
-                                                //fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
                                         Spacer(flex: 1),
                                         IconButton(
                                           onPressed: () {
+                                            // todayNoteController.text =
+                                            //     todayNoteView;
                                             showDialog(
                                               context: context,
                                               barrierDismissible: true,
@@ -541,6 +539,7 @@ class _LessonAddState extends State<LessonAdd> {
                                       i < tmpLessonInfoList.length;
                                       i++) {
                                     totalNoteTextFieldDocId.add("");
+                                    //totalNotes.add("");
                                   }
                                   print("동작추가시컨트롤러:${totalNoteControllers}");
                                   print(
@@ -738,8 +737,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           String grade = doc.get('grade'); //수행도
                                           String totalNote =
                                               doc.get('totalNote'); //수업총메모
-                                          totalNotes[index] =
-                                              doc.get('totalNote'); //수업총메모
+                                          //totalNotes[index] =
+                                          //    doc.get('totalNote'); //수업총메모
                                           String lessonDateTrim = " ";
                                           String apratusNameTrim = " ";
                                           int pos = doc.get('pos'); //순서
@@ -838,31 +837,21 @@ class _LessonAddState extends State<LessonAdd> {
                                                             ),
                                                             Text(
                                                               apratusNameTrim,
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        16.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             ),
                                                             const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Text(
                                                               actionName,
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        16.0,
-                                                                  ),
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                              ),
                                                             ),
                                                             Spacer(flex: 1),
                                                             IconButton(
@@ -955,35 +944,29 @@ class _LessonAddState extends State<LessonAdd> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Text(
-                                                            "동작별메모",
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText1!
-                                                                .copyWith(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                          ),
+                                                          totalNote.isEmpty
+                                                              ? Text(
+                                                                  "동작별 메모를 남겨보세요.",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    //fontWeight:
+                                                                    //FontWeight.bold,
+                                                                    color: Palette
+                                                                        .gray99,
+                                                                  ))
+                                                              : Text(""),
                                                           SizedBox(width: 20),
                                                           Text(
                                                             totalNote,
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText1!
-                                                                .copyWith(
-                                                                  fontSize:
-                                                                      15.0,
-                                                                  color: Palette
-                                                                      .gray66,
+                                                            style: TextStyle(
+                                                              fontSize: 15.0,
+                                                              color: Palette
+                                                                  .gray66,
 
-                                                                  //fontWeight: FontWeight.bold,
-                                                                ),
+                                                              //fontWeight: FontWeight.bold,
+                                                            ),
                                                           ),
                                                           Spacer(flex: 1),
                                                           IconButton(
@@ -1144,8 +1127,9 @@ class _LessonAddState extends State<LessonAdd> {
                                       context, lessonDateController, "수업일") &&
                                   ActionNullCheck == false) {
                                 //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                                await todayNoteSave(
-                                    lessonService, customUserInfo, context);
+                                //await todayNoteSave(
+                                //    lessonService, customUserInfo, context);
+                                Navigator.pop(context);
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -1201,8 +1185,6 @@ class _LessonAddState extends State<LessonAdd> {
             ));
             lessonService.notifyListeners();
 
-            // 화면 초기화
-            //initInpuWidget();
             // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
             Navigator.pop(context);
           },
@@ -1228,9 +1210,6 @@ class _LessonAddState extends State<LessonAdd> {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text("노트수정 완료"),
             ));
-            // 화면 초기화
-            //initInpuWidget();
-
             // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
             Navigator.pop(context);
           },
@@ -1272,8 +1251,9 @@ Future<void> todayNoteSave(LessonService lessonService,
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("일별노트 저장"),
           ));
-          lessonService.notifyListeners();
+          todayNoteController.clear();
           Navigator.pop(context);
+          lessonService.notifyListeners();
         },
         onError: () {
           print("저장하기 ERROR");
@@ -1298,8 +1278,6 @@ Future<void> todayNoteSave(LessonService lessonService,
         });
   }
 }
-
-void backButtonCheck() {}
 
 //Textfield 생성
 void createControllers(length) {
@@ -1377,10 +1355,6 @@ class _DeleteButtonState extends State<DeleteButton> {
               onError: () {},
             );
           }
-
-          // 페이지 초기화
-          //initInpuWidget();
-
           // 삭제하기 성공시 MemberList로 이동
           Navigator.pop(context);
         }
@@ -1420,9 +1394,6 @@ void initInpuWidget() async {
 
   print("나갈때컨트롤러:${totalNoteControllers}");
   print("나갈때노트아이디:${totalNoteTextFieldDocId}");
-
-  //lessonDateController.text = now;
-  sliderValue = 50;
 
   //가변 텍스트필드 초기에 DB값 불러와서 뿌려줌.
   print('바꿈 : ${initStateTextfield}');
