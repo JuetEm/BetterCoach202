@@ -74,7 +74,7 @@ class _MemberInfoState extends State<MemberInfo> {
       // ignore: dead_code
       return Scaffold(
         backgroundColor: Palette.secondaryBackground,
-        appBar: BaseAppBarMethod(context, "회원 관리", () {
+        appBar: BaseAppBarMethod(context, "회원관리", () {
           Navigator.push(
             context,
             MaterialPageRoute(

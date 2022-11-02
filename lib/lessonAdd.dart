@@ -1197,37 +1197,75 @@ class _LessonAddState extends State<LessonAdd> {
                           const SizedBox(height: 15),
 
                           /// 추가버튼 UI 수정
+                          ///
                           ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              backgroundColor: Palette.buttonOrange,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child:
-                                  Text("저장하기", style: TextStyle(fontSize: 18)),
-                            ),
-                            onPressed: () async {
-                              print("저장하기 버튼");
-                              print(
-                                  "저장직전 actionNullCheck : ${actionNullCheck}");
-                              // 수업일, 동작선택, 필수 입력
-                              if ((todayNoteView == "") &&
-                                  actionNullCheck == true) {
-                                //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                                //await todayNoteSave(
-                                //    lessonService, customUserInfo, context);
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Palette.buttonOrange,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14, horizontal: 90),
+                                child: Text("저장하기",
+                                    style: TextStyle(fontSize: 16)),
+                              ),
+                              onPressed: () async {
+                                print("저장하기 버튼");
+                                print(
+                                    "저장직전 actionNullCheck : ${actionNullCheck}");
+                                // 수업일, 동작선택, 필수 입력
+                                if ((todayNoteView == "") &&
+                                    actionNullCheck == true) {
+                                  //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
+                                  //await todayNoteSave(
+                                  //    lessonService, customUserInfo, context);
 
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
-                                ));
-                              } else {
-                                lessonService.notifyListeners();
-                                Navigator.pop(context);
-                              }
-                            },
-                          ),
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content:
+                                        Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
+                                  ));
+                                } else {
+                                  lessonService.notifyListeners();
+                                  Navigator.pop(context);
+                                }
+                              }),
+
+                          /// UI 수정 전
+                          // ElevatedButton(
+                          //   style: ElevatedButton.styleFrom(
+                          //     elevation: 0,
+                          //     backgroundColor: Palette.buttonOrange,
+                          //   ),
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.all(16.0),
+                          //     child:
+                          //         Text("저장하기", style: TextStyle(fontSize: 18)),
+                          //   ),
+                          //   onPressed: () async {
+                          //     print("저장하기 버튼");
+                          //     print(
+                          //         "저장직전 actionNullCheck : ${actionNullCheck}");
+                          //     // 수업일, 동작선택, 필수 입력
+                          //     if ((todayNoteView == "") &&
+                          //         actionNullCheck == true) {
+                          //       //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
+                          //       //await todayNoteSave(
+                          //       //    lessonService, customUserInfo, context);
+
+                          //       ScaffoldMessenger.of(context)
+                          //           .showSnackBar(SnackBar(
+                          //         content: Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
+                          //       ));
+                          //     } else {
+                          //       lessonService.notifyListeners();
+                          //       Navigator.pop(context);
+                          //     }
+                          //   },
+                          // ),
                           const SizedBox(height: 15),
                           lessonAddMode == "노트보기"
                               ? DeleteButton(
