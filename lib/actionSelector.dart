@@ -176,6 +176,21 @@ class _ActionSelectorState extends State<ActionSelector> {
       }
     }
 
+    // tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
+    var actionChips = [];
+    if(tmpLessonInfoList.isNotEmpty){
+      actionChips = tmpLessonInfoList.map((e) => FilterChip(label: Text(e.actionName), onSelected: ((value) {
+        setState(() {
+          e.isSelected = !e.isSelected;
+          TmpLessonInfo tmpLessonInfo = TmpLessonInfo(e.apparatusName, e.actionName, e.name, e.lessonDate, e.grade, e.totalNote, e.docId, e.uid, e.isSelected);
+          manageListContaining(tmpLessonInfoList, tmpLessonInfo, true);
+        });
+      }),selected: e.isSelected, labelStyle: TextStyle(
+            fontSize: 12,
+            color: e.isSelected ? Palette.grayFF : Palette.gray66),
+        selectedColor: Palette.buttonOrange,),).toList();
+    }
+
     print("positionFilteredSize : ${positionFilteredSize}");
     positionFilteredSize = 0;
 
@@ -535,11 +550,11 @@ class _ActionSelectorState extends State<ActionSelector> {
       removeTop: true,
       removeBottom: true,
       child: Consumer<ActionService>(builder: (context, actionService, child) {
-        if (tmpLessonInfoList.isNotEmpty) {
-          selectedActionCount = tmpLessonInfoList.length;
-          print(
-              "selectedActionCount : ${selectedActionCount}, tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
-        }
+        // if (tmpLessonInfoList.isNotEmpty) {
+        //   selectedActionCount = tmpLessonInfoList.length;
+        //   print(
+        //       "selectedActionCount : ${selectedActionCount}, tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
+        // }
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", () {
@@ -569,15 +584,15 @@ class _ActionSelectorState extends State<ActionSelector> {
             searchString = "";
             Navigator.pop(context);
           }),
-          floatingActionButton: tmpLessonInfoList.isEmpty
-              ? null
-              : FloatingActionButton.extended(
+          floatingActionButton: tmpLessonInfoList.isEmpty ? null :FloatingActionButton.extended(
                   isExtended: isFloating,
                   onPressed: () {
                     print(
                         "Floating Button onPressed Clicked! +${selectedActionCount}");
                   },
-                  label: Text("+${selectedActionCount}"),
+                  label: Text("+${selectedActionCount}", style: TextStyle(color: Palette.buttonOrange),),
+                  backgroundColor: Palette.grayFA,
+
                 ),
           body: Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -807,6 +822,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                             // print(
                             //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+                            
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
@@ -883,6 +899,26 @@ class _ActionSelectorState extends State<ActionSelector> {
                         ),
                       );
                     },
+                  ),
+                ),
+                Offstage(
+                  offstage: tmpLessonInfoList.isEmpty,
+                  child: SizedBox(
+                    height: 40,
+                    child: Center(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            for (final chip in actionChips)
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                                child: chip,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
 
@@ -1035,6 +1071,7 @@ class ActionTile extends StatefulWidget {
 class _ActionTileState extends State<ActionTile> {
   @override
   Widget build(BuildContext context) {
+    State<ActionSelector>? actionSelector = context.findAncestorStateOfType();
     TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
         widget.apparatus,
         widget.actionName,
@@ -1043,12 +1080,13 @@ class _ActionTileState extends State<ActionTile> {
         widget.grade,
         widget.totalNote,
         widget.docId,
-        widget.uid);
+        widget.uid,
+        true);
     //레슨서비스 활용
     final lessonService = context.read<LessonService>();
     // onTap 방식과는 다르게 동작해야 함
 
-    // setState(() {
+    setState(() {
     if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
       actionTileColor = Palette.buttonOrange;
       apparatusTextColor = Palette.grayFF;
@@ -1062,7 +1100,7 @@ class _ActionTileState extends State<ActionTile> {
       print(
           "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
     }
-    // });
+    });
     return Column(
       children: [
         InkWell(
@@ -1115,7 +1153,11 @@ class _ActionTileState extends State<ActionTile> {
                 );
               }
 
-              if (tmpLessonInfoList.isNotEmpty) {
+              // setState 함수는 클래스 내부에서만 다시 그린다. floatingActionButton은 actionTile 클래스를 감싸고 있는
+              // actionSelector 클래스에서 그리는 영역이기 때문에, 부모 클래스를 호출해서 setState 해주어야 한다.
+              actionSelector!.setState(() {
+                if (tmpLessonInfoList.isNotEmpty) {
+
                 isFloating = true;
                 selectedActionCount = tmpLessonInfoList.length;
                 print(
@@ -1125,6 +1167,8 @@ class _ActionTileState extends State<ActionTile> {
                 print(
                     "isFloating isEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
               }
+              });
+              
             });
             for (int i = 0; i < tmpLessonInfoList.length; i++) {
               print(
@@ -1193,6 +1237,7 @@ class TmpLessonInfo {
     this.totalNote,
     this.docId,
     this.uid,
+    this.isSelected,
   );
 
   String apparatusName;
@@ -1203,4 +1248,7 @@ class TmpLessonInfo {
   String totalNote;
   String docId;
   String uid;
+  bool isSelected;
 }
+
+
