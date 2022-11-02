@@ -222,18 +222,28 @@ class _LessonAddState extends State<LessonAdd> {
                             customFunction: () async {
                               await globalFunction.getDateFromCalendar(
                                   context, lessonDateController, "수업일");
-                              setState(() {
-                                print("수업일변경 : ${lessonDateController.text}");
-                                todayNoteController.clear();
-                                //lessonDate = lessonDateController.text;
-                                DateChangeMode = true;
+                              print(
+                                  "수업일변경 : ${lessonDateController.text}  - ${todayNoteController.text}");
+                              todayNoteController.text = "";
+                              print(
+                                  "텍스트지우기 : ${lessonDateController.text} - ${todayNoteController.text}");
+                              //lessonDate = lessonDateController.text;
+                              DateChangeMode = true;
 
-                                initInpuWidget();
-                                // refreshLessonDate(
-                                //     uid: user.uid,
-                                //     docId: customUserInfo.docId,
-                                //     lessonService: lessonService);
-                              });
+                              initInpuWidget();
+                              lessonService.notifyListeners();
+
+                              // setState(() {
+                              //   print(
+                              //       "수업일변경 : ${lessonDateController.text}  - ${todayNoteController.text}");
+                              //   todayNoteController.text = "";
+                              //   print(
+                              //       "텍스트지우기 : ${lessonDateController.text} - ${todayNoteController.text}");
+                              //   //lessonDate = lessonDateController.text;
+                              //   DateChangeMode = true;
+
+                              //   initInpuWidget();
+                              // });
                               // await refreshLessonDate(
                               //     uid: user.uid,
                               //     docId: customUserInfo.docId,
@@ -253,7 +263,8 @@ class _LessonAddState extends State<LessonAdd> {
                               lessonDateController.text,
                             ),
                             builder: (context, snapshot) {
-                              //print("문서가져오기시작");
+                              print("문서가져오기시작 : ${lessonDateController.text}");
+
                               final docsTodayNote =
                                   snapshot.data?.docs ?? []; // 문서들 가져오기
                               //print("문서가져오기끝");
@@ -275,15 +286,17 @@ class _LessonAddState extends State<LessonAdd> {
                               if (docsTodayNote.isEmpty) {
                                 todayNotedocId = "";
                                 todayNoteView = "";
-                                todayNoteController.clear;
-                                print("뿌릴 일별 노트 없음");
+                                todayNoteController.text = "";
+                                print(
+                                    "뿌릴 일별 노트 없음 : ${todayNoteController.text}");
                               } else {
                                 todayNoteView =
                                     docsTodayNote[0].get('todayNote');
                                 todayNotedocId = docsTodayNote[0].id;
                                 todayNoteController.text =
                                     docsTodayNote[0].get('todayNote');
-                                print("뿌릴 일별 노트 출력 완료");
+                                print(
+                                    "뿌릴 일별 노트 출력 완료 : ${todayNoteController.text} - ${todayNotedocId} ");
                               }
                               // if (initStateTextfield) {
                               //   if (docsTodayNote.isEmpty) {
@@ -629,6 +642,19 @@ class _LessonAddState extends State<LessonAdd> {
                                   actionNullCheck = true;
                                   print(
                                       '문서 비워져 있을경우 ActionNullCheck : ${actionNullCheck}');
+
+                                  // 이전 값들 초기화
+                                  //초기화
+                                  tmpLessonInfoList.clear();
+                                  for (var i = 0;
+                                      i < tmpLessonInfoList.length;
+                                      ++i) {
+                                    print("${tmpLessonInfoList[i].docId}");
+                                  }
+                                  totalNoteTextFieldDocId.clear();
+
+                                  print("total노트 : ${totalNoteTextFieldDocId}");
+
                                   return Center(child: Text("동작을 추가해 주세요."));
                                 } else {
                                   actionNullCheck = false;
@@ -1187,18 +1213,19 @@ class _LessonAddState extends State<LessonAdd> {
                               print(
                                   "저장직전 actionNullCheck : ${actionNullCheck}");
                               // 수업일, 동작선택, 필수 입력
-                              if (globalFunction.textNullCheck(
-                                      context, lessonDateController, "수업일") &&
-                                  actionNullCheck == false) {
+                              if ((todayNoteView == "") &&
+                                  actionNullCheck == true) {
                                 //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
                                 //await todayNoteSave(
                                 //    lessonService, customUserInfo, context);
-                                Navigator.pop(context);
-                              } else {
+
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   content: Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
                                 ));
+                              } else {
+                                lessonService.notifyListeners();
+                                Navigator.pop(context);
                               }
                             },
                           ),
@@ -1420,23 +1447,25 @@ class _DeleteButtonState extends State<DeleteButton> {
             context, '정말로 삭제하시겠습니까?', '레슨노트 전체내용을 삭제합니다.');
         if (retvaldelte == "OK") {
           if (widget.actionNullCheck) {
+            print(
+                "전체삭제 - 오늘노트삭제 : actionNullCheck - ${widget.actionNullCheck} / ${todayNotedocId}");
             await widget.lessonService.deleteTodayNote(
-              docId: widget.todayNotedocId,
+              docId: todayNotedocId,
               onSuccess: () {},
               onError: () {},
             );
           } else {
+            print("전체삭제 - 오늘노트클리어 : ${todayNotedocId} ");
             await widget.lessonService.clearTodayNote(
-              docId: widget.todayNotedocId,
+              docId: todayNotedocId,
               onSuccess: () {},
               onError: () {},
             );
           }
-          for (int idx = 0;
-              idx < widget.totalNoteTextFieldDocId.length;
-              idx++) {
+          for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+            print("전체삭제 - 동작별 노트삭제 : ${totalNoteTextFieldDocId[idx]} ");
             await widget.lessonService.deleteMultilesson(
-              docId: widget.totalNoteTextFieldDocId[idx],
+              docId: totalNoteTextFieldDocId[idx],
               onSuccess: () {},
               onError: () {},
             );
