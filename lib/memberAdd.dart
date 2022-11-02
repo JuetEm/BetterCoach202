@@ -55,7 +55,7 @@ class _MemberAddState extends State<MemberAdd> {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "회원 추가", () {
+          appBar: BaseAppBarMethod(context, "회원등록", () {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -85,7 +85,6 @@ class _MemberAddState extends State<MemberAdd> {
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // SizedBox(
                         //   height: 200,
@@ -98,6 +97,36 @@ class _MemberAddState extends State<MemberAdd> {
                         //     ),
                         //   ),
                         // ),
+
+                        /// Title
+
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              '기본정보',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Palette.gray00,
+                              ),
+                            ),
+                            Text('*',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Palette.buttonOrange,
+                                ))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
 
                         /// 이름 입력창
                         BaseTextField(
@@ -169,16 +198,21 @@ class _MemberAddState extends State<MemberAdd> {
                           customFunction: () {},
                         ),
                         Divider(height: 1),
+                        SizedBox(height: 20),
 
                         /// 추가 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                             elevation: 0,
                             backgroundColor: Palette.buttonOrange,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text("저장하기", style: TextStyle(fontSize: 18)),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 90),
+                            child: Text("저장하기", style: TextStyle(fontSize: 16)),
                           ),
                           onPressed: () {
                             print("추가 버튼");

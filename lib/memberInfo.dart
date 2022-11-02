@@ -87,17 +87,17 @@ class _MemberInfoState extends State<MemberInfo> {
                               children: [
                                 Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 33,
-                                      backgroundColor: Palette.grayEE,
-                                      child: Text(
-                                        nameFirst,
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Palette.gray33),
-                                      ),
-                                    ),
+                                    // CircleAvatar(
+                                    //   radius: 33,
+                                    //   backgroundColor: Palette.grayEE,
+                                    //   child: Text(
+                                    //     nameFirst,
+                                    //     style: TextStyle(
+                                    //         fontSize: 20.0,
+                                    //         fontWeight: FontWeight.bold,
+                                    //         color: Palette.gray33),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 SizedBox(width: 15),
@@ -306,33 +306,19 @@ class _MemberInfoState extends State<MemberInfo> {
               //   height: 14,
               // ),
 
-              /// 추가 버튼
-              Padding(
-                padding: const EdgeInsets.fromLTRB(5, 11, 5, 24),
-                child: ElevatedButton(
+              /// 추가버튼 수정
+              ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
-                      color: Palette.buttonOrange,
-                    ),
-                    height: 60,
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "노트 추가",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 90),
+                    child: Text("노트추가", style: TextStyle(fontSize: 16)),
                   ),
                   onPressed: () {
                     print("노트 추가");
@@ -361,9 +347,69 @@ class _MemberInfoState extends State<MemberInfo> {
                         settings: RouteSettings(arguments: args),
                       ),
                     );
-                  },
-                ),
+                  }),
+              SizedBox(
+                height: 32,
               ),
+
+              /// 추가 버튼
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(5, 11, 5, 24),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(30.0),
+              //       ),
+              //       backgroundColor: Colors.transparent,
+              //       shadowColor: Colors.transparent,
+              //     ),
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: Palette.buttonOrange,
+              //       ),
+              //       height: 60,
+              //       width: double.infinity,
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: [
+              //           Text(
+              //             "노트 추가",
+              //             style: TextStyle(fontSize: 18),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       print("노트 추가");
+
+              //       lessonDate =
+              //           DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+              //       List<TmpLessonInfo> tmpLessonInfoList = [];
+              //       eventList = [];
+              //       lessonAddMode = "노트 추가";
+              //       List<dynamic> args = [
+              //         userInfo,
+              //         lessonDate,
+              //         eventList,
+              //         lessonNoteId,
+              //         lessonAddMode,
+              //         tmpLessonInfoList,
+              //       ];
+
+              //       // LessonAdd로 이동
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => LessonAdd(),
+              //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              //           settings: RouteSettings(arguments: args),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
