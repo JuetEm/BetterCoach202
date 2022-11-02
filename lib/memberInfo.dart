@@ -407,14 +407,14 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              '레슨노트',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Palette.gray33,
-              ),
-            ),
+            // Text(
+            //   '레슨노트',
+            //   style: TextStyle(
+            //     fontSize: 20,
+            //     fontWeight: FontWeight.bold,
+            //     color: Palette.gray33,
+            //   ),
+            // ),
             Spacer(
               flex: 1,
             ),
@@ -465,8 +465,9 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             widget.userInfo.docId,
           ),
           builder: (context, snapshot) {
-            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-            if (docs.isEmpty) {
+            final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
+            //print("첫번째 노트 작성 안내 - doc:${doc.get('uid')}");
+            if (doc.isEmpty) {
               return Column(
                 children: [
                   SizedBox(
@@ -477,19 +478,22 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                   ),
                 ],
               );
-            }
-            if (listMode == "동작별") {
-              return NoteListActionCategory(
-                  docs: docs, userInfo: widget.userInfo);
             } else {
-              List<TmpLessonInfo> tmpLessonInfoList = [];
-              return NoteListDateCategory(
-                docs: docs,
-                userInfo: widget.userInfo,
-                lessonService: widget.lessonService,
-                tmpLessonInfoList: tmpLessonInfoList,
-              );
+              print("왜가리지?");
+              if (listMode == "동작별") {
+                return NoteListActionCategory(
+                    docs: doc, userInfo: widget.userInfo);
+              } else {
+                List<TmpLessonInfo> tmpLessonInfoList = [];
+                return NoteListDateCategory(
+                  docs: doc,
+                  userInfo: widget.userInfo,
+                  lessonService: widget.lessonService,
+                  tmpLessonInfoList: tmpLessonInfoList,
+                );
+              }
             }
+            ;
           },
         ),
         SizedBox(

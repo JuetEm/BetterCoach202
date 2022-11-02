@@ -480,7 +480,7 @@ class _PopupTextFieldState extends State<PopupTextField> {
       child: TextField(
         autofocus: true,
         //focusNode: textFocus,
-        //textInputAction: TextInputAction.done,
+        textInputAction: TextInputAction.done,
         readOnly: widget.showArrow,
         controller: widget.customController,
         decoration: InputDecoration(
