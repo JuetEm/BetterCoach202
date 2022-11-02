@@ -8,6 +8,8 @@ class Palette {
   static const Color backgroundBluegray = Color(0xFFF1F2F5);
   static const Color backgroundBlue = Color(0xFFE4F1FF);
   static const Color backgroundPink = Color(0xFFFFEBEB);
+  static const Color backgroundOrange = Color(0xFFFFE5CF);
+
   static const Color buttonOrange = Color(0xFFFF8A29);
   static const Color statusRed = Color(0xFFFF2D55);
   static const Color statusTeal = Color(0xFF5AC8FA);

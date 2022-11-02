@@ -70,7 +70,7 @@ class _ActionSelectorState extends State<ActionSelector> {
     selectedActionCount = 0;
     apparatusTextColor = Palette.gray99;
     actionNameTextColor = Palette.gray66;
-    actionTileColor = Palette.grayEE;
+    actionTileColor = Palette.mainBackground;
     lessonInfoList = [];
     tmpLessonInfoList = [];
     checkedTileList = [];
@@ -107,7 +107,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     isFloating = false;
     selectedActionCount = 0;
-    actionTileColor = Palette.grayEE;
+    actionTileColor = Palette.mainBackground;
     lessonInfoList = [];
     tmpLessonInfoList = [];
     checkedTileList = [];
@@ -182,32 +182,45 @@ class _ActionSelectorState extends State<ActionSelector> {
     var actionChips = [];
     if (tmpLessonInfoList.isNotEmpty) {
       actionChips = tmpLessonInfoList
-          .map(
-            (e) => FilterChip(
-              label: Text(e.actionName),
-              onSelected: ((value) {
-                setState(() {
-                  e.isSelected = !e.isSelected;
-                  TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
-                      e.apparatusName,
-                      e.actionName,
-                      e.name,
-                      e.lessonDate,
-                      e.grade,
-                      e.totalNote,
-                      e.docId,
-                      e.uid,
-                      e.isSelected);
-                  manageListContaining(tmpLessonInfoList, tmpLessonInfo, true);
-                });
-              }),
-              selected: e.isSelected,
-              labelStyle: TextStyle(
-                  fontSize: 12,
-                  color: e.isSelected ? Palette.grayFF : Palette.gray66),
-              selectedColor: Palette.buttonOrange,
-            ),
-          )
+          .map((e) => FilterChip(
+                label: Row(
+                  children: [
+                    Text(e.actionName),
+                    Icon(
+                      Icons.close_outlined,
+                      size: 14,
+                      color: e.isSelected ? Palette.grayFF : Palette.gray99,
+                    )
+                  ],
+                ),
+                onSelected: ((value) {
+                  setState(() {
+                    e.isSelected = !e.isSelected;
+                    TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+                        e.apparatusName,
+                        e.actionName,
+                        e.name,
+                        e.lessonDate,
+                        e.grade,
+                        e.totalNote,
+                        e.docId,
+                        e.uid,
+                        e.isSelected);
+                    manageListContaining(
+                        tmpLessonInfoList, tmpLessonInfo, true);
+                  });
+                }),
+                selected: e.isSelected,
+                labelStyle: TextStyle(
+                    fontSize: 12,
+                    color: e.isSelected ? Palette.grayFF : Palette.gray99),
+                selectedColor: Palette.buttonOrange,
+                backgroundColor: Colors.transparent,
+                showCheckmark: false,
+                side: e.isSelected
+                    ? BorderSide.none
+                    : BorderSide(color: Palette.grayB4),
+              ))
           .toList();
     }
 
@@ -218,8 +231,11 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isMatSelected ? Palette.grayFF : Palette.gray66),
+            color: isMatSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side:
+            isMatSelected ? BorderSide.none : BorderSide(color: Palette.grayB4),
         label: Text("MAT"),
         selected: isMatSelected,
         showCheckmark: false,
@@ -235,8 +251,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isReformerSelected ? Palette.grayFF : Palette.gray66),
+            color: isReformerSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isReformerSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("REFORMER"),
         selected: isReformerSelected,
         showCheckmark: false,
@@ -252,8 +272,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isCadillacSelected ? Palette.grayFF : Palette.gray66),
+            color: isCadillacSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isCadillacSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("CADILLAC"),
         selected: isCadillacSelected,
         showCheckmark: false,
@@ -270,8 +294,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isChairSelected ? Palette.grayFF : Palette.gray66),
+            color: isChairSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isChairSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("CHAIR"),
         selected: isChairSelected,
         showCheckmark: false,
@@ -287,8 +315,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isLadderBarrelSelected ? Palette.grayFF : Palette.gray66),
+            color: isLadderBarrelSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isLadderBarrelSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("LADDER BARREL"),
         selected: isLadderBarrelSelected,
         showCheckmark: false,
@@ -304,8 +336,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isSpringBoardSelected ? Palette.grayFF : Palette.gray66),
+            color: isSpringBoardSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isSpringBoardSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("SPRING BOARD"),
         selected: isSpringBoardSelected,
         showCheckmark: false,
@@ -321,8 +357,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isSpineCorrectorSelected ? Palette.grayFF : Palette.gray66),
+            color: isSpineCorrectorSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isSpineCorrectorSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("SPINE CORRECTOR"),
         selected: isSpineCorrectorSelected,
         showCheckmark: false,
@@ -338,8 +378,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray66),
+            color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isOthersApparatusSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("OTHERS"),
         selected: isOthersApparatusSelected,
         showCheckmark: false,
@@ -359,8 +403,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isSupineSelected ? Palette.grayFF : Palette.gray66),
+            color: isSupineSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isSupineSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("SUPINE"),
         selected: isSupineSelected,
         showCheckmark: false,
@@ -382,8 +430,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isProneSelected ? Palette.grayFF : Palette.gray66),
+            color: isProneSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isProneSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("PRONE"),
         selected: isProneSelected,
         showCheckmark: false,
@@ -405,8 +457,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isSittingSelected ? Palette.grayFF : Palette.gray66),
+            color: isSittingSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isSittingSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("SITTING"),
         selected: isSittingSelected,
         showCheckmark: false,
@@ -428,8 +484,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isStandingSelected ? Palette.grayFF : Palette.gray66),
+            color: isStandingSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isStandingSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("STANDING"),
         selected: isStandingSelected,
         showCheckmark: false,
@@ -451,8 +511,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isKneelingSelected ? Palette.grayFF : Palette.gray66),
+            color: isKneelingSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isKneelingSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("KNEELING"),
         selected: isKneelingSelected,
         showCheckmark: false,
@@ -474,8 +538,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isSideLyingSelected ? Palette.grayFF : Palette.gray66),
+            color: isSideLyingSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isSideLyingSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("SIDE LYING"),
         selected: isSideLyingSelected,
         showCheckmark: false,
@@ -497,8 +565,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isQuadrupedSelected ? Palette.grayFF : Palette.gray66),
+            color: isQuadrupedSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isQuadrupedSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("QUADRUPED"),
         selected: isQuadrupedSelected,
         showCheckmark: false,
@@ -520,8 +592,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isPlankSelected ? Palette.grayFF : Palette.gray66),
+            color: isPlankSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isPlankSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("PLANK"),
         selected: isPlankSelected,
         showCheckmark: false,
@@ -543,8 +619,12 @@ class _ActionSelectorState extends State<ActionSelector> {
       FilterChip(
         labelStyle: TextStyle(
             fontSize: 12,
-            color: isOthersPositionSelected ? Palette.grayFF : Palette.gray66),
+            color: isOthersPositionSelected ? Palette.grayFF : Palette.gray99),
         selectedColor: Palette.buttonOrange,
+        backgroundColor: Colors.transparent,
+        side: isOthersPositionSelected
+            ? BorderSide.none
+            : BorderSide(color: Palette.grayB4),
         label: Text("OTHERS"),
         selected: isOthersPositionSelected,
         showCheckmark: false,
@@ -649,23 +729,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //   ),
                 // ),
 
-                SizedBox(
-                  height: 40,
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (final chip in apparatusChips)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                              child: chip,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
                 // SizedBox(height: 5),
                 // SizedBox(
                 //   height: 30,
@@ -679,23 +742,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //     textAlign: TextAlign.left,
                 //   ),
                 // ),
-                SizedBox(
-                  height: 40,
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (final chip in positionChips)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                              child: chip,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+
                 SizedBox(height: 5),
                 // SizedBox(
                 //   height: 50,
@@ -730,6 +777,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                 // ),
 
                 /// 신규동작추가 버튼
+                SizedBox(height: 5),
                 SizedBox(
                   height: 40,
                   child: Padding(
@@ -759,7 +807,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                             Text(
                               "신규 동작 생성 +",
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Palette.buttonOrange,
                               ),
                             ),
@@ -787,19 +835,59 @@ class _ActionSelectorState extends State<ActionSelector> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 SizedBox(
                   height: 30,
                   width: double.infinity,
                   child: Text(
                     "동작을 선택하세요",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.left,
                   ),
                 ),
+
+                /// 기구 필터
+                SizedBox(
+                  height: 30,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for (final chip in apparatusChips)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                            child: chip,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 4),
+
+                /// 자세 필터
+                SizedBox(
+                  height: 30,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (final chip in positionChips)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                              child: chip,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+
+                /// 동작 리스트
                 Expanded(
                   child: FutureBuilder<QuerySnapshot>(
                     future: actionService.read(
@@ -925,10 +1013,11 @@ class _ActionSelectorState extends State<ActionSelector> {
                     },
                   ),
                 ),
+
                 Offstage(
                   offstage: tmpLessonInfoList.isEmpty,
                   child: SizedBox(
-                    height: 40,
+                    height: 30,
                     child: Center(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -959,19 +1048,19 @@ class _ActionSelectorState extends State<ActionSelector> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
+                          Radius.circular(48.0),
                         ),
                         color: Palette.buttonOrange,
                       ),
-                      height: 60,
-                      width: double.infinity,
+                      height: 48,
+                      width: 238,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             "동작추가",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 16),
                           ),
                         ],
                       ),
@@ -1204,7 +1293,7 @@ class _ActionTileState extends State<ActionTile> {
                   bottom: BorderSide(color: Palette.grayEE, width: 1),
                 ),
                 color: actionTileColor),
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(14.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -1212,13 +1301,18 @@ class _ActionTileState extends State<ActionTile> {
                   width: 40,
                   child: Text(
                     "${widget.apparatus}   ",
-                    style: TextStyle(color: apparatusTextColor),
+                    style: TextStyle(
+                      color: apparatusTextColor,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Text(
                   "${widget.actionName}",
                   style: TextStyle(
-                      color: actionNameTextColor, fontWeight: FontWeight.bold),
+                      color: actionNameTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
                 ),
               ],
             ),

@@ -18,7 +18,7 @@ class _MembershipState extends State<Membership> {
       child: Center(
         child:
 
-            /// 신체 특이사항/체형분석 입력창
+            /// 횟수입력
             BaseTextField(
           customController: membershipController,
           hint: "횟수입력",
