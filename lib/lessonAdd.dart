@@ -38,7 +38,7 @@ List<TmpLessonInfo> tmpLessonInfoList = new List.empty(growable: true);
 GlobalFunction globalFunction = GlobalFunction();
 
 //예외처리 : 동작이 없을 경우 저장을 막는 용도로 사용
-bool ActionSelectMode = false;
+bool actionSelectMode = false;
 
 //초기상태
 bool initState = true;
@@ -154,7 +154,7 @@ class _LessonAddState extends State<LessonAdd> {
         //Textfield 생성
         createControllers(val);
         //노트 삭제를 위한 변수 초기화
-        totalNoteTextFieldDocId = List<String>.filled(val, "", growable: true);
+        //totalNoteTextFieldDocId = List<String>.filled(val, "", growable: true);
 
         //노트 삭제를 위한 변수 초기화
         //totalNotes = List<String>.filled(val, "", growable: true);
@@ -167,6 +167,7 @@ class _LessonAddState extends State<LessonAdd> {
       print("초기화시노트아이디:${totalNoteTextFieldDocId}");
 
       initState = !initState;
+      actionSelectMode = false;
       print("INIT!!!변경 : ${initState}");
     }
     print("재빌드시 init상태 : ${initState}");
@@ -505,7 +506,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                   //동작선택 모드
                                   //bool initState = true;
-                                  ActionSelectMode = true;
+                                  actionSelectMode = true;
 
                                   final List<TmpLessonInfo> result =
                                       await Navigator.push(
@@ -527,25 +528,27 @@ class _LessonAddState extends State<LessonAdd> {
 
                                   tmpLessonInfoList = result;
 
+                                  additionalActionlength = result.length
+                                          .toInt() -
+                                      totalNoteTextFieldDocId.length.toInt();
+
                                   print(
-                                      "추가된 동작 개수 : ${tmpLessonInfoList.length.toString()}");
+                                      "추가된 동작 개수 : ${additionalActionlength.toString()}");
 
                                   // 동작추가시에 textcontroller 추가 생성
-                                  createControllers(tmpLessonInfoList.length);
+                                  createControllers(additionalActionlength);
 
-                                  for (var i = 0;
-                                      i < tmpLessonInfoList.length;
-                                      i++) {
-                                    totalNoteTextFieldDocId.add("");
-                                    //totalNotes.add("");
-                                  }
+                                  // for (var i = 0;
+                                  //     i < additionalActionlength;
+                                  //     i++) {
+                                  //   totalNoteTextFieldDocId.add("");
+                                  //   //totalNotes.add("");
+                                  // }
                                   print("동작추가시컨트롤러:${totalNoteControllers}");
                                   print(
                                       "동작추가시노트아이디:${totalNoteTextFieldDocId}");
 
                                   lessonService.notifyListeners();
-
-                                  ActionSelectMode = !ActionSelectMode;
 
                                   // if (!(result == null)) {
                                   //   print(
@@ -649,6 +652,28 @@ class _LessonAddState extends State<LessonAdd> {
                                     );
                                   }
 
+                                  //초기화
+                                  totalNoteTextFieldDocId = List<String>.filled(
+                                      docs.length, "",
+                                      growable: true);
+
+                                  TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    true,
+                                  );
+
+                                  tmpLessonInfoList =
+                                      List<TmpLessonInfo>.filled(
+                                          docs.length, tmpLessonInfo,
+                                          growable: true);
+
                                   return Container(
                                     //height: 200,
                                     decoration: BoxDecoration(
@@ -680,15 +705,15 @@ class _LessonAddState extends State<LessonAdd> {
                                               totalNoteControllers
                                                   .removeAt(oldIndex));
                                           //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
-                                          totalNoteTextFieldDocId.insert(
-                                              newIndex,
-                                              totalNoteTextFieldDocId
-                                                  .removeAt(oldIndex));
+                                          // totalNoteTextFieldDocId.insert(
+                                          //     newIndex,
+                                          //     totalNoteTextFieldDocId
+                                          //         .removeAt(oldIndex));
                                           //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
-                                          tmpLessonInfoList.insert(
-                                              newIndex,
-                                              tmpLessonInfoList
-                                                  .removeAt(oldIndex));
+                                          // tmpLessonInfoList.insert(
+                                          //     newIndex,
+                                          //     tmpLessonInfoList
+                                          //         .removeAt(oldIndex));
 
                                           for (int pos = 0;
                                               pos < docs.length;
@@ -705,7 +730,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           final doc = docs[index];
                                           print('에러포인트시작 : ${index}');
 
-                                          totalNoteTextFieldDocId.add(doc.id);
+                                          totalNoteTextFieldDocId[index] =
+                                              doc.id;
 
                                           print(
                                               "total노트 : ${totalNoteTextFieldDocId}");
@@ -741,8 +767,7 @@ class _LessonAddState extends State<LessonAdd> {
                                           String totalNote =
                                               doc.get('totalNote'); //수업총메모
 
-                                          TmpLessonInfo tmpLessonInfo =
-                                              TmpLessonInfo(
+                                          tmpLessonInfo = TmpLessonInfo(
                                             apratusName,
                                             actionName,
                                             name,
@@ -754,10 +779,28 @@ class _LessonAddState extends State<LessonAdd> {
                                             true,
                                           );
 
-                                          tmpLessonInfoList.add(tmpLessonInfo);
+                                          tmpLessonInfoList[index] =
+                                              tmpLessonInfo;
 
+                                          // if (tmpLessonInfoList.isEmpty) {
+                                          //   tmpLessonInfoList
+                                          //       .add(tmpLessonInfo);
+                                          // } else {
+                                          //   addTmpInfoList(tmpLessonInfoList,
+                                          //       tmpLessonInfo);
+                                          // }
+                                          for (var i = 0;
+                                              i < tmpLessonInfoList.length;
+                                              ++i) {
+                                            print(
+                                                "${tmpLessonInfoList[i].docId}");
+                                          }
                                           print(
-                                              "tmpLessonInfoList:${tmpLessonInfoList[index]}");
+                                              "InfoList에 내용 추가 : 길이${tmpLessonInfoList.length.toString()}");
+                                          //tmpLessonInfoList.add(tmpLessonInfo);
+
+                                          //print(
+                                          //    "tmpLessonInfoList:${tmpLessonInfoList[index]}");
                                           //totalNotes[index] =
                                           //    doc.get('totalNote'); //수업총메모
                                           String lessonDateTrim = " ";
@@ -899,8 +942,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                                                 docId: doc.id,
                                                                                 onSuccess: () {
                                                                                   totalNoteControllers.removeAt(index);
-                                                                                  totalNoteTextFieldDocId.removeAt(index);
-                                                                                  tmpLessonInfoList.removeAt(index);
+                                                                                  //totalNoteTextFieldDocId.removeAt(index);
+                                                                                  //tmpLessonInfoList.removeAt(index);
 
                                                                                   //print("삭제시시컨트롤러:${totalNoteControllers}");
                                                                                   //print("삭제시노트아이디:${totalNoteTextFieldDocId}");
@@ -1453,9 +1496,20 @@ void initInpuWidget() async {
 //   // //Textfield 생성
 //   // createControllers(lenssonData);
 //   // //노트 삭제를 위한 변수 초기화
-//   // totalNoteTextFieldDocId =
-//   //     List<String>.filled(lenssonData, "", growable: true);
 
 //   // print("초기화시컨트롤러:${totalNoteControllers}");
 //   // print("초기화시노트아이디:${totalNoteTextFieldDocId}");
 // }
+
+void addTmpInfoList(
+    List<TmpLessonInfo> tmpLessonInfoList, TmpLessonInfo tmpLessonInfo) {
+  bool isNew = true;
+  for (int i = 0; i < tmpLessonInfoList.length; i++) {
+    if (tmpLessonInfoList[i].docId == tmpLessonInfo.docId) {
+      isNew = false;
+    }
+  }
+  if (isNew) {
+    tmpLessonInfoList.add(tmpLessonInfo);
+  }
+}
