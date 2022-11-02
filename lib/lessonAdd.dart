@@ -105,6 +105,8 @@ class _LessonAddState extends State<LessonAdd> {
     clearTotalNoteControllers();
     totalNoteTextFieldDocId.clear();
     tmpLessonInfoList.clear();
+    todayNotedocId = "";
+    todayNoteView = "";
 
     //deleteControllers();
     initState = true;
@@ -144,7 +146,7 @@ class _LessonAddState extends State<LessonAdd> {
         lessonDateController.text = lessonDate;
       } else {
         lessonDate = lessonDateController.text;
-        DateChangeMode = !DateChangeMode;
+        DateChangeMode = false;
       }
       print("Date : ${lessonDate}");
 
@@ -235,10 +237,10 @@ class _LessonAddState extends State<LessonAdd> {
                               initState = true;
                               print(
                                   "[LA] 수업일변경 : lessonDateController ${lessonDateController.text} / todayNoteController ${todayNoteController.text} / DateChangeMode ${DateChangeMode}");
-                              initInpuWidget();
-                              print(
-                                  "[LA] 수업일변경 - notifyListeners / ${initState}");
-                              lessonService.notifyListeners();
+                              initInpuWidget(
+                                  uid: user.uid,
+                                  docId: customUserInfo.docId,
+                                  lessonService: lessonService);
 
                               // setState(() {
                               //   print(
@@ -304,12 +306,15 @@ class _LessonAddState extends State<LessonAdd> {
                               // }
 
                               print(
-                                  "[LA] 일별노트 출력 시작 : 유/무 ${docsTodayNote.isEmpty} / todayNotedocId ${todayNotedocId} / todayNoteView ${todayNoteView} / todayNotedocId ${todayNotedocId}");
+                                  "[LA] 일별노트 출력 시작 : 유/무 ${docsTodayNote.isEmpty} / todayNotedocId ${todayNotedocId} / todayNoteView ${todayNoteView} / todayNoteController ${todayNoteController}");
 
                               if (docsTodayNote.isEmpty) {
-                                // todayNotedocId = "";
-                                // todayNoteView = "";
-                                // todayNoteController.text = "";
+                                todayNotedocId = "";
+                                todayNoteView = "";
+                                WidgetsBinding.instance.addPostFrameCallback(
+                                    (_) => todayNoteController.clear());
+                                //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
+                                //todayNoteController.text = "";
                                 print(
                                     "뿌릴 일별 노트 없음 : ${todayNoteController.text}");
                               } else {
@@ -322,7 +327,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     "뿌릴 일별 노트 출력 완료 : ${todayNoteController.text} - ${todayNotedocId} ");
                               }
                               print(
-                                  "[LA] 일별노트 출력 결과 : todayNotedocId ${todayNotedocId} / todayNoteView ${todayNoteView} / todayNotedocId ${todayNotedocId}");
+                                  "[LA] 일별노트 출력 결과 : todayNotedocId ${todayNotedocId} / todayNoteView ${todayNoteView} / todayNoteController ${todayNoteController}");
                               // if (initStateTextfield) {
                               //   if (docsTodayNote.isEmpty) {
                               //     todayNotedocId = "";
@@ -1264,7 +1269,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 } else {
                                   print(
                                       "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / initState : ${initState}");
-                                  DateChangeMode = !DateChangeMode;
+                                  DateChangeMode = false;
                                   lessonService.notifyListeners();
                                   Navigator.pop(context);
                                 }
@@ -1558,20 +1563,37 @@ class _DeleteButtonState extends State<DeleteButton> {
   }
 }
 
-void initInpuWidget() async {
-  globalFunction.clearTextEditController([
-    todayNoteController,
-  ]);
-  //DateChangeMode = !DateChangeMode;
-  //추가 : totalNoteControllers들은 어떻게 초기화.??
+void initInpuWidget({
+  required String uid,
+  required String docId,
+  required LessonService lessonService,
+}) async {
+  todayNoteController.text = "";
   clearTotalNoteControllers();
   totalNoteTextFieldDocId.clear();
   tmpLessonInfoList.clear();
+  todayNotedocId = "";
+  todayNoteView = "";
+  DateChangeMode = false;
 
-  print("[LA] 수업일변경 - initInpuWidget)");
   print(
-      "[LA] 수업일변경 - totalNoteControllers${totalNoteControllers} / totalNoteTextFieldDocId${totalNoteTextFieldDocId} / tmpLessonInfoList${tmpLessonInfoList})");
+      "[LA] 수업일변경 - initInpuWidget/초기화 : ${todayNoteController} / ${totalNoteTextFieldDocId} / ${tmpLessonInfoList}");
 
+  lessonDate = lessonDateController.text;
+
+  int lenssonData = await lessonService.countPos(
+    uid,
+    docId,
+    lessonDateController.text,
+  );
+
+  //Textfield 생성
+  createControllers(lenssonData);
+
+  print(
+      "[LA] 수업일변경 - initInpuWidget/재생성 totalNoteControllers${totalNoteControllers} / totalNoteTextFieldDocId${totalNoteTextFieldDocId} / tmpLessonInfoList${tmpLessonInfoList})");
+  print("[LA] 수업일변경 - notifyListeners / ${initState}");
+  lessonService.notifyListeners();
   // 에러 발생해서 정리..
 //     The following assertion was thrown while dispatching notifications for TextEditingController:
 // setState() or markNeedsBuild() called during build.
@@ -1590,18 +1612,18 @@ void initInpuWidget() async {
 //   lessonDate = lessonDateController.text;
 //   print("Date : ${lessonDate}");
 
-//   // int lenssonData = await lessonService.countPos(
-//   //   uid,
-//   //   docId,
-//   //   lessonDateController.text,
-//   // );
+//   int lenssonData = await lessonService.countPos(
+//     uid,
+//     docId,
+//     lessonDateController.text,
+//   );
 
-//   // //Textfield 생성
-//   // createControllers(lenssonData);
-//   // //노트 삭제를 위한 변수 초기화
+//   //Textfield 생성
+//   createControllers(lenssonData);
+//   //노트 삭제를 위한 변수 초기화
 
-//   // print("초기화시컨트롤러:${totalNoteControllers}");
-//   // print("초기화시노트아이디:${totalNoteTextFieldDocId}");
+//   print("초기화시컨트롤러:${totalNoteControllers}");
+//   print("초기화시노트아이디:${totalNoteTextFieldDocId}");
 // }
 
 void addTmpInfoList(
