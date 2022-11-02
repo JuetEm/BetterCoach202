@@ -919,6 +919,7 @@ class LessonCard extends StatelessWidget {
                   tmpLessonInfoList,
                 ];
                 print("args.length : ${args.length}");
+                print("[MI]LessonCard-lessonDate : ${lessonDate}");
                 Navigator.push(
                   context,
                   MaterialPageRoute(

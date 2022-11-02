@@ -127,7 +127,9 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonNoteId = argsList[3];
     String lessonAddMode = argsList[4];
     tmpLessonInfoList = argsList[5];
-    print('화면 리프레시 actionNullCheck : ${actionNullCheck}');
+
+    print(
+        '[LA] 시작 initState - ${initState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
 
     if (initState) {
       print("INIT!!! : ${initState}, DateChange:${DateChangeMode}");
@@ -401,6 +403,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                           showArrow: false,
                                                           customFunction:
                                                               () async {
+                                                            print(
+                                                                "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
                                                             //일별 노트 저장
                                                             await todayNoteSave(
                                                                 lessonService,
@@ -519,7 +523,8 @@ class _LessonAddState extends State<LessonAdd> {
                                   //동작선택 모드
                                   //bool initState = true;
                                   actionSelectMode = true;
-
+                                  print(
+                                      "[LA] 동작추가시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
                                   final List<TmpLessonInfo> result =
                                       await Navigator.push(
                                     context,
@@ -1213,7 +1218,8 @@ class _LessonAddState extends State<LessonAdd> {
                                     style: TextStyle(fontSize: 16)),
                               ),
                               onPressed: () async {
-                                print("저장하기 버튼");
+                                print(
+                                    "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
                                 print(
                                     "저장직전 actionNullCheck : ${actionNullCheck}");
                                 // 수업일, 동작선택, 필수 입력
@@ -1229,6 +1235,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
                                   ));
                                 } else {
+                                  DateChangeMode = !DateChangeMode;
                                   lessonService.notifyListeners();
                                   Navigator.pop(context);
                                 }
@@ -1368,6 +1375,8 @@ Future<void> totalNoteSingleSave(
 Future<void> todayNoteSave(LessonService lessonService,
     CustomUserInfo.UserInfo customUserInfo, BuildContext context) async {
   if (todayNotedocId == "") {
+    print(
+        "[LA] todayNoteSave 새노트생성 ${lessonDateController.text} / ${todayNoteController.text}");
     // for (int idx = 0;
     await lessonService.createTodaynote(
         docId: customUserInfo.docId,
@@ -1380,15 +1389,16 @@ Future<void> todayNoteSave(LessonService lessonService,
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("일별노트 저장"),
           ));
-          todayNoteController.clear();
+          //todayNoteController.clear();
           Navigator.pop(context);
-          lessonService.notifyListeners();
+          //lessonService.notifyListeners();
         },
         onError: () {
           print("저장하기 ERROR");
         });
   } else {
-    print("문서가 있는 경우.. 노트 저장");
+    print(
+        "[LA] todayNoteSave 노트수정 ${todayNotedocId} / ${lessonDateController.text} / ${todayNoteController.text}");
 
     await lessonService.updateTodayNote(
         docId: todayNotedocId,

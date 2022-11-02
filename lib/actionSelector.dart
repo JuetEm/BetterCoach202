@@ -133,6 +133,8 @@ class _ActionSelectorState extends State<ActionSelector> {
     final String totalNote = args[4];
     tmpLessonInfoList = args[5];
 
+    print("[AS] 시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
+
     if (initStateVar) {
       switch (currentApparatus) {
         case "REFORMER":
@@ -178,17 +180,35 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     // tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
     var actionChips = [];
-    if(tmpLessonInfoList.isNotEmpty){
-      actionChips = tmpLessonInfoList.map((e) => FilterChip(label: Text(e.actionName), onSelected: ((value) {
-        setState(() {
-          e.isSelected = !e.isSelected;
-          TmpLessonInfo tmpLessonInfo = TmpLessonInfo(e.apparatusName, e.actionName, e.name, e.lessonDate, e.grade, e.totalNote, e.docId, e.uid, e.isSelected);
-          manageListContaining(tmpLessonInfoList, tmpLessonInfo, true);
-        });
-      }),selected: e.isSelected, labelStyle: TextStyle(
-            fontSize: 12,
-            color: e.isSelected ? Palette.grayFF : Palette.gray66),
-        selectedColor: Palette.buttonOrange,),).toList();
+    if (tmpLessonInfoList.isNotEmpty) {
+      actionChips = tmpLessonInfoList
+          .map(
+            (e) => FilterChip(
+              label: Text(e.actionName),
+              onSelected: ((value) {
+                setState(() {
+                  e.isSelected = !e.isSelected;
+                  TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+                      e.apparatusName,
+                      e.actionName,
+                      e.name,
+                      e.lessonDate,
+                      e.grade,
+                      e.totalNote,
+                      e.docId,
+                      e.uid,
+                      e.isSelected);
+                  manageListContaining(tmpLessonInfoList, tmpLessonInfo, true);
+                });
+              }),
+              selected: e.isSelected,
+              labelStyle: TextStyle(
+                  fontSize: 12,
+                  color: e.isSelected ? Palette.grayFF : Palette.gray66),
+              selectedColor: Palette.buttonOrange,
+            ),
+          )
+          .toList();
     }
 
     print("positionFilteredSize : ${positionFilteredSize}");
@@ -582,17 +602,21 @@ class _ActionSelectorState extends State<ActionSelector> {
             positionArray = [];
 
             searchString = "";
-            Navigator.pop(context);
+            Navigator.pop(context, tmpLessonInfoList);
           }),
-          floatingActionButton: tmpLessonInfoList.isEmpty ? null :FloatingActionButton.extended(
+          floatingActionButton: tmpLessonInfoList.isEmpty
+              ? null
+              : FloatingActionButton.extended(
                   isExtended: isFloating,
                   onPressed: () {
                     print(
                         "Floating Button onPressed Clicked! +${selectedActionCount}");
                   },
-                  label: Text("+${selectedActionCount}", style: TextStyle(color: Palette.buttonOrange),),
+                  label: Text(
+                    "+${selectedActionCount}",
+                    style: TextStyle(color: Palette.buttonOrange),
+                  ),
                   backgroundColor: Palette.grayFA,
-
                 ),
           body: Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -822,7 +846,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                             // print(
                             //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
-                            
+
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
@@ -912,7 +936,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                           children: [
                             for (final chip in actionChips)
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
                                 child: chip,
                               ),
                           ],
@@ -1087,19 +1112,19 @@ class _ActionTileState extends State<ActionTile> {
     // onTap 방식과는 다르게 동작해야 함
 
     setState(() {
-    if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
-      actionTileColor = Palette.buttonOrange;
-      apparatusTextColor = Palette.grayFF;
-      actionNameTextColor = Palette.grayFF;
-      print(
-          "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
-    } else {
-      actionTileColor = Palette.grayFA;
-      apparatusTextColor = Palette.gray99;
-      actionNameTextColor = Palette.gray66;
-      print(
-          "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
-    }
+      if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, false)) {
+        actionTileColor = Palette.buttonOrange;
+        apparatusTextColor = Palette.grayFF;
+        actionNameTextColor = Palette.grayFF;
+        print(
+            "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+      } else {
+        actionTileColor = Palette.grayFA;
+        apparatusTextColor = Palette.gray99;
+        actionNameTextColor = Palette.gray66;
+        print(
+            "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+      }
     });
     return Column(
       children: [
@@ -1157,18 +1182,16 @@ class _ActionTileState extends State<ActionTile> {
               // actionSelector 클래스에서 그리는 영역이기 때문에, 부모 클래스를 호출해서 setState 해주어야 한다.
               actionSelector!.setState(() {
                 if (tmpLessonInfoList.isNotEmpty) {
-
-                isFloating = true;
-                selectedActionCount = tmpLessonInfoList.length;
-                print(
-                    "isFloating isNotEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
-              } else {
-                isFloating = false;
-                print(
-                    "isFloating isEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
-              }
+                  isFloating = true;
+                  selectedActionCount = tmpLessonInfoList.length;
+                  print(
+                      "isFloating isNotEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
+                } else {
+                  isFloating = false;
+                  print(
+                      "isFloating isEmpty : tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
+                }
               });
-              
             });
             for (int i = 0; i < tmpLessonInfoList.length; i++) {
               print(
@@ -1250,5 +1273,3 @@ class TmpLessonInfo {
   String uid;
   bool isSelected;
 }
-
-
