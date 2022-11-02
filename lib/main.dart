@@ -37,7 +37,7 @@ late TextEditingController emailController;
 late TextEditingController passwordController;
 
 TextEditingController switchController =
-    TextEditingController(text: "이메일 / 비밀번호 기억하기");
+    TextEditingController(text: "로그인정보 기억하기");
 
 String? userEmail;
 String? userPassword;
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
           // 디자인적 요소 더하기 위해 appBar 제거
           // appBar: BaseAppBarMethod(context, "로그인", null),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -134,68 +134,37 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20),
+                      SizedBox(height: 100),
                       SizedBox(
                         child: Column(
                           children: [
                             Text(
-                              "Better Coach",
-                              style: GoogleFonts.pacifico(
-                                textStyle: TextStyle(height: 1),
-                                fontSize: 48,
-                                color: Palette.buttonOrange,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              "필라테스 강사를 위한 레슨 기록앱",
+                              user == null
+                                  ? "당신의 레슨이 더욱 의미있게"
+                                  : "${user.email}님 안녕하세요 👋",
                               style: TextStyle(
-                                  fontSize: 14, color: Palette.gray66),
+                                  fontSize: 20, color: Palette.textOrange),
+                            ),
+                            Text(
+                              "필라테스 강사의 레슨 기록앱",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Palette.textOrange,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
                       SizedBox(
-                        height: 150,
-                        child: Image.asset("assets/images/login_main.png",
-                            width: 200),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        child: Text(
-                          user == null
-                              ? "Pilates is complete coordination of body, mind and spirit."
-                              : "${user.email}님 안녕하세요 👋",
-                          style: user == null
-                              ? TextStyle(fontSize: 12, color: Palette.gray66)
-                              : TextStyle(fontSize: 14),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        height: 40,
-                        child: Text(
-                          "Joseph Pilates",
-                          style: user == null
-                              ? TextStyle(fontSize: 12)
-                              : TextStyle(fontSize: 14),
-                          textAlign: TextAlign.center,
-                        ),
+                        height: 100,
+                        child:
+                            Image.asset("assets/images/logo.png", width: 100),
                       ),
                     ],
                   ),
                 ),
 
-                Text(
-                  '로그인',
-                  style: TextStyle(
-                      color: Palette.gray66,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
+                SizedBox(height: 100),
 
                 /// 이메일
                 LoginTextField(
@@ -223,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: SizedBox(
                     height: 40,
-                    width: 250,
+                    width: 200,
                     child: TextField(
                       readOnly: true,
                       controller: switchController,
@@ -257,9 +226,13 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
-                    child: Text("로그인", style: TextStyle(fontSize: 18)),
+                    child: Text("로그인", style: TextStyle(fontSize: 16)),
                   ),
                   style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
                     elevation: 0,
                     backgroundColor: Palette.buttonOrange,
                   ),
@@ -273,10 +246,13 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
-                    child: Text("회원가입", style: TextStyle(fontSize: 18)),
+                    child: Text("회원가입", style: TextStyle(fontSize: 16)),
                   ),
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
                     backgroundColor: Palette.buttonOrange,
                   ),
                   onPressed: () {
