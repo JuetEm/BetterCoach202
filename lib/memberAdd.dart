@@ -11,6 +11,58 @@ import 'memberList.dart';
 import 'member_service.dart';
 import 'membershipList.dart';
 
+final goalList = [
+  "바디프로필",
+  "다이어트",
+  "유연성 향상",
+  "자세개선",
+  "운동능력 향상",
+  "통증개선",
+  "건강증진",
+  "바디라인 개선",
+  "기타",
+];
+List<String> selectedGoals = [];
+List<Color> goalTileColorList = [];
+List<Color> goalTextColorList = [];
+
+final bodyAnalyzedList = [
+  "거북목",
+  "일자목",
+  "라운드 숄더",
+  "어깨 불균형",
+  "플랫백",
+  "흉추측만",
+  "요추측만",
+  "스웨이백",
+  "척추전만",
+  "척추후만",
+  "골반틀어짐",
+  "O 다리",
+  "X 다리",
+  "요족",
+  "평발",
+];
+List<String> selelctedAnalyzedList = [];
+List<Color> bodyTileColorList = [];
+List<Color> bodyTextColorList = [];
+
+final medicalHistoryList = [
+  "목",
+  "어깨",
+  "골반",
+  "팔꿈치",
+  "손목",
+  "허리",
+  "고관절",
+  "무릎",
+  "발목",
+  "기타"
+];
+List<String> selectedHistoryList = [];
+List<Color> historyTileColorList = [];
+List<Color> historyTextColorList = [];
+
 GlobalFunction globalFunction = GlobalFunction();
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
@@ -19,6 +71,8 @@ TextEditingController registerDateController = TextEditingController(text: now);
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController registerTypeController = TextEditingController();
 TextEditingController goalController = TextEditingController();
+TextEditingController bodyAnalyzeController = TextEditingController();
+TextEditingController medicalHistoryController = TextEditingController();
 TextEditingController infoController = TextEditingController();
 TextEditingController noteController = TextEditingController();
 TextEditingController commentController = TextEditingController();
@@ -69,6 +123,8 @@ class _MemberAddState extends State<MemberAdd> {
               phoneNumberController,
               registerTypeController,
               goalController,
+              bodyAnalyzeController,
+              medicalHistoryController,
               infoController,
               noteController,
               commentController,
@@ -200,44 +256,59 @@ class _MemberAddState extends State<MemberAdd> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         /// Title
-
-                        Row(
-                          children: [
-                            Text(
-                              '운동목표',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Palette.gray00,
-                              ),
-                            ),
-                            Spacer(),
-                            IconButton(
-                                onPressed: () {
-                                  // Bottom Sheet 함수 작성
-                                },
-                                icon: Icon(
-                                  Icons.expand_more_outlined,
-                                  color: Palette.gray66,
-                                )),
-                          ],
-                        ),
+                        /// 운동 목표
+                        customGoalGridView(
+                            context,
+                            goalController,
+                            "운동목표",
+                            "목표를 선택해주세요.",
+                            goalList,
+                            selectedGoals,
+                            goalTileColorList,
+                            goalTextColorList),
 
                         /// 운동목표 입력창
-                        BaseModalBottomSheetButton(bottomModalController: goalController, hint: "운동목표", showButton: true, optionList: ["바디프로필","다이어트","유연성 향상","자세개선","운동능력 향상","통증개선","건강증진","바디라인 개선","기타",], customFunction: 
-                        (){}),
-
-                        /// 신체 특이사항/체형분석 입력창
                         BaseTextField(
-                          customController: noteController,
+                          customController: goalController,
+                          hint: "운동목표",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
+
+                        /// 체형분석
+                        customBodyGridView(
+                          context,
+                          bodyAnalyzeController,
+                          "체형분석",
+                          "체형 특이사항을 선택해주세요.",
+                          bodyAnalyzedList,
+                          selelctedAnalyzedList,
+                          bodyTileColorList,
+                          bodyTextColorList,
+                        ),
+
+                        /// 체형분석 입력창
+                        BaseTextField(
+                          customController: bodyAnalyzeController,
                           hint: "체형분석",
                           showArrow: false,
                           customFunction: () {},
                         ),
 
-                        /// 체형분석 입력창
+                        /// 통증/상해/병력
+                        customMedicalHistoryGridView(
+                            context,
+                            medicalHistoryController,
+                            "통증/상해",
+                            "통증/상해 부위를 선택해주세요.",
+                            medicalHistoryList,
+                            selectedHistoryList,
+                            historyTileColorList,
+                            historyTextColorList),
+
+                        /// 통증/상해/병력 입력창
                         BaseTextField(
-                          customController: infoController,
+                          customController: medicalHistoryController,
                           hint: "통증/상해/병력",
                           showArrow: false,
                           customFunction: () {},
@@ -332,6 +403,8 @@ class _MemberAddState extends State<MemberAdd> {
                           phoneNumber: phoneNumberController.text,
                           registerType: registerTypeController.text,
                           goal: goalController.text,
+                          bodyAnalyzed: bodyAnalyzeController.text,
+                          medicalHistories: medicalHistoryController.text,
                           info: infoController.text,
                           note: noteController.text,
                           comment: commentController.text,
@@ -353,6 +426,8 @@ class _MemberAddState extends State<MemberAdd> {
                               phoneNumberController,
                               registerTypeController,
                               goalController,
+                              bodyAnalyzeController,
+                              medicalHistoryController,
                               infoController,
                               noteController,
                               commentController,
@@ -393,6 +468,483 @@ class _MemberAddState extends State<MemberAdd> {
           //bottomNavigationBar: BaseBottomAppBar(),
         );
       },
+    );
+  }
+
+  Row customGoalGridView(
+      BuildContext context,
+      TextEditingController customController,
+      String bigTitle,
+      String bottomSheetTitle,
+      List<String> objectList,
+      List<String> resultObjectList,
+      List<Color> customTileColorList,
+      List<Color> customTextColorList) {
+    return Row(
+      children: [
+        Text(
+          bigTitle,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Palette.gray00,
+          ),
+        ),
+        Spacer(),
+        IconButton(
+            onPressed: () {
+              // Bottom Sheet 함수 작성
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Palette.secondaryBackground,
+                  context: context,
+                  builder: ((context) {
+                    return StatefulBuilder(
+                        builder: (context, StateSetter stateSetter) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        bottomSheetTitle,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Palette.gray66,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(
+                                          "resultObjectList : ${resultObjectList}");
+                                      String goalsSum = "";
+                                      for (int i = 0;
+                                          i < resultObjectList.length;
+                                          i++) {
+                                        if (i == resultObjectList.length - 1) {
+                                          goalsSum += resultObjectList[i];
+                                        } else {
+                                          goalsSum +=
+                                              resultObjectList[i] + ", ";
+                                        }
+                                      }
+                                      customController.text = goalsSum;
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '완료',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Palette.textBlue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: objectList.length,
+                                itemBuilder: ((context, index) {
+                                  var value = objectList[index];
+                                  customTileColorList.add(Palette.grayEE);
+                                  customTextColorList.add(Palette.gray00);
+                                  // return Text(widget.optionList[index]);
+                                  return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 10, 10, 10),
+                                      child: InkWell(
+                                        onTap: () {
+                                          stateSetter(
+                                            () {
+                                              setState(() {
+                                                if (resultObjectList
+                                                    .contains(value)) {
+                                                  customTileColorList[index] =
+                                                      Palette.grayEE;
+                                                  customTextColorList[index] =
+                                                      Palette.gray00;
+                                                  resultObjectList
+                                                      .remove(value);
+                                                } else {
+                                                  customTileColorList[index] =
+                                                      Palette.buttonOrange;
+                                                  customTextColorList[index] =
+                                                      Palette.grayFF;
+                                                  resultObjectList.add(value);
+                                                }
+                                              });
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                                color:
+                                                    customTileColorList[index]),
+                                            child: Center(
+                                                child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: customTextColorList[
+                                                      index]),
+                                            ))),
+                                      ));
+                                }),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 3 / 1,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  }));
+            },
+            icon: Icon(
+              Icons.expand_more_outlined,
+              color: Palette.gray66,
+            )),
+      ],
+    );
+  }
+
+  Row customBodyGridView(
+      BuildContext context,
+      TextEditingController customController,
+      String bigTitle,
+      String bottomSheetTitle,
+      List<String> objectList,
+      List<String> resultObjectList,
+      List<Color> customTileColorList,
+      List<Color> customTextColorList) {
+    return Row(
+      children: [
+        Text(
+          bigTitle,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Palette.gray00,
+          ),
+        ),
+        Spacer(),
+        IconButton(
+            onPressed: () {
+              // Bottom Sheet 함수 작성
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Palette.secondaryBackground,
+                  context: context,
+                  builder: ((context) {
+                    return StatefulBuilder(
+                        builder: (context, StateSetter stateSetter) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        bottomSheetTitle,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Palette.gray66,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(
+                                          "resultObjectList : ${resultObjectList}");
+                                      String goalsSum = "";
+                                      for (int i = 0;
+                                          i < resultObjectList.length;
+                                          i++) {
+                                        if (i == resultObjectList.length - 1) {
+                                          goalsSum += resultObjectList[i];
+                                        } else {
+                                          goalsSum +=
+                                              resultObjectList[i] + ", ";
+                                        }
+                                      }
+                                      customController.text = goalsSum;
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '완료',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Palette.textBlue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: objectList.length,
+                                itemBuilder: ((context, index) {
+                                  var value = objectList[index];
+                                  customTileColorList.add(Palette.grayEE);
+                                  customTextColorList.add(Palette.gray00);
+                                  // return Text(widget.optionList[index]);
+                                  return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 10, 10, 10),
+                                      child: InkWell(
+                                        onTap: () {
+                                          stateSetter(
+                                            () {
+                                              setState(() {
+                                                if (resultObjectList
+                                                    .contains(value)) {
+                                                  customTileColorList[index] =
+                                                      Palette.grayEE;
+                                                  customTextColorList[index] =
+                                                      Palette.gray00;
+                                                  resultObjectList
+                                                      .remove(value);
+                                                } else {
+                                                  customTileColorList[index] =
+                                                      Palette.buttonOrange;
+                                                  customTextColorList[index] =
+                                                      Palette.grayFF;
+                                                  resultObjectList.add(value);
+                                                }
+                                              });
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                                color:
+                                                    customTileColorList[index]),
+                                            child: Center(
+                                                child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: customTextColorList[
+                                                      index]),
+                                            ))),
+                                      ));
+                                }),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 3 / 1,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  }));
+            },
+            icon: Icon(
+              Icons.expand_more_outlined,
+              color: Palette.gray66,
+            )),
+      ],
+    );
+  }
+
+  Row customMedicalHistoryGridView(
+      BuildContext context,
+      TextEditingController customController,
+      String bigTitle,
+      String bottomSheetTitle,
+      List<String> objectList,
+      List<String> resultObjectList,
+      List<Color> customTileColorList,
+      List<Color> customTextColorList) {
+    return Row(
+      children: [
+        Text(
+          bigTitle,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Palette.gray00,
+          ),
+        ),
+        Spacer(),
+        IconButton(
+            onPressed: () {
+              // Bottom Sheet 함수 작성
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Palette.secondaryBackground,
+                  context: context,
+                  builder: ((context) {
+                    return StatefulBuilder(
+                        builder: (context, StateSetter stateSetter) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        bottomSheetTitle,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Palette.gray66,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(
+                                          "resultObjectList : ${resultObjectList}");
+                                      String goalsSum = "";
+                                      for (int i = 0;
+                                          i < resultObjectList.length;
+                                          i++) {
+                                        if (i == resultObjectList.length - 1) {
+                                          goalsSum += resultObjectList[i];
+                                        } else {
+                                          goalsSum +=
+                                              resultObjectList[i] + ", ";
+                                        }
+                                      }
+                                      customController.text = goalsSum;
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '완료',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Palette.textBlue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: objectList.length,
+                                itemBuilder: ((context, index) {
+                                  var value = objectList[index];
+                                  customTileColorList.add(Palette.grayEE);
+                                  customTextColorList.add(Palette.gray00);
+                                  // return Text(widget.optionList[index]);
+                                  return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 10, 10, 10),
+                                      child: InkWell(
+                                        onTap: () {
+                                          stateSetter(
+                                            () {
+                                              setState(() {
+                                                if (resultObjectList
+                                                    .contains(value)) {
+                                                  customTileColorList[index] =
+                                                      Palette.grayEE;
+                                                  customTextColorList[index] =
+                                                      Palette.gray00;
+                                                  resultObjectList
+                                                      .remove(value);
+                                                } else {
+                                                  customTileColorList[index] =
+                                                      Palette.buttonOrange;
+                                                  customTextColorList[index] =
+                                                      Palette.grayFF;
+                                                  resultObjectList.add(value);
+                                                }
+                                              });
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                                color:
+                                                    customTileColorList[index]),
+                                            child: Center(
+                                                child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: customTextColorList[
+                                                      index]),
+                                            ))),
+                                      ));
+                                }),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 3 / 1,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  }));
+            },
+            icon: Icon(
+              Icons.expand_more_outlined,
+              color: Palette.gray66,
+            )),
+      ],
     );
   }
 

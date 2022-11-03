@@ -444,7 +444,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
         ),
         onChanged: (text) {
           // 현재 텍스트필드의 텍스트를 출력
-          print("First text field: $text");
+          // print("First text field: $text");
         },
         onEditingComplete: () {
           textFocus.unfocus();
@@ -818,8 +818,8 @@ class _BaseContainerState extends State<BaseContainer> {
                     child: IconButton(
                       icon: SvgPicture.asset(
                         favoriteMember
-                            ? "assets/icons/favorite_selected.svg"
-                            : "assets/icons/favorite_unselected.svg",
+                            ? "icons/favorite_selected.svg"
+                            : "icons/favorite_unselected.svg",
                       ),
                       iconSize: 40,
                       onPressed: () {

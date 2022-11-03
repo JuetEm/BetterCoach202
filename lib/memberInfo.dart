@@ -108,8 +108,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                 IconButton(
                                   icon: SvgPicture.asset(
                                     favoriteMember
-                                        ? "assets/icons/favorite_selected.svg"
-                                        : "assets/icons/favorite_unselected.svg",
+                                        ? "icons/favorite_selected.svg"
+                                        : "icons/favorite_unselected.svg",
                                   ),
                                   iconSize: 40,
                                   onPressed: () {

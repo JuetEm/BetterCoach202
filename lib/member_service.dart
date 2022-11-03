@@ -22,6 +22,8 @@ class MemberService extends ChangeNotifier {
     required String phoneNumber,
     required String registerType,
     required String goal,
+    required String bodyAnalyzed,
+    required String medicalHistories,
     required String info,
     required String note,
     required String uid,
@@ -55,6 +57,8 @@ class MemberService extends ChangeNotifier {
       'phoneNumber': phoneNumber, // 회원 전화번호
       'registerType': registerType, // 수강권 종류
       'goal': goal, // 운동 목표
+      'bodyanalyzed': bodyAnalyzed, // 운동 목표
+      'medicalHistories': medicalHistories, // 운동 목표
       'info': info, // 신체 특이사항/체형분석
       'note': note, // 메모
       'comment': comment,
