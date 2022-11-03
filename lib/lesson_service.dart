@@ -365,7 +365,7 @@ class LessonService extends ChangeNotifier {
       print("[LS] deleteMultilesson 실행 - delete then");
       onSuccess(); // 화면 갱신
       print('[LS] deleteMultilesson 실행 - notifyListeners');
-      notifyListeners();
+      //notifyListeners();
       // 화면 갱신
     }).onError((error, stackTrace) {
       print("[LS] deleteMultilesson 실행 - delete error : ${error}");

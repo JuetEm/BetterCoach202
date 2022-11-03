@@ -228,7 +228,10 @@ class _LessonAddState extends State<LessonAdd> {
                             showArrow: true,
                             customFunction: () async {
                               await globalFunction.getDateFromCalendar(
-                                  context, lessonDateController, "수업일");
+                                  context,
+                                  lessonDateController,
+                                  "수업일",
+                                  lessonDateController.text);
 
                               todayNoteController.text = "";
 
@@ -355,180 +358,172 @@ class _LessonAddState extends State<LessonAdd> {
                               //   },
                               // );
 
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    //top: 5,
-                                    //bottom: 5,
-                                    ),
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                    minHeight: 50,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Palette.grayFF, width: 1),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                    color: Palette.grayFF,
-                                  ),
-                                  //height: 50,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        (todayNoteView == "")
-                                            ? Text("일별 메모를 남겨보세요.",
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  //fontWeight:
-                                                  //FontWeight.bold,
-                                                  color: Palette.gray99,
-                                                ))
-                                            : Expanded(
-                                                child: Text(
-                                                  todayNoteView,
-                                                  // overflow:
-                                                  //     TextOverflow
-                                                  //         .fade,
-                                                  maxLines: 10,
-                                                  softWrap: true,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .copyWith(
-                                                        fontSize: 14.0,
-                                                      ),
-                                                ),
-                                              ),
-                                        // Text(
-                                        //   todayNoteView,
-                                        //   style: TextStyle(
-                                        //     fontSize: 14.0,
-                                        //     //fontWeight: FontWeight.bold,
-                                        //   ),
-                                        // ),
-                                        SizedBox(width: 20),
-                                        Spacer(flex: 1),
-                                        IconButton(
-                                          onPressed: () {
-                                            // todayNoteController.text =
-                                            //     todayNoteView;
-                                            showDialog(
-                                              context: context,
-                                              barrierDismissible: true,
-                                              // ignore: unnecessary_new
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10.0))),
-                                                  //title: Text('일별 메모 작성'),
-                                                  content: Builder(
-                                                    builder: (context) {
-                                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                                      var height =
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .height;
-                                                      var width =
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width;
+                              return InkWell(
+                                onTap: () {
+                                  // todayNoteController.text =
+                                  //     todayNoteView;
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: true,
+                                    // ignore: unnecessary_new
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        //title: Text('일별 메모 작성'),
+                                        content: Builder(
+                                          builder: (context) {
+                                            // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                            var height = MediaQuery.of(context)
+                                                .size
+                                                .height;
+                                            var width = MediaQuery.of(context)
+                                                .size
+                                                .width;
 
-                                                      return Container(
-                                                        //height: 40,
-                                                        width: width - 100,
-                                                        child: PopupTextField(
-                                                          customController:
-                                                              todayNoteController,
-                                                          hint: "일별 메모",
-                                                          showArrow: false,
-                                                          customFunction:
-                                                              () async {
-                                                            print(
-                                                                "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
-                                                            //일별 노트 저장
-                                                            await todayNoteSave(
-                                                                lessonService,
-                                                                customUserInfo,
-                                                                context);
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text('취소'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () async {
-                                                        print(
-                                                            "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
-                                                        //일별 노트 저장
-                                                        await todayNoteSave(
-                                                            lessonService,
-                                                            customUserInfo,
-                                                            context);
-                                                      },
-                                                      child: Text('저장'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
+                                            return Container(
+                                              //height: 40,
+                                              width: width - 100,
+                                              child: PopupTextField(
+                                                customController:
+                                                    todayNoteController,
+                                                hint: "일별 메모",
+                                                showArrow: false,
+                                                customFunction: () async {
+                                                  print(
+                                                      "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                                                  //일별 노트 저장
+                                                  await todayNoteSave(
+                                                      lessonService,
+                                                      customUserInfo,
+                                                      context);
+                                                },
+                                              ),
                                             );
-                                            //   showDialog(
-                                            //     context: context,
-                                            //     barrierDismissible: true,
-                                            //     builder: (BuildContext context) {
-                                            //       return AlertDialog(
-                                            //         title: Text('일별 메모 작성'),
-                                            //         content: DynamicSaveTextField(
-                                            //           customController:
-                                            //               todayNoteController,
-                                            //           hint: "일별 메모",
-                                            //           showArrow: false,
-                                            //           customFunction: () {
-                                            //             FocusScope.of(context)
-                                            //                 .unfocus();
-                                            //           },
-                                            //         ),
-                                            //         actions: <Widget>[
-                                            //           TextButton(
-                                            //             onPressed: () {
-                                            //               Navigator.of(context)
-                                            //                   .pop();
-                                            //             },
-                                            //             child: Text('저장'),
-                                            //           ),
-                                            //           TextButton(
-                                            //             onPressed: () {
-                                            //               Navigator.of(context)
-                                            //                   .pop();
-                                            //             },
-                                            //             child: Text('취소'),
-                                            //           ),
-                                            //         ],
-                                            //       );
-                                            //     },
-                                            //  );
                                           },
-                                          icon: Icon(
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('취소'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              print(
+                                                  "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                                              //일별 노트 저장
+                                              await todayNoteSave(lessonService,
+                                                  customUserInfo, context);
+                                            },
+                                            child: Text('저장'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  //   showDialog(
+                                  //     context: context,
+                                  //     barrierDismissible: true,
+                                  //     builder: (BuildContext context) {
+                                  //       return AlertDialog(
+                                  //         title: Text('일별 메모 작성'),
+                                  //         content: DynamicSaveTextField(
+                                  //           customController:
+                                  //               todayNoteController,
+                                  //           hint: "일별 메모",
+                                  //           showArrow: false,
+                                  //           customFunction: () {
+                                  //             FocusScope.of(context)
+                                  //                 .unfocus();
+                                  //           },
+                                  //         ),
+                                  //         actions: <Widget>[
+                                  //           TextButton(
+                                  //             onPressed: () {
+                                  //               Navigator.of(context)
+                                  //                   .pop();
+                                  //             },
+                                  //             child: Text('저장'),
+                                  //           ),
+                                  //           TextButton(
+                                  //             onPressed: () {
+                                  //               Navigator.of(context)
+                                  //                   .pop();
+                                  //             },
+                                  //             child: Text('취소'),
+                                  //           ),
+                                  //         ],
+                                  //       );
+                                  //     },
+                                  //  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      //top: 5,
+                                      //bottom: 5,
+                                      ),
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                      minHeight: 50,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Palette.grayFF, width: 1),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                      color: Palette.grayFF,
+                                    ),
+                                    //height: 50,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 5, 15, 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          (todayNoteView == "")
+                                              ? Text("일별 메모를 남겨보세요.",
+                                                  style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    //fontWeight:
+                                                    //FontWeight.bold,
+                                                    color: Palette.gray99,
+                                                  ))
+                                              : Expanded(
+                                                  child: Text(
+                                                    todayNoteView,
+                                                    // overflow:
+                                                    //     TextOverflow
+                                                    //         .fade,
+                                                    maxLines: 10,
+                                                    softWrap: true,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .copyWith(
+                                                          fontSize: 14.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                          // Text(
+                                          //   todayNoteView,
+                                          //   style: TextStyle(
+                                          //     fontSize: 14.0,
+                                          //     //fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
+                                          SizedBox(width: 20),
+                                          Spacer(flex: 1),
+                                          Icon(
                                             Icons.mode_edit,
                                             color: Palette.gray66,
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1060,155 +1055,171 @@ class _LessonAddState extends State<LessonAdd> {
                                                     height: 1,
                                                     color: Palette.grayEE,
                                                   ),
-                                                  Container(
-                                                    //height: 40,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  10.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  10.0),
-                                                        ),
-                                                        color: Palette.grayFA
-                                                        //color: Colors.red.withOpacity(0),
-                                                        ),
-                                                    //color: Palette.grayEE,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          25, 0, 10, 5),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          totalNote.isEmpty
-                                                              ? Text(
-                                                                  "동작별 메모를 남겨보세요.",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    //fontWeight:
-                                                                    //FontWeight.bold,
-                                                                    color: Palette
-                                                                        .gray99,
-                                                                  ))
-                                                              : Text(""),
-                                                          //SizedBox(width: 20),
-                                                          Expanded(
-                                                            child: Text(
-                                                              totalNote,
-                                                              // overflow:
-                                                              //     TextOverflow
-                                                              //         .fade,
-                                                              maxLines: 10,
-                                                              softWrap: true,
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .bodyText1!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        14.0,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          //Spacer(flex: 1),
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                barrierDismissible:
-                                                                    true,
-                                                                // ignore: unnecessary_new
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return AlertDialog(
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(10.0))),
-                                                                    //title: Text('일별 메모 작성'),
-                                                                    content:
-                                                                        Builder(
-                                                                      builder:
-                                                                          (context) {
-                                                                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                                                        var height = MediaQuery.of(context)
-                                                                            .size
-                                                                            .height;
-                                                                        var width = MediaQuery.of(context)
-                                                                            .size
-                                                                            .width;
-                                                                        totalNoteControllers[index].text =
-                                                                            totalNote;
+                                                  InkWell(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        barrierDismissible:
+                                                            true,
+                                                        // ignore: unnecessary_new
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10.0))),
+                                                            //title: Text('일별 메모 작성'),
+                                                            content: Builder(
+                                                              builder:
+                                                                  (context) {
+                                                                // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                var height =
+                                                                    MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height;
+                                                                var width =
+                                                                    MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width;
+                                                                totalNoteControllers[
+                                                                            index]
+                                                                        .text =
+                                                                    totalNote;
 
-                                                                        return Container(
-                                                                          //height:
-                                                                          //    40,
-                                                                          width:
-                                                                              width - 100,
-                                                                          child:
-                                                                              PopupTextField(
-                                                                            customController:
-                                                                                totalNoteControllers[index],
-                                                                            hint:
-                                                                                "동작별 메모",
-                                                                            showArrow:
-                                                                                false,
-                                                                            customFunction:
-                                                                                () async {
-                                                                              //일별 노트 저장
-                                                                              await totalNoteSingleSave(lessonService, totalNoteTextFieldDocId[index], totalNoteControllers[index].text, context, index);
-                                                                            },
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                    actions: <
-                                                                        Widget>[
-                                                                      TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                        child: Text(
-                                                                            '취소'),
-                                                                      ),
-                                                                      TextButton(
-                                                                        onPressed:
-                                                                            () async {
-                                                                          print(
-                                                                              "[LA] 동작별메모 저장 : totalNoteTextFieldDocId[index] / totalNoteControllers[index].text");
-                                                                          //동작별 노트 저장
-                                                                          await totalNoteSingleSave(
-                                                                              lessonService,
-                                                                              totalNoteTextFieldDocId[index],
-                                                                              totalNoteControllers[index].text,
-                                                                              context,
-                                                                              index);
-                                                                        },
-                                                                        child: Text(
-                                                                            '저장'),
-                                                                      ),
-                                                                    ],
-                                                                  );
+                                                                return Container(
+                                                                  //height:
+                                                                  //    40,
+                                                                  width: width -
+                                                                      100,
+                                                                  child:
+                                                                      PopupTextField(
+                                                                    customController:
+                                                                        totalNoteControllers[
+                                                                            index],
+                                                                    hint:
+                                                                        "동작별 메모",
+                                                                    showArrow:
+                                                                        false,
+                                                                    customFunction:
+                                                                        () async {
+                                                                      //일별 노트 저장
+                                                                      await totalNoteSingleSave(
+                                                                          lessonService,
+                                                                          totalNoteTextFieldDocId[
+                                                                              index],
+                                                                          totalNoteControllers[index]
+                                                                              .text,
+                                                                          context,
+                                                                          index);
+                                                                    },
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
                                                                 },
-                                                              );
-                                                            },
-                                                            icon: Icon(
+                                                                child:
+                                                                    Text('취소'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  print(
+                                                                      "[LA] 동작별메모 저장 : totalNoteTextFieldDocId[index] / totalNoteControllers[index].text");
+                                                                  //동작별 노트 저장
+                                                                  await totalNoteSingleSave(
+                                                                      lessonService,
+                                                                      totalNoteTextFieldDocId[
+                                                                          index],
+                                                                      totalNoteControllers[
+                                                                              index]
+                                                                          .text,
+                                                                      context,
+                                                                      index);
+                                                                },
+                                                                child:
+                                                                    Text('저장'),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      //height: 40,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    10.0),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    10.0),
+                                                          ),
+                                                          color: Palette.grayFA
+                                                          //color: Colors.red.withOpacity(0),
+                                                          ),
+                                                      //color: Palette.grayEE,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                25, 0, 10, 5),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            totalNote.isEmpty
+                                                                ? Text(
+                                                                    "동작별 메모를 남겨보세요.",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14.0,
+                                                                      //fontWeight:
+                                                                      //FontWeight.bold,
+                                                                      color: Palette
+                                                                          .gray99,
+                                                                    ))
+                                                                : Text(""),
+                                                            //SizedBox(width: 20),
+                                                            Expanded(
+                                                              child: Text(
+                                                                totalNote,
+                                                                // overflow:
+                                                                //     TextOverflow
+                                                                //         .fade,
+                                                                maxLines: 10,
+                                                                softWrap: true,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyText1!
+                                                                    .copyWith(
+                                                                      fontSize:
+                                                                          14.0,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                            //Spacer(flex: 1),
+                                                            Icon(
                                                               Icons.mode_edit,
                                                               color: Palette
                                                                   .gray66,
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

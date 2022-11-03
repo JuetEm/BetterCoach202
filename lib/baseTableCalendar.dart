@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:web_project/lessonAdd.dart';
 
 import 'calendar_service.dart';
 import 'color.dart';
@@ -8,9 +10,14 @@ import 'globalWidget.dart';
 import 'memberAdd.dart';
 
 class BaseTableCalendar extends StatefulWidget {
-  const BaseTableCalendar(
-      {super.key, required this.pageName, required this.eventList});
+  const BaseTableCalendar({
+    super.key,
+    required this.selectedDate,
+    required this.pageName,
+    required this.eventList,
+  });
 
+  final String selectedDate;
   final String pageName;
   final List<dynamic> eventList;
 
@@ -21,15 +28,29 @@ class BaseTableCalendar extends StatefulWidget {
 class _BaseTableCalendarState extends State<BaseTableCalendar> {
   // 달력 보여주는 형식
   CalendarFormat calendarFormat = CalendarFormat.month;
-
   // 선택된 날짜
-  DateTime selectedDate = DateTime(
+  DateTime selectedDateIn = DateTime(
     DateTime.now().year,
     DateTime.now().month,
     DateTime.now().day,
   );
 
   DateTime focusedDate = DateTime.now();
+
+  @override
+  void initState() {
+    // DateTime selectedDateIn;
+    selectedDateIn = new DateFormat('yyyy-MM-dd').parse(widget.selectedDate);
+    print(
+        "[GF] getDateFromCalendar - selectedDateIn 선택날짜 / ${selectedDateIn.toString()}");
+    focusedDate = selectedDateIn;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +60,12 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           appBar: widget.pageName == "수업일 선택"
               ? null
               : BaseAppBarMethod(context, "${widget.pageName} 선택", () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => MemberAdd()),
-                  );
+                  Navigator.pop(context);
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => MemberAdd()),
+                  // );
                 }),
           body: widget.pageName == "노트보기"
               ? Padding(
@@ -116,12 +139,12 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
       }),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
-          selectedDate = selectedDay;
+          selectedDateIn = selectedDay;
           focusedDate = focusedDay;
         });
       },
       selectedDayPredicate: (day) {
-        return isSameDay(selectedDate, day);
+        return isSameDay(selectedDateIn, day);
       },
       eventLoader: (day) {
         return eventList;
