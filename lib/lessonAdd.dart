@@ -493,24 +493,25 @@ class _LessonAddState extends State<LessonAdd> {
                                                     //FontWeight.bold,
                                                     color: Palette.gray99,
                                                   ))
-                                              : Expanded(
-                                                  child: Text(
-                                                    todayNoteView,
-                                                    // overflow:
-                                                    //     TextOverflow
-                                                    //         .fade,
-                                                    maxLines: 10,
+                                              : Text(""),
+                                          Expanded(
+                                            child: Text(
+                                              todayNoteView,
+                                              // overflow:
+                                              //     TextOverflow
+                                              //         .fade,
+                                              maxLines: 10,
 
-                                                    softWrap: true,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .copyWith(
-                                                          fontSize: 14.0,
-                                                          height: 1.6, //줄간격
-                                                        ),
+                                              softWrap: true,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .copyWith(
+                                                    fontSize: 14.0,
+                                                    height: 1.6, //줄간격
                                                   ),
-                                                ),
+                                            ),
+                                          ),
                                           // Text(
                                           //   todayNoteView,
                                           //   style: TextStyle(
@@ -719,9 +720,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           //elevation: 0,
                                           color: Colors.transparent,
                                           //shadowColor: Palette.buttonOrange,
-                                          
-                                          child: child,
 
+                                          child: child,
                                         );
                                       },
                                       child: child,
