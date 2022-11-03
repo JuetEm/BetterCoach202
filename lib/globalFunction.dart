@@ -85,12 +85,16 @@ class GlobalFunction {
     return notEmpty;
   }
 
-  Future<void> getDateFromCalendar(BuildContext context,
-      TextEditingController customController, String pageName) async {
+  Future<void> getDateFromCalendar(
+      BuildContext context,
+      TextEditingController customController,
+      String pageName,
+      String selectedDate) async {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => BaseTableCalendar(
+            selectedDate: selectedDate,
             pageName: pageName,
             eventList: [],
           ),

@@ -157,7 +157,10 @@ class _LessonUpdateState extends State<LessonUpdate> {
                           showArrow: true,
                           customFunction: () {
                             globalFunction.getDateFromCalendar(
-                                context, lessonDateController, "수업일");
+                                context,
+                                lessonDateController,
+                                "수업일",
+                                lessonDateController.text);
                           },
                         ),
 

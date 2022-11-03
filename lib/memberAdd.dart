@@ -121,7 +121,10 @@ class _MemberAddState extends State<MemberAdd> {
                           showArrow: true,
                           customFunction: () {
                             globalFunction.getDateFromCalendar(
-                                context, registerDateController, "등록일");
+                                context,
+                                registerDateController,
+                                "등록일",
+                                registerDateController.text);
                           },
                         ),
 
