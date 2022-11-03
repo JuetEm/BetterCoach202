@@ -479,7 +479,7 @@ class _PopupTextFieldState extends State<PopupTextField> {
     //FocusNode textFocus = FocusNode();
 
     return Container(
-      color: Colors.red,
+      //color: Colors.red,
       // constraints: BoxConstraints(
       //   minHeight: 40,
       // ),
@@ -512,7 +512,7 @@ class _PopupTextFieldState extends State<PopupTextField> {
           //print("First text field: $text");
         },
         onEditingComplete: () {
-          widget.customFunction();
+          //widget.customFunction();
           //textFocus.unfocus();
         },
       ),
