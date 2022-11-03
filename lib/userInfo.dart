@@ -7,6 +7,11 @@ class UserInfo {
     this.phoneNumber,
     this.registerType,
     this.goal,
+    this.selectedGoals,
+    this.bodyAnalyzed,
+    this.selectedBodyAnalyzed,
+    this.medicalHistories,
+    this.selectedMedicalHistories,
     this.info,
     this.note,
     this.comment,
@@ -19,6 +24,11 @@ class UserInfo {
   final String phoneNumber;
   final String registerType;
   final String goal;
+  final List<String> selectedGoals;
+  final String bodyAnalyzed;
+  final List<String> selectedBodyAnalyzed;
+  final String medicalHistories;
+  final List<String> selectedMedicalHistories;
   final String info;
   final String note;
   final String comment;

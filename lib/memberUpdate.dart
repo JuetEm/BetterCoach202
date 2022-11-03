@@ -208,7 +208,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                     //userinfoupdate.mid = nameController.text;
 
                                     //List<UserInfo> userupdateInfo
-                                    UserInfo userInfouUpdate = new UserInfo(
+                                    UserInfo userInfouUpdate = UserInfo(
                                         userInfo.docId,
                                         userInfo.uid,
                                         nameController.text,
@@ -216,6 +216,11 @@ class _MemberUpdateState extends State<MemberUpdate> {
                                         phoneNumberController.text,
                                         registerTypeController.text,
                                         goalController.text,
+                                        [],
+                                        "",
+                                        [],
+                                        "",
+                                        [],
                                         infoController.text,
                                         noteController.text,
                                         commentController.text,

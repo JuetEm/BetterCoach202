@@ -616,6 +616,7 @@ class _MemberAddState extends State<MemberAdd> {
               ))
           .toList();
     }
+    print("[MA] makeChips : ${resultChips}");
     return resultChips;
   }
 

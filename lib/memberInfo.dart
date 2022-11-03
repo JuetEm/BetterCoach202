@@ -72,413 +72,416 @@ class _MemberInfoState extends State<MemberInfo> {
       print('error: $error');
     });
 
-    return Consumer<LessonService>(builder: (context, lessonService, child) {
-      // lessonService
-      // ignore: dead_code
-      return Scaffold(
-        backgroundColor: Palette.secondaryBackground,
-        appBar: BaseAppBarMethod(context, "회원관리", () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MemberList(),
-              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-              settings: RouteSettings(
-                arguments: userInfo,
-              ),
-            ),
-          );
-        }),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 22, 22, 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  icon: SvgPicture.asset(
-                                    favoriteMember
-                                        ? "icons/favorite_selected.svg"
-                                        : "icons/favorite_unselected.svg",
-                                  ),
-                                  iconSize: 40,
-                                  onPressed: () {
-                                    setState(() {
-                                      favoriteMember
-                                          ? favoriteMember = false
-                                          : favoriteMember = true;
-                                    });
-                                  },
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${userInfo.name}',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4.0),
-                                    Text(
-                                      '${userInfo.phoneNumber}',
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          //fontWeight: FontWeight.bold,
-                                          color: Palette.gray66),
-                                    ),
-                                  ],
-                                ),
-                                Spacer(),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '등록일',
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          //fontWeight: FontWeight.bold,
-                                          color: Palette.gray99),
-                                      textAlign: TextAlign.right,
-                                    ),
-                                    Text(
-                                      '${userInfo.registerDate}',
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          //fontWeight: FontWeight.bold,
-                                          color: Palette.gray99),
-                                      textAlign: TextAlign.right,
-                                    ),
-                                    // Text(
-                                    //   '남은횟수 : ${userInfo.registerType}',
-                                    //   style: TextStyle(
-                                    //       fontSize: 14.0,
-                                    //       //fontWeight: FontWeight.bold,
-                                    //       color: Palette.gray99),
-                                    // ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                              ),
-                              color: Palette.grayFF,
-                              //color: Colors.red.withOpacity(0),
-                            ),
-                            //padding: const EdgeInsets.all(20.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  flex: 5,
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (viewMode == "레슨노트") {
-                                        setState(() {
-                                          viewMode = "기본정보";
-                                        });
-                                      }
-                                      ;
-                                    },
-                                    child: Container(
-                                      height: 54,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: viewMode == "기본정보"
-                                                ? Palette.buttonOrange
-                                                : Palette.grayEE,
-                                            width: 2,
-                                          ),
-                                        ),
-                                      ),
-
-                                      //color: Colors.red.withOpacity(0),
-
-                                      width: double.infinity,
-                                      child: Center(
-                                        child: Text(
-                                          "기본정보",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: viewMode == "기본정보"
-                                                ? Palette.buttonOrange
-                                                : Palette.gray99,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 5,
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (viewMode == "기본정보") {
-                                        setState(() {
-                                          viewMode = "레슨노트";
-                                        });
-                                      }
-                                      ;
-                                    },
-                                    child: Container(
-                                      height: 54,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: viewMode == "레슨노트"
-                                                ? Palette.buttonOrange
-                                                : Palette.grayEE,
-                                            width: 2,
-                                          ),
-                                        ),
-                                      ),
-
-                                      //color: Colors.red.withOpacity(0),
-
-                                      width: double.infinity,
-                                      child: Center(
-                                        child: Text(
-                                          "레슨노트",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: viewMode == "레슨노트"
-                                                ? Palette.buttonOrange
-                                                : Palette.gray99,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ), //   Spacer(),
-                                //   InkWell(
-                                //     onTap: () {
-                                //       if (viewMode == "기본정보") {
-                                //         setState(() {
-                                //           viewMode = "레슨노트";
-                                //         });
-                                //       }
-                                //       ;
-                                //     },
-                                //     child: SizedBox(
-                                //       child: Row(
-                                //         children: [
-                                //           Icon(
-                                //             Icons.sync,
-                                //             color: Palette.gray99,
-                                //             size: 15.0,
-                                //           ),
-                                //           SizedBox(
-                                //             width: 5,
-                                //           ),
-                                //           Text(
-                                //             "레슨노트",
-                                //             style: TextStyle(
-                                //               fontSize: 22,
-                                //               color: Palette.gray66,
-                                //             ),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ),
-                                //   ),
-                              ],
-                            ),
-                          ),
-
-                          viewMode == "기본정보"
-                              ? MemberInfoView(userInfo: userInfo)
-                              : LessonNoteView(
-                                  userInfo: userInfo,
-                                  lessonService: lessonService,
-                                ),
-
-                          //SizedBox(height: 20),
-                        ],
-                      ),
-                    ],
-                  ),
+    return Consumer<LessonService>(
+      builder: (context, lessonService, child) {
+        // lessonService
+        // ignore: dead_code
+        return Scaffold(
+          backgroundColor: Palette.secondaryBackground,
+          appBar: BaseAppBarMethod(context, "회원관리", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberList(),
+                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                settings: RouteSettings(
+                  arguments: userInfo,
                 ),
               ),
-              // SizedBox(
-              //   height: 14,
-              // ),
+            );
+          }),
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 22, 22, 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    icon: SvgPicture.asset(
+                                      favoriteMember
+                                          ? "icons/favorite_selected.svg"
+                                          : "icons/favorite_unselected.svg",
+                                    ),
+                                    iconSize: 40,
+                                    onPressed: () {
+                                      setState(() {
+                                        favoriteMember
+                                            ? favoriteMember = false
+                                            : favoriteMember = true;
+                                      });
+                                    },
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${userInfo.name}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4.0),
+                                      Text(
+                                        '${userInfo.phoneNumber}',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            //fontWeight: FontWeight.bold,
+                                            color: Palette.gray66),
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '등록일',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            //fontWeight: FontWeight.bold,
+                                            color: Palette.gray99),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                      Text(
+                                        '${userInfo.registerDate}',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            //fontWeight: FontWeight.bold,
+                                            color: Palette.gray99),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                      // Text(
+                                      //   '남은횟수 : ${userInfo.registerType}',
+                                      //   style: TextStyle(
+                                      //       fontSize: 14.0,
+                                      //       //fontWeight: FontWeight.bold,
+                                      //       color: Palette.gray99),
+                                      // ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 14,
+                            ),
 
-              /// 추가버튼 floating 수정
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    onPressed: () {
-                      lessonDate =
-                          DateFormat("yyyy-MM-dd").format(DateTime.now());
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                ),
+                                color: Palette.grayFF,
+                                //color: Colors.red.withOpacity(0),
+                              ),
+                              //padding: const EdgeInsets.all(20.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (viewMode == "레슨노트") {
+                                          setState(() {
+                                            viewMode = "기본정보";
+                                          });
+                                        }
+                                        ;
+                                      },
+                                      child: Container(
+                                        height: 54,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: viewMode == "기본정보"
+                                                  ? Palette.buttonOrange
+                                                  : Palette.grayEE,
+                                              width: 2,
+                                            ),
+                                          ),
+                                        ),
 
-                      List<TmpLessonInfo> tmpLessonInfoList = [];
-                      eventList = [];
-                      lessonAddMode = "노트 추가";
-                      List<dynamic> args = [
-                        userInfo,
-                        lessonDate,
-                        eventList,
-                        lessonNoteId,
-                        lessonAddMode,
-                        tmpLessonInfoList,
-                      ];
-                      print(
-                          "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-                      // LessonAdd로 이동
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
-                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                          settings: RouteSettings(arguments: args),
+                                        //color: Colors.red.withOpacity(0),
+
+                                        width: double.infinity,
+                                        child: Center(
+                                          child: Text(
+                                            "기본정보",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: viewMode == "기본정보"
+                                                  ? Palette.buttonOrange
+                                                  : Palette.gray99,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 5,
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (viewMode == "기본정보") {
+                                          setState(() {
+                                            viewMode = "레슨노트";
+                                          });
+                                        }
+                                        ;
+                                      },
+                                      child: Container(
+                                        height: 54,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: viewMode == "레슨노트"
+                                                  ? Palette.buttonOrange
+                                                  : Palette.grayEE,
+                                              width: 2,
+                                            ),
+                                          ),
+                                        ),
+
+                                        //color: Colors.red.withOpacity(0),
+
+                                        width: double.infinity,
+                                        child: Center(
+                                          child: Text(
+                                            "레슨노트",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: viewMode == "레슨노트"
+                                                  ? Palette.buttonOrange
+                                                  : Palette.gray99,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ), //   Spacer(),
+                                  //   InkWell(
+                                  //     onTap: () {
+                                  //       if (viewMode == "기본정보") {
+                                  //         setState(() {
+                                  //           viewMode = "레슨노트";
+                                  //         });
+                                  //       }
+                                  //       ;
+                                  //     },
+                                  //     child: SizedBox(
+                                  //       child: Row(
+                                  //         children: [
+                                  //           Icon(
+                                  //             Icons.sync,
+                                  //             color: Palette.gray99,
+                                  //             size: 15.0,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 5,
+                                  //           ),
+                                  //           Text(
+                                  //             "레슨노트",
+                                  //             style: TextStyle(
+                                  //               fontSize: 22,
+                                  //               color: Palette.gray66,
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                ],
+                              ),
+                            ),
+
+                            viewMode == "기본정보"
+                                ? MemberInfoView(userInfo: userInfo)
+                                : LessonNoteView(
+                                    userInfo: userInfo,
+                                    lessonService: lessonService,
+                                  ),
+
+                            //SizedBox(height: 20),
+                          ],
                         ),
-                      );
-                    },
-                    child: Icon(Icons.edit),
-                    backgroundColor: Palette.buttonOrange,
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    width: 22,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 22,
-              ),
+                ),
+                // SizedBox(
+                //   height: 14,
+                // ),
 
-              /// 추가버튼_이전
-              // ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(30.0),
-              //       ),
-              //       elevation: 0,
-              //       backgroundColor: Palette.buttonOrange,
-              //     ),
-              //     child: Padding(
-              //       padding: const EdgeInsets.symmetric(
-              //           vertical: 14, horizontal: 90),
-              //       child: Text("노트추가", style: TextStyle(fontSize: 16)),
-              //     ),
-              //     onPressed: () {
-              //       lessonDate =
-              //           DateFormat("yyyy-MM-dd").format(DateTime.now());
+                /// 추가버튼 floating 수정
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        lessonDate =
+                            DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-              //       List<TmpLessonInfo> tmpLessonInfoList = [];
-              //       eventList = [];
-              //       lessonAddMode = "노트 추가";
-              //       List<dynamic> args = [
-              //         userInfo,
-              //         lessonDate,
-              //         eventList,
-              //         lessonNoteId,
-              //         lessonAddMode,
-              //         tmpLessonInfoList,
-              //       ];
-              //       print(
-              //           "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-              //       // LessonAdd로 이동
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => LessonAdd(),
-              //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-              //           settings: RouteSettings(arguments: args),
-              //         ),
-              //       );
-              //     }),
+                        List<TmpLessonInfo> tmpLessonInfoList = [];
+                        eventList = [];
+                        lessonAddMode = "노트 추가";
+                        List<dynamic> args = [
+                          userInfo,
+                          lessonDate,
+                          eventList,
+                          lessonNoteId,
+                          lessonAddMode,
+                          tmpLessonInfoList,
+                        ];
+                        print(
+                            "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+                        // LessonAdd로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonAdd(),
+                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                            settings: RouteSettings(arguments: args),
+                          ),
+                        );
+                      },
+                      child: Icon(Icons.edit),
+                      backgroundColor: Palette.buttonOrange,
+                    ),
+                    SizedBox(
+                      width: 22,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 22,
+                ),
 
-              /// 추가 버튼
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(5, 11, 5, 24),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(30.0),
-              //       ),
-              //       backgroundColor: Colors.transparent,
-              //       shadowColor: Colors.transparent,
-              //     ),
-              //     child: Container(
-              //       decoration: BoxDecoration(
-              //         color: Palette.buttonOrange,
-              //       ),
-              //       height: 60,
-              //       width: double.infinity,
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: [
-              //           Text(
-              //             "노트 추가",
-              //             style: TextStyle(fontSize: 18),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //     onPressed: () {
-              //       print("노트 추가");
+                /// 추가버튼_이전
+                // ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(30.0),
+                //       ),
+                //       elevation: 0,
+                //       backgroundColor: Palette.buttonOrange,
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.symmetric(
+                //           vertical: 14, horizontal: 90),
+                //       child: Text("노트추가", style: TextStyle(fontSize: 16)),
+                //     ),
+                //     onPressed: () {
+                //       lessonDate =
+                //           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-              //       lessonDate =
-              //           DateFormat("yyyy-MM-dd").format(DateTime.now());
+                //       List<TmpLessonInfo> tmpLessonInfoList = [];
+                //       eventList = [];
+                //       lessonAddMode = "노트 추가";
+                //       List<dynamic> args = [
+                //         userInfo,
+                //         lessonDate,
+                //         eventList,
+                //         lessonNoteId,
+                //         lessonAddMode,
+                //         tmpLessonInfoList,
+                //       ];
+                //       print(
+                //           "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+                //       // LessonAdd로 이동
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => LessonAdd(),
+                //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                //           settings: RouteSettings(arguments: args),
+                //         ),
+                //       );
+                //     }),
 
-              //       List<TmpLessonInfo> tmpLessonInfoList = [];
-              //       eventList = [];
-              //       lessonAddMode = "노트 추가";
-              //       List<dynamic> args = [
-              //         userInfo,
-              //         lessonDate,
-              //         eventList,
-              //         lessonNoteId,
-              //         lessonAddMode,
-              //         tmpLessonInfoList,
-              //       ];
+                /// 추가 버튼
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(5, 11, 5, 24),
+                //   child: ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(30.0),
+                //       ),
+                //       backgroundColor: Colors.transparent,
+                //       shadowColor: Colors.transparent,
+                //     ),
+                //     child: Container(
+                //       decoration: BoxDecoration(
+                //         color: Palette.buttonOrange,
+                //       ),
+                //       height: 60,
+                //       width: double.infinity,
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         crossAxisAlignment: CrossAxisAlignment.center,
+                //         children: [
+                //           Text(
+                //             "노트 추가",
+                //             style: TextStyle(fontSize: 18),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //     onPressed: () {
+                //       print("노트 추가");
 
-              //       // LessonAdd로 이동
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => LessonAdd(),
-              //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-              //           settings: RouteSettings(arguments: args),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
-            ],
+                //       lessonDate =
+                //           DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+                //       List<TmpLessonInfo> tmpLessonInfoList = [];
+                //       eventList = [];
+                //       lessonAddMode = "노트 추가";
+                //       List<dynamic> args = [
+                //         userInfo,
+                //         lessonDate,
+                //         eventList,
+                //         lessonNoteId,
+                //         lessonAddMode,
+                //         tmpLessonInfoList,
+                //       ];
+
+                //       // LessonAdd로 이동
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => LessonAdd(),
+                //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                //           settings: RouteSettings(arguments: args),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
+              ],
+            ),
           ),
-        ),
-        // Figma 확인 해보면 '기본정보' 탭에는 BottomAppBar 없는데, '동작' 탬에는 있음
-        // 같은 화면인데 '기본정보' 탭에는 누락 된 듯하여 추가 BottomAppBar 함
-        //bottomNavigationBar: BaseBottomAppBar(),
-      );
-    });
+          // Figma 확인 해보면 '기본정보' 탭에는 BottomAppBar 없는데, '동작' 탬에는 있음
+          // 같은 화면인데 '기본정보' 탭에는 누락 된 듯하여 추가 BottomAppBar 함
+          //bottomNavigationBar: BaseBottomAppBar(),
+        );
+      },
+    );
   }
 }
 
@@ -638,7 +641,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
   }
 }
 
-class MemberInfoView extends StatelessWidget {
+class MemberInfoView extends StatefulWidget {
   const MemberInfoView({
     Key? key,
     required this.userInfo,
@@ -647,7 +650,29 @@ class MemberInfoView extends StatelessWidget {
   final UserInfo userInfo;
 
   @override
+  State<MemberInfoView> createState() => _MemberInfoViewState();
+}
+
+class _MemberInfoViewState extends State<MemberInfoView> {
+  @override
   Widget build(BuildContext context) {
+    // selectedGoals 값 반영하여 FilterChips 동적 생성
+    var goalChips = [];
+    goalChips = makeChips(goalChips, widget.userInfo.selectedGoals);
+    // selelctedAnalyzedList 값 반영하여 FilterChips 동적 생성
+    var bodyAnalyzedChips = [];
+    bodyAnalyzedChips =
+        makeChips(bodyAnalyzedChips, widget.userInfo.selectedBodyAnalyzed);
+
+    // medicalHistoryList 값 반영하여 FilterChips 동적 생성
+    var medicalHistoriesChips = [];
+    medicalHistoriesChips = makeChips(
+        medicalHistoriesChips, widget.userInfo.selectedMedicalHistories);
+
+    print(
+        "[MI] 운동목표 칩셋출력 : selectedGoals비었니.? ${widget.userInfo.selectedGoals.isEmpty}");
+    print("[MI] 운동목표 칩셋출력 : goalChips ${goalChips}");
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
@@ -690,7 +715,7 @@ class MemberInfoView extends StatelessWidget {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  '등록횟수 : ${userInfo.registerType}',
+                  '등록횟수 : ${widget.userInfo.registerType}',
                   style: TextStyle(
                       fontSize: 14.0,
                       //fontWeight: FontWeight.bold,
@@ -709,27 +734,27 @@ class MemberInfoView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
-                Text(
-                  userInfo.goal,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
+                Offstage(
+                  offstage: widget.userInfo.selectedGoals.isEmpty,
+                  child: Center(
+                    child: Wrap(
+                      direction: Axis.horizontal, // 나열 방향
+                      alignment: WrapAlignment.start, // 정렬 방식
+                      spacing: 5, // 좌우 간격
+                      runSpacing: 5,
+                      children: [
+                        for (final chip in goalChips)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                            child: chip,
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
-                Text(
-                  '통증/상해/병력',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Palette.gray66),
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  userInfo.info,
+                  widget.userInfo.goal,
                   style: TextStyle(
                     fontSize: 14,
                     //fontWeight: FontWeight.bold,
@@ -748,8 +773,65 @@ class MemberInfoView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
+                Offstage(
+                  offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
+                  child: Center(
+                    child: Wrap(
+                      direction: Axis.horizontal, // 나열 방향
+                      alignment: WrapAlignment.start, // 정렬 방식
+                      spacing: 5, // 좌우 간격
+                      runSpacing: 5,
+                      children: [
+                        for (final chip in bodyAnalyzedChips)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                            child: chip,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
                 Text(
-                  userInfo.note,
+                  widget.userInfo.note,
+                  style: TextStyle(
+                    fontSize: 14,
+                    //fontWeight: FontWeight.bold,
+                    color: Palette.gray99,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Divider(),
+                const SizedBox(height: 10),
+                Text(
+                  '통증/상해/병력',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Palette.gray66),
+                ),
+                const SizedBox(height: 14),
+                Offstage(
+                  offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
+                  child: Center(
+                    child: Wrap(
+                      direction: Axis.horizontal, // 나열 방향
+                      alignment: WrapAlignment.start, // 정렬 방식
+                      spacing: 5, // 좌우 간격
+                      runSpacing: 5,
+                      children: [
+                        for (final chip in medicalHistoriesChips)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                            child: chip,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  widget.userInfo.info,
                   style: TextStyle(
                     fontSize: 14,
                     //fontWeight: FontWeight.bold,
@@ -769,7 +851,7 @@ class MemberInfoView extends StatelessWidget {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  userInfo.comment,
+                  widget.userInfo.comment,
                   style: TextStyle(
                     fontSize: 14,
                     //fontWeight: FontWeight.bold,
@@ -813,7 +895,7 @@ class MemberInfoView extends StatelessWidget {
                     builder: (context) => MemberUpdate(),
                     // GlobalWidgetDashboard(), //
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: userInfo),
+                    settings: RouteSettings(arguments: widget.userInfo),
                   ),
                 );
               },
@@ -823,6 +905,53 @@ class MemberInfoView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList) {
+    resultChips = targetList
+        .map((e) => Chip(
+            label: Text(e),
+            // onSelected: ((value) {
+            //   setState(() {
+            //     targetList.remove(e);
+            //   });
+            //   print("value : ${value}");
+            // }),
+            // selected: targetList.contains(e),
+            labelStyle: TextStyle(fontSize: 12, color: Palette.grayFF),
+            // selectedColor: Palette.buttonOrange,
+            backgroundColor: Palette.buttonOrange,
+            // showCheckmark: false,
+            side: BorderSide(color: Palette.grayFF)))
+        .toList();
+    // .map((e) => Chip(
+    //     label: Row(
+    //       children: [
+    //         Text(e),
+    //         Icon(
+    //           Icons.close_outlined,
+    //           size: 14,
+    //           color:
+    //               targetList.contains(e) ? Palette.grayFF : Palette.gray99,
+    //         )
+    //       ],
+    //     ),
+    //     // onSelected: ((value) {
+    //     //   setState(() {
+    //     //     targetList.remove(e);
+    //     //   });
+    //     //   print("value : ${value}");
+    //     // }),
+    //     // selected: targetList.contains(e),
+    //     labelStyle: TextStyle(fontSize: 12, color: Palette.grayFF),
+    //     // selectedColor: Palette.buttonOrange,
+    //     backgroundColor: Palette.buttonOrange,
+    //     // showCheckmark: false,
+    //     side: BorderSide(color: Palette.grayB4)))
+    // .toList();
+
+    print("[MI] makeChips : ${resultChips}");
+    return resultChips;
   }
 }
 

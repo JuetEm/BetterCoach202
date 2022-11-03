@@ -113,10 +113,28 @@ class _MemberListState extends State<MemberList> {
                               String phoneNumber = doc.get('phoneNumber');
                               String registerType = doc.get('registerType');
                               String goal = doc.get('goal');
+                              List<String> selectedGoals =
+                                  List<String>.from(doc.get('selectedGoals'));
+                              print(
+                                  "[ML] ListView 회원정보 가져오기 selectedGoals : ${selectedGoals}");
+                              String bodyAnalyzed = doc.get('bodyanalyzed');
+                              print(
+                                  "[ML] ListView 회원정보 가져오기 bodyAnalyzed : ${bodyAnalyzed}");
+                              List<String> selectedBodyAnalyzed =
+                                  List<String>.from(
+                                      doc.get('selectedBodyAnalyzed'));
+                              ;
+                              String medicalHistories =
+                                  doc.get('medicalHistories');
+                              List<String> selectedMedicalHistories =
+                                  List<String>.from(
+                                      doc.get('selectedMedicalHistories'));
+                              ;
                               String info = doc.get('info');
                               String note = doc.get('note');
                               String comment = doc.get('comment');
                               bool isActive = doc.get('isActive');
+
                               final UserInfo userInfo = UserInfo(
                                 doc.id,
                                 user.uid,
@@ -125,6 +143,11 @@ class _MemberListState extends State<MemberList> {
                                 phoneNumber,
                                 registerType,
                                 goal,
+                                selectedGoals,
+                                bodyAnalyzed,
+                                selectedBodyAnalyzed,
+                                medicalHistories,
+                                selectedMedicalHistories,
                                 info,
                                 note,
                                 comment,
