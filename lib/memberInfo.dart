@@ -330,48 +330,48 @@ class _MemberInfoState extends State<MemberInfo> {
                 // ),
 
                 /// 추가버튼 floating 수정
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FloatingActionButton(
-                      onPressed: () {
-                        lessonDate =
-                            DateFormat("yyyy-MM-dd").format(DateTime.now());
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     FloatingActionButton(
+                //       onPressed: () {
+                //         lessonDate =
+                //             DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                        List<TmpLessonInfo> tmpLessonInfoList = [];
-                        eventList = [];
-                        lessonAddMode = "노트 추가";
-                        List<dynamic> args = [
-                          userInfo,
-                          lessonDate,
-                          eventList,
-                          lessonNoteId,
-                          lessonAddMode,
-                          tmpLessonInfoList,
-                        ];
-                        print(
-                            "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-                        // LessonAdd로 이동
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LessonAdd(),
-                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                            settings: RouteSettings(arguments: args),
-                          ),
-                        );
-                      },
-                      child: Icon(Icons.edit),
-                      backgroundColor: Palette.buttonOrange,
-                    ),
-                    SizedBox(
-                      width: 22,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 22,
-                ),
+                //         List<TmpLessonInfo> tmpLessonInfoList = [];
+                //         eventList = [];
+                //         lessonAddMode = "노트 추가";
+                //         List<dynamic> args = [
+                //           userInfo,
+                //           lessonDate,
+                //           eventList,
+                //           lessonNoteId,
+                //           lessonAddMode,
+                //           tmpLessonInfoList,
+                //         ];
+                //         print(
+                //             "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+                //         // LessonAdd로 이동
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => LessonAdd(),
+                //             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                //             settings: RouteSettings(arguments: args),
+                //           ),
+                //         );
+                //       },
+                //       child: Icon(Icons.edit),
+                //       backgroundColor: Palette.buttonOrange,
+                //     ),
+                //     SizedBox(
+                //       width: 22,
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 22,
+                // ),
 
                 /// 추가버튼_이전
                 // ElevatedButton(
@@ -475,6 +475,36 @@ class _MemberInfoState extends State<MemberInfo> {
                 // ),
               ],
             ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+              List<TmpLessonInfo> tmpLessonInfoList = [];
+              eventList = [];
+              lessonAddMode = "노트 추가";
+              List<dynamic> args = [
+                userInfo,
+                lessonDate,
+                eventList,
+                lessonNoteId,
+                lessonAddMode,
+                tmpLessonInfoList,
+              ];
+              print(
+                  "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+              // LessonAdd로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LessonAdd(),
+                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                  settings: RouteSettings(arguments: args),
+                ),
+              );
+            },
+            child: Icon(Icons.edit),
+            backgroundColor: Palette.buttonOrange,
           ),
           // Figma 확인 해보면 '기본정보' 탭에는 BottomAppBar 없는데, '동작' 탬에는 있음
           // 같은 화면인데 '기본정보' 탭에는 누락 된 듯하여 추가 BottomAppBar 함

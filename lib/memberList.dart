@@ -188,24 +188,24 @@ class _MemberListState extends State<MemberList> {
                       height: 14,
                     ),
 
-                    //추가버튼 FloatingActionbutton으로 변경
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FloatingActionButton(
-                          onPressed: () {
-                            print("회원추가");
-                            // 저장하기 성공시 Home로 이동
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => MemberAdd()),
-                            );
-                          },
-                          child: Icon(Icons.person_add),
-                          backgroundColor: Palette.buttonOrange,
-                        ),
-                      ],
-                    ),
+                    // //추가버튼 FloatingActionbutton으로 변경
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     FloatingActionButton(
+                    //       onPressed: () {
+                    //         print("회원추가");
+                    //         // 저장하기 성공시 Home로 이동
+                    //         Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(builder: (_) => MemberAdd()),
+                    //         );
+                    //       },
+                    //       child: Icon(Icons.person_add),
+                    //       backgroundColor: Palette.buttonOrange,
+                    //     ),
+                    //   ],
+                    // ),
 
                     /// 추가 버튼
                     // ElevatedButton(
@@ -256,6 +256,19 @@ class _MemberListState extends State<MemberList> {
             //   backgroundColor: Colors.blue,
             //   child: const Icon(Icons.add),
             // ),
+
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                print("회원추가");
+                // 저장하기 성공시 Home로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => MemberAdd()),
+                );
+              },
+              child: Icon(Icons.person_add),
+              backgroundColor: Palette.buttonOrange,
+            ),
           ),
         );
       },
