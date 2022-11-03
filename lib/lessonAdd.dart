@@ -361,6 +361,9 @@ class _LessonAddState extends State<LessonAdd> {
                                     //bottom: 5,
                                     ),
                                 child: Container(
+                                  constraints: BoxConstraints(
+                                    minHeight: 50,
+                                  ),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         color: Palette.grayFF, width: 1),
@@ -369,7 +372,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     ),
                                     color: Palette.grayFF,
                                   ),
-                                  height: 50,
+                                  //height: 50,
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -385,13 +388,29 @@ class _LessonAddState extends State<LessonAdd> {
                                                   //FontWeight.bold,
                                                   color: Palette.gray99,
                                                 ))
-                                            : Text(
-                                                todayNoteView,
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  //fontWeight: FontWeight.bold,
+                                            : Expanded(
+                                                child: Text(
+                                                  todayNoteView,
+                                                  // overflow:
+                                                  //     TextOverflow
+                                                  //         .fade,
+                                                  maxLines: 10,
+                                                  softWrap: true,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .copyWith(
+                                                        fontSize: 14.0,
+                                                      ),
                                                 ),
                                               ),
+                                        // Text(
+                                        //   todayNoteView,
+                                        //   style: TextStyle(
+                                        //     fontSize: 14.0,
+                                        //     //fontWeight: FontWeight.bold,
+                                        //   ),
+                                        // ),
                                         SizedBox(width: 20),
                                         Spacer(flex: 1),
                                         IconButton(
@@ -423,7 +442,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                               .width;
 
                                                       return Container(
-                                                        height: 40,
+                                                        //height: 40,
                                                         width: width - 100,
                                                         child: PopupTextField(
                                                           customController:
@@ -444,33 +463,27 @@ class _LessonAddState extends State<LessonAdd> {
                                                       );
                                                     },
                                                   ),
-                                                  // actions: <Widget>[
-                                                  //   TextButton(
-                                                  //     onPressed: () async {
-                                                  //       if (globalFunction
-                                                  //               .textNullCheck(
-                                                  //                   context,
-                                                  //                   todayNoteController,
-                                                  //                   "일별") &&
-                                                  //           ActionNullCheck ==
-                                                  //               false) {
-                                                  //         //일별 노트 저장
-                                                  //         await todayNoteSave(
-                                                  //             lessonService,
-                                                  //             customUserInfo,
-                                                  //             context);
-                                                  //       }
-                                                  //     },
-                                                  //     child: Text('저장'),
-                                                  //   ),
-                                                  //   TextButton(
-                                                  //     onPressed: () {
-                                                  //       Navigator.of(context)
-                                                  //           .pop();
-                                                  //     },
-                                                  //     child: Text('취소'),
-                                                  //   ),
-                                                  // ],
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('취소'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        print(
+                                                            "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                                                        //일별 노트 저장
+                                                        await todayNoteSave(
+                                                            lessonService,
+                                                            customUserInfo,
+                                                            context);
+                                                      },
+                                                      child: Text('저장'),
+                                                    ),
+                                                  ],
                                                 );
                                               },
                                             );
@@ -1048,7 +1061,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     color: Palette.grayEE,
                                                   ),
                                                   Container(
-                                                    height: 40,
+                                                    //height: 40,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius.only(
@@ -1066,7 +1079,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     child: Padding(
                                                       padding: const EdgeInsets
                                                               .fromLTRB(
-                                                          14, 0, 14, 5),
+                                                          25, 0, 10, 5),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -1085,18 +1098,26 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         .gray99,
                                                                   ))
                                                               : Text(""),
-                                                          SizedBox(width: 20),
-                                                          Text(
-                                                            totalNote,
-                                                            style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Palette
-                                                                  .gray66,
-
-                                                              //fontWeight: FontWeight.bold,
+                                                          //SizedBox(width: 20),
+                                                          Expanded(
+                                                            child: Text(
+                                                              totalNote,
+                                                              // overflow:
+                                                              //     TextOverflow
+                                                              //         .fade,
+                                                              maxLines: 10,
+                                                              softWrap: true,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyText1!
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        14.0,
+                                                                  ),
                                                             ),
                                                           ),
-                                                          Spacer(flex: 1),
+                                                          //Spacer(flex: 1),
                                                           IconButton(
                                                             onPressed: () {
                                                               showDialog(
@@ -1128,8 +1149,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             totalNote;
 
                                                                         return Container(
-                                                                          height:
-                                                                              40,
+                                                                          //height:
+                                                                          //    40,
                                                                           width:
                                                                               width - 100,
                                                                           child:
@@ -1149,6 +1170,34 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         );
                                                                       },
                                                                     ),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: Text(
+                                                                            '취소'),
+                                                                      ),
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () async {
+                                                                          print(
+                                                                              "[LA] 동작별메모 저장 : totalNoteTextFieldDocId[index] / totalNoteControllers[index].text");
+                                                                          //동작별 노트 저장
+                                                                          await totalNoteSingleSave(
+                                                                              lessonService,
+                                                                              totalNoteTextFieldDocId[index],
+                                                                              totalNoteControllers[index].text,
+                                                                              context,
+                                                                              index);
+                                                                        },
+                                                                        child: Text(
+                                                                            '저장'),
+                                                                      ),
+                                                                    ],
                                                                   );
                                                                 },
                                                               );

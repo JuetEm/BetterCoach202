@@ -1037,21 +1037,39 @@ class LessonCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   color: Palette.grayFF,
+                  //color: Palette.buttonOrange,
                   border: Border(
                       bottom: BorderSide(width: 1, color: Palette.grayEE))
                   //color: Colors.red.withOpacity(0),
                   ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsets.fromLTRB(14, 5, 14, 5),
                 child: Container(
+                  constraints: BoxConstraints(
+                    minHeight: 38,
+                  ),
                   width: double.infinity,
-                  height: 38,
+                  //height: 38,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Expanded(
+                      //   child: Text(
+                      //     todayNote,
+                      //     //overflow: TextOverflow.fade,
+                      //     maxLines: 3,
+                      //     softWrap: true,
+                      //     style:
+                      //         Theme.of(context).textTheme.bodyText1!.copyWith(
+                      //               fontSize: 14.0,
+                      //             ),
+                      //   ),
+                      // ),
                       Text(
                         "${todayNote}",
+                        overflow: TextOverflow.fade,
+                        maxLines: 3,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -1151,7 +1169,7 @@ class LessonCard extends StatelessWidget {
                                   child: Text(
                                     totalNote,
                                     overflow: TextOverflow.fade,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     softWrap: true,
                                     style: Theme.of(context)
                                         .textTheme

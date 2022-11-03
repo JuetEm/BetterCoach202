@@ -479,15 +479,18 @@ class _PopupTextFieldState extends State<PopupTextField> {
     //FocusNode textFocus = FocusNode();
 
     return Container(
-      //color: Colors.red,
-      constraints: BoxConstraints(
-        minHeight: 40,
-      ),
+      color: Colors.red,
+      // constraints: BoxConstraints(
+      //   minHeight: 40,
+      // ),
       child: TextField(
+        keyboardType: TextInputType.multiline,
+        minLines: 3,
+        maxLines: 10,
         autofocus: true,
         //focusNode: textFocus,
-        textInputAction: TextInputAction.done,
-        readOnly: widget.showArrow,
+        //textInputAction: TextInputAction.done,
+        //readOnly: widget.showArrow,
         controller: widget.customController,
         decoration: InputDecoration(
             //labelText: widget.hint,
