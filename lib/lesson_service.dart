@@ -372,6 +372,31 @@ class LessonService extends ChangeNotifier {
     });
   }
 
+  Future<void> deleteMultilessonBatch({
+    required List<String> docIds,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    // Get a new write batch
+    final batch = FirebaseFirestore.instance.batch();
+
+    for (var i = 0; i < docIds.length; ++i) {
+      batch.delete(lessonCollection.doc(docIds[i]));
+    }
+
+    batch.commit();
+    // // bucket 삭제
+    // await lessonCollection.doc(docId).delete().then((value) {
+    //   print("[LS] deleteMultilesson 실행 - delete then");
+    //   onSuccess(); // 화면 갱신
+    //   print('[LS] deleteMultilesson 실행 - notifyListeners');
+    //   //notifyListeners();
+    //   // 화면 갱신
+    // }).onError((error, stackTrace) {
+    //   print("[LS] deleteMultilesson 실행 - delete error : ${error}");
+    // });
+  }
+
   Future<void> deleteFromActionSelect(String uid, String docId,
       String lessonDate, String apparatusName, String actionName) async {
     QuerySnapshot docRaw = await lessonCollection
