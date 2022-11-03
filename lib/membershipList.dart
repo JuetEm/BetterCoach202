@@ -33,6 +33,8 @@ class _MembershipListState extends State<MembershipList> {
                 customFunction: () {},
               ),
 
+              SizedBox(height: 10),
+
               /// 수강권 선택 버튼
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
