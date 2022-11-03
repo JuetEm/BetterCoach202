@@ -767,20 +767,18 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 const SizedBox(height: 14),
                 Offstage(
                   offstage: widget.userInfo.selectedGoals.isEmpty,
-                  child: Center(
-                    child: Wrap(
-                      direction: Axis.horizontal, // 나열 방향
-                      alignment: WrapAlignment.start, // 정렬 방식
-                      spacing: 5, // 좌우 간격
-                      runSpacing: 5,
-                      children: [
-                        for (final chip in goalChips)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                            child: chip,
-                          ),
-                      ],
-                    ),
+                  child: Wrap(
+                    direction: Axis.horizontal, // 나열 방향
+                    alignment: WrapAlignment.start, // 정렬 방식
+                    spacing: 5, // 좌우 간격
+                    runSpacing: 5,
+                    children: [
+                      for (final chip in goalChips)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                          child: chip,
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -806,20 +804,18 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 const SizedBox(height: 14),
                 Offstage(
                   offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
-                  child: Center(
-                    child: Wrap(
-                      direction: Axis.horizontal, // 나열 방향
-                      alignment: WrapAlignment.start, // 정렬 방식
-                      spacing: 5, // 좌우 간격
-                      runSpacing: 5,
-                      children: [
-                        for (final chip in bodyAnalyzedChips)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                            child: chip,
-                          ),
-                      ],
-                    ),
+                  child: Wrap(
+                    direction: Axis.horizontal, // 나열 방향
+                    alignment: WrapAlignment.start, // 정렬 방식
+                    spacing: 5, // 좌우 간격
+                    runSpacing: 5,
+                    children: [
+                      for (final chip in bodyAnalyzedChips)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                          child: chip,
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -844,20 +840,18 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 const SizedBox(height: 14),
                 Offstage(
                   offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
-                  child: Center(
-                    child: Wrap(
-                      direction: Axis.horizontal, // 나열 방향
-                      alignment: WrapAlignment.start, // 정렬 방식
-                      spacing: 5, // 좌우 간격
-                      runSpacing: 5,
-                      children: [
-                        for (final chip in medicalHistoriesChips)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                            child: chip,
-                          ),
-                      ],
-                    ),
+                  child: Wrap(
+                    direction: Axis.horizontal, // 나열 방향
+                    alignment: WrapAlignment.start, // 정렬 방식
+                    spacing: 5, // 좌우 간격
+                    runSpacing: 5,
+                    children: [
+                      for (final chip in medicalHistoriesChips)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                          child: chip,
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 14),
