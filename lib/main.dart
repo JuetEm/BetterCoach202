@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 100),
+                SizedBox(height: 50),
 
                 /// 이메일
                 LoginTextField(
@@ -223,25 +223,25 @@ class _LoginPageState extends State<LoginPage> {
 
                 SizedBox(height: 32),
 
-                /// 기능 없는 텍스트
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '회원가입',
-                      style: TextStyle(fontSize: 14, color: Palette.gray33),
-                    ),
-                    Text(' | ',
-                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                    Text('로그인',
-                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                    Text(' | ',
-                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                    Text('이메일/비밀번호 찾기',
-                        style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                  ],
-                ),
-                SizedBox(height: 32),
+                /// 기능 없는 텍스트 _ 잠시 주석처리 해두겠습니다.
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text(
+                //       '회원가입',
+                //       style: TextStyle(fontSize: 14, color: Palette.gray33),
+                //     ),
+                //     Text(' | ',
+                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                //     Text('로그인',
+                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                //     Text(' | ',
+                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                //     Text('이메일/비밀번호 찾기',
+                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
+                //   ],
+                // ),
+                // SizedBox(height: 32),
 
                 /// 로그인 버튼
                 ElevatedButton(

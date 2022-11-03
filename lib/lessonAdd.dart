@@ -947,8 +947,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                               Radius.circular(
                                                                   10.0),
                                                         ),
-                                                        color: Palette
-                                                            .backgroundOrange
+                                                        color:
+                                                            Palette.titleOrange
                                                         //color: Colors.red.withOpacity(0),
                                                         ),
                                                     child: Padding(

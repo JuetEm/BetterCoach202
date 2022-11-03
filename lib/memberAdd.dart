@@ -102,8 +102,8 @@ class _MemberAddState extends State<MemberAdd> {
 
     // medicalHistoryList 값 반영하여 FilterChips 동적 생성
     var medicalHistoriesChips = [];
-    medicalHistoriesChips = makeChips(medicalHistoriesChips, selectedHistoryList);
-
+    medicalHistoriesChips =
+        makeChips(medicalHistoriesChips, selectedHistoryList);
 
     String imgUrl =
         "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
@@ -264,7 +264,8 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 입력창_운동목표
                 Container(
                   color: Palette.mainBackground,
-                  padding: const EdgeInsets.all(20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -306,11 +307,26 @@ class _MemberAddState extends State<MemberAdd> {
                         /// 운동목표 입력창
                         BaseTextField(
                           customController: goalController,
-                          hint: "운동목표",
+                          hint: "운동목표를 입력해주세요.",
                           showArrow: false,
                           customFunction: () {},
                         ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
 
+                /// 체형 분석
+                Container(
+                  color: Palette.mainBackground,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                         /// 체형분석
                         customBodyGridView(
                           context,
@@ -348,11 +364,26 @@ class _MemberAddState extends State<MemberAdd> {
                         /// 체형분석 입력창
                         BaseTextField(
                           customController: bodyAnalyzeController,
-                          hint: "체형분석",
+                          hint: "체형 특징을 입력해주세요.",
                           showArrow: false,
                           customFunction: () {},
                         ),
+                      ],
+                    ),
+                  ),
+                ),
 
+                SizedBox(height: 10),
+
+                /// 통증/상해/병력
+                Container(
+                  color: Palette.mainBackground,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                         /// 통증/상해/병력
                         customMedicalHistoryGridView(
                             context,
@@ -364,7 +395,7 @@ class _MemberAddState extends State<MemberAdd> {
                             historyTileColorList,
                             historyTextColorList),
 
-                            Offstage(
+                        Offstage(
                           offstage: selectedHistoryList.isEmpty,
                           child: SizedBox(
                             height: 30,
@@ -389,7 +420,7 @@ class _MemberAddState extends State<MemberAdd> {
                         /// 통증/상해/병력 입력창
                         BaseTextField(
                           customController: medicalHistoryController,
-                          hint: "통증/상해/병력",
+                          hint: "병력 내용을 입력해주세요.",
                           showArrow: false,
                           customFunction: () {},
                         ),
@@ -402,7 +433,8 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 입력창_특이사항
                 Container(
                   color: Palette.mainBackground,
-                  padding: const EdgeInsets.all(20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -420,21 +452,13 @@ class _MemberAddState extends State<MemberAdd> {
                               ),
                             ),
                             Spacer(),
-                            IconButton(
-                                onPressed: () {
-                                  // Bottom Sheet 함수 작성
-                                },
-                                icon: Icon(
-                                  Icons.expand_more_outlined,
-                                  color: Palette.gray66,
-                                )),
                           ],
                         ),
 
                         /// 특이사항 입력창
                         BaseTextField(
                           customController: commentController,
-                          hint: "특이사항",
+                          hint: "회원님의 특이사항을 입력하세요",
                           showArrow: false,
                           customFunction: () {},
                         ),
@@ -537,6 +561,7 @@ class _MemberAddState extends State<MemberAdd> {
                         textStyle: TextStyle(fontWeight: FontWeight.normal)),
                     onPressed: () {
                       /// Pop 함수 입력
+                      Navigator.pop(context);
                     },
                     child: Text(
                       '취소하고 나가기',
@@ -602,7 +627,7 @@ class _MemberAddState extends State<MemberAdd> {
       List<String> objectList,
       List<String> resultObjectList,
       List<Color> customTileColorList,
-      List<Color> customTextColorList) {
+      List<Color> customBorderColorList) {
     return Row(
       children: [
         Text(
@@ -642,8 +667,8 @@ class _MemberAddState extends State<MemberAdd> {
                                       child: Text(
                                         bottomSheetTitle,
                                         style: TextStyle(
-                                            fontSize: 18,
-                                            color: Palette.gray66,
+                                            fontSize: 14,
+                                            color: Palette.gray00,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -665,13 +690,13 @@ class _MemberAddState extends State<MemberAdd> {
                                       // }
                                       // customController.text = goalsSum;
                                       customTileColorList.clear();
-                                      customTextColorList.clear();
+                                      customBorderColorList.clear();
                                       Navigator.pop(context);
                                     },
                                     child: Text(
-                                      '완료',
+                                      '선택완료',
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           color: Palette.textBlue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -679,7 +704,7 @@ class _MemberAddState extends State<MemberAdd> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Expanded(
                               child: GridView.builder(
                                 shrinkWrap: true,
@@ -688,61 +713,61 @@ class _MemberAddState extends State<MemberAdd> {
                                   var value = objectList[index];
                                   // stateSetter((() {
                                   //   setState(() {
-                                      if (resultObjectList.contains(value)) {
-                                        customTileColorList.add(Palette.buttonOrange);
-                                        customTextColorList.add(Palette.grayFF);
-                                        // print("언제 울리니? 1 ");
-                                      } else {
-                                        customTileColorList.add(Palette.grayEE);
-                                        customTextColorList.add(Palette.gray00);
-                                        // print("언제 울리니? 2 ");
-                                      }
+                                  if (resultObjectList.contains(value)) {
+                                    customTileColorList
+                                        .add(Palette.buttonOrange);
+                                    customBorderColorList
+                                        .add(Colors.transparent);
+                                    // print("언제 울리니? 1 ");
+                                  } else {
+                                    customTileColorList.add(Colors.transparent);
+                                    customBorderColorList.add(Palette.grayEE);
+                                    // print("언제 울리니? 2 ");
+                                  }
                                   //   });
                                   // }));
 
                                   // return Text(widget.optionList[index]);
-                                  return Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 10, 10, 10),
-                                      child: InkWell(
-                                        onTap: () {
-                                          stateSetter(
-                                            () {
-                                              setState(() {
-                                                if (resultObjectList
-                                                    .contains(value)) {
-                                                  customTileColorList[index] =
-                                                      Palette.grayEE;
-                                                  customTextColorList[index] =
-                                                      Palette.gray00;
-                                                  resultObjectList
-                                                      .remove(value);
-                                                } else {
-                                                  customTileColorList[index] =
-                                                      Palette.buttonOrange;
-                                                  customTextColorList[index] =
-                                                      Palette.grayFF;
-                                                  resultObjectList.add(value);
-                                                }
-                                              });
-                                            },
-                                          );
+                                  return InkWell(
+                                    onTap: () {
+                                      stateSetter(
+                                        () {
+                                          setState(() {
+                                            if (resultObjectList
+                                                .contains(value)) {
+                                              customTileColorList[index] =
+                                                  Colors.transparent;
+                                              customBorderColorList[index] =
+                                                  Palette.grayEE;
+                                              resultObjectList.remove(value);
+                                            } else {
+                                              customTileColorList[index] =
+                                                  Palette.backgroundOrange;
+                                              customBorderColorList[index] =
+                                                  Colors.transparent;
+                                              resultObjectList.add(value);
+                                            }
+                                          });
                                         },
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                                color:
-                                                    customTileColorList[index]),
-                                            child: Center(
-                                                child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: customTextColorList[
-                                                      index]),
-                                            ))),
-                                      ));
+                                      );
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: customBorderColorList[
+                                                    index]),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(30),
+                                            ),
+                                            color: customTileColorList[index]),
+                                        child: Center(
+                                            child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Palette.gray33),
+                                        ))),
+                                  );
                                 }),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
@@ -775,7 +800,7 @@ class _MemberAddState extends State<MemberAdd> {
       List<String> objectList,
       List<String> resultObjectList,
       List<Color> customTileColorList,
-      List<Color> customTextColorList) {
+      List<Color> customBorderColorList) {
     return Row(
       children: [
         Text(
@@ -815,8 +840,8 @@ class _MemberAddState extends State<MemberAdd> {
                                       child: Text(
                                         bottomSheetTitle,
                                         style: TextStyle(
-                                            fontSize: 18,
-                                            color: Palette.gray66,
+                                            fontSize: 14,
+                                            color: Palette.gray00,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -838,13 +863,13 @@ class _MemberAddState extends State<MemberAdd> {
                                       // }
                                       // customController.text = goalsSum;
                                       customTileColorList.clear();
-                                      customTextColorList.clear();
+                                      customBorderColorList.clear();
                                       Navigator.pop(context);
                                     },
                                     child: Text(
-                                      '완료',
+                                      '선택완료',
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           color: Palette.textBlue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -852,7 +877,7 @@ class _MemberAddState extends State<MemberAdd> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Expanded(
                               child: GridView.builder(
                                 shrinkWrap: true,
@@ -860,57 +885,57 @@ class _MemberAddState extends State<MemberAdd> {
                                 itemBuilder: ((context, index) {
                                   var value = objectList[index];
                                   if (resultObjectList.contains(value)) {
-                                        customTileColorList.add(Palette.buttonOrange);
-                                        customTextColorList.add(Palette.grayFF);
-                                        // print("언제 울리니? 1 ");
-                                      } else {
-                                        customTileColorList.add(Palette.grayEE);
-                                        customTextColorList.add(Palette.gray00);
-                                        // print("언제 울리니? 2 ");
-                                      }
+                                    customTileColorList
+                                        .add(Palette.buttonOrange);
+                                    customBorderColorList
+                                        .add(Colors.transparent);
+                                    // print("언제 울리니? 1 ");
+                                  } else {
+                                    customTileColorList.add(Colors.transparent);
+                                    customBorderColorList.add(Palette.grayEE);
+                                    // print("언제 울리니? 2 ");
+                                  }
                                   // return Text(widget.optionList[index]);
-                                  return Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 10, 10, 10),
-                                      child: InkWell(
-                                        onTap: () {
-                                          stateSetter(
-                                            () {
-                                              setState(() {
-                                                if (resultObjectList
-                                                    .contains(value)) {
-                                                  customTileColorList[index] =
-                                                      Palette.grayEE;
-                                                  customTextColorList[index] =
-                                                      Palette.gray00;
-                                                  resultObjectList
-                                                      .remove(value);
-                                                } else {
-                                                  customTileColorList[index] =
-                                                      Palette.buttonOrange;
-                                                  customTextColorList[index] =
-                                                      Palette.grayFF;
-                                                  resultObjectList.add(value);
-                                                }
-                                              });
-                                            },
-                                          );
+                                  return InkWell(
+                                    onTap: () {
+                                      stateSetter(
+                                        () {
+                                          setState(() {
+                                            if (resultObjectList
+                                                .contains(value)) {
+                                              customTileColorList[index] =
+                                                  Colors.transparent;
+                                              customBorderColorList[index] =
+                                                  Palette.grayEE;
+                                              resultObjectList.remove(value);
+                                            } else {
+                                              customTileColorList[index] =
+                                                  Palette.grayEE;
+                                              customBorderColorList[index] =
+                                                  Colors.transparent;
+                                              resultObjectList.add(value);
+                                            }
+                                          });
                                         },
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                                color:
-                                                    customTileColorList[index]),
-                                            child: Center(
-                                                child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: customTextColorList[
-                                                      index]),
-                                            ))),
-                                      ));
+                                      );
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: customBorderColorList[
+                                                    index]),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(30),
+                                            ),
+                                            color: customTileColorList[index]),
+                                        child: Center(
+                                            child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Palette.gray33),
+                                        ))),
+                                  );
                                 }),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
@@ -943,7 +968,7 @@ class _MemberAddState extends State<MemberAdd> {
       List<String> objectList,
       List<String> resultObjectList,
       List<Color> customTileColorList,
-      List<Color> customTextColorList) {
+      List<Color> customBorderColorList) {
     return Row(
       children: [
         Text(
@@ -983,8 +1008,8 @@ class _MemberAddState extends State<MemberAdd> {
                                       child: Text(
                                         bottomSheetTitle,
                                         style: TextStyle(
-                                            fontSize: 18,
-                                            color: Palette.gray66,
+                                            fontSize: 14,
+                                            color: Palette.gray00,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -1006,13 +1031,13 @@ class _MemberAddState extends State<MemberAdd> {
                                       // }
                                       // customController.text = goalsSum;
                                       customTileColorList.clear();
-                                      customTextColorList.clear();
+                                      customBorderColorList.clear();
                                       Navigator.pop(context);
                                     },
                                     child: Text(
-                                      '완료',
+                                      '선택완료',
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           color: Palette.textBlue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -1020,65 +1045,70 @@ class _MemberAddState extends State<MemberAdd> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Expanded(
                               child: GridView.builder(
                                 shrinkWrap: true,
                                 itemCount: objectList.length,
                                 itemBuilder: ((context, index) {
                                   var value = objectList[index];
+                                  // stateSetter((() {
+                                  //   setState(() {
                                   if (resultObjectList.contains(value)) {
-                                        customTileColorList.add(Palette.buttonOrange);
-                                        customTextColorList.add(Palette.grayFF);
-                                        // print("언제 울리니? 1 ");
-                                      } else {
-                                        customTileColorList.add(Palette.grayEE);
-                                        customTextColorList.add(Palette.gray00);
-                                        // print("언제 울리니? 2 ");
-                                      }
+                                    customTileColorList
+                                        .add(Palette.buttonOrange);
+                                    customBorderColorList
+                                        .add(Colors.transparent);
+                                    // print("언제 울리니? 1 ");
+                                  } else {
+                                    customTileColorList.add(Colors.transparent);
+                                    customBorderColorList.add(Palette.grayEE);
+                                    // print("언제 울리니? 2 ");
+                                  }
+                                  //   });
+                                  // }));
+
                                   // return Text(widget.optionList[index]);
-                                  return Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 10, 10, 10),
-                                      child: InkWell(
-                                        onTap: () {
-                                          stateSetter(
-                                            () {
-                                              setState(() {
-                                                if (resultObjectList
-                                                    .contains(value)) {
-                                                  customTileColorList[index] =
-                                                      Palette.grayEE;
-                                                  customTextColorList[index] =
-                                                      Palette.gray00;
-                                                  resultObjectList
-                                                      .remove(value);
-                                                } else {
-                                                  customTileColorList[index] =
-                                                      Palette.buttonOrange;
-                                                  customTextColorList[index] =
-                                                      Palette.grayFF;
-                                                  resultObjectList.add(value);
-                                                }
-                                              });
-                                            },
-                                          );
+                                  return InkWell(
+                                    onTap: () {
+                                      stateSetter(
+                                        () {
+                                          setState(() {
+                                            if (resultObjectList
+                                                .contains(value)) {
+                                              customTileColorList[index] =
+                                                  Colors.transparent;
+                                              customBorderColorList[index] =
+                                                  Palette.grayEE;
+                                              resultObjectList.remove(value);
+                                            } else {
+                                              customTileColorList[index] =
+                                                  Palette.backgroundOrange;
+                                              customBorderColorList[index] =
+                                                  Colors.transparent;
+                                              resultObjectList.add(value);
+                                            }
+                                          });
                                         },
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                                color:
-                                                    customTileColorList[index]),
-                                            child: Center(
-                                                child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: customTextColorList[
-                                                      index]),
-                                            ))),
-                                      ));
+                                      );
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: customBorderColorList[
+                                                    index]),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(30),
+                                            ),
+                                            color: customTileColorList[index]),
+                                        child: Center(
+                                            child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Palette.gray33),
+                                        ))),
+                                  );
                                 }),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
