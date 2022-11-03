@@ -500,12 +500,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                     //     TextOverflow
                                                     //         .fade,
                                                     maxLines: 10,
+
                                                     softWrap: true,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyText1!
                                                         .copyWith(
                                                           fontSize: 14.0,
+                                                          height: 1.6, //줄간격
                                                         ),
                                                   ),
                                                 ),
@@ -516,8 +518,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           //     //fontWeight: FontWeight.bold,
                                           //   ),
                                           // ),
-                                          SizedBox(width: 20),
-                                          Spacer(flex: 1),
+                                          //SizedBox(width: 20),
+                                          //Spacer(flex: 1),
                                           Icon(
                                             Icons.mode_edit,
                                             color: Palette.gray66,
@@ -714,9 +716,12 @@ class _LessonAddState extends State<LessonAdd> {
                                       builder: (BuildContext context,
                                           Widget? child) {
                                         return Material(
-                                          elevation: 0,
+                                          //elevation: 0,
                                           color: Colors.transparent,
+                                          //shadowColor: Palette.buttonOrange,
+                                          
                                           child: child,
+
                                         );
                                       },
                                       child: child,
@@ -1209,6 +1214,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                                     .copyWith(
                                                                       fontSize:
                                                                           14.0,
+                                                                      height:
+                                                                          1.6, //줄간격
                                                                     ),
                                                               ),
                                                             ),
@@ -1603,14 +1610,24 @@ class _DeleteButtonState extends State<DeleteButton> {
               onError: () {},
             );
           }
-          for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
-            print("전체삭제 - 동작별 노트삭제 : ${totalNoteTextFieldDocId[idx]} ");
-            await widget.lessonService.deleteMultilesson(
-              docId: totalNoteTextFieldDocId[idx],
-              onSuccess: () {},
-              onError: () {},
-            );
-          }
+
+          //간헐적으로 동작노트들이 삭제 되지 않는 경우가 있어 일괄삭제 batch방식 적용
+          print("전체삭제 - 동작별 노트삭제 : ${totalNoteTextFieldDocId} ");
+          await widget.lessonService.deleteMultilessonBatch(
+            docIds: totalNoteTextFieldDocId,
+            onSuccess: () {},
+            onError: () {},
+          );
+
+          // for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+
+          //   await widget.lessonService.deleteMultilesson(
+          //     docId: totalNoteTextFieldDocId[idx],
+          //     onSuccess: () {},
+          //     onError: () {},
+          //   );
+
+          // }
           // 삭제하기 성공시 MemberList로 이동
           widget.lessonService.notifyListeners(); // 화면 갱신
           Navigator.pop(context);
