@@ -658,16 +658,17 @@ class _MemberInfoViewState extends State<MemberInfoView> {
   Widget build(BuildContext context) {
     // selectedGoals 값 반영하여 FilterChips 동적 생성
     var goalChips = [];
-    goalChips = makeChips(goalChips, widget.userInfo.selectedGoals);
+    goalChips = makeChips(
+        goalChips, widget.userInfo.selectedGoals, Palette.backgroundOrange);
     // selelctedAnalyzedList 값 반영하여 FilterChips 동적 생성
     var bodyAnalyzedChips = [];
-    bodyAnalyzedChips =
-        makeChips(bodyAnalyzedChips, widget.userInfo.selectedBodyAnalyzed);
+    bodyAnalyzedChips = makeChips(bodyAnalyzedChips,
+        widget.userInfo.selectedBodyAnalyzed, Palette.grayEE);
 
     // medicalHistoryList 값 반영하여 FilterChips 동적 생성
     var medicalHistoriesChips = [];
-    medicalHistoriesChips = makeChips(
-        medicalHistoriesChips, widget.userInfo.selectedMedicalHistories);
+    medicalHistoriesChips = makeChips(medicalHistoriesChips,
+        widget.userInfo.selectedMedicalHistories, Palette.backgroundBlue);
 
     print(
         "[MI] 운동목표 칩셋출력 : selectedGoals비었니.? ${widget.userInfo.selectedGoals.isEmpty}");
@@ -793,7 +794,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  widget.userInfo.note,
+                  widget.userInfo.bodyAnalyzed,
                   style: TextStyle(
                     fontSize: 14,
                     //fontWeight: FontWeight.bold,
@@ -831,7 +832,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  widget.userInfo.info,
+                  widget.userInfo.medicalHistories,
                   style: TextStyle(
                     fontSize: 14,
                     //fontWeight: FontWeight.bold,
@@ -907,7 +908,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
     );
   }
 
-  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList) {
+  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList,
+      Color chipBackgroundColor) {
     resultChips = targetList
         .map((e) => Chip(
             label: Text(e),
@@ -918,9 +920,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             //   print("value : ${value}");
             // }),
             // selected: targetList.contains(e),
-            labelStyle: TextStyle(fontSize: 12, color: Palette.grayFF),
+            labelStyle: TextStyle(fontSize: 12, color: Palette.gray00),
             // selectedColor: Palette.buttonOrange,
-            backgroundColor: Palette.buttonOrange,
+            backgroundColor: chipBackgroundColor,
             // showCheckmark: false,
             side: BorderSide(color: Palette.grayFF)))
         .toList();
