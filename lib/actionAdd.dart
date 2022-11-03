@@ -131,6 +131,7 @@ class _ActionAddState extends State<ActionAdd> {
                         clearIconProperty:
                             IconProperty(color: Palette.buttonOrange),
                         textFieldDecoration: InputDecoration(
+                          labelStyle: TextStyle(fontSize: 14),
                           labelText: "기구를 선택해주세요.",
                           hintText: "기구를 선택하세요.",
                           border: OutlineInputBorder(
@@ -207,6 +208,7 @@ class _ActionAddState extends State<ActionAdd> {
                         clearIconProperty:
                             IconProperty(color: Palette.buttonOrange),
                         textFieldDecoration: InputDecoration(
+                          labelStyle: TextStyle(fontSize: 14),
                           labelText: "자세를 선택해주세요.",
                           hintText: "자세를 선택하세요.",
                           border: OutlineInputBorder(
@@ -274,84 +276,107 @@ class _ActionAddState extends State<ActionAdd> {
                     /// 동작 이름 입력창
                     BaseTextField(
                       customController: nameController,
-                      hint: "새로운 동작을 입력해주세요.",
+                      hint: "새로운 동작명을 입력해주세요.",
                       showArrow: false,
                       customFunction: () {},
                     ),
                     Divider(height: 1),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(0),
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(48.0),
+                              ),
+                              color: Palette.buttonOrange,
+                            ),
+                            height: 48,
+                            width: 238,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "동작생성",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onPressed: () {
+                            print("추가 버튼");
+                            // create action
+                            if (apparatusOffstage) {
+                              if (globalFunction.selectNullCheck(
+                                  context, apparatusController, "기구 선택")) {
+                                selectedApparatus =
+                                    apparatusController.dropDownValue!.value;
+                                otherApparatusName =
+                                    apparatusController.dropDownValue!.name;
+                              }
+                            } else {
+                              if (globalFunction.textNullCheck(context,
+                                  otherApparatusController, "새로운 기구 이름")) {
+                                selectedApparatus =
+                                    apparatusController.dropDownValue!.value;
+                                otherApparatusName =
+                                    otherApparatusController.text;
+                              }
+                            }
+                            if (positionOffstage) {
+                              if (globalFunction.selectNullCheck(
+                                  context, positionController, "자세 선택")) {
+                                selectecPosition =
+                                    positionController.dropDownValue!.value;
+                                otherPositionName =
+                                    positionController.dropDownValue!.name;
+                              }
+                            } else {
+                              if (globalFunction.textNullCheck(context,
+                                  otherPositionController, "새로운 자세 이름")) {
+                                selectecPosition =
+                                    positionController.dropDownValue!.value;
+                                otherPositionName =
+                                    otherPositionController.text;
+                              }
+                            }
+                            if (globalFunction.textNullCheck(
+                                context, nameController, "새로운 동작 이름")) {
+                              actionName = nameController.text;
+                            }
+                            if (selectedApparatus.isNotEmpty &&
+                                selectecPosition.isNotEmpty &&
+                                actionName.isNotEmpty) {
+                              actionService.create(
+                                selectedApparatus,
+                                otherApparatusName,
+                                selectecPosition,
+                                otherPositionName,
+                                actionName,
+                                user.uid,
+                                actionName.toUpperCase(),
+                                actionName.toLowerCase(),
+                              );
+                              // 신규 동작 추가 성공시 actionSelect로 이동
+                              Navigator.pop(context, actionName);
+                            } else {
+                              // 빈 값 있을 때
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("모든 항목을 입력 해주세요."),
+                              ));
+                            }
+                          }),
+                    )
 
                     /// 추가 버튼
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: Palette.buttonOrange,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text("추가하기", style: TextStyle(fontSize: 18)),
-                      ),
-                      onPressed: () {
-                        print("추가 버튼");
-                        // create action
-                        if (apparatusOffstage) {
-                          if (globalFunction.selectNullCheck(
-                              context, apparatusController, "기구 선택")) {
-                            selectedApparatus =
-                                apparatusController.dropDownValue!.value;
-                            otherApparatusName =
-                                apparatusController.dropDownValue!.name;
-                          }
-                        } else {
-                          if (globalFunction.textNullCheck(
-                              context, otherApparatusController, "새로운 기구 이름")) {
-                            selectedApparatus =
-                                apparatusController.dropDownValue!.value;
-                            otherApparatusName = otherApparatusController.text;
-                          }
-                        }
-                        if (positionOffstage) {
-                          if (globalFunction.selectNullCheck(
-                              context, positionController, "자세 선택")) {
-                            selectecPosition =
-                                positionController.dropDownValue!.value;
-                            otherPositionName =
-                                positionController.dropDownValue!.name;
-                          }
-                        } else {
-                          if (globalFunction.textNullCheck(
-                              context, otherPositionController, "새로운 자세 이름")) {
-                            selectecPosition =
-                                positionController.dropDownValue!.value;
-                            otherPositionName = otherPositionController.text;
-                          }
-                        }
-                        if (globalFunction.textNullCheck(
-                            context, nameController, "새로운 동작 이름")) {
-                          actionName = nameController.text;
-                        }
-                        if (selectedApparatus.isNotEmpty &&
-                            selectecPosition.isNotEmpty &&
-                            actionName.isNotEmpty) {
-                          actionService.create(
-                            selectedApparatus,
-                            otherApparatusName,
-                            selectecPosition,
-                            otherPositionName,
-                            actionName,
-                            user.uid,
-                            actionName.toUpperCase(),
-                            actionName.toLowerCase(),
-                          );
-                          // 신규 동작 추가 성공시 actionSelect로 이동
-                          Navigator.pop(context, actionName);
-                        } else {
-                          // 빈 값 있을 때
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("모든 항목을 입력 해주세요."),
-                          ));
-                        }
-                      },
-                    ),
                   ],
                 ),
               ),

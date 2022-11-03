@@ -83,7 +83,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // SizedBox(
                         //   height: 200,
@@ -174,11 +174,15 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 추가 버튼
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                             elevation: 0,
                             backgroundColor: Palette.buttonOrange,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 90),
                             child: Text("저장하기", style: TextStyle(fontSize: 18)),
                           ),
                           onPressed: () {
@@ -265,11 +269,15 @@ class _MemberUpdateState extends State<MemberUpdate> {
 
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                             elevation: 0,
                             backgroundColor: Palette.mainBackground,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 90),
                             child: Text("삭제하기",
                                 style: TextStyle(
                                     fontSize: 18, color: Palette.textRed)),

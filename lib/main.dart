@@ -92,7 +92,8 @@ class MyApp extends StatelessWidget {
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
         ],
-        theme: ThemeData(fontFamily: 'Pretendard'),
+        theme: ThemeData(
+            fontFamily: 'Pretendard', backgroundColor: Palette.mainBackground),
         home: user == null ? LoginPage() : MemberList(),
       ),
     );
