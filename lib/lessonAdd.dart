@@ -408,7 +408,10 @@ class _LessonAddState extends State<LessonAdd> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text('취소'),
+                                            child: Text(
+                                              '취소',
+                                              selectionColor: Palette.textRed,
+                                            ),
                                           ),
                                           TextButton(
                                             onPressed: () async {
@@ -418,7 +421,10 @@ class _LessonAddState extends State<LessonAdd> {
                                               await todayNoteSave(lessonService,
                                                   customUserInfo, context);
                                             },
-                                            child: Text('저장'),
+                                            child: Text(
+                                              '저장',
+                                              selectionColor: Palette.textBlue,
+                                            ),
                                           ),
                                         ],
                                       );
@@ -647,7 +653,7 @@ class _LessonAddState extends State<LessonAdd> {
                                   // }
                                 },
                                 child: SizedBox(
-                                  height: 40,
+                                  height: 36,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -1179,7 +1185,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                         padding:
                                                             const EdgeInsets
                                                                     .fromLTRB(
-                                                                25, 0, 10, 5),
+                                                                25, 5, 10, 5),
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -1581,13 +1587,11 @@ class _DeleteButtonState extends State<DeleteButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        elevation: 0,
-        backgroundColor: Palette.mainBackground,
-      ),
+          elevation: 0, backgroundColor: Colors.transparent),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text("삭제하기",
-            style: TextStyle(fontSize: 18, color: Palette.textRed)),
+            style: TextStyle(fontSize: 16, color: Palette.textRed)),
       ),
       onPressed: () async {
         // create bucket

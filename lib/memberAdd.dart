@@ -94,16 +94,17 @@ class _MemberAddState extends State<MemberAdd> {
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
     var goalChips = [];
-    goalChips = makeChips(goalChips, selectedGoals);
+    goalChips = makeChips(goalChips, selectedGoals, Palette.backgroundOrange);
 
     // selelctedAnalyzedList 값 반영하여 FilterChips 동적 생성
     var bodyAnalyzedChips = [];
-    bodyAnalyzedChips = makeChips(bodyAnalyzedChips, selelctedAnalyzedList);
+    bodyAnalyzedChips =
+        makeChips(bodyAnalyzedChips, selelctedAnalyzedList, Palette.grayEE);
 
     // medicalHistoryList 값 반영하여 FilterChips 동적 생성
     var medicalHistoriesChips = [];
-    medicalHistoriesChips =
-        makeChips(medicalHistoriesChips, selectedHistoryList);
+    medicalHistoriesChips = makeChips(
+        medicalHistoriesChips, selectedHistoryList, Palette.backgroundBlue);
 
     String imgUrl =
         "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
@@ -176,6 +177,10 @@ class _MemberAddState extends State<MemberAdd> {
                           ],
                         ),
 
+                        SizedBox(height: 10),
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+
                         /// 이름 입력창
                         BaseTextField(
                           customController: nameController,
@@ -239,11 +244,13 @@ class _MemberAddState extends State<MemberAdd> {
                                 color: Palette.gray00,
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            )
+                            SizedBox(width: 10)
                           ],
                         ),
+
+                        SizedBox(height: 10),
+                        Divider(height: 1),
+                        SizedBox(height: 10),
 
                         /// 등록횟수입력창
                         BaseTextField(
@@ -264,8 +271,7 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 입력창_운동목표
                 Container(
                   color: Palette.mainBackground,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -304,6 +310,9 @@ class _MemberAddState extends State<MemberAdd> {
                           ),
                         ),
 
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+
                         /// 운동목표 입력창
                         BaseTextField(
                           customController: goalController,
@@ -321,8 +330,7 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 체형 분석
                 Container(
                   color: Palette.mainBackground,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -361,6 +369,9 @@ class _MemberAddState extends State<MemberAdd> {
                           ),
                         ),
 
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+
                         /// 체형분석 입력창
                         BaseTextField(
                           customController: bodyAnalyzeController,
@@ -378,8 +389,7 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 통증/상해/병력
                 Container(
                   color: Palette.mainBackground,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -388,7 +398,7 @@ class _MemberAddState extends State<MemberAdd> {
                         customMedicalHistoryGridView(
                             context,
                             medicalHistoryController,
-                            "통증/상해",
+                            "통증/상해/병력",
                             "통증/상해 부위를 선택해주세요.",
                             medicalHistoryList,
                             selectedHistoryList,
@@ -417,6 +427,9 @@ class _MemberAddState extends State<MemberAdd> {
                           ),
                         ),
 
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+
                         /// 통증/상해/병력 입력창
                         BaseTextField(
                           customController: medicalHistoryController,
@@ -433,8 +446,7 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 입력창_특이사항
                 Container(
                   color: Palette.mainBackground,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  padding: const EdgeInsets.all(20),
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -455,6 +467,10 @@ class _MemberAddState extends State<MemberAdd> {
                           ],
                         ),
 
+                        SizedBox(height: 10),
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+
                         /// 특이사항 입력창
                         BaseTextField(
                           customController: commentController,
@@ -462,8 +478,6 @@ class _MemberAddState extends State<MemberAdd> {
                           showArrow: false,
                           customFunction: () {},
                         ),
-                        Divider(height: 1),
-                        SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -579,18 +593,22 @@ class _MemberAddState extends State<MemberAdd> {
     );
   }
 
-  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList) {
+  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList,
+      Color chipBackgroundColor) {
     if (targetList.isNotEmpty) {
       resultChips = targetList
           .map((e) => FilterChip(
                 label: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(e),
+                    SizedBox(width: 1),
                     Icon(
                       Icons.close_outlined,
                       size: 14,
                       color: targetList.contains(e)
-                          ? Palette.grayFF
+                          ? Palette.gray00
                           : Palette.gray99,
                     )
                   ],
@@ -603,11 +621,11 @@ class _MemberAddState extends State<MemberAdd> {
                 }),
                 selected: targetList.contains(e),
                 labelStyle: TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: targetList.contains(e)
-                        ? Palette.grayFF
+                        ? Palette.gray00
                         : Palette.gray99),
-                selectedColor: Palette.buttonOrange,
+                selectedColor: chipBackgroundColor,
                 backgroundColor: Colors.transparent,
                 showCheckmark: false,
                 side: targetList.contains(e)
@@ -715,7 +733,7 @@ class _MemberAddState extends State<MemberAdd> {
                                   //   setState(() {
                                   if (resultObjectList.contains(value)) {
                                     customTileColorList
-                                        .add(Palette.buttonOrange);
+                                        .add(Palette.backgroundOrange);
                                     customBorderColorList
                                         .add(Colors.transparent);
                                     // print("언제 울리니? 1 ");
@@ -885,8 +903,7 @@ class _MemberAddState extends State<MemberAdd> {
                                 itemBuilder: ((context, index) {
                                   var value = objectList[index];
                                   if (resultObjectList.contains(value)) {
-                                    customTileColorList
-                                        .add(Palette.buttonOrange);
+                                    customTileColorList.add(Palette.grayEE);
                                     customBorderColorList
                                         .add(Colors.transparent);
                                     // print("언제 울리니? 1 ");
@@ -1056,7 +1073,7 @@ class _MemberAddState extends State<MemberAdd> {
                                   //   setState(() {
                                   if (resultObjectList.contains(value)) {
                                     customTileColorList
-                                        .add(Palette.buttonOrange);
+                                        .add(Palette.backgroundBlue);
                                     customBorderColorList
                                         .add(Colors.transparent);
                                     // print("언제 울리니? 1 ");
@@ -1083,7 +1100,7 @@ class _MemberAddState extends State<MemberAdd> {
                                               resultObjectList.remove(value);
                                             } else {
                                               customTileColorList[index] =
-                                                  Palette.backgroundOrange;
+                                                  Palette.backgroundBlue;
                                               customBorderColorList[index] =
                                                   Colors.transparent;
                                               resultObjectList.add(value);

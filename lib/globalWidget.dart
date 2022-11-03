@@ -21,16 +21,25 @@ showAlertDialog(BuildContext context, String title, String content) async {
     builder: (BuildContext context) {
       return AlertDialog(
         // title: Text('정말로 삭제하시겠습니까?'),
-        title: Text(title),
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         // content: Text("회원과 관련된 레슨노트 정보도 모두 삭제됩니다."),
-        content: Text(content),
+        content: Text(
+          content,
+          style: TextStyle(fontSize: 14),
+        ),
         actions: <Widget>[
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: Palette.buttonOrange,
+              backgroundColor: Colors.transparent,
             ),
-            child: Text('취소'),
+            child: Text(
+              '취소',
+              style: TextStyle(color: Palette.textRed),
+            ),
             onPressed: () {
               Navigator.pop(context, "Cancel");
             },
@@ -38,9 +47,12 @@ showAlertDialog(BuildContext context, String title, String content) async {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: Palette.buttonOrange,
+              backgroundColor: Colors.transparent,
             ),
-            child: Text('확인'),
+            child: Text(
+              '확인',
+              style: TextStyle(color: Palette.textBlue),
+            ),
             onPressed: () {
               Navigator.pop(context, "OK");
             },
@@ -493,11 +505,18 @@ class _PopupTextFieldState extends State<PopupTextField> {
         //readOnly: widget.showArrow,
         controller: widget.customController,
         decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(
+                width: 1,
+                color: Palette.buttonOrange,
+                style: BorderStyle.solid,
+              ),
+            ),
             //labelText: widget.hint,
             //hintText: widget.hint,
-
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(
                 width: 1,
                 color: Palette.grayEE,

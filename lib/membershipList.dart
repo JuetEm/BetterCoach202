@@ -24,7 +24,7 @@ class _MembershipListState extends State<MembershipList> {
         body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               BaseTextField(
                 customController: membershipController,
@@ -38,12 +38,16 @@ class _MembershipListState extends State<MembershipList> {
               /// 수강권 선택 버튼
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                   elevation: 0,
                   backgroundColor: Palette.buttonOrange,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text("확인", style: TextStyle(fontSize: 18)),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
+                  child: Text("확인", style: TextStyle(fontSize: 16)),
                 ),
                 onPressed: () {
                   print("확인 버튼");

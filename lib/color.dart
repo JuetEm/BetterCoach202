@@ -7,7 +7,7 @@ class Palette {
   static const Color backgroundYellow = Color(0xFFFFFBE2);
   static const Color backgroundGreen = Color(0xFFEBFBF5);
   static const Color backgroundBluegray = Color(0xFFF1F2F5);
-  static const Color backgroundBlue = Color(0xFFE4F1FF);
+  static const Color backgroundBlue = Color(0xFFD7EAF4);
   static const Color backgroundPink = Color(0xFFFFEBEB);
   static const Color backgroundOrange = Color(0xFFFFDDBB);
 
