@@ -138,12 +138,8 @@ class _MemberAddState extends State<MemberAdd> {
                         ),
 
                         /// 운동목표 입력창
-                        BaseTextField(
-                          customController: goalController,
-                          hint: "운동목표",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
+                        BaseModalBottomSheetButton(bottomModalController: goalController, hint: "운동목표", showButton: true, optionList: ["바디프로필","다이어트","유연성 향상","자세개선","운동능력 향상","통증개선","건강증진","바디라인 개선","기타",], customFunction: 
+                        (){}),
 
                         /// 신체 특이사항/체형분석 입력창
                         BaseTextField(
