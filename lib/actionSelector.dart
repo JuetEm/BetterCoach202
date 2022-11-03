@@ -208,6 +208,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                         e.isSelected);
                     manageListContaining(
                         tmpLessonInfoList, tmpLessonInfo, true);
+                        lessonService.deleteFromActionSelect(e.uid, e.docId,
+                    e.lessonDate, e.apparatusName, e.actionName);
                   });
                 }),
                 selected: e.isSelected,
