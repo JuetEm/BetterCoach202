@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'actionSelector.dart';
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
 import 'color.dart';
@@ -90,6 +91,19 @@ class _MemberAddState extends State<MemberAdd> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+
+    // selectedGoals 값 반영하여 FilterChips 동적 생성
+    var goalChips = [];
+    goalChips = makeChips(goalChips, selectedGoals);
+
+    // selelctedAnalyzedList 값 반영하여 FilterChips 동적 생성
+    var bodyAnalyzedChips = [];
+    bodyAnalyzedChips = makeChips(bodyAnalyzedChips, selelctedAnalyzedList);
+
+    // medicalHistoryList 값 반영하여 FilterChips 동적 생성
+    var medicalHistoriesChips = [];
+    medicalHistoriesChips = makeChips(medicalHistoriesChips, selectedHistoryList);
+
 
     String imgUrl =
         "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
@@ -267,6 +281,28 @@ class _MemberAddState extends State<MemberAdd> {
                             goalTileColorList,
                             goalTextColorList),
 
+                        Offstage(
+                          offstage: selectedGoals.isEmpty,
+                          child: SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in goalChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
                         /// 운동목표 입력창
                         BaseTextField(
                           customController: goalController,
@@ -287,6 +323,28 @@ class _MemberAddState extends State<MemberAdd> {
                           bodyTextColorList,
                         ),
 
+                        Offstage(
+                          offstage: selelctedAnalyzedList.isEmpty,
+                          child: SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in bodyAnalyzedChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
                         /// 체형분석 입력창
                         BaseTextField(
                           customController: bodyAnalyzeController,
@@ -305,6 +363,28 @@ class _MemberAddState extends State<MemberAdd> {
                             selectedHistoryList,
                             historyTileColorList,
                             historyTextColorList),
+
+                            Offstage(
+                          offstage: selectedHistoryList.isEmpty,
+                          child: SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in medicalHistoriesChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
 
                         /// 통증/상해/병력 입력창
                         BaseTextField(
@@ -402,9 +482,9 @@ class _MemberAddState extends State<MemberAdd> {
                           registerDate: registerDateController.text,
                           phoneNumber: phoneNumberController.text,
                           registerType: registerTypeController.text,
-                          goal: goalController.text,
-                          bodyAnalyzed: bodyAnalyzeController.text,
-                          medicalHistories: medicalHistoryController.text,
+                          goal: selectedGoals.toString() +"\r\n"+ goalController.text,
+                          bodyAnalyzed: selelctedAnalyzedList.toString() +"\r\n"+  bodyAnalyzeController.text,
+                          medicalHistories: selectedHistoryList.toString() +"\r\n"+  medicalHistoryController.text,
                           info: infoController.text,
                           note: noteController.text,
                           comment: commentController.text,
@@ -471,6 +551,46 @@ class _MemberAddState extends State<MemberAdd> {
     );
   }
 
+  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList) {
+    if (targetList.isNotEmpty) {
+      resultChips = targetList
+          .map((e) => FilterChip(
+                label: Row(
+                  children: [
+                    Text(e),
+                    Icon(
+                      Icons.close_outlined,
+                      size: 14,
+                      color: targetList.contains(e)
+                          ? Palette.grayFF
+                          : Palette.gray99,
+                    )
+                  ],
+                ),
+                onSelected: ((value) {
+                  setState(() {
+                    targetList.remove(e);
+                  });
+                  print("value : ${value}");
+                }),
+                selected: targetList.contains(e),
+                labelStyle: TextStyle(
+                    fontSize: 12,
+                    color: targetList.contains(e)
+                        ? Palette.grayFF
+                        : Palette.gray99),
+                selectedColor: Palette.buttonOrange,
+                backgroundColor: Colors.transparent,
+                showCheckmark: false,
+                side: targetList.contains(e)
+                    ? BorderSide.none
+                    : BorderSide(color: Palette.grayB4),
+              ))
+          .toList();
+    }
+    return resultChips;
+  }
+
   Row customGoalGridView(
       BuildContext context,
       TextEditingController customController,
@@ -529,18 +649,20 @@ class _MemberAddState extends State<MemberAdd> {
                                     onPressed: () {
                                       print(
                                           "resultObjectList : ${resultObjectList}");
-                                      String goalsSum = "";
-                                      for (int i = 0;
-                                          i < resultObjectList.length;
-                                          i++) {
-                                        if (i == resultObjectList.length - 1) {
-                                          goalsSum += resultObjectList[i];
-                                        } else {
-                                          goalsSum +=
-                                              resultObjectList[i] + ", ";
-                                        }
-                                      }
-                                      customController.text = goalsSum;
+                                      // String goalsSum = "";
+                                      // for (int i = 0;
+                                      //     i < resultObjectList.length;
+                                      //     i++) {
+                                      //   if (i == resultObjectList.length - 1) {
+                                      //     goalsSum += resultObjectList[i];
+                                      //   } else {
+                                      //     goalsSum +=
+                                      //         resultObjectList[i] + ", ";
+                                      //   }
+                                      // }
+                                      // customController.text = goalsSum;
+                                      customTileColorList.clear();
+                                      customTextColorList.clear();
                                       Navigator.pop(context);
                                     },
                                     child: Text(
@@ -561,8 +683,20 @@ class _MemberAddState extends State<MemberAdd> {
                                 itemCount: objectList.length,
                                 itemBuilder: ((context, index) {
                                   var value = objectList[index];
-                                  customTileColorList.add(Palette.grayEE);
-                                  customTextColorList.add(Palette.gray00);
+                                  // stateSetter((() {
+                                  //   setState(() {
+                                      if (resultObjectList.contains(value)) {
+                                        customTileColorList.add(Palette.buttonOrange);
+                                        customTextColorList.add(Palette.grayFF);
+                                        // print("언제 울리니? 1 ");
+                                      } else {
+                                        customTileColorList.add(Palette.grayEE);
+                                        customTextColorList.add(Palette.gray00);
+                                        // print("언제 울리니? 2 ");
+                                      }
+                                  //   });
+                                  // }));
+
                                   // return Text(widget.optionList[index]);
                                   return Padding(
                                       padding: const EdgeInsets.fromLTRB(
@@ -688,18 +822,20 @@ class _MemberAddState extends State<MemberAdd> {
                                     onPressed: () {
                                       print(
                                           "resultObjectList : ${resultObjectList}");
-                                      String goalsSum = "";
-                                      for (int i = 0;
-                                          i < resultObjectList.length;
-                                          i++) {
-                                        if (i == resultObjectList.length - 1) {
-                                          goalsSum += resultObjectList[i];
-                                        } else {
-                                          goalsSum +=
-                                              resultObjectList[i] + ", ";
-                                        }
-                                      }
-                                      customController.text = goalsSum;
+                                      // String goalsSum = "";
+                                      // for (int i = 0;
+                                      //     i < resultObjectList.length;
+                                      //     i++) {
+                                      //   if (i == resultObjectList.length - 1) {
+                                      //     goalsSum += resultObjectList[i];
+                                      //   } else {
+                                      //     goalsSum +=
+                                      //         resultObjectList[i] + ", ";
+                                      //   }
+                                      // }
+                                      // customController.text = goalsSum;
+                                      customTileColorList.clear();
+                                      customTextColorList.clear();
                                       Navigator.pop(context);
                                     },
                                     child: Text(
@@ -720,8 +856,15 @@ class _MemberAddState extends State<MemberAdd> {
                                 itemCount: objectList.length,
                                 itemBuilder: ((context, index) {
                                   var value = objectList[index];
-                                  customTileColorList.add(Palette.grayEE);
-                                  customTextColorList.add(Palette.gray00);
+                                  if (resultObjectList.contains(value)) {
+                                        customTileColorList.add(Palette.buttonOrange);
+                                        customTextColorList.add(Palette.grayFF);
+                                        // print("언제 울리니? 1 ");
+                                      } else {
+                                        customTileColorList.add(Palette.grayEE);
+                                        customTextColorList.add(Palette.gray00);
+                                        // print("언제 울리니? 2 ");
+                                      }
                                   // return Text(widget.optionList[index]);
                                   return Padding(
                                       padding: const EdgeInsets.fromLTRB(
@@ -847,18 +990,20 @@ class _MemberAddState extends State<MemberAdd> {
                                     onPressed: () {
                                       print(
                                           "resultObjectList : ${resultObjectList}");
-                                      String goalsSum = "";
-                                      for (int i = 0;
-                                          i < resultObjectList.length;
-                                          i++) {
-                                        if (i == resultObjectList.length - 1) {
-                                          goalsSum += resultObjectList[i];
-                                        } else {
-                                          goalsSum +=
-                                              resultObjectList[i] + ", ";
-                                        }
-                                      }
-                                      customController.text = goalsSum;
+                                      // String goalsSum = "";
+                                      // for (int i = 0;
+                                      //     i < resultObjectList.length;
+                                      //     i++) {
+                                      //   if (i == resultObjectList.length - 1) {
+                                      //     goalsSum += resultObjectList[i];
+                                      //   } else {
+                                      //     goalsSum +=
+                                      //         resultObjectList[i] + ", ";
+                                      //   }
+                                      // }
+                                      // customController.text = goalsSum;
+                                      customTileColorList.clear();
+                                      customTextColorList.clear();
                                       Navigator.pop(context);
                                     },
                                     child: Text(
@@ -879,8 +1024,15 @@ class _MemberAddState extends State<MemberAdd> {
                                 itemCount: objectList.length,
                                 itemBuilder: ((context, index) {
                                   var value = objectList[index];
-                                  customTileColorList.add(Palette.grayEE);
-                                  customTextColorList.add(Palette.gray00);
+                                  if (resultObjectList.contains(value)) {
+                                        customTileColorList.add(Palette.buttonOrange);
+                                        customTextColorList.add(Palette.grayFF);
+                                        // print("언제 울리니? 1 ");
+                                      } else {
+                                        customTileColorList.add(Palette.grayEE);
+                                        customTextColorList.add(Palette.gray00);
+                                        // print("언제 울리니? 2 ");
+                                      }
                                   // return Text(widget.optionList[index]);
                                   return Padding(
                                       padding: const EdgeInsets.fromLTRB(
