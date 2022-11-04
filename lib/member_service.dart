@@ -16,23 +16,55 @@ class MemberService extends ChangeNotifier {
         .get();
   }
 
-  Future<bool> readisActive(String uid) async {
-    QuerySnapshot docRaw = await memberCollection
-        .where(
-          'uid',
-          isEqualTo: uid,
-        )
-        .get();
-    final docs = docRaw.docs ?? [];
-    //List<DocumentSnapshot> docs = docRaw.docs;
-    print('[MS] readisActive 실행 - readisActive : ${docs[0].get('isActive')}');
+  Future<bool> readisActive(String uid, String docId) async {
+    bool reasult = false;
+    //   .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+    // .get()
+    // .then((value) {
+    //   value.docs.forEach((element) {
+    //     print(element.id);
+    //   });
 
-    bool result = docs[0].get('isActive');
-    return result;
-    // return memberCollection
+    // await FirebaseFirestore.instance
+    //     .collection('member')
+    //     .doc(docID)
+    //     .get()
+    //     .then((DocumentSnapshot ds) {
+    //   title = ds.data["title"];
+    //   print(title);
+    // });
+    await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      print('[MS] readisActive 실행 - readisActive : ${data['isActive']}');
+      reasult = data['isActive'];
+    });
+
+    return reasult;
+
+    // await memberCollection
     //     .where('uid', isEqualTo: uid)
-    //     .get('isActive')
-    //     .then(value);
+    //     .where(
+    //       'docId',
+    //       isEqualTo: docId,
+    //     )
+    //     .get()
+    //     .then((DocumentSnapshot ds) {
+    //   String title = ds.data["isActive"];
+    //   print(title);
+    //   //bool result = value[isActive];
+    // });
+    // //final docs = docRaw.docs ?? [];
+    // DocumentSnapshot docs = docRaw["isActive"];
+    // print('[MS] readisActive 실행 - readisActive : ${docs}');
+    // //print('[MS] readisActive 실행 - readisActive : ${docs.get('isActive')}');
+
+    // bool result = docs[0].get('isActive');
+    // return result;
+    // // return memberCollection
+    // //     .where('uid', isEqualTo: uid)
+    // //     .get('isActive')
+    // //     .then(value);
+    //return result;
   }
 
   void create({

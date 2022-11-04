@@ -32,6 +32,7 @@ String viewMode = "기본정보";
 String lessonDateTrim = "";
 String apratusNameTrim = "";
 int dayNotelessonCnt = 0;
+bool favoriteMember = true;
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -41,7 +42,10 @@ class MemberInfo extends StatefulWidget {
 }
 
 class _MemberInfoState extends State<MemberInfo> {
-  bool favoriteMember = false;
+  void _updatefavoriteMember() {
+    setState(() {});
+  }
+  //setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +63,11 @@ class _MemberInfoState extends State<MemberInfo> {
 
     Future<bool> favoriteMemberCheck = memberService.readisActive(
       user.uid,
+      userInfo.docId,
     );
     favoriteMemberCheck.then((val) {
       favoriteMember = val;
+      print('[MI]회원정보 화면 memberService.readisActive : 즐겨찾기 ${favoriteMember}');
     });
 
     final lessonService = context.read<LessonService>();
@@ -118,8 +124,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                   IconButton(
                                     icon: SvgPicture.asset(
                                       favoriteMember
-                                          ? "icons/favorite_selected.svg"
-                                          : "icons/favorite_unselected.svg",
+                                          ? "favorite_selected.svg"
+                                          : "favorite_unselected.svg",
                                     ),
                                     iconSize: 40,
                                     onPressed: () async {
@@ -127,7 +133,11 @@ class _MemberInfoState extends State<MemberInfo> {
 
                                       await memberService.updateisActive(
                                           userInfo.docId, favoriteMember);
-                                      lessonService.notifyListeners();
+                                      print(
+                                          "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+
+                                      _updatefavoriteMember();
+                                      //lessonService.notifyListeners();
 
                                       //setState(() {});
                                       // setState(() {
