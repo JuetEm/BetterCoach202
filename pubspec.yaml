@@ -66,6 +66,7 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+# 만드는 명령어 flutte pub run flutter_launcher_icons:main
 flutter_icons:
   android: "launcher_icon"
   ios: true
