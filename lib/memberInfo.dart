@@ -1205,7 +1205,7 @@ class LessonCard extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(10.0),
           ),
-          //color: Palette.secondaryBackground,
+          color: Palette.secondaryBackground,
         ),
         child: Column(
           children: [
@@ -1235,9 +1235,10 @@ class LessonCard extends StatelessWidget {
                 );
               },
               child: Container(
-                decoration: BoxDecoration(color: Palette.grayEE
-                    //color: Colors.red.withOpacity(0),
-                    ),
+                decoration: BoxDecoration(
+                  //color: Palette.grayEE
+                  color: Colors.red.withOpacity(0),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Container(
@@ -1433,15 +1434,18 @@ class LessonCard extends StatelessWidget {
               },
             ),
             Container(
-              decoration: BoxDecoration(color: Palette.grayFF
-                  //color: Colors.red.withOpacity(0),
-                  ),
-              child: SizedBox(
-                width: double.infinity,
-                height: 10,
+              decoration: BoxDecoration(
+                border: Border.all(color: Palette.grayFF, width: 1),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+                color: Palette.grayFF,
               ),
-            ),
-            const SizedBox(height: 10)
+              child: const SizedBox(
+                width: double.infinity,
+                height: 30,
+              ),
+            )
           ],
         ));
   }
