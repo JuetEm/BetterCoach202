@@ -11,6 +11,8 @@ import 'memberInfo.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 
+String conutMemberList = "";
+
 class MemberList extends StatefulWidget {
   const MemberList({super.key});
 
@@ -27,6 +29,12 @@ class _MemberListState extends State<MemberList> {
 
   void _closeEndDrawer() {
     Navigator.of(context).pop();
+  }
+
+  void _refreshMemberCount(value) {
+    setState(() {
+      conutMemberList = value;
+    });
   }
 
   @override
@@ -80,7 +88,7 @@ class _MemberListState extends State<MemberList> {
                     Row(
                       children: [
                         Text(
-                          '총 N명',
+                          '총 ${conutMemberList} 명',
                           style: TextStyle(color: Palette.gray7B),
                         ),
                         Spacer(),
@@ -101,6 +109,15 @@ class _MemberListState extends State<MemberList> {
                           if (docs.isEmpty) {
                             return Center(child: Text("회원 목록을 준비 중입니다."));
                           }
+
+                          //해당 함수는 빌드가 끝난 다음 수행 된다.
+                          //https://velog.io/@jun7332568/%ED%94%8C%EB%9F%AC%ED%84%B0flutter-setState-or-markNeedsBuild-called-during-build.-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0
+                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                            if (conutMemberList != docs.length.toString()) {
+                              _refreshMemberCount(docs.length.toString());
+                            }
+                          });
+
                           return ListView.separated(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,

@@ -310,12 +310,13 @@ class _MemberInfoState extends State<MemberInfo> {
                                 ],
                               ),
                             ),
-
+//https://kibua20.tistory.com/232
                             viewMode == "기본정보"
                                 ? MemberInfoView(userInfo: userInfo)
                                 : LessonNoteView(
                                     userInfo: userInfo,
                                     lessonService: lessonService,
+                                    //notifyParent: _refreshNoteCount,
                                   ),
 
                             //SizedBox(height: 20),
@@ -520,10 +521,12 @@ class LessonNoteView extends StatefulWidget {
     Key? key,
     required this.userInfo,
     required this.lessonService,
+    //required this.notifyParent,
   }) : super(key: key);
 
   final UserInfo userInfo;
   final LessonService lessonService;
+  //final Function() notifyParent;
 
   @override
   State<LessonNoteView> createState() => _LessonNoteViewState();
@@ -547,7 +550,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              '총 N개',
+              '총 ${dayNotelessonCnt}개',
               style: TextStyle(
                 fontSize: 14,
                 color: Palette.gray66,
@@ -610,6 +613,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
           ),
           builder: (context, snapshot) {
             final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
+
             print(
                 "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
             if (doc.isEmpty && dayNotelessonCnt == 0) {
