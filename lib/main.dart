@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
@@ -44,6 +45,11 @@ String? userEmail;
 String? userPassword;
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Palette.grayFF,
+    ),
+  );
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
   prefs = await SharedPreferences.getInstance();
 
@@ -93,7 +99,11 @@ class MyApp extends StatelessWidget {
           FirebaseAnalyticsObserver(analytics: analytics),
         ],
         theme: ThemeData(
-            fontFamily: 'Pretendard', backgroundColor: Palette.mainBackground),
+            // appBarTheme: AppBarTheme(
+            //     systemOverlayStyle:
+            //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
+            fontFamily: 'Pretendard',
+            backgroundColor: Palette.mainBackground),
         home: user == null ? LoginPage() : MemberList(),
       ),
     );
