@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +43,28 @@ class MemberInfo extends StatefulWidget {
 }
 
 class _MemberInfoState extends State<MemberInfo> {
+  @override
+  void initState() {
+    //처음에만 날짜 받아옴.
+
+    super.initState();
+  }
+
+  Future<bool> _readfavoriteMember(String uid, String docId) async {
+    bool result = false;
+    final memberService = context.read<MemberService>();
+    await memberService
+        .readisActive(
+      uid,
+      docId,
+    )
+        .then((val) {
+      result = val;
+      print('[MI]회원정보 화면 _readfavoriteMember : 즐겨찾기 ${val}');
+    });
+    return result;
+  }
+
   void _updatefavoriteMember() {
     setState(() {});
   }
@@ -60,15 +83,6 @@ class _MemberInfoState extends State<MemberInfo> {
     if (userInfo.name.length > 0) {
       nameFirst = userInfo.name.substring(0, 1);
     }
-
-    Future<bool> favoriteMemberCheck = memberService.readisActive(
-      user.uid,
-      userInfo.docId,
-    );
-    favoriteMemberCheck.then((val) {
-      favoriteMember = val;
-      print('[MI]회원정보 화면 memberService.readisActive : 즐겨찾기 ${favoriteMember}');
-    });
 
     final lessonService = context.read<LessonService>();
 
@@ -89,6 +103,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
+        print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
         return Scaffold(
@@ -121,33 +136,70 @@ class _MemberInfoState extends State<MemberInfo> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton(
-                                    icon: SvgPicture.asset(
-                                      favoriteMember
-                                          ? "favorite_selected.svg"
-                                          : "favorite_unselected.svg",
-                                    ),
-                                    iconSize: 40,
-                                    onPressed: () async {
-                                      favoriteMember = !favoriteMember;
+                                  // FutureBuilder 예시 코드
+                                  FutureBuilder(
+                                      future: _readfavoriteMember(
+                                          user.uid, userInfo.docId),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
+                                        if (snapshot.hasData == false) {
+                                          return IconButton(
+                                              icon: SvgPicture.asset(
+                                                "favorite_unselected.svg",
+                                              ),
+                                              iconSize: 40,
+                                              onPressed: () {});
+                                        }
 
-                                      await memberService.updateisActive(
-                                          userInfo.docId, favoriteMember);
-                                      print(
-                                          "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+                                        //error가 발생하게 될 경우 반환하게 되는 부분
+                                        else if (snapshot.hasError) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              'Error: ${snapshot.error}', // 에러명을 텍스트에 뿌려줌
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          );
+                                        }
 
-                                      _updatefavoriteMember();
-                                      //lessonService.notifyListeners();
+                                        // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 부분
+                                        else {
+                                          print(
+                                              "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo.docId}");
+                                          favoriteMember = snapshot.data;
+                                          return IconButton(
+                                              icon: SvgPicture.asset(
+                                                favoriteMember
+                                                    ? "favorite_selected.svg"
+                                                    : "favorite_unselected.svg",
+                                              ),
+                                              iconSize: 40,
+                                              onPressed: () async {
+                                                favoriteMember =
+                                                    !favoriteMember;
 
-                                      //setState(() {});
-                                      // setState(() {
-                                      //   userInfo.isActive
-                                      //       ? favoriteMember = false
-                                      //       : favoriteMember = true;
-                                      // }
-                                      //);
-                                    },
-                                  ),
+                                                await memberService
+                                                    .updateisActive(
+                                                        userInfo.docId,
+                                                        favoriteMember);
+                                                print(
+                                                    "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+
+                                                _updatefavoriteMember();
+                                                //lessonService.notifyListeners();
+
+                                                //setState(() {});
+                                                // setState(() {
+                                                //   userInfo.isActive
+                                                //       ? favoriteMember = false
+                                                //       : favoriteMember = true;
+                                                // }
+                                                //);
+                                              });
+                                        }
+                                      }),
+
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
