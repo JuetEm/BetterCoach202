@@ -109,16 +109,7 @@ class _MemberInfoState extends State<MemberInfo> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MemberList(),
-                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                settings: RouteSettings(
-                  arguments: userInfo,
-                ),
-              ),
-            );
+            Navigator.pop(context);
           }),
           body: SafeArea(
             child: Column(

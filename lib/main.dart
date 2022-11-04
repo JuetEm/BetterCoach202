@@ -298,7 +298,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 30),
 
-                /// 로그인 버튼
+                /// 로그인 없이 사용하기 버튼
                 ElevatedButton(
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
@@ -437,16 +437,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void loginMethodforDemo(BuildContext context, AuthService authService) {
-    if (globalfunction.textNullCheck(
-          context,
-          emailController,
-          "이메일",
-        ) &&
-        globalfunction.textNullCheck(
-          context,
-          passwordController,
-          "비밀번호",
-        )) {
+    if (true) {
       // 로그인
       authService.signIn(
         email: "demo@demo.com",

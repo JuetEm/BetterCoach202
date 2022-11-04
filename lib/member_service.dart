@@ -17,7 +17,7 @@ class MemberService extends ChangeNotifier {
   }
 
   Future<bool> readisActive(String uid, String docId) async {
-    bool reasult = false;
+    bool result = false;
     //   .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
     // .get()
     // .then((value) {
@@ -36,10 +36,10 @@ class MemberService extends ChangeNotifier {
     await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
       print('[MS] readisActive 실행 - readisActive : ${data['isActive']}');
-      reasult = data['isActive'];
+      result = data['isActive'];
     });
 
-    return reasult;
+    return result;
 
     // await memberCollection
     //     .where('uid', isEqualTo: uid)
