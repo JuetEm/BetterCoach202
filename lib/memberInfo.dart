@@ -15,6 +15,7 @@ import 'lessonUpdate.dart';
 import 'lesson_service.dart';
 import 'memberList.dart';
 import 'memberUpdate.dart';
+import 'member_service.dart';
 import 'userInfo.dart';
 
 Map<DateTime, dynamic> eventSource = {};
@@ -46,6 +47,7 @@ class _MemberInfoState extends State<MemberInfo> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+    final memberService = context.read<MemberService>();
 
     // 이전 화면에서 보낸 변수 받기
     final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
@@ -54,6 +56,13 @@ class _MemberInfoState extends State<MemberInfo> {
     if (userInfo.name.length > 0) {
       nameFirst = userInfo.name.substring(0, 1);
     }
+
+    Future<bool> favoriteMemberCheck = memberService.readisActive(
+      user.uid,
+    );
+    favoriteMemberCheck.then((val) {
+      favoriteMember = val;
+    });
 
     final lessonService = context.read<LessonService>();
 
@@ -113,12 +122,20 @@ class _MemberInfoState extends State<MemberInfo> {
                                           : "icons/favorite_unselected.svg",
                                     ),
                                     iconSize: 40,
-                                    onPressed: () {
-                                      setState(() {
-                                        favoriteMember
-                                            ? favoriteMember = false
-                                            : favoriteMember = true;
-                                      });
+                                    onPressed: () async {
+                                      favoriteMember = !favoriteMember;
+
+                                      await memberService.updateisActive(
+                                          userInfo.docId, favoriteMember);
+                                      lessonService.notifyListeners();
+
+                                      //setState(() {});
+                                      // setState(() {
+                                      //   userInfo.isActive
+                                      //       ? favoriteMember = false
+                                      //       : favoriteMember = true;
+                                      // }
+                                      //);
                                     },
                                   ),
                                   Column(

@@ -185,13 +185,16 @@ class _MemberListState extends State<MemberList> {
                                   );
                                 },
                                 child: BaseContainer(
-                                    name: name,
-                                    registerDate: registerDate,
-                                    goal: goal,
-                                    info: info,
-                                    note: note,
-                                    phoneNumber: phoneNumber,
-                                    isActive: isActive),
+                                  docId: docId,
+                                  name: name,
+                                  registerDate: registerDate,
+                                  goal: goal,
+                                  info: info,
+                                  note: note,
+                                  phoneNumber: phoneNumber,
+                                  isActive: isActive,
+                                  memberService: memberService,
+                                ),
                               );
                             },
                             separatorBuilder: ((context, index) => Divider(

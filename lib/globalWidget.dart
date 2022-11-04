@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/color.dart';
+import 'package:web_project/member_service.dart';
 import 'baseTableCalendar.dart';
 import 'home.dart';
 import 'main.dart';
@@ -779,6 +780,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
 class BaseContainer extends StatefulWidget {
   const BaseContainer({
     Key? key,
+    required this.docId,
     required this.name,
     required this.registerDate,
     required this.goal,
@@ -786,8 +788,9 @@ class BaseContainer extends StatefulWidget {
     required this.note,
     required this.isActive,
     required this.phoneNumber,
+    required this.memberService,
   }) : super(key: key);
-
+  final String docId;
   final String name;
   final String registerDate;
   final String goal;
@@ -795,6 +798,7 @@ class BaseContainer extends StatefulWidget {
   final String note;
   final String phoneNumber;
   final bool isActive;
+  final MemberService memberService;
 
   @override
   State<BaseContainer> createState() => _BaseContainerState();
@@ -836,18 +840,29 @@ class _BaseContainerState extends State<BaseContainer> {
                     width: 60,
                     child: IconButton(
                       icon: SvgPicture.asset(
-                        favoriteMember //svg파일이 firebase에서 안보이는 경우
+                        widget.isActive //svg파일이 firebase에서 안보이는 경우
                             //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
                             ? "favorite_selected.svg"
                             : "favorite_unselected.svg",
                       ),
                       iconSize: 40,
-                      onPressed: () {
-                        setState(() {
-                          favoriteMember
-                              ? favoriteMember = false
-                              : favoriteMember = true;
-                        });
+                      onPressed: () async {
+                        favoriteMember = !widget.isActive;
+
+                        //                   for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+                        //   await lessonService.updateTotalNote(
+                        //     totalNoteTextFieldDocId[idx],
+                        //     totalNoteControllers[idx].text,
+                        //   );
+                        // }
+
+                        await widget.memberService
+                            .updateisActive(widget.docId, favoriteMember);
+                        // setState(() {
+                        //   widget.isActive
+                        //       ? favoriteMember = false
+                        //       : favoriteMember = true;
+                        // });
                       },
                     ),
                     // child: Image.asset(

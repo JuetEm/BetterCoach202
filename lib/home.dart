@@ -130,13 +130,16 @@ class _HomeState extends State<Home> {
                               //memberService.update(doc.id, !isActive);
                             },
                             child: BaseContainer(
-                                name: name,
-                                registerDate: registerDate,
-                                goal: goal,
-                                info: info,
-                                note: note,
-                                phoneNumber: phoneNumber,
-                                isActive: isActive),
+                              docId: doc.id,
+                              name: name,
+                              registerDate: registerDate,
+                              goal: goal,
+                              info: info,
+                              note: note,
+                              phoneNumber: phoneNumber,
+                              isActive: isActive,
+                              memberService: memberService,
+                            ),
                           );
                         },
                         separatorBuilder: ((context, index) => Divider()),

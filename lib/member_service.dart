@@ -16,6 +16,25 @@ class MemberService extends ChangeNotifier {
         .get();
   }
 
+  Future<bool> readisActive(String uid) async {
+    QuerySnapshot docRaw = await memberCollection
+        .where(
+          'uid',
+          isEqualTo: uid,
+        )
+        .get();
+    final docs = docRaw.docs ?? [];
+    //List<DocumentSnapshot> docs = docRaw.docs;
+    print('[MS] readisActive 실행 - readisActive : ${docs[0].get('isActive')}');
+
+    bool result = docs[0].get('isActive');
+    return result;
+    // return memberCollection
+    //     .where('uid', isEqualTo: uid)
+    //     .get('isActive')
+    //     .then(value);
+  }
+
   void create({
     required String name,
     required String registerDate,
@@ -104,6 +123,18 @@ class MemberService extends ChangeNotifier {
 
     notifyListeners();
     onSuccess(); // 화면 갱신
+  }
+
+  Future<void> updateisActive(
+    String docId,
+    bool isActive,
+  ) async {
+    // 업데이트
+    await memberCollection.doc(docId).update({
+      'isActive': isActive, // 회원권 활성화 여부
+    });
+
+    notifyListeners();
   }
 
   void delete({

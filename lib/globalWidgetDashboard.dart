@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/member_service.dart';
 
 import 'action_service.dart';
 import 'globalFunction.dart';
@@ -29,15 +30,17 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
         appBar: BaseAppBarMethod(context, "글로벌 위젯 대쉬보드", null),
         body: Column(
           children: [
-            BaseContainer(
-              name: "홍길동",
-              registerDate: "20200202",
-              goal: "체형관리",
-              info: "인포입니다",
-              note: "노트입니다",
-              isActive: true,
-              phoneNumber: "010-0000-1111",
-            ),
+            // BaseContainer(
+            //   docId : "///",
+            //   name: "홍길동",
+            //   registerDate: "20200202",
+            //   goal: "체형관리",
+            //   info: "인포입니다",
+            //   note: "노트입니다",
+            //   isActive: true,
+            //   phoneNumber: "010-0000-1111",
+            //   memberService : memberService,
+            // ),
             BaseTextField(
               customController: controller1,
               hint: "힌트 입력",
