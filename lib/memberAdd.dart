@@ -160,7 +160,6 @@ class _MemberAddState extends State<MemberAdd> {
         //   keyboardOpenBefore = true;
         // }
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원등록", () {
             Navigator.push(

@@ -113,7 +113,6 @@ class _LessonUpdateState extends State<LessonUpdate> {
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "노트 보기", () {
             // 뒤로가기 선택시 MemberInfo로 이동

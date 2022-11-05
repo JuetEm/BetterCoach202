@@ -57,7 +57,6 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
     return Consumer<CalendarService>(
       builder: (context, calendarService, child) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           appBar: widget.pageName == "수업일 선택"
               ? null
               : BaseAppBarMethod(context, "${widget.pageName} 선택", () {

@@ -108,7 +108,6 @@ class _MemberInfoState extends State<MemberInfo> {
         // lessonService
         // ignore: dead_code
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
             Navigator.pop(context);

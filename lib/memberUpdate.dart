@@ -53,7 +53,6 @@ class _MemberUpdateState extends State<MemberUpdate> {
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원정보 변경", () {
             Navigator.push(
