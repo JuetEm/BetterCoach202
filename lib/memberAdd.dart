@@ -820,19 +820,15 @@ class _MemberAddState extends State<MemberAdd> {
                   child: Column(
                     children: [
                       /// 삭제 버튼
-                      SizedBox(height: 40),
+                      SizedBox(height: 20),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          elevation: 0,
-                          backgroundColor: Palette.buttonOrange,
-                        ),
+                            elevation: 0, backgroundColor: Colors.transparent),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 90),
-                          child: Text("삭제하기", style: TextStyle(fontSize: 16)),
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text("삭제하기",
+                              style: TextStyle(
+                                  fontSize: 16, color: Palette.textRed)),
                         ),
                         onPressed: () async {
                           print("${customUserInfo.docId}");
