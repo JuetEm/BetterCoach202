@@ -200,7 +200,13 @@ class _MemberAddState extends State<MemberAdd> {
                 /// 압력기본정보
                 Container(
                   color: Palette.mainBackground,
-                  padding: const EdgeInsets.all(20),
+                  // padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.only(
+                      right: 20,
+                      left: 20,
+                      top: 20,
+                      bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
+
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -315,7 +321,7 @@ class _MemberAddState extends State<MemberAdd> {
                               context: context,
                               builder: (BuildContext context) {
                                 return Container(
-                                  // padding: const EdgeInsets.all(30),
+                                  padding: const EdgeInsets.all(30),
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                         bottom: MediaQuery.of(context)
@@ -902,9 +908,7 @@ class _MemberAddState extends State<MemberAdd> {
                       '취소하고 나가기',
                       selectionColor: Palette.gray00,
                     )),
-                SizedBox(
-                  height: 36,
-                )
+                SizedBox(height: 80),
               ],
             ),
           ),

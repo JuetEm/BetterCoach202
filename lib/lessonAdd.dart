@@ -201,6 +201,9 @@ class _LessonAddState extends State<LessonAdd> {
               //keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               physics: BouncingScrollPhysics(),
               child: Container(
+                padding: EdgeInsets.only(
+                  bottom: (MediaQuery.of(context).viewInsets.bottom),
+                ),
                 child: Column(
                   children: [
                     /// 입력창
@@ -410,6 +413,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             },
                                             child: Text(
                                               '취소',
+                                              style: TextStyle(fontSize: 16),
                                               selectionColor: Palette.textRed,
                                             ),
                                           ),
@@ -423,6 +427,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             },
                                             child: Text(
                                               '저장',
+                                              style: TextStyle(fontSize: 16),
                                               selectionColor: Palette.textBlue,
                                             ),
                                           ),
@@ -1035,7 +1040,11 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             Navigator.of(context).pop();
                                                                           },
                                                                           child:
-                                                                              Text('삭제'),
+                                                                              Text(
+                                                                            '삭제',
+                                                                            style:
+                                                                                TextStyle(fontSize: 16),
+                                                                          ),
                                                                         ),
                                                                         TextButton(
                                                                           onPressed:
@@ -1043,7 +1052,11 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             Navigator.of(context).pop();
                                                                           },
                                                                           child:
-                                                                              Text('취소'),
+                                                                              Text(
+                                                                            '취소',
+                                                                            style:
+                                                                                TextStyle(fontSize: 16),
+                                                                          ),
                                                                         ),
                                                                       ],
                                                                     );
@@ -1138,8 +1151,12 @@ class _LessonAddState extends State<LessonAdd> {
                                                                           context)
                                                                       .pop();
                                                                 },
-                                                                child:
-                                                                    Text('취소'),
+                                                                child: Text(
+                                                                  '취소',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
                                                               ),
                                                               TextButton(
                                                                 onPressed:
@@ -1157,8 +1174,12 @@ class _LessonAddState extends State<LessonAdd> {
                                                                       context,
                                                                       index);
                                                                 },
-                                                                child:
-                                                                    Text('저장'),
+                                                                child: Text(
+                                                                  '저장',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
                                                               ),
                                                             ],
                                                           );
@@ -1306,7 +1327,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 ;
                               }),
 
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 30),
 
                           /// 추가버튼 UI 수정
                           ///
@@ -1393,6 +1414,7 @@ class _LessonAddState extends State<LessonAdd> {
                         ],
                       ),
                     ),
+                    SizedBox(height: 60)
                   ],
                 ),
               ),
