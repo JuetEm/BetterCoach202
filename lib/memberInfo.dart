@@ -800,7 +800,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Palette.gray66,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 10),
                 Text(
                   '등록횟수 : ${widget.userInfo.registerType}',
                   style: TextStyle(
@@ -809,9 +809,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       color: Palette.gray99),
                   textAlign: TextAlign.right,
                 ),
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Text(
                   '운동목표',
                   style: TextStyle(
@@ -820,7 +818,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Palette.gray66,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 10),
                 Offstage(
                   offstage: widget.userInfo.selectedGoals.isEmpty,
                   child: Wrap(
@@ -837,21 +835,23 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
                 Offstage(
                   offstage: widget.userInfo.goal.isEmpty,
-                  child: Text(
-                    widget.userInfo.goal,
-                    style: TextStyle(
-                      fontSize: 14,
-                      //fontWeight: FontWeight.bold,
-                      color: Palette.gray99,
-                    ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.userInfo.goal,
+                        style: TextStyle(
+                          fontSize: 14,
+                          //fontWeight: FontWeight.bold,
+                          color: Palette.gray99,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Text(
                   '체형분석',
                   style: TextStyle(
@@ -860,7 +860,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Palette.gray66,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 10),
                 Offstage(
                   offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
                   child: Wrap(
@@ -877,21 +877,23 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
                 Offstage(
                   offstage: widget.userInfo.bodyAnalyzed.isEmpty,
-                  child: Text(
-                    widget.userInfo.bodyAnalyzed,
-                    style: TextStyle(
-                      fontSize: 14,
-                      //fontWeight: FontWeight.bold,
-                      color: Palette.gray99,
-                    ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.userInfo.bodyAnalyzed,
+                        style: TextStyle(
+                          fontSize: 14,
+                          //fontWeight: FontWeight.bold,
+                          color: Palette.gray99,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Text(
                   '통증/상해/병력',
                   style: TextStyle(
@@ -916,21 +918,23 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
                 Offstage(
                   offstage: widget.userInfo.medicalHistories.isEmpty,
-                  child: Text(
-                    widget.userInfo.medicalHistories,
-                    style: TextStyle(
-                      fontSize: 14,
-                      //fontWeight: FontWeight.bold,
-                      color: Palette.gray99,
-                    ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.userInfo.medicalHistories,
+                        style: TextStyle(
+                          fontSize: 14,
+                          //fontWeight: FontWeight.bold,
+                          color: Palette.gray99,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Text(
                   '특이사항',
                   style: TextStyle(
@@ -939,7 +943,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Palette.gray66,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 10),
                 Text(
                   widget.userInfo.comment,
                   style: TextStyle(
@@ -951,6 +955,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               ],
             ),
           ),
+          SizedBox(height: 30),
           Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
