@@ -92,11 +92,11 @@ class _MemberListState extends State<MemberList> {
                           style: TextStyle(color: Palette.gray7B),
                         ),
                         Spacer(),
-                        Text(
-                          '최근 수업순',
-                          style: TextStyle(color: Palette.gray7B),
-                        ),
-                        Icon(Icons.keyboard_arrow_down_outlined)
+                        // Text(
+                        //   '최근 수업순',
+                        //   style: TextStyle(color: Palette.gray7B),
+                        // ),
+                        // Icon(Icons.keyboard_arrow_down_outlined)
                       ],
                     ),
                     Expanded(
@@ -277,17 +277,21 @@ class _MemberListState extends State<MemberList> {
             //   child: const Icon(Icons.add),
             // ),
 
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                print("회원추가");
-                // 저장하기 성공시 Home로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => MemberAdd()),
-                );
-              },
-              child: Icon(Icons.person_add),
-              backgroundColor: Palette.buttonOrange,
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  print("회원추가");
+                  // 저장하기 성공시 Home로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => MemberAdd()),
+                  );
+                },
+                label: Text('회원추가'),
+                icon: Icon(Icons.person_add),
+                backgroundColor: Palette.buttonOrange,
+              ),
             ),
           ),
         );

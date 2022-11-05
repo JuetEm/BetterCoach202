@@ -191,26 +191,29 @@ class _MemberInfoState extends State<MemberInfo> {
                                         }
                                       }),
 
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '${userInfo.name}',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                                  Container(
+                                    width: 200,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${userInfo.name}',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 4.0),
-                                      Text(
-                                        '${userInfo.phoneNumber}',
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            //fontWeight: FontWeight.bold,
-                                            color: Palette.gray66),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 4.0),
+                                        Text(
+                                          '${userInfo.phoneNumber}',
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              //fontWeight: FontWeight.bold,
+                                              color: Palette.gray66),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Spacer(),
                                   Column(
@@ -400,50 +403,6 @@ class _MemberInfoState extends State<MemberInfo> {
                 //   height: 14,
                 // ),
 
-                /// 추가버튼 floating 수정
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     FloatingActionButton(
-                //       onPressed: () {
-                //         lessonDate =
-                //             DateFormat("yyyy-MM-dd").format(DateTime.now());
-
-                //         List<TmpLessonInfo> tmpLessonInfoList = [];
-                //         eventList = [];
-                //         lessonAddMode = "노트 추가";
-                //         List<dynamic> args = [
-                //           userInfo,
-                //           lessonDate,
-                //           eventList,
-                //           lessonNoteId,
-                //           lessonAddMode,
-                //           tmpLessonInfoList,
-                //         ];
-                //         print(
-                //             "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-                //         // LessonAdd로 이동
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (context) => LessonAdd(),
-                //             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                //             settings: RouteSettings(arguments: args),
-                //           ),
-                //         );
-                //       },
-                //       child: Icon(Icons.edit),
-                //       backgroundColor: Palette.buttonOrange,
-                //     ),
-                //     SizedBox(
-                //       width: 22,
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 22,
-                // ),
-
                 /// 추가버튼_이전
                 // ElevatedButton(
                 //     style: ElevatedButton.styleFrom(
@@ -547,6 +506,7 @@ class _MemberInfoState extends State<MemberInfo> {
               ],
             ),
           ),
+
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (viewMode == "레슨노트") {
