@@ -30,6 +30,7 @@ class _CloudStorageState extends State<CloudStorage> {
     //     "https://firebasestorage.googleapis.com/b/${bucket}/o/${fullPath}");
     // final imageUrl = getCloudStorageUrl(theImage);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Container(

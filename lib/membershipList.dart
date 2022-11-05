@@ -20,6 +20,7 @@ class _MembershipListState extends State<MembershipList> {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: BaseAppBarMethod(context, "수강횟수", null),
         body: Padding(
           padding: const EdgeInsets.all(14.0),

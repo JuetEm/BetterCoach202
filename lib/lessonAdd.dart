@@ -190,6 +190,7 @@ class _LessonAddState extends State<LessonAdd> {
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동

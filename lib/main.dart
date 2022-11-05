@@ -133,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, authService, child) {
         final user = authService.currentUser();
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           // 디자인적 요소 더하기 위해 appBar 제거
           // appBar: BaseAppBarMethod(context, "로그인", null),
@@ -497,6 +498,7 @@ class _HomePageState extends State<HomePage> {
     return Consumer<BucketService>(
       builder: (context, bucketService, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text("버킷 리스트"),
             actions: [

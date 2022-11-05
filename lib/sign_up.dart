@@ -42,6 +42,7 @@ class _SignUpState extends State<SignUp> {
     return Consumer<AuthService>(
       builder: (context, authService, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원가입", null),
           body: SingleChildScrollView(

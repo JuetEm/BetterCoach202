@@ -27,6 +27,7 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
   Widget build(BuildContext context) {
     return Consumer<ActionService>(builder: (context, actionService, child) {
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: BaseAppBarMethod(context, "글로벌 위젯 대쉬보드", null),
         body: Column(
           children: [
