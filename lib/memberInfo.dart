@@ -549,44 +549,44 @@ class _MemberInfoState extends State<MemberInfo> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              if (viewMode == "레슨노트") {
-                lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+              // if (viewMode == "레슨노트") {
+              lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                List<TmpLessonInfo> tmpLessonInfoList = [];
-                eventList = [];
-                lessonAddMode = "노트 추가";
-                List<dynamic> args = [
-                  userInfo,
-                  lessonDate,
-                  eventList,
-                  lessonNoteId,
-                  lessonAddMode,
-                  tmpLessonInfoList,
-                ];
-                print(
-                    "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-                // LessonAdd로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LessonAdd(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: args),
-                  ),
-                );
-              } else {
-                //회원정보 보기에서 동작이 달라짐.
-                // 회원 운동 카드 선택시 MemberInfo로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberUpdate(),
-                    // GlobalWidgetDashboard(), //
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: userInfo),
-                  ),
-                );
-              }
+              List<TmpLessonInfo> tmpLessonInfoList = [];
+              eventList = [];
+              lessonAddMode = "노트 추가";
+              List<dynamic> args = [
+                userInfo,
+                lessonDate,
+                eventList,
+                lessonNoteId,
+                lessonAddMode,
+                tmpLessonInfoList,
+              ];
+              print(
+                  "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+              // LessonAdd로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LessonAdd(),
+                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                  settings: RouteSettings(arguments: args),
+                ),
+              );
+              // } else {
+              //   //회원정보 보기에서 동작이 달라짐.
+              //   // 회원 운동 카드 선택시 MemberInfo로 이동
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => MemberUpdate(),
+              //       // GlobalWidgetDashboard(), //
+              //       // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              //       settings: RouteSettings(arguments: userInfo),
+              //     ),
+              //   );
+              //}
             },
             child: Icon(Icons.edit),
             backgroundColor: Palette.buttonOrange,

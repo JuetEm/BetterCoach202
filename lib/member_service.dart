@@ -157,6 +157,21 @@ class MemberService extends ChangeNotifier {
     onSuccess(); // 화면 갱신
   }
 
+  //이건 쓰지마세요.(DB수정시 사용)
+  void updateforBetaTest({
+    required String docId,
+  }) async {
+    // 업데이트
+    await memberCollection.doc(docId).update({
+      'medicalHistories': "",
+      'selectedBodyAnalyzed': [],
+      'selectedGoals': [],
+      'selectedMedicalHistories': [],
+      'bodyanalyzed': "",
+    });
+// 화면 갱신
+  }
+
   Future<void> updateisActive(
     String docId,
     bool isActive,
