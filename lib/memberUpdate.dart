@@ -189,79 +189,80 @@ class _MemberUpdateState extends State<MemberUpdate> {
                             //print("${userInfo.mid}");
                             // create bucket
 
-                            if (globalFunction.textNullCheck(
-                                context, nameController, "이름")) {
-                              memberService.update(
-                                  docId: userInfo.docId,
-                                  name: nameController.text,
-                                  registerDate: registerDateController.text,
-                                  phoneNumber: phoneNumberController.text,
-                                  registerType: registerTypeController.text,
-                                  goal: goalController.text,
-                                  info: infoController.text,
-                                  note: noteController.text,
-                                  uid: user.uid,
-                                  comment: commentController.text,
-                                  onSuccess: () {
-                                    // 저장하기 성공
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text("저장하기 성공"),
-                                    ));
+                            // if (globalFunction.textNullCheck(
+                            //     context, nameController, "이름")) {
+                            //   memberService.update(
+                            //       docId: userInfo.docId,
+                            //       name: nameController.text,
+                            //       registerDate: registerDateController.text,
+                            //       phoneNumber: phoneNumberController.text,
+                            //       registerType: registerTypeController.text,
+                            //       goal: goalController.text,
 
-                                    //userinfoupdate.mid = nameController.text;
+                            //       info: infoController.text,
+                            //       note: noteController.text,
+                            //       uid: user.uid,
+                            //       comment: commentController.text,
+                            //       onSuccess: () {
+                            //         // 저장하기 성공
+                            //         ScaffoldMessenger.of(context)
+                            //             .showSnackBar(SnackBar(
+                            //           content: Text("저장하기 성공"),
+                            //         ));
 
-                                    //List<UserInfo> userupdateInfo
-                                    UserInfo userInfouUpdate = UserInfo(
-                                        userInfo.docId,
-                                        userInfo.uid,
-                                        nameController.text,
-                                        registerDateController.text,
-                                        phoneNumberController.text,
-                                        registerTypeController.text,
-                                        goalController.text,
-                                        [],
-                                        "",
-                                        [],
-                                        "",
-                                        [],
-                                        infoController.text,
-                                        noteController.text,
-                                        commentController.text,
-                                        true);
+                            //         //userinfoupdate.mid = nameController.text;
 
-                                    // 저장하기 성공시 MemberInfo로 이동
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MemberInfo(),
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(
-                                          arguments: userInfouUpdate,
-                                        ),
-                                      ),
-                                    );
+                            //         //List<UserInfo> userupdateInfo
+                            //         UserInfo userInfouUpdate = UserInfo(
+                            //             userInfo.docId,
+                            //             userInfo.uid,
+                            //             nameController.text,
+                            //             registerDateController.text,
+                            //             phoneNumberController.text,
+                            //             registerTypeController.text,
+                            //             goalController.text,
+                            //             [],
+                            //             "",
+                            //             [],
+                            //             "",
+                            //             [],
+                            //             infoController.text,
+                            //             noteController.text,
+                            //             commentController.text,
+                            //             true);
 
-                                    globalFunction.clearTextEditController([
-                                      nameController,
-                                      registerDateController,
-                                      phoneNumberController,
-                                      registerTypeController,
-                                      goalController,
-                                      infoController,
-                                      noteController,
-                                      commentController,
-                                    ]);
-                                  },
-                                  onError: () {
-                                    print("저장하기 ERROR");
-                                  });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("항목을 모두 입력해주세요."),
-                              ));
-                            }
+                            //         // 저장하기 성공시 MemberInfo로 이동
+                            //         Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(
+                            //             builder: (context) => MemberInfo(),
+                            //             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                            //             settings: RouteSettings(
+                            //               arguments: userInfouUpdate,
+                            //             ),
+                            //           ),
+                            //         );
+
+                            //         globalFunction.clearTextEditController([
+                            //           nameController,
+                            //           registerDateController,
+                            //           phoneNumberController,
+                            //           registerTypeController,
+                            //           goalController,
+                            //           infoController,
+                            //           noteController,
+                            //           commentController,
+                            //         ]);
+                            //       },
+                            //       onError: () {
+                            //         print("저장하기 ERROR");
+                            //       });
+                            // } else {
+                            //   ScaffoldMessenger.of(context)
+                            //       .showSnackBar(SnackBar(
+                            //     content: Text("항목을 모두 입력해주세요."),
+                            //   ));
+                            // }
                           },
                         ),
 

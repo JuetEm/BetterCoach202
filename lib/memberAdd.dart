@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
+import 'package:web_project/userInfo.dart';
 
 import 'actionSelector.dart';
 import 'auth_service.dart';
@@ -10,9 +11,14 @@ import 'baseTableCalendar.dart';
 import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
+import 'memberInfo.dart';
 import 'memberList.dart';
 import 'member_service.dart';
 import 'membershipList.dart';
+
+String memberAddMode = "추가";
+
+late CustomUserInfo.UserInfo customUserInfo;
 
 final goalList = [
   "바디프로필",
@@ -93,21 +99,35 @@ class _MemberAddState extends State<MemberAdd> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+
+    final argsList =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    memberAddMode = argsList[0];
     if (memberAddMode == "수정") {
       // 이전 화면에서 보낸 변수 받기
-      final argsList =
-          ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-      CustomUserInfo.UserInfo customUserInfo = argsList[0];
-      String memberAddMode = argsList[1];
+      customUserInfo = argsList[1];
 
-      nameController.text = customUserInfo.name;
-      registerDateController.text = customUserInfo.registerDate;
-      phoneNumberController.text = customUserInfo.phoneNumber;
-      registerTypeController.text = customUserInfo.registerType;
-      goalController.text = customUserInfo.goal;
-      infoController.text = customUserInfo.info;
-      noteController.text = customUserInfo.note;
-      commentController.text = customUserInfo.comment;
+      print("[MA]시작 : memberAddMode - ${memberAddMode}");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        nameController.text = customUserInfo.name;
+        registerDateController.text = customUserInfo.registerDate;
+        phoneNumberController.text = customUserInfo.phoneNumber;
+        registerTypeController.text = customUserInfo.registerType;
+        goalController.text = customUserInfo.goal;
+        infoController.text = customUserInfo.info;
+        noteController.text = customUserInfo.note;
+        commentController.text = customUserInfo.comment;
+        medicalHistoryController.text = customUserInfo.medicalHistories;
+        bodyAnalyzeController.text = customUserInfo.bodyAnalyzed;
+      });
+      //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
+
+      selectedGoals = customUserInfo.selectedGoals;
+      selelctedAnalyzedList = customUserInfo.selectedBodyAnalyzed;
+      selectedHistoryList = customUserInfo.selectedMedicalHistories;
+
+      print(
+          "[MA]변수받아오기 : selectedGoals - ${customUserInfo.selectedGoals} / ${customUserInfo.selectedBodyAnalyzed} / ${customUserInfo.selectedMedicalHistories}");
     }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -573,71 +593,220 @@ class _MemberAddState extends State<MemberAdd> {
                     child: Text("저장하기", style: TextStyle(fontSize: 16)),
                   ),
                   onPressed: () {
-                    print("추가 버튼");
-                    // create bucket
-                    if (globalFunction.textNullCheck(
-                        context, nameController, "이름")) {
-                      // globalFunction.textNullCheck(
-                      //     context, registerDateController, "등록일") &&
-                      // globalFunction.textNullCheck(
-                      //     context, phoneNumberController, "전화번호") &&
-                      // globalFunction.textNullCheck(
-                      //     context, registerTypeController, "등록횟수입력") &&
-                      // globalFunction.textNullCheck(
-                      //     context, goalController, "운동목표") &&
-                      // globalFunction.textNullCheck(
-                      //     context, infoController, "통증/상해/병력") &&
-                      // globalFunction.textNullCheck(
-                      //     context, noteController, "체형분석")) {
-                      memberService.create(
-                          name: nameController.text,
-                          registerDate: registerDateController.text,
-                          phoneNumber: phoneNumberController.text,
-                          registerType: registerTypeController.text,
-                          goal: goalController.text,
-                          selectedGoals: selectedGoals,
-                          bodyAnalyzed: bodyAnalyzeController.text,
-                          selectedBodyAnalyzed: selelctedAnalyzedList,
-                          medicalHistories: medicalHistoryController.text,
-                          selectedMedicalHistories: selectedHistoryList,
-                          info: infoController.text,
-                          note: noteController.text,
-                          comment: commentController.text,
-                          uid: user.uid,
-                          onSuccess: () {
-                            // 저장하기 성공
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("저장하기 성공"),
-                            ));
-                            // 저장하기 성공시 Home로 이동
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => MemberList()),
-                            );
+                    if (memberAddMode == "추가") {
+                      print("추가 버튼");
+                      // create bucket
+                      if (globalFunction.textNullCheck(
+                          context, nameController, "이름")) {
+                        // globalFunction.textNullCheck(
+                        //     context, registerDateController, "등록일") &&
+                        // globalFunction.textNullCheck(
+                        //     context, phoneNumberController, "전화번호") &&
+                        // globalFunction.textNullCheck(
+                        //     context, registerTypeController, "등록횟수입력") &&
+                        // globalFunction.textNullCheck(
+                        //     context, goalController, "운동목표") &&
+                        // globalFunction.textNullCheck(
+                        //     context, infoController, "통증/상해/병력") &&
+                        // globalFunction.textNullCheck(
+                        //     context, noteController, "체형분석")) {
+                        memberService.create(
+                            name: nameController.text,
+                            registerDate: registerDateController.text,
+                            phoneNumber: phoneNumberController.text,
+                            registerType: registerTypeController.text,
+                            goal: goalController.text,
+                            selectedGoals: selectedGoals,
+                            bodyAnalyzed: bodyAnalyzeController.text,
+                            selectedBodyAnalyzed: selelctedAnalyzedList,
+                            medicalHistories: medicalHistoryController.text,
+                            selectedMedicalHistories: selectedHistoryList,
+                            info: infoController.text,
+                            note: noteController.text,
+                            comment: commentController.text,
+                            uid: user.uid,
+                            onSuccess: () {
+                              // 저장하기 성공
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("저장하기 성공"),
+                              ));
+                              // 저장하기 성공시 Home로 이동
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => MemberList()),
+                              );
 
-                            globalFunction.clearTextEditController([
-                              nameController,
-                              registerDateController,
-                              phoneNumberController,
-                              registerTypeController,
-                              goalController,
-                              bodyAnalyzeController,
-                              medicalHistoryController,
-                              infoController,
-                              noteController,
-                              commentController,
-                            ]);
-                            registerDateController.text = now;
-                          },
-                          onError: () {
-                            print("저장하기 ERROR");
-                          });
+                              globalFunction.clearTextEditController([
+                                nameController,
+                                registerDateController,
+                                phoneNumberController,
+                                registerTypeController,
+                                goalController,
+                                bodyAnalyzeController,
+                                medicalHistoryController,
+                                infoController,
+                                noteController,
+                                commentController,
+                              ]);
+                              registerDateController.text = now;
+                            },
+                            onError: () {
+                              print("저장하기 ERROR");
+                            });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("항목을 모두 입력해주세요."),
+                        ));
+                      }
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("항목을 모두 입력해주세요."),
-                      ));
+                      /// 수정처리(업데이트)
+                      if (globalFunction.textNullCheck(
+                          context, nameController, "이름")) {
+                        memberService.update(
+                            docId: customUserInfo.docId,
+                            name: nameController.text,
+                            registerDate: registerDateController.text,
+                            phoneNumber: phoneNumberController.text,
+                            registerType: registerTypeController.text,
+                            goal: goalController.text,
+                            selectedGoals: selectedGoals,
+                            bodyAnalyzed: bodyAnalyzeController.text,
+                            selectedBodyAnalyzed: selelctedAnalyzedList,
+                            medicalHistories: medicalHistoryController.text,
+                            selectedMedicalHistories: selectedHistoryList,
+                            info: infoController.text,
+                            note: noteController.text,
+                            comment: commentController.text,
+                            uid: user.uid,
+                            onSuccess: () {
+                              // 저장하기 성공
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("저장하기 성공"),
+                              ));
+
+                              //userinfoupdate.mid = nameController.text;
+
+                              //List<UserInfo> userupdateInfo
+                              UserInfo userInfouUpdate = UserInfo(
+                                  customUserInfo.docId,
+                                  customUserInfo.uid,
+                                  nameController.text,
+                                  registerDateController.text,
+                                  phoneNumberController.text,
+                                  registerTypeController.text,
+                                  goalController.text,
+                                  selectedGoals,
+                                  bodyAnalyzeController.text,
+                                  selelctedAnalyzedList,
+                                  medicalHistoryController.text,
+                                  selectedHistoryList,
+                                  infoController.text,
+                                  noteController.text,
+                                  commentController.text,
+                                  true);
+
+                              // 저장하기 성공시 MemberInfo로 이동
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MemberInfo(),
+                                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                  settings: RouteSettings(
+                                    arguments: userInfouUpdate,
+                                  ),
+                                ),
+                              );
+
+                              globalFunction.clearTextEditController([
+                                nameController,
+                                registerDateController,
+                                phoneNumberController,
+                                registerTypeController,
+                                goalController,
+                                infoController,
+                                noteController,
+                                commentController,
+                              ]);
+                            },
+                            onError: () {
+                              print("저장하기 ERROR");
+                            });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("항목을 모두 입력해주세요."),
+                        ));
+                      }
                     }
                   },
+                ),
+
+                Offstage(
+                  offstage: (memberAddMode == "추가"),
+                  child: Column(
+                    children: [
+                      /// 삭제 버튼
+                      SizedBox(height: 40),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          elevation: 0,
+                          backgroundColor: Palette.buttonOrange,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 90),
+                          child: Text("삭제하기", style: TextStyle(fontSize: 16)),
+                        ),
+                        onPressed: () async {
+                          print("${customUserInfo.docId}");
+                          // create bucket
+                          final retvaldelte = await showAlertDialog(context);
+                          if (retvaldelte == "OK") {
+                            memberService.delete(
+                                docId: customUserInfo.docId,
+                                onSuccess: () {
+                                  // 삭제하기 성공
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text("삭제하기 성공"),
+                                  ));
+
+                                  //userinfoupdate.mid = nameController.text;
+
+                                  // 삭제하기 성공시 MemberList로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MemberList(),
+                                    ),
+                                  );
+
+                                  globalFunction.clearTextEditController([
+                                    nameController,
+                                    registerDateController,
+                                    phoneNumberController,
+                                    registerTypeController,
+                                    goalController,
+                                    infoController,
+                                    noteController,
+                                    commentController,
+                                  ]);
+                                },
+                                onError: () {
+                                  print("삭제하기 ERROR");
+                                });
+                          }
+
+                          //if (showAlertDialog(context) == "OK"){
+                          //
+                        },
+                      ),
+                    ],
+                  ),
                 ),
 
                 /// 취소버튼
@@ -1836,4 +2005,40 @@ class _MemberAddState extends State<MemberAdd> {
       ));
     }
   }
+}
+
+showAlertDialog(BuildContext context) async {
+  String result = await showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('정말로 삭제하시겠습니까?'),
+        content: Text("회원과 관련된 레슨노트 정보도 모두 삭제됩니다."),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Palette.buttonOrange,
+            ),
+            child: Text('취소'),
+            onPressed: () {
+              Navigator.pop(context, "Cancel");
+            },
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Palette.buttonOrange,
+            ),
+            child: Text('확인'),
+            onPressed: () {
+              Navigator.pop(context, "OK");
+            },
+          ),
+        ],
+      );
+    },
+  );
+  return result;
 }

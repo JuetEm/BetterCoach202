@@ -14,6 +14,7 @@ import 'lessonAdd.dart';
 
 import 'lessonUpdate.dart';
 import 'lesson_service.dart';
+import 'memberAdd.dart';
 import 'memberList.dart';
 import 'memberUpdate.dart';
 import 'member_service.dart';
@@ -1001,14 +1002,23 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 ),
               ),
               onPressed: () {
-                // 회원 운동 카드 선택시 MemberInfo로 이동
+                print("회원수정");
+                String memberAddMode = "수정";
+
+                List<dynamic> args = [
+                  memberAddMode,
+                  widget.userInfo,
+                ];
+
+                // 저장하기 성공시 Home로 이동
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MemberUpdate(),
-                    // GlobalWidgetDashboard(), //
+                    builder: (context) => MemberAdd(),
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: widget.userInfo),
+                    settings: RouteSettings(
+                      arguments: args,
+                    ),
                   ),
                 );
               },
