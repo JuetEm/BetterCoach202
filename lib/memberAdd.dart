@@ -74,6 +74,8 @@ List<String> selectedHistoryList = [];
 List<Color> historyTileColorList = [];
 List<Color> historyTextColorList = [];
 
+String pageTitle = "회원등록";
+
 GlobalFunction globalFunction = GlobalFunction();
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
@@ -161,6 +163,12 @@ class _MemberAddState extends State<MemberAdd> {
 
     String imgUrl =
         "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
+
+    if (memberAddMode == "추가") {
+      pageTitle = "회원등록";
+    } else {
+      pageTitle = "회원정보수정";
+    }
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         // if (MediaQuery.of(context).viewInsets.bottom == 0) {
@@ -176,7 +184,7 @@ class _MemberAddState extends State<MemberAdd> {
         // }
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
-          appBar: BaseAppBarMethod(context, "회원등록", () {
+          appBar: BaseAppBarMethod(context, pageTitle, () {
             Navigator.pop(context);
 
             globalFunction.clearTextEditController([
@@ -315,7 +323,7 @@ class _MemberAddState extends State<MemberAdd> {
                               context: context,
                               builder: (BuildContext context) {
                                 return Container(
-                                  // padding: const EdgeInsets.all(30),
+                                  padding: const EdgeInsets.all(30),
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                         bottom: MediaQuery.of(context)
