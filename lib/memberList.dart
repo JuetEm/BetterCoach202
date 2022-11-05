@@ -94,11 +94,11 @@ class _MemberListState extends State<MemberList> {
                           style: TextStyle(color: Palette.gray7B),
                         ),
                         Spacer(),
-                        Text(
-                          '최근 수업순',
-                          style: TextStyle(color: Palette.gray7B),
-                        ),
-                        Icon(Icons.keyboard_arrow_down_outlined)
+                        // Text(
+                        //   '최근 수업순',
+                        //   style: TextStyle(color: Palette.gray7B),
+                        // ),
+                        // Icon(Icons.keyboard_arrow_down_outlined)
                       ],
                     ),
                     Expanded(
@@ -279,29 +279,36 @@ class _MemberListState extends State<MemberList> {
             //   child: const Icon(Icons.add),
             // ),
 
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                print("회원추가");
-                memberAddMode = "추가";
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  print("회원추가");
+                  memberAddMode = "추가";
 
-                List<dynamic> args = [
-                  memberAddMode,
-                ];
+                  List<dynamic> args = [
+                    memberAddMode,
+                  ];
 
-                // 저장하기 성공시 Home로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberAdd(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(
-                      arguments: args,
+                  // 저장하기 성공시 Home로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MemberAdd(),
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(
+                        arguments: args,
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: Icon(Icons.person_add),
-              backgroundColor: Palette.buttonOrange,
+                  );
+                },
+                label: Text(
+                  '회원 추가',
+                  style: TextStyle(fontSize: 16, letterSpacing: -0.2),
+                ),
+                icon: Icon(Icons.person_add),
+                backgroundColor: Palette.buttonOrange,
+              ),
             ),
           ),
         );

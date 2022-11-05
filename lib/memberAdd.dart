@@ -275,14 +275,14 @@ class _MemberAddState extends State<MemberAdd> {
                               ),
                             ),
                             Spacer(),
-                            Text(
-                              '추가',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Palette.gray00,
-                              ),
-                            ),
-                            SizedBox(width: 10)
+                            // Text(
+                            //   '추가',
+                            //   style: TextStyle(
+                            //     fontSize: 14,
+                            //     color: Palette.gray00,
+                            //   ),
+                            // ),
+                            // SizedBox(width: 10)
                           ],
                         ),
 
@@ -297,7 +297,83 @@ class _MemberAddState extends State<MemberAdd> {
                           showArrow: true,
                           customFunction: () {
                             String lessonCount = registerTypeController.text;
-                            _getMembership(context, lessonCount);
+                            showModalBottomSheet<void>(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.white,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(30),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                          width: double.infinity,
+                                          alignment: Alignment.topLeft,
+                                          child: const Text(
+                                            '수강일을 입력해주세요.',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Palette.gray00,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                      SizedBox(height: 10),
+
+                                      BaseTextField(
+                                        customController: membershipController,
+                                        hint: "횟수입력",
+                                        showArrow: false,
+                                        customFunction: () {},
+                                      ),
+
+                                      SizedBox(height: 10),
+
+                                      /// 수강권 선택 버튼
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                          ),
+                                          elevation: 0,
+                                          backgroundColor: Palette.buttonOrange,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 14, horizontal: 90),
+                                          child: Text("확인",
+                                              style: TextStyle(fontSize: 16)),
+                                        ),
+                                        onPressed: () {
+                                          final authService =
+                                              context.read<AuthService>();
+                                          final user =
+                                              authService.currentUser()!;
+                                          print("확인 버튼");
+                                          // create bucket
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text("횟수 입력 성공"),
+                                          ));
+                                          // 저장하기 성공시 Home로 이동
+                                          Navigator.pop(context,
+                                              membershipController.text);
+
+                                          registerTypeController.text =
+                                              membershipController.text;
+
+                                          membershipController.text = "";
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+
+                            // _getMembership(context, lessonCount);
                           },
                         ),
                       ],
@@ -326,6 +402,9 @@ class _MemberAddState extends State<MemberAdd> {
                             goalTileColorList,
                             goalTextColorList),
 
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+
                         Offstage(
                           offstage: selectedGoals.isNotEmpty,
                           child: SizedBox(
@@ -347,28 +426,24 @@ class _MemberAddState extends State<MemberAdd> {
 
                         Offstage(
                           offstage: selectedGoals.isEmpty,
-                          child: SizedBox(
+                          child: Container(
                             height: 30,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    for (final chip in goalChips)
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4.0, 0, 4, 0),
-                                        child: chip,
-                                      ),
-                                  ],
-                                ),
+                            width: double.infinity,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (final chip in goalChips)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          4.0, 0, 4, 0),
+                                      child: chip,
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-
-                        Divider(height: 1),
-                        SizedBox(height: 10),
 
                         /// 운동목표 입력창
                         BaseTextField(
@@ -403,6 +478,9 @@ class _MemberAddState extends State<MemberAdd> {
                           bodyTileColorList,
                           bodyTextColorList,
                         ),
+
+                        Divider(height: 1),
+                        SizedBox(height: 10),
                         Offstage(
                           offstage: selelctedAnalyzedList.isNotEmpty,
                           child: SizedBox(
@@ -425,28 +503,24 @@ class _MemberAddState extends State<MemberAdd> {
 
                         Offstage(
                           offstage: selelctedAnalyzedList.isEmpty,
-                          child: SizedBox(
+                          child: Container(
                             height: 30,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    for (final chip in bodyAnalyzedChips)
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4.0, 0, 4, 0),
-                                        child: chip,
-                                      ),
-                                  ],
-                                ),
+                            width: double.infinity,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (final chip in bodyAnalyzedChips)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          4.0, 0, 4, 0),
+                                      child: chip,
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-
-                        Divider(height: 1),
-                        SizedBox(height: 10),
 
                         /// 체형분석 입력창
                         BaseTextField(
@@ -480,6 +554,9 @@ class _MemberAddState extends State<MemberAdd> {
                             selectedHistoryList,
                             historyTileColorList,
                             historyTextColorList),
+
+                        Divider(height: 1),
+                        SizedBox(height: 10),
                         Offstage(
                           offstage: selectedHistoryList.isNotEmpty,
                           child: SizedBox(
@@ -501,28 +578,24 @@ class _MemberAddState extends State<MemberAdd> {
 
                         Offstage(
                           offstage: selectedHistoryList.isEmpty,
-                          child: SizedBox(
+                          child: Container(
                             height: 30,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    for (final chip in medicalHistoriesChips)
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4.0, 0, 4, 0),
-                                        child: chip,
-                                      ),
-                                  ],
-                                ),
+                            width: double.infinity,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (final chip in medicalHistoriesChips)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          4.0, 0, 4, 0),
+                                      child: chip,
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-
-                        Divider(height: 1),
-                        SizedBox(height: 10),
 
                         /// 통증/상해/병력 입력창
                         BaseTextField(

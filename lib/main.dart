@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 100),
+                      SizedBox(height: 60),
                       SizedBox(
                         child: Column(
                           children: [
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 50),
+                SizedBox(height: 30),
 
                 /// 이메일
                 LoginTextField(
@@ -232,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 32),
+                SizedBox(height: 26),
 
                 /// 기능 없는 텍스트 _ 잠시 주석처리 해두겠습니다.
                 // Row(
@@ -253,6 +253,25 @@ class _LoginPageState extends State<LoginPage> {
                 //   ],
                 // ),
                 // SizedBox(height: 32),
+                /// 로그인 없이 사용하기 버튼
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("로그인없이 사용하기", style: TextStyle(fontSize: 16)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    elevation: 0,
+                    backgroundColor: Palette.gray66,
+                  ),
+                  onPressed: () {
+                    loginMethodforDemo(context, authService);
+                  },
+                ),
+                SizedBox(height: 20),
 
                 /// 로그인 버튼
                 ElevatedButton(
@@ -297,26 +316,6 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 SizedBox(height: 30),
-
-                /// 로그인 없이 사용하기 버튼
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text("로그인없이 사용하기", style: TextStyle(fontSize: 16)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.buttonOrange,
-                  ),
-                  onPressed: () {
-                    loginMethodforDemo(context, authService);
-                  },
-                ),
-                SizedBox(height: 10),
 
                 //   // 버켓리스트 버튼
                 //   ElevatedButton(
@@ -363,19 +362,19 @@ class _LoginPageState extends State<LoginPage> {
                 //   SizedBox(height: 10),
 
                 /// 글로벌 대쉬보드 버튼
-                ElevatedButton(
-                  child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    // 회원가입
-                    print("global widget");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => GlobalWidgetDashboard(),
-                      ),
-                    );
-                  },
-                ),
+                // ElevatedButton(
+                //   child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
+                //   onPressed: () {
+                //     // 회원가입
+                //     print("global widget");
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (_) => GlobalWidgetDashboard(),
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),
