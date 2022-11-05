@@ -201,723 +201,726 @@ class _MemberAddState extends State<MemberAdd> {
             ]);
             registerDateController.text = now;
           }),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                /// 압력기본정보
-                Container(
-                  color: Palette.mainBackground,
-                  // padding: const EdgeInsets.all(20),
-                  padding: EdgeInsets.only(
-                      right: 20,
-                      left: 20,
-                      top: 20,
-                      bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
-
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '기본정보',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Palette.gray00,
-                              ),
-                            ),
-                            Text('*',
+          body: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  /// 압력기본정보
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.all(20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '기본정보',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color: Palette.buttonOrange,
-                                ))
-                          ],
-                        ),
-
-                        SizedBox(height: 10),
-                        Divider(height: 1),
-                        SizedBox(height: 10),
-
-                        /// 이름 입력창
-                        BaseTextField(
-                          customController: nameController,
-                          hint: "이름",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-
-                        /// 등록일 입력창
-                        BaseTextField(
-                          customController: registerDateController,
-                          hint: "등록일",
-                          showArrow: true,
-                          customFunction: () {
-                            globalFunction.getDateFromCalendar(
-                                context,
-                                registerDateController,
-                                "등록일",
-                                registerDateController.text);
-                          },
-                        ),
-
-                        /// 전화번호 입력창
-                        BaseTextField(
-                          customController: phoneNumberController,
-                          hint: "전화번호",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                /// 입력창_수강정보
-                Container(
-                  color: Palette.mainBackground,
-                  padding: const EdgeInsets.all(20),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        /// Title
-
-                        Row(
-                          children: [
-                            Text(
-                              '수강정보',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Palette.gray00,
+                                  color: Palette.gray00,
+                                ),
                               ),
-                            ),
-                            Spacer(),
-                            // Text(
-                            //   '추가',
-                            //   style: TextStyle(
-                            //     fontSize: 14,
-                            //     color: Palette.gray00,
-                            //   ),
-                            // ),
-                            // SizedBox(width: 10)
-                          ],
-                        ),
+                              Text('*',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.buttonOrange,
+                                  ))
+                            ],
+                          ),
 
-                        SizedBox(height: 10),
-                        Divider(height: 1),
-                        SizedBox(height: 10),
+                          SizedBox(height: 10),
+                          Divider(height: 1),
+                          SizedBox(height: 10),
 
-                        /// 등록횟수입력창
-                        BaseTextField(
-                          customController: registerTypeController,
-                          hint: "등록횟수입력",
-                          showArrow: true,
-                          customFunction: () {
-                            String lessonCount = registerTypeController.text;
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              backgroundColor: Colors.white,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Container(
-                                  padding: const EdgeInsets.all(30),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Container(
-                                            width: double.infinity,
-                                            alignment: Alignment.topLeft,
-                                            child: const Text(
-                                              '수강일을 입력해주세요.',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Palette.gray00,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                        SizedBox(height: 10),
+                          /// 이름 입력창
+                          BaseTextField(
+                            customController: nameController,
+                            hint: "이름",
+                            showArrow: false,
+                            customFunction: () {},
+                          ),
 
-                                        BaseTextField(
-                                          customController:
-                                              membershipController,
-                                          hint: "횟수입력",
-                                          showArrow: false,
-                                          customFunction: () {},
-                                        ),
-
-                                        SizedBox(height: 10),
-
-                                        /// 수강권 선택 버튼
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0),
-                                            ),
-                                            elevation: 0,
-                                            backgroundColor:
-                                                Palette.buttonOrange,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 14, horizontal: 90),
-                                            child: Text("확인",
-                                                style: TextStyle(fontSize: 16)),
-                                          ),
-                                          onPressed: () {
-                                            final authService =
-                                                context.read<AuthService>();
-                                            final user =
-                                                authService.currentUser()!;
-                                            print("확인 버튼");
-                                            // create bucket
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                              content: Text("횟수 입력 성공"),
-                                            ));
-                                            // 저장하기 성공시 Home로 이동
-                                            Navigator.pop(context,
-                                                membershipController.text);
-
-                                            registerTypeController.text =
-                                                membershipController.text;
-
-                                            membershipController.text = "";
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-
-                            // _getMembership(context, lessonCount);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                /// 입력창_운동목표
-                Container(
-                  color: Palette.mainBackground,
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        /// Title
-                        /// 운동 목표
-                        customGoalGridView(
-                            context,
-                            goalController,
-                            "운동목표",
-                            "목표를 선택해주세요.",
-                            goalList,
-                            selectedGoals,
-                            goalTileColorList,
-                            goalTextColorList),
-
-                        Divider(height: 1),
-                        SizedBox(height: 10),
-
-                        Offstage(
-                          offstage: selectedGoals.isNotEmpty,
-                          child: SizedBox(
-                            //height: 30,
-                            //width: 100,
-                            child: Center(
-                              child: customGoalAction(
+                          /// 등록일 입력창
+                          BaseTextField(
+                            customController: registerDateController,
+                            hint: "등록일",
+                            showArrow: true,
+                            customFunction: () {
+                              globalFunction.getDateFromCalendar(
                                   context,
-                                  goalController,
-                                  "운동목표",
-                                  "목표를 선택해주세요.",
-                                  goalList,
-                                  selectedGoals,
-                                  goalTileColorList,
-                                  goalTextColorList),
-                            ),
-                          ),
-                        ),
-
-                        Offstage(
-                          offstage: selectedGoals.isEmpty,
-                          child: Container(
-                            height: 30,
-                            width: double.infinity,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  for (final chip in goalChips)
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          4.0, 0, 4, 0),
-                                      child: chip,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        /// 운동목표 입력창
-                        BaseTextField(
-                          customController: goalController,
-                          hint: "기타 특이사항이 있다면 작성해주세요.",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                /// 체형 분석
-                Container(
-                  color: Palette.mainBackground,
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        /// 체형분석
-                        customBodyGridView(
-                          context,
-                          bodyAnalyzeController,
-                          "체형분석",
-                          "체형 특이사항을 선택해주세요.",
-                          bodyAnalyzedList,
-                          selelctedAnalyzedList,
-                          bodyTileColorList,
-                          bodyTextColorList,
-                        ),
-
-                        Divider(height: 1),
-                        SizedBox(height: 10),
-                        Offstage(
-                          offstage: selelctedAnalyzedList.isNotEmpty,
-                          child: SizedBox(
-                            //height: 30,
-                            //width: 100,
-                            child: Center(
-                              child: customBodyAction(
-                                context,
-                                bodyAnalyzeController,
-                                "체형분석",
-                                "체형 특이사항을 선택해주세요.",
-                                bodyAnalyzedList,
-                                selelctedAnalyzedList,
-                                bodyTileColorList,
-                                bodyTextColorList,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        Offstage(
-                          offstage: selelctedAnalyzedList.isEmpty,
-                          child: Container(
-                            height: 30,
-                            width: double.infinity,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  for (final chip in bodyAnalyzedChips)
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          4.0, 0, 4, 0),
-                                      child: chip,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        /// 체형분석 입력창
-                        BaseTextField(
-                          customController: bodyAnalyzeController,
-                          hint: "기타 특이사항이 있다면 작성해주세요.",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                /// 통증/상해/병력
-                Container(
-                  color: Palette.mainBackground,
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        /// 통증/상해/병력
-                        customMedicalHistoryGridView(
-                            context,
-                            medicalHistoryController,
-                            "통증/상해/병력",
-                            "통증/상해 부위를 선택해주세요.",
-                            medicalHistoryList,
-                            selectedHistoryList,
-                            historyTileColorList,
-                            historyTextColorList),
-
-                        Divider(height: 1),
-                        SizedBox(height: 10),
-                        Offstage(
-                          offstage: selectedHistoryList.isNotEmpty,
-                          child: SizedBox(
-                            //height: 30,
-                            //width: 100,
-                            child: Center(
-                              child: customMedicalHistoryAction(
-                                  context,
-                                  medicalHistoryController,
-                                  "통증/상해/병력",
-                                  "통증/상해 부위를 선택해주세요.",
-                                  medicalHistoryList,
-                                  selectedHistoryList,
-                                  historyTileColorList,
-                                  historyTextColorList),
-                            ),
-                          ),
-                        ),
-
-                        Offstage(
-                          offstage: selectedHistoryList.isEmpty,
-                          child: Container(
-                            height: 30,
-                            width: double.infinity,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  for (final chip in medicalHistoriesChips)
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          4.0, 0, 4, 0),
-                                      child: chip,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        /// 통증/상해/병력 입력창
-                        BaseTextField(
-                          customController: medicalHistoryController,
-                          hint: "기타 특이사항이 있다면 작성해주세요.",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                /// 입력창_특이사항
-                Container(
-                  color: Palette.mainBackground,
-                  padding: const EdgeInsets.all(20),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        /// Title
-
-                        Row(
-                          children: [
-                            Text(
-                              '특이사항',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Palette.gray00,
-                              ),
-                            ),
-                            Spacer(),
-                          ],
-                        ),
-
-                        SizedBox(height: 10),
-                        Divider(height: 1),
-                        SizedBox(height: 10),
-
-                        /// 특이사항 입력창
-                        BaseTextField(
-                          customController: commentController,
-                          hint: "회원님의 특이사항을 입력하세요",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                /// 추가 버튼
-                SizedBox(height: 40),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    elevation: 0,
-                    backgroundColor: Palette.buttonOrange,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 90),
-                    child: Text("저장하기", style: TextStyle(fontSize: 16)),
-                  ),
-                  onPressed: () {
-                    if (memberAddMode == "추가") {
-                      print("추가 버튼");
-                      // create bucket
-                      if (globalFunction.textNullCheck(
-                          context, nameController, "이름")) {
-                        // globalFunction.textNullCheck(
-                        //     context, registerDateController, "등록일") &&
-                        // globalFunction.textNullCheck(
-                        //     context, phoneNumberController, "전화번호") &&
-                        // globalFunction.textNullCheck(
-                        //     context, registerTypeController, "등록횟수입력") &&
-                        // globalFunction.textNullCheck(
-                        //     context, goalController, "운동목표") &&
-                        // globalFunction.textNullCheck(
-                        //     context, infoController, "통증/상해/병력") &&
-                        // globalFunction.textNullCheck(
-                        //     context, noteController, "체형분석")) {
-                        memberService.create(
-                            name: nameController.text,
-                            registerDate: registerDateController.text,
-                            phoneNumber: phoneNumberController.text,
-                            registerType: registerTypeController.text,
-                            goal: goalController.text,
-                            selectedGoals: selectedGoals,
-                            bodyAnalyzed: bodyAnalyzeController.text,
-                            selectedBodyAnalyzed: selelctedAnalyzedList,
-                            medicalHistories: medicalHistoryController.text,
-                            selectedMedicalHistories: selectedHistoryList,
-                            info: infoController.text,
-                            note: noteController.text,
-                            comment: commentController.text,
-                            uid: user.uid,
-                            onSuccess: () {
-                              // 저장하기 성공
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("저장하기 성공"),
-                              ));
-                              // 저장하기 성공시 Home로 이동
-                              Navigator.pop(context);
-
-                              globalFunction.clearTextEditController([
-                                nameController,
-                                registerDateController,
-                                phoneNumberController,
-                                registerTypeController,
-                                goalController,
-                                bodyAnalyzeController,
-                                medicalHistoryController,
-                                infoController,
-                                noteController,
-                                commentController,
-                              ]);
-                              registerDateController.text = now;
+                                  registerDateController,
+                                  "등록일",
+                                  registerDateController.text);
                             },
-                            onError: () {
-                              print("저장하기 ERROR");
-                            });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("항목을 모두 입력해주세요."),
-                        ));
-                      }
-                    } else {
-                      /// 수정처리(업데이트)
-                      if (globalFunction.textNullCheck(
-                          context, nameController, "이름")) {
-                        memberService.update(
-                            docId: customUserInfo.docId,
-                            name: nameController.text,
-                            registerDate: registerDateController.text,
-                            phoneNumber: phoneNumberController.text,
-                            registerType: registerTypeController.text,
-                            goal: goalController.text,
-                            selectedGoals: selectedGoals,
-                            bodyAnalyzed: bodyAnalyzeController.text,
-                            selectedBodyAnalyzed: selelctedAnalyzedList,
-                            medicalHistories: medicalHistoryController.text,
-                            selectedMedicalHistories: selectedHistoryList,
-                            info: infoController.text,
-                            note: noteController.text,
-                            comment: commentController.text,
-                            uid: user.uid,
-                            onSuccess: () {
-                              // 저장하기 성공
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("저장하기 성공"),
-                              ));
+                          ),
 
-                              //userinfoupdate.mid = nameController.text;
-
-                              //List<UserInfo> userupdateInfo
-                              UserInfo userInfouUpdate = UserInfo(
-                                  customUserInfo.docId,
-                                  customUserInfo.uid,
-                                  nameController.text,
-                                  registerDateController.text,
-                                  phoneNumberController.text,
-                                  registerTypeController.text,
-                                  goalController.text,
-                                  selectedGoals,
-                                  bodyAnalyzeController.text,
-                                  selelctedAnalyzedList,
-                                  medicalHistoryController.text,
-                                  selectedHistoryList,
-                                  infoController.text,
-                                  noteController.text,
-                                  commentController.text,
-                                  true);
-
-                              // 저장하기 성공시 MemberInfo로 이동
-                              Navigator.pop(context, userInfouUpdate
-                                  // MaterialPageRoute(
-                                  //   builder: (context) => MemberInfo(),
-                                  //   // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                  //   settings: RouteSettings(
-                                  //     arguments: userInfouUpdate,
-                                  //   ),
-                                  // ),
-                                  );
-
-                              globalFunction.clearTextEditController([
-                                nameController,
-                                registerDateController,
-                                phoneNumberController,
-                                registerTypeController,
-                                goalController,
-                                infoController,
-                                noteController,
-                                commentController,
-                              ]);
-                            },
-                            onError: () {
-                              print("저장하기 ERROR");
-                            });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("항목을 모두 입력해주세요."),
-                        ));
-                      }
-                    }
-                  },
-                ),
-
-                Offstage(
-                  offstage: (memberAddMode == "추가"),
-                  child: Column(
-                    children: [
-                      /// 삭제 버튼
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0, backgroundColor: Colors.transparent),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text("삭제하기",
-                              style: TextStyle(
-                                  fontSize: 16, color: Palette.textRed)),
-                        ),
-                        onPressed: () async {
-                          print("${customUserInfo.docId}");
-                          // create bucket
-                          final retvaldelte = await showAlertDialog(context);
-                          if (retvaldelte == "OK") {
-                            memberService.delete(
-                                docId: customUserInfo.docId,
-                                onSuccess: () {
-                                  // 삭제하기 성공
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text("삭제하기 성공"),
-                                  ));
-
-                                  //userinfoupdate.mid = nameController.text;
-
-                                  // 삭제하기 성공시 MemberList로 이동
-                                  Navigator.pop(context);
-
-                                  globalFunction.clearTextEditController([
-                                    nameController,
-                                    registerDateController,
-                                    phoneNumberController,
-                                    registerTypeController,
-                                    goalController,
-                                    infoController,
-                                    noteController,
-                                    commentController,
-                                  ]);
-                                },
-                                onError: () {
-                                  print("삭제하기 ERROR");
-                                });
-                          }
-
-                          //if (showAlertDialog(context) == "OK"){
-                          //
-                        },
+                          /// 전화번호 입력창
+                          BaseTextField(
+                            customController: phoneNumberController,
+                            hint: "전화번호",
+                            showArrow: false,
+                            customFunction: () {},
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  SizedBox(height: 10),
 
-                /// 취소버튼
-                SizedBox(height: 6),
-                TextButton(
-                    style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        foregroundColor: Palette.gray00,
-                        textStyle: TextStyle(fontWeight: FontWeight.normal)),
+                  /// 입력창_수강정보
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.all(20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /// Title
+
+                          Row(
+                            children: [
+                              Text(
+                                '수강정보',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Palette.gray00,
+                                ),
+                              ),
+                              Spacer(),
+                              // Text(
+                              //   '추가',
+                              //   style: TextStyle(
+                              //     fontSize: 14,
+                              //     color: Palette.gray00,
+                              //   ),
+                              // ),
+                              // SizedBox(width: 10)
+                            ],
+                          ),
+
+                          SizedBox(height: 10),
+                          Divider(height: 1),
+                          SizedBox(height: 10),
+
+                          /// 등록횟수입력창
+                          BaseTextField(
+                            customController: registerTypeController,
+                            hint: "등록횟수입력",
+                            showArrow: true,
+                            customFunction: () {
+                              String lessonCount = registerTypeController.text;
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                backgroundColor: Colors.white,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    padding: const EdgeInsets.all(30),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Container(
+                                              width: double.infinity,
+                                              alignment: Alignment.topLeft,
+                                              child: const Text(
+                                                '수강일을 입력해주세요.',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Palette.gray00,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                          SizedBox(height: 10),
+
+                                          BaseTextField(
+                                            customController:
+                                                membershipController,
+                                            hint: "횟수입력",
+                                            showArrow: false,
+                                            customFunction: () {},
+                                          ),
+
+                                          SizedBox(height: 10),
+
+                                          /// 수강권 선택 버튼
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30.0),
+                                              ),
+                                              elevation: 0,
+                                              backgroundColor:
+                                                  Palette.buttonOrange,
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14,
+                                                      horizontal: 90),
+                                              child: Text("확인",
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                            ),
+                                            onPressed: () {
+                                              final authService =
+                                                  context.read<AuthService>();
+                                              final user =
+                                                  authService.currentUser()!;
+                                              print("확인 버튼");
+                                              // create bucket
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text("횟수 입력 성공"),
+                                              ));
+                                              // 저장하기 성공시 Home로 이동
+                                              Navigator.pop(context,
+                                                  membershipController.text);
+
+                                              registerTypeController.text =
+                                                  membershipController.text;
+
+                                              membershipController.text = "";
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+
+                              // _getMembership(context, lessonCount);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  /// 입력창_운동목표
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /// Title
+                          /// 운동 목표
+                          customGoalGridView(
+                              context,
+                              goalController,
+                              "운동목표",
+                              "목표를 선택해주세요.",
+                              goalList,
+                              selectedGoals,
+                              goalTileColorList,
+                              goalTextColorList),
+
+                          Divider(height: 1),
+                          SizedBox(height: 10),
+
+                          Offstage(
+                            offstage: selectedGoals.isNotEmpty,
+                            child: SizedBox(
+                              //height: 30,
+                              //width: 100,
+                              child: Center(
+                                child: customGoalAction(
+                                    context,
+                                    goalController,
+                                    "운동목표",
+                                    "목표를 선택해주세요.",
+                                    goalList,
+                                    selectedGoals,
+                                    goalTileColorList,
+                                    goalTextColorList),
+                              ),
+                            ),
+                          ),
+
+                          Offstage(
+                            offstage: selectedGoals.isEmpty,
+                            child: Container(
+                              height: 30,
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in goalChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          /// 운동목표 입력창
+                          BaseTextField(
+                            customController: goalController,
+                            hint: "기타 특이사항이 있다면 작성해주세요.",
+                            showArrow: false,
+                            customFunction: () {},
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  /// 체형 분석
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /// 체형분석
+                          customBodyGridView(
+                            context,
+                            bodyAnalyzeController,
+                            "체형분석",
+                            "체형 특이사항을 선택해주세요.",
+                            bodyAnalyzedList,
+                            selelctedAnalyzedList,
+                            bodyTileColorList,
+                            bodyTextColorList,
+                          ),
+
+                          Divider(height: 1),
+                          SizedBox(height: 10),
+                          Offstage(
+                            offstage: selelctedAnalyzedList.isNotEmpty,
+                            child: SizedBox(
+                              //height: 30,
+                              //width: 100,
+                              child: Center(
+                                child: customBodyAction(
+                                  context,
+                                  bodyAnalyzeController,
+                                  "체형분석",
+                                  "체형 특이사항을 선택해주세요.",
+                                  bodyAnalyzedList,
+                                  selelctedAnalyzedList,
+                                  bodyTileColorList,
+                                  bodyTextColorList,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Offstage(
+                            offstage: selelctedAnalyzedList.isEmpty,
+                            child: Container(
+                              height: 30,
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in bodyAnalyzedChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          /// 체형분석 입력창
+                          BaseTextField(
+                            customController: bodyAnalyzeController,
+                            hint: "기타 특이사항이 있다면 작성해주세요.",
+                            showArrow: false,
+                            customFunction: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+
+                  /// 통증/상해/병력
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /// 통증/상해/병력
+                          customMedicalHistoryGridView(
+                              context,
+                              medicalHistoryController,
+                              "통증/상해/병력",
+                              "통증/상해 부위를 선택해주세요.",
+                              medicalHistoryList,
+                              selectedHistoryList,
+                              historyTileColorList,
+                              historyTextColorList),
+
+                          Divider(height: 1),
+                          SizedBox(height: 10),
+                          Offstage(
+                            offstage: selectedHistoryList.isNotEmpty,
+                            child: SizedBox(
+                              //height: 30,
+                              //width: 100,
+                              child: Center(
+                                child: customMedicalHistoryAction(
+                                    context,
+                                    medicalHistoryController,
+                                    "통증/상해/병력",
+                                    "통증/상해 부위를 선택해주세요.",
+                                    medicalHistoryList,
+                                    selectedHistoryList,
+                                    historyTileColorList,
+                                    historyTextColorList),
+                              ),
+                            ),
+                          ),
+
+                          Offstage(
+                            offstage: selectedHistoryList.isEmpty,
+                            child: Container(
+                              height: 30,
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in medicalHistoriesChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          /// 통증/상해/병력 입력창
+                          BaseTextField(
+                            customController: medicalHistoryController,
+                            hint: "기타 특이사항이 있다면 작성해주세요.",
+                            showArrow: false,
+                            customFunction: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  /// 입력창_특이사항
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.all(20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /// Title
+
+                          Row(
+                            children: [
+                              Text(
+                                '특이사항',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Palette.gray00,
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+
+                          SizedBox(height: 10),
+                          Divider(height: 1),
+                          SizedBox(height: 10),
+
+                          /// 특이사항 입력창
+                          BaseTextField(
+                            customController: commentController,
+                            hint: "회원님의 특이사항을 입력하세요",
+                            showArrow: false,
+                            customFunction: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  /// 추가 버튼
+                  SizedBox(height: 40),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      elevation: 0,
+                      backgroundColor: Palette.buttonOrange,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 90),
+                      child: Text("저장하기", style: TextStyle(fontSize: 16)),
+                    ),
                     onPressed: () {
-                      /// Pop 함수 입력
-                      Navigator.pop(context);
+                      if (memberAddMode == "추가") {
+                        print("추가 버튼");
+                        // create bucket
+                        if (globalFunction.textNullCheck(
+                            context, nameController, "이름")) {
+                          // globalFunction.textNullCheck(
+                          //     context, registerDateController, "등록일") &&
+                          // globalFunction.textNullCheck(
+                          //     context, phoneNumberController, "전화번호") &&
+                          // globalFunction.textNullCheck(
+                          //     context, registerTypeController, "등록횟수입력") &&
+                          // globalFunction.textNullCheck(
+                          //     context, goalController, "운동목표") &&
+                          // globalFunction.textNullCheck(
+                          //     context, infoController, "통증/상해/병력") &&
+                          // globalFunction.textNullCheck(
+                          //     context, noteController, "체형분석")) {
+                          memberService.create(
+                              name: nameController.text,
+                              registerDate: registerDateController.text,
+                              phoneNumber: phoneNumberController.text,
+                              registerType: registerTypeController.text,
+                              goal: goalController.text,
+                              selectedGoals: selectedGoals,
+                              bodyAnalyzed: bodyAnalyzeController.text,
+                              selectedBodyAnalyzed: selelctedAnalyzedList,
+                              medicalHistories: medicalHistoryController.text,
+                              selectedMedicalHistories: selectedHistoryList,
+                              info: infoController.text,
+                              note: noteController.text,
+                              comment: commentController.text,
+                              uid: user.uid,
+                              onSuccess: () {
+                                // 저장하기 성공
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("저장하기 성공"),
+                                ));
+                                // 저장하기 성공시 Home로 이동
+                                Navigator.pop(context);
+
+                                globalFunction.clearTextEditController([
+                                  nameController,
+                                  registerDateController,
+                                  phoneNumberController,
+                                  registerTypeController,
+                                  goalController,
+                                  bodyAnalyzeController,
+                                  medicalHistoryController,
+                                  infoController,
+                                  noteController,
+                                  commentController,
+                                ]);
+                                registerDateController.text = now;
+                              },
+                              onError: () {
+                                print("저장하기 ERROR");
+                              });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("항목을 모두 입력해주세요."),
+                          ));
+                        }
+                      } else {
+                        /// 수정처리(업데이트)
+                        if (globalFunction.textNullCheck(
+                            context, nameController, "이름")) {
+                          memberService.update(
+                              docId: customUserInfo.docId,
+                              name: nameController.text,
+                              registerDate: registerDateController.text,
+                              phoneNumber: phoneNumberController.text,
+                              registerType: registerTypeController.text,
+                              goal: goalController.text,
+                              selectedGoals: selectedGoals,
+                              bodyAnalyzed: bodyAnalyzeController.text,
+                              selectedBodyAnalyzed: selelctedAnalyzedList,
+                              medicalHistories: medicalHistoryController.text,
+                              selectedMedicalHistories: selectedHistoryList,
+                              info: infoController.text,
+                              note: noteController.text,
+                              comment: commentController.text,
+                              uid: user.uid,
+                              onSuccess: () {
+                                // 저장하기 성공
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("저장하기 성공"),
+                                ));
+
+                                //userinfoupdate.mid = nameController.text;
+
+                                //List<UserInfo> userupdateInfo
+                                UserInfo userInfouUpdate = UserInfo(
+                                    customUserInfo.docId,
+                                    customUserInfo.uid,
+                                    nameController.text,
+                                    registerDateController.text,
+                                    phoneNumberController.text,
+                                    registerTypeController.text,
+                                    goalController.text,
+                                    selectedGoals,
+                                    bodyAnalyzeController.text,
+                                    selelctedAnalyzedList,
+                                    medicalHistoryController.text,
+                                    selectedHistoryList,
+                                    infoController.text,
+                                    noteController.text,
+                                    commentController.text,
+                                    true);
+
+                                // 저장하기 성공시 MemberInfo로 이동
+                                Navigator.pop(context, userInfouUpdate
+                                    // MaterialPageRoute(
+                                    //   builder: (context) => MemberInfo(),
+                                    //   // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                    //   settings: RouteSettings(
+                                    //     arguments: userInfouUpdate,
+                                    //   ),
+                                    // ),
+                                    );
+
+                                globalFunction.clearTextEditController([
+                                  nameController,
+                                  registerDateController,
+                                  phoneNumberController,
+                                  registerTypeController,
+                                  goalController,
+                                  infoController,
+                                  noteController,
+                                  commentController,
+                                ]);
+                              },
+                              onError: () {
+                                print("저장하기 ERROR");
+                              });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("항목을 모두 입력해주세요."),
+                          ));
+                        }
+                      }
                     },
-                    child: Text(
-                      '취소하고 나가기',
-                      selectionColor: Palette.gray00,
-                    )),
-                SizedBox(height: 80),
-              ],
+                  ),
+
+                  Offstage(
+                    offstage: (memberAddMode == "추가"),
+                    child: Column(
+                      children: [
+                        /// 삭제 버튼
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: Colors.transparent),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text("삭제하기",
+                                style: TextStyle(
+                                    fontSize: 16, color: Palette.textRed)),
+                          ),
+                          onPressed: () async {
+                            print("${customUserInfo.docId}");
+                            // create bucket
+                            final retvaldelte = await showAlertDialog(context);
+                            if (retvaldelte == "OK") {
+                              memberService.delete(
+                                  docId: customUserInfo.docId,
+                                  onSuccess: () {
+                                    // 삭제하기 성공
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text("삭제하기 성공"),
+                                    ));
+
+                                    //userinfoupdate.mid = nameController.text;
+
+                                    // 삭제하기 성공시 MemberList로 이동
+                                    Navigator.pop(context);
+
+                                    globalFunction.clearTextEditController([
+                                      nameController,
+                                      registerDateController,
+                                      phoneNumberController,
+                                      registerTypeController,
+                                      goalController,
+                                      infoController,
+                                      noteController,
+                                      commentController,
+                                    ]);
+                                  },
+                                  onError: () {
+                                    print("삭제하기 ERROR");
+                                  });
+                            }
+
+                            //if (showAlertDialog(context) == "OK"){
+                            //
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// 취소버튼
+                  SizedBox(height: 6),
+                  TextButton(
+                      style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          foregroundColor: Palette.gray00,
+                          textStyle: TextStyle(fontWeight: FontWeight.normal)),
+                      onPressed: () {
+                        /// Pop 함수 입력
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        '취소하고 나가기',
+                        selectionColor: Palette.gray00,
+                      )),
+                  SizedBox(height: 80),
+                ],
+              ),
             ),
           ),
           //bottomNavigationBar: BaseBottomAppBar(),
