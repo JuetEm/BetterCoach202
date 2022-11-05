@@ -193,11 +193,11 @@ class _MemberAddState extends State<MemberAdd> {
             ]);
             registerDateController.text = now;
           }),
-          body: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
                 children: [
                   /// 압력기본정보
