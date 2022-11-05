@@ -260,8 +260,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text("로그인없이 사용하기", style: TextStyle(fontSize: 16)),
                   ),
                   style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
                     padding: EdgeInsets.all(0),
                     elevation: 0,

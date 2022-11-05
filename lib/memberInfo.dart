@@ -507,9 +507,11 @@ class _MemberInfoState extends State<MemberInfo> {
             ),
           ),
 
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              if (viewMode == "레슨노트") {
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                // if (viewMode == "레슨노트") {
                 lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
                 List<TmpLessonInfo> tmpLessonInfoList = [];
@@ -534,22 +536,27 @@ class _MemberInfoState extends State<MemberInfo> {
                     settings: RouteSettings(arguments: args),
                   ),
                 );
-              } else {
-                //회원정보 보기에서 동작이 달라짐.
-                // 회원 운동 카드 선택시 MemberInfo로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberUpdate(),
-                    // GlobalWidgetDashboard(), //
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: userInfo),
-                  ),
-                );
-              }
-            },
-            child: Icon(Icons.edit),
-            backgroundColor: Palette.buttonOrange,
+                // } else {
+                //   //회원정보 보기에서 동작이 달라짐.
+                //   // 회원 운동 카드 선택시 MemberInfo로 이동
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => MemberUpdate(),
+                //       // GlobalWidgetDashboard(), //
+                //       // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                //       settings: RouteSettings(arguments: userInfo),
+                //     ),
+                //   );
+                //}
+              },
+              label: Text(
+                '노트 작성',
+                style: TextStyle(fontSize: 16, letterSpacing: -0.2),
+              ),
+              icon: Icon(Icons.edit),
+              backgroundColor: Palette.buttonOrange,
+            ),
           ),
           // Figma 확인 해보면 '기본정보' 탭에는 BottomAppBar 없는데, '동작' 탬에는 있음
           // 같은 화면인데 '기본정보' 탭에는 누락 된 듯하여 추가 BottomAppBar 함
@@ -829,13 +836,16 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
-                Text(
-                  widget.userInfo.goal,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
+                const SizedBox(height: 10),
+                Offstage(
+                  offstage: widget.userInfo.goal.isEmpty,
+                  child: Text(
+                    widget.userInfo.goal,
+                    style: TextStyle(
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray99,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -867,12 +877,15 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                Text(
-                  widget.userInfo.bodyAnalyzed,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
+                Offstage(
+                  offstage: widget.userInfo.bodyAnalyzed.isEmpty,
+                  child: Text(
+                    widget.userInfo.bodyAnalyzed,
+                    style: TextStyle(
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray99,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -885,7 +898,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       fontWeight: FontWeight.bold,
                       color: Palette.gray66),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 10),
                 Offstage(
                   offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
                   child: Wrap(
@@ -902,13 +915,16 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
-                Text(
-                  widget.userInfo.medicalHistories,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
+                const SizedBox(height: 10),
+                Offstage(
+                  offstage: widget.userInfo.medicalHistories.isEmpty,
+                  child: Text(
+                    widget.userInfo.medicalHistories,
+                    style: TextStyle(
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray99,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),

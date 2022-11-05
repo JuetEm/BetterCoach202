@@ -80,7 +80,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
               : Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       tableCalendarMethod(widget.eventList),
                       Divider(
@@ -90,20 +90,29 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                         height: 30,
                         child: Center(
                           child: Text(
-                              "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}"),
+                            "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20),
 
                       /// 추가 버튼
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: EdgeInsets.all(0),
                           elevation: 0,
                           backgroundColor: Palette.buttonOrange,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 100),
                           child: Text("${widget.pageName} 선택",
-                              style: TextStyle(fontSize: 18)),
+                              style: TextStyle(fontSize: 16)),
                         ),
                         onPressed: () {
                           calendarService.setDate(
