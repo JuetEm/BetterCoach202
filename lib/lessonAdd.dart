@@ -195,7 +195,7 @@ class _LessonAddState extends State<LessonAdd> {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
           }),
-          resizeToAvoidBottomInset: false,
+
           body: SafeArea(
             child: SingleChildScrollView(
               //keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

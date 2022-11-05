@@ -175,7 +175,6 @@ class _MemberAddState extends State<MemberAdd> {
         //   keyboardOpenBefore = true;
         // }
         return Scaffold(
-          resizeToAvoidBottomInset: true,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원등록", () {
             Navigator.pop(context);
@@ -308,6 +307,7 @@ class _MemberAddState extends State<MemberAdd> {
                           customFunction: () {
                             String lessonCount = registerTypeController.text;
                             showModalBottomSheet<void>(
+                              isScrollControlled: true,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
