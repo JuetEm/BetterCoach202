@@ -969,7 +969,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ),
                   color: Palette.grayB4,
                 ),
-                height: 36,
+                height: 40,
                 width: 160,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1005,7 +1005,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               },
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 80),
         ],
       ),
     );
