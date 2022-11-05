@@ -298,6 +298,7 @@ class _MemberAddState extends State<MemberAdd> {
                           customFunction: () {
                             String lessonCount = registerTypeController.text;
                             showModalBottomSheet<void>(
+                              isScrollControlled: true,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
