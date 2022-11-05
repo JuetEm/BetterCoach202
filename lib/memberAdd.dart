@@ -18,6 +18,8 @@ import 'membershipList.dart';
 
 String memberAddMode = "추가";
 
+bool initState = true;
+
 late CustomUserInfo.UserInfo customUserInfo;
 
 final goalList = [
@@ -96,6 +98,14 @@ class MemberAdd extends StatefulWidget {
 }
 
 class _MemberAddState extends State<MemberAdd> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    initState = true;
+    print("[MA] Dispose : initState ${initState} ");
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
@@ -103,7 +113,10 @@ class _MemberAddState extends State<MemberAdd> {
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     memberAddMode = argsList[0];
-    if (memberAddMode == "수정") {
+
+    print(
+        "[MA]시작 : memberAddMode - ${memberAddMode} / initState - ${initState}");
+    if (memberAddMode == "수정" && initState == true) {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
 
@@ -120,6 +133,8 @@ class _MemberAddState extends State<MemberAdd> {
         medicalHistoryController.text = customUserInfo.medicalHistories;
         bodyAnalyzeController.text = customUserInfo.bodyAnalyzed;
       });
+
+      initState = false;
       //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
 
       selectedGoals = customUserInfo.selectedGoals;
@@ -162,12 +177,7 @@ class _MemberAddState extends State<MemberAdd> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원등록", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MemberList(),
-              ),
-            );
+            Navigator.pop(context);
 
             globalFunction.clearTextEditController([
               nameController,
@@ -713,10 +723,7 @@ class _MemberAddState extends State<MemberAdd> {
                                 content: Text("저장하기 성공"),
                               ));
                               // 저장하기 성공시 Home로 이동
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => MemberList()),
-                              );
+                              Navigator.pop(context);
 
                               globalFunction.clearTextEditController([
                                 nameController,
@@ -789,16 +796,15 @@ class _MemberAddState extends State<MemberAdd> {
                                   true);
 
                               // 저장하기 성공시 MemberInfo로 이동
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MemberInfo(),
-                                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                  settings: RouteSettings(
-                                    arguments: userInfouUpdate,
-                                  ),
-                                ),
-                              );
+                              Navigator.pop(context, userInfouUpdate
+                                  // MaterialPageRoute(
+                                  //   builder: (context) => MemberInfo(),
+                                  //   // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                  //   settings: RouteSettings(
+                                  //     arguments: userInfouUpdate,
+                                  //   ),
+                                  // ),
+                                  );
 
                               globalFunction.clearTextEditController([
                                 nameController,
@@ -855,12 +861,7 @@ class _MemberAddState extends State<MemberAdd> {
                                   //userinfoupdate.mid = nameController.text;
 
                                   // 삭제하기 성공시 MemberList로 이동
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MemberList(),
-                                    ),
-                                  );
+                                  Navigator.pop(context);
 
                                   globalFunction.clearTextEditController([
                                     nameController,
