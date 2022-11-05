@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/userInfo.dart'
+    as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
 import 'actionSelector.dart';
 import 'auth_service.dart';
@@ -91,6 +93,22 @@ class _MemberAddState extends State<MemberAdd> {
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+    if (memberAddMode == "수정") {
+      // 이전 화면에서 보낸 변수 받기
+      final argsList =
+          ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+      CustomUserInfo.UserInfo customUserInfo = argsList[0];
+      String memberAddMode = argsList[1];
+
+      nameController.text = customUserInfo.name;
+      registerDateController.text = customUserInfo.registerDate;
+      phoneNumberController.text = customUserInfo.phoneNumber;
+      registerTypeController.text = customUserInfo.registerType;
+      goalController.text = customUserInfo.goal;
+      infoController.text = customUserInfo.info;
+      noteController.text = customUserInfo.note;
+      commentController.text = customUserInfo.comment;
+    }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
     var goalChips = [];

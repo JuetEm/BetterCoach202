@@ -13,6 +13,10 @@ import 'userInfo.dart';
 
 String conutMemberList = "";
 
+String memberAddMode = "추가";
+
+late UserInfo userInfo;
+
 class MemberList extends StatefulWidget {
   const MemberList({super.key});
 
@@ -152,7 +156,7 @@ class _MemberListState extends State<MemberList> {
                               String comment = doc.get('comment');
                               bool isActive = doc.get('isActive');
 
-                              final UserInfo userInfo = UserInfo(
+                              userInfo = UserInfo(
                                 doc.id,
                                 user.uid,
                                 name,
@@ -280,10 +284,23 @@ class _MemberListState extends State<MemberList> {
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 print("회원추가");
+                memberAddMode = "추가";
+
+                List<dynamic> args = [
+                  userInfo,
+                  memberAddMode,
+                ];
+
                 // 저장하기 성공시 Home로 이동
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => MemberAdd()),
+                  MaterialPageRoute(
+                    builder: (context) => MemberAdd(),
+                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                    settings: RouteSettings(
+                      arguments: args,
+                    ),
+                  ),
                 );
               },
               child: Icon(Icons.person_add),
