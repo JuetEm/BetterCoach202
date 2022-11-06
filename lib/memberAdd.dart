@@ -204,8 +204,9 @@ class _MemberAddState extends State<MemberAdd> {
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              padding: EdgeInsets.all(0),
+              // padding: EdgeInsets.only(
+              //     bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
                 children: [
                   /// 압력기본정보
@@ -877,7 +878,13 @@ class _MemberAddState extends State<MemberAdd> {
                                     //userinfoupdate.mid = nameController.text;
 
                                     // 삭제하기 성공시 MemberList로 이동
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
+
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MemberList()),
+                                    );
 
                                     globalFunction.clearTextEditController([
                                       nameController,

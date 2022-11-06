@@ -415,7 +415,7 @@ class BaseTextField extends StatefulWidget {
 class _BaseTextFieldState extends State<BaseTextField> {
   @override
   Widget build(BuildContext context) {
-    FocusNode textFocus = FocusNode();
+    //FocusNode textFocus = FocusNode();
 
     return Container(
       constraints: BoxConstraints(
@@ -423,7 +423,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
       ),
       child: TextField(
         style: TextStyle(fontSize: 14),
-        focusNode: textFocus,
+        //focusNode: textFocus,
         textInputAction: TextInputAction.done,
         readOnly: widget.showArrow,
         controller: widget.customController,
@@ -460,7 +460,11 @@ class _BaseTextFieldState extends State<BaseTextField> {
           // print("First text field: $text");
         },
         onEditingComplete: () {
-          textFocus.unfocus();
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
         },
       ),
     );
@@ -500,7 +504,7 @@ class _PopupTextFieldState extends State<PopupTextField> {
         keyboardType: TextInputType.multiline,
         minLines: 3,
         maxLines: 10,
-        autofocus: true,
+        //autofocus: true,
         //focusNode: textFocus,
         //textInputAction: TextInputAction.done,
         //readOnly: widget.showArrow,
@@ -527,14 +531,14 @@ class _PopupTextFieldState extends State<PopupTextField> {
             filled: true,
             contentPadding: EdgeInsets.all(16),
             fillColor: Colors.white),
-        onChanged: (text) {
-          // 현재 텍스트필드의 텍스트를 출력
-          //print("First text field: $text");
-        },
-        onEditingComplete: () {
-          //widget.customFunction();
-          //textFocus.unfocus();
-        },
+        // onEditingComplete: () {
+        //   FocusScopeNode currentFocus = FocusScope.of(context);
+
+        //   if (!currentFocus.hasPrimaryFocus) {
+        //     currentFocus.unfocus();
+        //   }
+        //   //Navigator.pop(context);
+        //},
       ),
     );
   }
