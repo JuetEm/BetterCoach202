@@ -197,6 +197,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   setState(() {
                     e.isSelected = !e.isSelected;
                     TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+                        e.memberdocId,
                         e.apparatusName,
                         e.actionName,
                         e.name,
@@ -206,9 +207,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                         e.docId,
                         e.uid,
                         e.isSelected);
+
                     manageListContaining(
                         tmpLessonInfoList, tmpLessonInfo, true);
-                    lessonService.deleteFromActionSelect(e.uid, e.docId,
+                    print(
+                        "YES contain!! remove item => ${e.uid}/${e.memberdocId}/${e.lessonDate}/widget.apparatus : ${e.apparatusName}, widget.actionName : ${e.actionName}");
+                    lessonService.deleteFromActionSelect(e.uid, e.memberdocId,
                         e.lessonDate, e.apparatusName, e.actionName);
                   });
                 }),
@@ -920,7 +924,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                           itemCount: docs.length,
                           itemBuilder: (BuildContext context, int index) {
                             final doc = docs[index];
-                            String noteId = doc.id;
+
                             String apparatus = doc.get('apparatus');
                             String position = doc.get('position');
                             String name = doc.get('name');
@@ -940,7 +944,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                             if (searchString.isEmpty) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
-                                    noteId: noteId,
+                                    memberdocId: customUserInfo.docId,
                                     apparatus: apparatus,
                                     actionName: name,
                                     name: customUserInfo.name,
@@ -948,14 +952,14 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     lessonDate: lessonDate,
                                     grade: "50",
                                     totalNote: totalNote,
-                                    docId: customUserInfo.docId,
+                                    docId: "",
                                     uid: user.uid,
                                     pos: index);
                               } else {
                                 if (positionArray.contains(position)) {
                                   positionFilteredSize++;
                                   return ActionTile(
-                                      noteId: noteId,
+                                      memberdocId: customUserInfo.docId,
                                       apparatus: apparatus,
                                       actionName: name,
                                       name: customUserInfo.name,
@@ -975,7 +979,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                               //     .startsWith(searchString.toLowerCase())) {
                               if (positionArray.isEmpty) {
                                 return ActionTile(
-                                    noteId: noteId,
+                                    memberdocId: customUserInfo.docId,
                                     apparatus: apparatus,
                                     actionName: name,
                                     name: customUserInfo.name,
@@ -990,7 +994,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 if (positionArray.contains(position)) {
                                   positionFilteredSize++;
                                   return ActionTile(
-                                      noteId: noteId,
                                       apparatus: apparatus,
                                       actionName: name,
                                       name: customUserInfo.name,
@@ -998,7 +1001,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       lessonDate: lessonDate,
                                       grade: "50",
                                       totalNote: totalNote,
-                                      docId: customUserInfo.docId,
+                                      docId: "",
+                                      memberdocId: customUserInfo.docId,
                                       uid: user.uid,
                                       pos: index);
                                 } else {
@@ -1155,7 +1159,6 @@ class _ActionSelectorState extends State<ActionSelector> {
 class ActionTile extends StatefulWidget {
   ActionTile({
     Key? key,
-    required this.noteId,
     required this.apparatus,
     required this.actionName,
     required this.name,
@@ -1164,11 +1167,11 @@ class ActionTile extends StatefulWidget {
     required this.grade,
     required this.totalNote,
     required this.docId,
+    required this.memberdocId,
     required this.uid,
     required this.pos,
   }) : super(key: key);
 
-  final String noteId;
   final String apparatus;
   final String actionName;
   final String name;
@@ -1177,6 +1180,8 @@ class ActionTile extends StatefulWidget {
   final String grade;
   final String totalNote;
   final String docId;
+  final String memberdocId;
+
   final String uid;
   int pos;
 
@@ -1189,6 +1194,7 @@ class _ActionTileState extends State<ActionTile> {
   Widget build(BuildContext context) {
     State<ActionSelector>? actionSelector = context.findAncestorStateOfType();
     TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+        widget.memberdocId,
         widget.apparatus,
         widget.actionName,
         widget.name,
@@ -1233,11 +1239,15 @@ class _ActionTileState extends State<ActionTile> {
                 actionNameTextColor = Palette.gray66;
 
                 print(
-                    "YES contain!! remove item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+                    "YES contain!! remove item => widget.apparatus : ${widget.uid}/${widget.docId}/${widget.lessonDate}/${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.remove(widget.pos);
 
-                lessonService.deleteFromActionSelect(widget.uid, widget.docId,
-                    widget.lessonDate, widget.apparatus, widget.actionName);
+                lessonService.deleteFromActionSelect(
+                    widget.uid,
+                    widget.memberdocId,
+                    widget.lessonDate,
+                    widget.apparatus,
+                    widget.actionName);
               } else {
                 actionTileColor = Palette.buttonOrange;
                 apparatusTextColor = Palette.grayFF;
@@ -1247,8 +1257,10 @@ class _ActionTileState extends State<ActionTile> {
                     "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
                 // checkedTileList.add(widget.pos);
 
+                print("[AS createFromActionSelect - ${widget.memberdocId}]");
+
                 lessonService.createFromActionSelect(
-                  docId: widget.docId,
+                  docId: widget.memberdocId,
                   uid: widget.uid,
                   name: widget.name,
                   phoneNumber: widget.phoneNumber,
@@ -1348,6 +1360,7 @@ bool manageListContaining(List<TmpLessonInfo> tmpLessonInfoList,
 
 class TmpLessonInfo {
   TmpLessonInfo(
+    this.memberdocId,
     this.apparatusName,
     this.actionName,
     this.name,
@@ -1358,7 +1371,7 @@ class TmpLessonInfo {
     this.uid,
     this.isSelected,
   );
-
+  String memberdocId;
   String apparatusName;
   String actionName;
   String name;

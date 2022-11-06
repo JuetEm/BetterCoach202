@@ -753,6 +753,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     true,
                                   );
 
@@ -841,6 +842,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                           String uid =
                                               doc.get('uid'); // 강사 고유번호
+
                                           String name = doc.get('name'); //회원이름
                                           String phoneNumber = doc.get(
                                               'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
@@ -854,7 +856,11 @@ class _LessonAddState extends State<LessonAdd> {
                                           String totalNote =
                                               doc.get('totalNote'); //수업총메모
 
+                                          print(
+                                              "[LA] 사용자 id tmpLessonInfo에 저장 : ${customUserInfo.docId}");
+
                                           tmpLessonInfo = TmpLessonInfo(
+                                            customUserInfo.docId,
                                             apratusName,
                                             actionName,
                                             name,

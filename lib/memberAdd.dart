@@ -811,6 +811,7 @@ class _MemberAddState extends State<MemberAdd> {
                                     commentController.text,
                                     true);
 
+                                //memberInfo.notifyListeners();
                                 // 저장하기 성공시 MemberInfo로 이동
                                 Navigator.pop(context, userInfouUpdate
                                     // MaterialPageRoute(

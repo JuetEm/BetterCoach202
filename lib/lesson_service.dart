@@ -399,6 +399,8 @@ class LessonService extends ChangeNotifier {
 
   Future<void> deleteFromActionSelect(String uid, String docId,
       String lessonDate, String apparatusName, String actionName) async {
+    print(
+        "[LS] deleteFromActionSelect - uid : ${uid}, docId : ${docId}, apparatusName : ${apparatusName}, actionName : ${actionName}");
     QuerySnapshot docRaw = await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
