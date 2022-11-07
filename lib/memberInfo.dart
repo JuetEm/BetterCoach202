@@ -28,6 +28,8 @@ String lessonDate = "";
 String lessonNoteId = "";
 String lessonAddMode = "";
 
+bool initState = true;
+
 int indexCheck = 0;
 String listMode = "날짜별";
 String viewMode = "기본정보";
@@ -35,6 +37,7 @@ String lessonDateTrim = "";
 String apratusNameTrim = "";
 int dayNotelessonCnt = 0;
 bool favoriteMember = true;
+late UserInfo userInfo;
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -44,11 +47,22 @@ class MemberInfo extends StatefulWidget {
 }
 
 class _MemberInfoState extends State<MemberInfo> {
-  @override
-  void initState() {
-    //처음에만 날짜 받아옴.
+  //@override
+  // void initState() {
+  //   //처음에만 날짜 받아옴.
 
-    super.initState();
+  //   super.initState();
+  // }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    initState = true;
+    print("[MI] Dispose : initState ${initState} ");
+    super.dispose();
+  }
+
+  void _refreshMemberInfo() {
+    setState(() {});
   }
 
   Future<bool> _readfavoriteMember(String uid, String docId) async {
@@ -77,8 +91,11 @@ class _MemberInfoState extends State<MemberInfo> {
     final user = authService.currentUser()!;
     final memberService = context.read<MemberService>();
 
-    // 이전 화면에서 보낸 변수 받기
-    final userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
+    if (initState) {
+      // 이전 화면에서 보낸 변수 받기
+      userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
+      initState = false;
+    }
     // 이름 첫글자 자르기
     String nameFirst = ' ';
     if (userInfo.name.length > 0) {
@@ -102,8 +119,8 @@ class _MemberInfoState extends State<MemberInfo> {
       print('error: $error');
     });
 
-    return Consumer<LessonService>(
-      builder: (context, lessonService, child) {
+    return Consumer2<LessonService, MemberService>(
+      builder: (context, lessonService, memberService, child) {
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
@@ -511,7 +528,7 @@ class _MemberInfoState extends State<MemberInfo> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: FloatingActionButton.extended(
-              onPressed: () {
+              onPressed: () async {
                 // if (viewMode == "레슨노트") {
                 lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -528,8 +545,8 @@ class _MemberInfoState extends State<MemberInfo> {
                 ];
                 print(
                     "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-                // LessonAdd로 이동
-                Navigator.push(
+
+                final UserInfo result = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => LessonAdd(),
@@ -537,6 +554,12 @@ class _MemberInfoState extends State<MemberInfo> {
                     settings: RouteSettings(arguments: args),
                   ),
                 );
+
+                userInfo = result;
+
+                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
+                // LessonAdd로 이동
+
                 // } else {
                 //   //회원정보 보기에서 동작이 달라짐.
                 //   // 회원 운동 카드 선택시 MemberInfo로 이동
@@ -982,7 +1005,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ],
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 print("회원수정");
                 String memberAddMode = "수정";
 
@@ -991,8 +1014,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   widget.userInfo,
                 ];
 
-                // 저장하기 성공시 Home로 이동
-                Navigator.push(
+                final UserInfo result = await // 저장하기 성공시 Home로 이동
+                    Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MemberAdd(),
@@ -1002,6 +1025,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ),
                   ),
                 );
+
+                userInfo = result;
+                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
               },
             ),
           ),
