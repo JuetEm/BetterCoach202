@@ -546,7 +546,7 @@ class _MemberInfoState extends State<MemberInfo> {
                 print(
                     "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
 
-                final UserInfo result = await Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => LessonAdd(),
@@ -554,11 +554,6 @@ class _MemberInfoState extends State<MemberInfo> {
                     settings: RouteSettings(arguments: args),
                   ),
                 );
-
-                userInfo = result;
-
-                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
-                // LessonAdd로 이동
 
                 // } else {
                 //   //회원정보 보기에서 동작이 달라짐.
