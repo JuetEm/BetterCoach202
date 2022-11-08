@@ -126,7 +126,6 @@ class _MemberAddState extends State<MemberAdd> {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
 
-      print("[MA]시작 : memberAddMode - ${memberAddMode}");
       WidgetsBinding.instance.addPostFrameCallback((_) {
         nameController.text = customUserInfo.name;
         registerDateController.text = customUserInfo.registerDate;
@@ -192,7 +191,7 @@ class _MemberAddState extends State<MemberAdd> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, pageTitle, () {
-            Navigator.pop(context);
+            Navigator.pop(context, userInfo);
 
             globalFunction.clearTextEditController([
               nameController,

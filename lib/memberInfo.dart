@@ -91,6 +91,8 @@ class _MemberInfoState extends State<MemberInfo> {
     final user = authService.currentUser()!;
     final memberService = context.read<MemberService>();
 
+    print('[MI] 시작 : initState - ${initState}');
+
     if (initState) {
       // 이전 화면에서 보낸 변수 받기
       userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
