@@ -527,7 +527,7 @@ class _MemberInfoState extends State<MemberInfo> {
             ),
           ),
 
-          floatingActionButton: Padding(
+          floatingActionButton: viewMode == "기본정보"? null : Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: FloatingActionButton.extended(
               onPressed: () async {
@@ -884,7 +884,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 ),
                 const SizedBox(height: 10),
                 Offstage(
-                  offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
+                  offstage: widget.userInfo.selectedBodyAnalyzed.isEmpty,
                   child: Wrap(
                     direction: Axis.horizontal, // 나열 방향
                     alignment: WrapAlignment.start, // 정렬 방식

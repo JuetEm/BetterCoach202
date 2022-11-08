@@ -68,6 +68,7 @@ class MemberService extends ChangeNotifier {
   }
 
   void create({
+    required String uid,
     required String name,
     required String registerDate,
     required String phoneNumber,
@@ -80,7 +81,6 @@ class MemberService extends ChangeNotifier {
     required List<String>? selectedMedicalHistories,
     required String? info,
     required String? note,
-    required String uid,
     required String? comment,
     required Function onSuccess,
     required Function onError,

@@ -23,15 +23,21 @@ bool initState = true;
 late CustomUserInfo.UserInfo customUserInfo;
 
 final goalList = [
-  "바디프로필",
+  "체형교정",
+  "자세개선",
   "다이어트",
   "유연성 향상",
-  "자세개선",
   "운동능력 향상",
   "통증개선",
+  "재활",
   "건강증진",
-  "바디라인 개선",
-  "기타",
+  "바디라인개선",
+  "산전필라테스",
+  "산후필라테스",
+  "키성장",
+  "골프필라테스",
+  "바프촬영",
+  "기타"
 ];
 List<String> selectedGoals = [];
 List<Color> goalTileColorList = [];
