@@ -172,6 +172,7 @@ class _MemberListState extends State<MemberList> {
                                 comment,
                                 isActive,
                               );
+
                               return InkWell(
                                 onTap: () {
                                   // 회원 카드 선택시 MemberInfo로 이동

@@ -122,6 +122,7 @@ class _MemberAddState extends State<MemberAdd> {
 
     print(
         "[MA]시작 : memberAddMode - ${memberAddMode} / initState - ${initState}");
+
     if (memberAddMode == "수정" && initState == true) {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
@@ -149,6 +150,7 @@ class _MemberAddState extends State<MemberAdd> {
       print(
           "[MA]변수받아오기 : selectedGoals - ${customUserInfo.selectedGoals} / ${customUserInfo.selectedBodyAnalyzed} / ${customUserInfo.selectedMedicalHistories}");
     } else if (memberAddMode == "추가" && initState == true) {
+      // 이전 화면에서 보낸 변수 받기
       print("[MA] : 신규추가 등록일 오늘로 설정 memberAddMode - ${memberAddMode}");
       registerDateController.text = now;
     }
@@ -191,7 +193,11 @@ class _MemberAddState extends State<MemberAdd> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, pageTitle, () {
-            Navigator.pop(context, userInfo);
+            if (memberAddMode == "수정") {
+              Navigator.pop(context, customUserInfo);
+            } else {
+              Navigator.pop(context);
+            }
 
             globalFunction.clearTextEditController([
               nameController,
@@ -748,8 +754,11 @@ class _MemberAddState extends State<MemberAdd> {
                                     .showSnackBar(SnackBar(
                                   content: Text("저장하기 성공"),
                                 ));
-                                // 저장하기 성공시 Home로 이동
-                                Navigator.pop(context);
+                                if (memberAddMode == "수정") {
+                                  Navigator.pop(context, customUserInfo);
+                                } else {
+                                  Navigator.pop(context);
+                                }
 
                                 globalFunction.clearTextEditController([
                                   nameController,
@@ -889,13 +898,15 @@ class _MemberAddState extends State<MemberAdd> {
                                     //userinfoupdate.mid = nameController.text;
 
                                     // 삭제하기 성공시 MemberList로 이동
-                                    // Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    //Navigator.of(context)
+                                    //    .popUntil((route) => route.isFirst);
 
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MemberList()),
-                                    );
+                                    // Navigator.pushReplacement(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) => MemberList()),
+                                    // );
 
                                     globalFunction.clearTextEditController([
                                       nameController,
@@ -930,7 +941,11 @@ class _MemberAddState extends State<MemberAdd> {
                           textStyle: TextStyle(fontWeight: FontWeight.normal)),
                       onPressed: () {
                         /// Pop 함수 입력
-                        Navigator.pop(context);
+                        if (memberAddMode == "수정") {
+                          Navigator.pop(context, customUserInfo);
+                        } else {
+                          Navigator.pop(context);
+                        }
                       },
                       child: Text(
                         '취소하고 나가기',

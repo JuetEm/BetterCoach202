@@ -1013,7 +1013,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   widget.userInfo,
                 ];
 
-                final UserInfo result = await // 저장하기 성공시 Home로 이동
+                await // 저장하기 성공시 Home로 이동
                     Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -1023,9 +1023,18 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       arguments: args,
                     ),
                   ),
+                ).then(
+                  (result) {
+                    if (result != null) {
+                      userInfo = result;
+                    } else {
+                      print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
+                      Navigator.pop(context);
+                    }
+                  },
                 );
 
-                userInfo = result;
+                //userInfo = result;
                 print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
               },
             ),
