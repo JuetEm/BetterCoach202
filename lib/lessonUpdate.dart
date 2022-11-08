@@ -500,8 +500,14 @@ class _LessonUpdateState extends State<LessonUpdate> {
                                                                           () {
                                                                         lessonService
                                                                             .deleteSinglelesson(
+                                                                          uid:
+                                                                              uid,
+                                                                          memberId:
+                                                                              customUserInfo.docId,
                                                                           docId:
                                                                               doc.id,
+                                                                          lessonDate:
+                                                                              lessonDate,
                                                                           onSuccess:
                                                                               () {},
                                                                           onError:
@@ -758,6 +764,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
                                     name: customUserInfo.name,
                                     lessonDate: lessonDateController.text,
                                     todayNote: todayNoteController.text,
+                                    isRefresh: true,
                                     onSuccess: () {
                                       // 저장하기 성공
                                       ScaffoldMessenger.of(context)

@@ -339,8 +339,14 @@ class _LessonDetailState extends State<LessonDetail> {
                                                                         () {
                                                                       lessonService
                                                                           .deleteSinglelesson(
+                                                                        uid:
+                                                                            uid,
+                                                                        memberId:
+                                                                            customUserInfo.docId,
                                                                         docId: doc
                                                                             .id,
+                                                                        lessonDate:
+                                                                            lessonDate,
                                                                         onSuccess:
                                                                             () {},
                                                                         onError:

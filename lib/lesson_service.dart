@@ -135,6 +135,7 @@ class LessonService extends ChangeNotifier {
     required String name, //회원이름
     required String lessonDate, //수업날짜
     required String todayNote, //수업총메모
+    required bool isRefresh, //수업총메모
 
     required Function onSuccess,
     required Function onError,
@@ -163,7 +164,9 @@ class LessonService extends ChangeNotifier {
       onError();
     });
     print("[LS] createTodaynote NofityLisners실행");
-    notifyListeners(); // 화면 갱신
+    if (isRefresh) {
+      notifyListeners(); // 화면 갱신
+    }
   }
 
   Future<void> updateTodayNote({
@@ -339,10 +342,40 @@ class LessonService extends ChangeNotifier {
   }
 
   Future<void> deleteSinglelesson({
+    required String uid,
+    required String memberId,
     required String docId,
+    required String lessonDate,
     required Function onSuccess,
     required Function onError,
   }) async {
+    print("[LS] deleteSinglelesson - uid : ${uid}, docId : ${docId}");
+    //일별 노트가 없을 경우 일별노트 생성
+    QuerySnapshot docRawTodayNote = await todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: memberId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+
+    QuerySnapshot docRaw = await lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: memberId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+    print(
+        "[LS] 마지막 동작노트 삭제시, 일별노트가 없으면 삭제,${docRawTodayNote.docs.isNotEmpty} / docRaw.docs.length - ${docRaw.docs.length}");
+
+    if (docRawTodayNote.docs.isNotEmpty && (docRaw.docs.length < 2)) {
+      if (docRawTodayNote.docs.first['todayNote'] == "") {
+        print("[LS] 마지막 동작노트 삭제 실행 : ${docRawTodayNote.docs.first.id}");
+        await deleteTodayNote(
+          docId: docRawTodayNote.docs.first.id,
+          onSuccess: () {},
+          onError: () {},
+        );
+      }
+    }
+
     print("삭제할 docId : ${docId}");
     // bucket 삭제
     await lessonCollection.doc(docId).delete().then((value) {
@@ -399,8 +432,13 @@ class LessonService extends ChangeNotifier {
 
   Future<void> deleteFromActionSelect(String uid, String docId,
       String lessonDate, String apparatusName, String actionName) async {
-    print(
-        "[LS] deleteFromActionSelect - uid : ${uid}, docId : ${docId}, apparatusName : ${apparatusName}, actionName : ${actionName}");
+    //일별 노트가 없을 경우 일별노트 생성
+    QuerySnapshot docRawTodayNote = await todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+
     QuerySnapshot docRaw = await lessonCollection
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
@@ -408,6 +446,22 @@ class LessonService extends ChangeNotifier {
         .where('apratusName', isEqualTo: apparatusName)
         .where('actionName', isEqualTo: actionName)
         .get();
+
+    print(
+        "[LS] deleteFromActionSelect - uid : ${uid}, docId : ${docId}, apparatusName : ${apparatusName}, actionName : ${actionName}");
+    print(
+        "[LS] 마지막 동작노트 삭제시, 일별노트가 없으면 삭제,${docRawTodayNote.docs.isNotEmpty} / docRaw.docs.length - ${docRaw.docs.length}");
+
+    if (docRawTodayNote.docs.isNotEmpty && (docRaw.docs.length < 2)) {
+      if (docRawTodayNote.docs.first['todayNote'] == "") {
+        print("[LS] 마지막 동작노트 삭제 실행 : ${docRawTodayNote.docs.first.id}");
+        await deleteTodayNote(
+          docId: docRawTodayNote.docs.first.id,
+          onSuccess: () {},
+          onError: () {},
+        );
+      }
+    }
 
     String noteId = docRaw.docs.first.id;
     print(
@@ -447,6 +501,27 @@ class LessonService extends ChangeNotifier {
     print('pos : ${pos}');
 
     timestamp = Timestamp.now();
+
+    //일별 노트가 없을 경우 일별노트 생성
+    QuerySnapshot docRaw = await todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+
+    if (docRaw.docs.isEmpty) {
+      //
+      print("[LS] 일별노트가 없으면,${docRaw.docs.isEmpty}");
+      await createTodaynote(
+          docId: docId,
+          uid: uid,
+          name: name,
+          lessonDate: lessonDate,
+          todayNote: "",
+          isRefresh: false,
+          onSuccess: () {},
+          onError: () {});
+    }
 
     await lessonCollection.add({
       'docId': docId, // 회원 고유번호, 회원(문서번호)번호로 식별

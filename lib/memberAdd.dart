@@ -103,6 +103,10 @@ class _MemberAddState extends State<MemberAdd> {
   @override
   void dispose() {
     // TODO: implement dispose
+    selectedGoals.clear();
+    selelctedAnalyzedList.clear();
+    selectedHistoryList.clear();
+
     initState = true;
     print("[MA] Dispose : initState ${initState} ");
     super.dispose();
@@ -145,6 +149,9 @@ class _MemberAddState extends State<MemberAdd> {
 
       print(
           "[MA]변수받아오기 : selectedGoals - ${customUserInfo.selectedGoals} / ${customUserInfo.selectedBodyAnalyzed} / ${customUserInfo.selectedMedicalHistories}");
+    } else if (memberAddMode == "추가" && initState == true) {
+      print("[MA] : 신규추가 등록일 오늘로 설정 memberAddMode - ${memberAddMode}");
+      registerDateController.text = now;
     }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -440,7 +447,8 @@ class _MemberAddState extends State<MemberAdd> {
                           SizedBox(height: 10),
 
                           Offstage(
-                            offstage: selectedGoals.isNotEmpty,
+                            offstage: false,
+                            //offstage: selectedGoals.isNotEmpty,
                             child: SizedBox(
                               //height: 30,
                               //width: 100,
@@ -516,7 +524,8 @@ class _MemberAddState extends State<MemberAdd> {
                           Divider(height: 1),
                           SizedBox(height: 10),
                           Offstage(
-                            offstage: selelctedAnalyzedList.isNotEmpty,
+                            offstage: false,
+                            //offstage: selelctedAnalyzedList.isNotEmpty,
                             child: SizedBox(
                               //height: 30,
                               //width: 100,
@@ -536,6 +545,7 @@ class _MemberAddState extends State<MemberAdd> {
                           ),
 
                           Offstage(
+                            //offstage: false,
                             offstage: selelctedAnalyzedList.isEmpty,
                             child: Container(
                               height: 30,
@@ -592,7 +602,8 @@ class _MemberAddState extends State<MemberAdd> {
                           Divider(height: 1),
                           SizedBox(height: 10),
                           Offstage(
-                            offstage: selectedHistoryList.isNotEmpty,
+                            offstage: false,
+                            //offstage: selectedHistoryList.isNotEmpty,
                             child: SizedBox(
                               //height: 30,
                               //width: 100,

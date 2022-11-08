@@ -681,6 +681,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
           ],
         ),
         const SizedBox(height: 5.0),
+
+        //레슨 노트 보기 시작
         FutureBuilder<QuerySnapshot>(
           future: widget.lessonService.read(
             widget.userInfo.uid,
@@ -1360,9 +1362,14 @@ class LessonCard extends StatelessWidget {
               ),
               builder: (context, snapshot) {
                 final lessonData = snapshot.data?.docs ?? []; // 문서들 가져오기
-                if (lessonData.isEmpty) {
-                  return Center(child: Text(""));
-                }
+                // if (lessonData.isEmpty) {
+                //   return Container(
+                //       decoration: BoxDecoration(
+                //         color: Palette.grayFF,
+                //         //color: Colors.red.withOpacity(0),
+                //       ),
+                //       child: Text("123"));
+                // }
                 return ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),

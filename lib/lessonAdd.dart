@@ -1033,7 +1033,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                                           onPressed:
                                                                               () async {
                                                                             await lessonService.deleteSinglelesson(
+                                                                                uid: uid,
+                                                                                memberId: customUserInfo.docId,
                                                                                 docId: doc.id,
+                                                                                lessonDate: lessonDate,
                                                                                 onSuccess: () {
                                                                                   totalNoteControllers.removeAt(index);
                                                                                   //totalNoteTextFieldDocId.removeAt(index);
@@ -1449,6 +1452,7 @@ class _LessonAddState extends State<LessonAdd> {
           name: customUserInfo.name,
           lessonDate: lessonDateController.text,
           todayNote: todayNoteController.text,
+          isRefresh: true,
           onSuccess: () {
             // 저장하기 성공
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1519,6 +1523,7 @@ Future<void> todayNoteSave(LessonService lessonService,
         name: customUserInfo.name,
         lessonDate: lessonDateController.text,
         todayNote: todayNoteController.text,
+        isRefresh: true,
         onSuccess: () {
           // 저장하기 성공
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
