@@ -765,11 +765,8 @@ class _MemberAddState extends State<MemberAdd> {
                                     .showSnackBar(SnackBar(
                                   content: Text("저장하기 성공"),
                                 ));
-                                if (memberAddMode == "수정") {
-                                  Navigator.pop(context, customUserInfo);
-                                } else {
-                                  Navigator.pop(context);
-                                }
+
+                                Navigator.pop(context);
 
                                 globalFunction.clearTextEditController([
                                   nameController,
@@ -859,6 +856,8 @@ class _MemberAddState extends State<MemberAdd> {
                                   phoneNumberController,
                                   registerTypeController,
                                   goalController,
+                                  bodyAnalyzeController,
+                                  medicalHistoryController,
                                   infoController,
                                   noteController,
                                   commentController,
@@ -925,6 +924,8 @@ class _MemberAddState extends State<MemberAdd> {
                                       phoneNumberController,
                                       registerTypeController,
                                       goalController,
+                                      bodyAnalyzeController,
+                                      medicalHistoryController,
                                       infoController,
                                       noteController,
                                       commentController,
