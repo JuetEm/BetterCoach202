@@ -109,9 +109,9 @@ class _MemberAddState extends State<MemberAdd> {
   @override
   void dispose() {
     // TODO: implement dispose
-    selectedGoals.clear();
+    /* selectedGoals.clear();
     selelctedAnalyzedList.clear();
-    selectedHistoryList.clear();
+    selectedHistoryList.clear(); */
 
     initState = true;
     print("[MA] Dispose : initState ${initState} ");
@@ -132,6 +132,8 @@ class _MemberAddState extends State<MemberAdd> {
     if (memberAddMode == "수정" && initState == true) {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
+
+      print("MemberAdd : customUserInfo.selectedBodyAnalyzed : ${customUserInfo.selectedBodyAnalyzed}");
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         nameController.text = customUserInfo.name;
@@ -948,6 +950,7 @@ class _MemberAddState extends State<MemberAdd> {
                       onPressed: () {
                         /// Pop 함수 입력
                         if (memberAddMode == "수정") {
+                          print("MemberAdd : 취소하고 나가기 : customUserInfo.selectedBodyAnalyzed : ${customUserInfo.selectedBodyAnalyzed}");
                           Navigator.pop(context, customUserInfo);
                         } else {
                           Navigator.pop(context);

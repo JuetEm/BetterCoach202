@@ -38,6 +38,7 @@ String apratusNameTrim = "";
 int dayNotelessonCnt = 0;
 bool favoriteMember = true;
 late UserInfo userInfo;
+UserInfo? tmpUserInfo = null;
 
 class MemberInfo extends StatefulWidget {
   const MemberInfo({super.key});
@@ -97,6 +98,8 @@ class _MemberInfoState extends State<MemberInfo> {
       // 이전 화면에서 보낸 변수 받기
       userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
       initState = false;
+
+      print("MemberInfo : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
     }
     // 이름 첫글자 자르기
     String nameFirst = ' ';
@@ -129,7 +132,9 @@ class _MemberInfoState extends State<MemberInfo> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
-            Navigator.pop(context);
+            print("MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+            print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
+            Navigator.pop(context,tmpUserInfo);
           }),
           body: SafeArea(
             child: Column(
@@ -540,6 +545,7 @@ class _MemberInfoState extends State<MemberInfo> {
                   memberAddMode,
                   userInfo,
                 ];
+                print("MemberAdd : 기본정보 : userInfo.selectedBodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
 
                 await // 저장하기 성공시 Home로 이동
                     Navigator.push(
@@ -554,7 +560,10 @@ class _MemberInfoState extends State<MemberInfo> {
                 ).then(
                   (result) {
                     if (result != null) {
-                      userInfo = result;
+                      userInfo = result as UserInfo;
+                      tmpUserInfo = result;
+                      print("MemberAdd : result : userInfo.selectedBodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                      print("MemberAdd : result : tmpUserInfo.selectedBodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
                     } else {
                       print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
                       Navigator.pop(context);
@@ -563,7 +572,7 @@ class _MemberInfoState extends State<MemberInfo> {
                 );
 
                 //userInfo = result;
-                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
+                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo.selectedBodyAnalyzed}");
                 }else{
                   // if (viewMode == "레슨노트") {
                 lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());

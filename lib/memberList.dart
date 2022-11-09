@@ -11,9 +11,13 @@ import 'memberInfo.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 
+List<UserInfo> userInfoList = [];
+
 String conutMemberList = "";
 
 String memberAddMode = "추가";
+
+late UserInfo userInfo;
 
 class MemberList extends StatefulWidget {
   const MemberList({super.key});
@@ -154,7 +158,7 @@ class _MemberListState extends State<MemberList> {
                               String comment = doc.get('comment');
                               bool isActive = doc.get('isActive');
 
-                              final UserInfo userInfo = UserInfo(
+                              UserInfo userInfo = UserInfo(
                                 doc.id,
                                 user.uid,
                                 name,
@@ -174,9 +178,9 @@ class _MemberListState extends State<MemberList> {
                               );
 
                               return InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   // 회원 카드 선택시 MemberInfo로 이동
-                                  Navigator.push(
+                                  await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MemberInfo(),
@@ -185,7 +189,11 @@ class _MemberListState extends State<MemberList> {
                                         arguments: userInfo,
                                       ),
                                     ),
-                                  );
+                                  ).then((result){
+                                    print("MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                    UserInfo tmpUserInfo = result;
+                                    print("MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                  });
                                 },
                                 child: BaseContainer(
                                   docId: docId,
