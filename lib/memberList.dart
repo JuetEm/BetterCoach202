@@ -52,7 +52,7 @@ class _MemberListState extends State<MemberList> {
             backgroundColor: Palette.secondaryBackground,
             key: _scaffoldKey,
             appBar: MainAppBarMethod(context, "회원목록"),
-            endDrawer: Container(
+            /* endDrawer: Container(
               child: Drawer(
                 child: Center(
                   child: Column(
@@ -80,7 +80,7 @@ class _MemberListState extends State<MemberList> {
                   ),
                 ),
               ),
-            ),
+            ), */
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(22.0),
