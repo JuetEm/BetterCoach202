@@ -327,8 +327,11 @@ class _LessonAddState extends State<LessonAdd> {
                                 todayNoteView =
                                     docsTodayNote[0].get('todayNote');
                                 todayNotedocId = docsTodayNote[0].id;
-                                todayNoteController.text =
-                                    docsTodayNote[0].get('todayNote');
+                                WidgetsBinding.instance.addPostFrameCallback(
+                                    (_) => todayNoteController.text =
+                                        docsTodayNote[0].get('todayNote'));
+                                //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
+
                                 print(
                                     "뿌릴 일별 노트 출력 완료 : ${todayNoteController.text} - ${todayNotedocId} ");
                               }
