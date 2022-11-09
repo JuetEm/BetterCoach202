@@ -958,6 +958,18 @@ class _MemberAddState extends State<MemberAdd> {
                           Navigator.pop(context, customUserInfo);
                         } else {
                           Navigator.pop(context);
+                          globalFunction.clearTextEditController([
+                            nameController,
+                            registerDateController,
+                            phoneNumberController,
+                            registerTypeController,
+                            goalController,
+                            bodyAnalyzeController,
+                            medicalHistoryController,
+                            infoController,
+                            noteController,
+                            commentController,
+                          ]);
                         }
                       },
                       child: Text(
