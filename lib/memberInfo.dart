@@ -98,8 +98,7 @@ class _MemberInfoState extends State<MemberInfo> {
       // 이전 화면에서 보낸 변수 받기
       userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
       initState = false;
-
-      print("MemberInfo : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+      print("[MI]시작 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
     }
     // 이름 첫글자 자르기
     String nameFirst = ' ';
@@ -532,92 +531,109 @@ class _MemberInfoState extends State<MemberInfo> {
             ),
           ),
 
-          floatingActionButton: /* viewMode == "기본정보"? null :  */Padding(
+          floatingActionButton: /* viewMode == "기본정보"? null :  */ Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: FloatingActionButton.extended(
               onPressed: () async {
-                if(viewMode == "기본정보"){
-                  
-                print("회원수정");
-                String memberAddMode = "수정";
+                if (viewMode == "기본정보") {
+                  print("회원수정");
+                  String memberAddMode = "수정";
+                  //UserInfo userInfo = userInfo;
 
-                List<dynamic> args = [
-                  memberAddMode,
-                  userInfo,
-                ];
-                print("MemberAdd : 기본정보 : userInfo.selectedBodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                  List<dynamic> args = [
+                    memberAddMode,
+                    userInfo,
+                  ];
 
-                await // 저장하기 성공시 Home로 이동
-                    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberAdd(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(
-                      arguments: args,
+                  //userInfo = result;
+                  print(
+                      "[MI]회원수정전 정보 받아오기 - userInfo.name / ${userInfo.selectedGoals}");
+                  print(
+                      "[MI]회원수정전 정보 받아오기 - ${userInfo.selectedGoals}/${userInfo.bodyAnalyzed}/${userInfo.selectedBodyAnalyzed}/${userInfo.medicalHistories}/${userInfo.selectedMedicalHistories}");
+
+                  dynamic result = await // 저장하기 성공시 Home로 이동
+                      Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MemberAdd(),
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(
+                        arguments: args,
+                      ),
                     ),
-                  ),
-                ).then(
-                  (result) {
-                    if (result != null) {
-                      userInfo = result as UserInfo;
-                      tmpUserInfo = result;
-                      print("MemberAdd : result : userInfo.selectedBodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-                      print("MemberAdd : result : tmpUserInfo.selectedBodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
-                    } else {
-                      print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
-                      Navigator.pop(context);
-                    }
-                  },
-                );
+                  );
 
-                //userInfo = result;
-                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo.selectedBodyAnalyzed}");
-                }else{
+                  if (result != null) {
+                    userInfo = result;
+                    initState = true;
+                    _updatefavoriteMember();
+                    //lessonService.notifyListeners();
+                  } else {
+                    print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
+                    Navigator.pop(context);
+                  }
+                  //userInfo = result;
+                  print(
+                      "[MI]회원수정후 정보 받아오기 - tranferuserInfo.selectedGoals / ${userInfo.selectedGoals}");
+
+                  // ).then(
+                  //   (result) {
+                  //     if (result != null) {
+                  //       userInfo = result;
+                  //       lessonService.notifyListeners();
+                  //     } else {
+                  //       print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
+                  //       Navigator.pop(context);
+                  //     }
+                  //     //userInfo = result;
+                  //     print(
+                  //         "[MI]회원수정후 정보 받아오기 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
+                  //   },
+                  // );
+                } else {
                   // if (viewMode == "레슨노트") {
-                lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+                  lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                List<TmpLessonInfo> tmpLessonInfoList = [];
-                eventList = [];
-                lessonAddMode = "노트 추가";
-                List<dynamic> args = [
-                  userInfo,
-                  lessonDate,
-                  eventList,
-                  lessonNoteId,
-                  lessonAddMode,
-                  tmpLessonInfoList,
-                ];
-                print(
-                    "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+                  List<TmpLessonInfo> tmpLessonInfoList = [];
+                  eventList = [];
+                  lessonAddMode = "노트 추가";
+                  List<dynamic> args = [
+                    userInfo,
+                    lessonDate,
+                    eventList,
+                    lessonNoteId,
+                    lessonAddMode,
+                    tmpLessonInfoList,
+                  ];
+                  print(
+                      "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
 
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LessonAdd(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: args),
-                  ),
-                );
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LessonAdd(),
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(arguments: args),
+                    ),
+                  );
 
-                // } else {
-                //   //회원정보 보기에서 동작이 달라짐.
-                //   // 회원 운동 카드 선택시 MemberInfo로 이동
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => MemberUpdate(),
-                //       // GlobalWidgetDashboard(), //
-                //       // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                //       settings: RouteSettings(arguments: userInfo),
-                //     ),
-                //   );
-                //}
+                  // } else {
+                  //   //회원정보 보기에서 동작이 달라짐.
+                  //   // 회원 운동 카드 선택시 MemberInfo로 이동
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => MemberUpdate(),
+                  //       // GlobalWidgetDashboard(), //
+                  //       // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                  //       settings: RouteSettings(arguments: userInfo),
+                  //     ),
+                  //   );
+                  //}
                 }
-                
               },
               label: Text(
-                viewMode == "기본정보"?'정보 수정':'노트 작성',
+                viewMode == "기본정보" ? '정보 수정' : '노트 작성',
                 style: TextStyle(fontSize: 16, letterSpacing: -0.2),
               ),
               icon: Icon(Icons.edit),

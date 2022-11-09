@@ -109,9 +109,9 @@ class _MemberAddState extends State<MemberAdd> {
   @override
   void dispose() {
     // TODO: implement dispose
-    /* selectedGoals.clear();
-    selelctedAnalyzedList.clear();
-    selectedHistoryList.clear(); */
+    //selectedGoals.clear();
+    //selelctedAnalyzedList.clear();
+    //selectedHistoryList.clear();
 
     initState = true;
     print("[MA] Dispose : initState ${initState} ");
@@ -132,6 +132,8 @@ class _MemberAddState extends State<MemberAdd> {
     if (memberAddMode == "수정" && initState == true) {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
+      print(
+          "[MA]회원수정 정보 받아오기 - customUserInfo.selectedGoals / ${customUserInfo.selectedGoals}");
 
       print("MemberAdd : customUserInfo.selectedBodyAnalyzed : ${customUserInfo.selectedBodyAnalyzed}");
 
@@ -161,6 +163,9 @@ class _MemberAddState extends State<MemberAdd> {
       // 이전 화면에서 보낸 변수 받기
       print("[MA] : 신규추가 등록일 오늘로 설정 memberAddMode - ${memberAddMode}");
       registerDateController.text = now;
+      selectedGoals.clear();
+      selelctedAnalyzedList.clear();
+      selectedHistoryList.clear();
     }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
