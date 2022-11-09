@@ -163,9 +163,10 @@ class _MemberAddState extends State<MemberAdd> {
       // 이전 화면에서 보낸 변수 받기
       print("[MA] : 신규추가 등록일 오늘로 설정 memberAddMode - ${memberAddMode}");
       registerDateController.text = now;
-      selectedGoals.clear();
-      selelctedAnalyzedList.clear();
-      selectedHistoryList.clear();
+      selectedGoals = [];
+      selelctedAnalyzedList = [];
+      selectedHistoryList = [];
+      initState = false;
     }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -767,11 +768,8 @@ class _MemberAddState extends State<MemberAdd> {
                                     .showSnackBar(SnackBar(
                                   content: Text("저장하기 성공"),
                                 ));
-                                if (memberAddMode == "수정") {
-                                  Navigator.pop(context, customUserInfo);
-                                } else {
-                                  Navigator.pop(context);
-                                }
+
+                                Navigator.pop(context);
 
                                 globalFunction.clearTextEditController([
                                   nameController,
@@ -861,6 +859,8 @@ class _MemberAddState extends State<MemberAdd> {
                                   phoneNumberController,
                                   registerTypeController,
                                   goalController,
+                                  bodyAnalyzeController,
+                                  medicalHistoryController,
                                   infoController,
                                   noteController,
                                   commentController,
@@ -927,6 +927,8 @@ class _MemberAddState extends State<MemberAdd> {
                                       phoneNumberController,
                                       registerTypeController,
                                       goalController,
+                                      bodyAnalyzeController,
+                                      medicalHistoryController,
                                       infoController,
                                       noteController,
                                       commentController,
@@ -959,6 +961,18 @@ class _MemberAddState extends State<MemberAdd> {
                           Navigator.pop(context, customUserInfo);
                         } else {
                           Navigator.pop(context);
+                          globalFunction.clearTextEditController([
+                            nameController,
+                            registerDateController,
+                            phoneNumberController,
+                            registerTypeController,
+                            goalController,
+                            bodyAnalyzeController,
+                            medicalHistoryController,
+                            infoController,
+                            noteController,
+                            commentController,
+                          ]);
                         }
                       },
                       child: Text(

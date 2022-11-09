@@ -99,7 +99,11 @@ class _MemberInfoState extends State<MemberInfo> {
       userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
       initState = false;
       print("[MI]시작 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
+      print("[MI]시작 - userInfo.goal / ${userInfo.goal}");
+    } else {
+      print("[MI]시작(init아님) - userInfo.goal / ${userInfo.goal}");
     }
+
     // 이름 첫글자 자르기
     String nameFirst = ' ';
     if (userInfo.name.length > 0) {
@@ -547,9 +551,9 @@ class _MemberInfoState extends State<MemberInfo> {
 
                   //userInfo = result;
                   print(
-                      "[MI]회원수정전 정보 받아오기 - userInfo.name / ${userInfo.selectedGoals}");
+                      "[MI]회원수정전 정보 받아오기 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
                   print(
-                      "[MI]회원수정전 정보 받아오기 - ${userInfo.selectedGoals}/${userInfo.bodyAnalyzed}/${userInfo.selectedBodyAnalyzed}/${userInfo.medicalHistories}/${userInfo.selectedMedicalHistories}");
+                      "[MI]회원수정전 정보 받아오기 - userInfo.selectedGoals / ${userInfo.goal}/${userInfo.bodyAnalyzed}/${userInfo.selectedBodyAnalyzed}/${userInfo.medicalHistories}/${userInfo.selectedMedicalHistories}");
 
                   dynamic result = await // 저장하기 성공시 Home로 이동
                       Navigator.push(
@@ -565,7 +569,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
                   if (result != null) {
                     userInfo = result;
-                    initState = true;
+                    //initState = true;
                     _updatefavoriteMember();
                     //lessonService.notifyListeners();
                   } else {
@@ -574,7 +578,9 @@ class _MemberInfoState extends State<MemberInfo> {
                   }
                   //userInfo = result;
                   print(
-                      "[MI]회원수정후 정보 받아오기 - tranferuserInfo.selectedGoals / ${userInfo.selectedGoals}");
+                      "[MI]회원수정후 정보 받아오기 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
+                  print(
+                      "[MI]회원수정전 정보 받아오기 - userInfo.goal / ${userInfo.goal}/${userInfo.bodyAnalyzed}/${userInfo.selectedBodyAnalyzed}/${userInfo.medicalHistories}/${userInfo.selectedMedicalHistories}");
 
                   // ).then(
                   //   (result) {
