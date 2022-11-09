@@ -161,9 +161,10 @@ class _MemberAddState extends State<MemberAdd> {
       // 이전 화면에서 보낸 변수 받기
       print("[MA] : 신규추가 등록일 오늘로 설정 memberAddMode - ${memberAddMode}");
       registerDateController.text = now;
-      selectedGoals.clear();
-      selelctedAnalyzedList.clear();
-      selectedHistoryList.clear();
+      selectedGoals = [];
+      selelctedAnalyzedList = [];
+      selectedHistoryList = [];
+      initState = false;
     }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
