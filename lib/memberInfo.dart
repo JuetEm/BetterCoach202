@@ -527,11 +527,45 @@ class _MemberInfoState extends State<MemberInfo> {
             ),
           ),
 
-          floatingActionButton: viewMode == "기본정보"? null : Padding(
+          floatingActionButton: /* viewMode == "기본정보"? null :  */Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: FloatingActionButton.extended(
               onPressed: () async {
-                // if (viewMode == "레슨노트") {
+                if(viewMode == "기본정보"){
+                  
+                print("회원수정");
+                String memberAddMode = "수정";
+
+                List<dynamic> args = [
+                  memberAddMode,
+                  userInfo,
+                ];
+
+                await // 저장하기 성공시 Home로 이동
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MemberAdd(),
+                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                    settings: RouteSettings(
+                      arguments: args,
+                    ),
+                  ),
+                ).then(
+                  (result) {
+                    if (result != null) {
+                      userInfo = result;
+                    } else {
+                      print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
+                      Navigator.pop(context);
+                    }
+                  },
+                );
+
+                //userInfo = result;
+                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
+                }else{
+                  // if (viewMode == "레슨노트") {
                 lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
                 List<TmpLessonInfo> tmpLessonInfoList = [];
@@ -570,9 +604,11 @@ class _MemberInfoState extends State<MemberInfo> {
                 //     ),
                 //   );
                 //}
+                }
+                
               },
               label: Text(
-                '노트 작성',
+                viewMode == "기본정보"?'정보 수정':'노트 작성',
                 style: TextStyle(fontSize: 16, letterSpacing: -0.2),
               ),
               icon: Icon(Icons.edit),
@@ -978,7 +1014,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             ),
           ),
           SizedBox(height: 30),
-          Center(
+          /* Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
@@ -1038,7 +1074,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
               },
             ),
-          ),
+          ), */
           SizedBox(height: 80),
         ],
       ),
