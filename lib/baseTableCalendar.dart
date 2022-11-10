@@ -39,8 +39,17 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
 
   @override
   void initState() {
-    // DateTime selectedDateIn;
-    selectedDateIn = new DateFormat('yyyy-MM-dd').parse(widget.selectedDate);
+    if (widget.selectedDate == "") {
+      DateTime selectedDateIn = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      );
+    } else {
+      // DateTime selectedDateIn;
+      selectedDateIn = new DateFormat('yyyy-MM-dd').parse(widget.selectedDate);
+    }
+
     print(
         "[GF] getDateFromCalendar - selectedDateIn 선택날짜 / ${selectedDateIn.toString()}");
     focusedDate = selectedDateIn;

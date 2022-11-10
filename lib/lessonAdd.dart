@@ -190,6 +190,7 @@ class _LessonAddState extends State<LessonAdd> {
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
         return Scaffold(
+          //resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
@@ -317,8 +318,8 @@ class _LessonAddState extends State<LessonAdd> {
                               if (docsTodayNote.isEmpty) {
                                 todayNotedocId = "";
                                 todayNoteView = "";
-                                WidgetsBinding.instance.addPostFrameCallback(
-                                    (_) => todayNoteController.clear());
+                                // WidgetsBinding.instance.addPostFrameCallback(
+                                //     (_) => todayNoteController.clear());
                                 //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
                                 //todayNoteController.text = "";
                                 print(
@@ -327,9 +328,9 @@ class _LessonAddState extends State<LessonAdd> {
                                 todayNoteView =
                                     docsTodayNote[0].get('todayNote');
                                 todayNotedocId = docsTodayNote[0].id;
-                                WidgetsBinding.instance.addPostFrameCallback(
-                                    (_) => todayNoteController.text =
-                                        docsTodayNote[0].get('todayNote'));
+                                // WidgetsBinding.instance.addPostFrameCallback(
+                                //     (_) => todayNoteController.text =
+                                //         docsTodayNote[0].get('todayNote'));
                                 //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
 
                                 print(
@@ -366,8 +367,6 @@ class _LessonAddState extends State<LessonAdd> {
 
                               return InkWell(
                                 onTap: () {
-                                  // todayNoteController.text =
-                                  //     todayNoteView;
                                   showDialog(
                                     context: context,
                                     barrierDismissible: true,
@@ -387,6 +386,8 @@ class _LessonAddState extends State<LessonAdd> {
                                             var width = MediaQuery.of(context)
                                                 .size
                                                 .width;
+                                            todayNoteController.text =
+                                                todayNoteView;
 
                                             return Container(
                                               //height: 40,
