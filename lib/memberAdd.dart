@@ -119,8 +119,8 @@ class _MemberAddState extends State<MemberAdd> {
   }
 
   Widget build(BuildContext context) {
-    final authService = context.read<AuthService>();
-    final user = authService.currentUser()!;
+    //final authService = context.read<AuthService>();
+    //final user = authService.currentUser()!;
 
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
@@ -761,7 +761,7 @@ class _MemberAddState extends State<MemberAdd> {
                               info: infoController.text,
                               note: noteController.text,
                               comment: commentController.text,
-                              uid: user.uid,
+                              uid: customUserInfo.uid,
                               onSuccess: () {
                                 // 저장하기 성공
                                 ScaffoldMessenger.of(context)
@@ -812,7 +812,7 @@ class _MemberAddState extends State<MemberAdd> {
                               info: infoController.text,
                               note: noteController.text,
                               comment: commentController.text,
-                              uid: user.uid,
+                              uid: customUserInfo.uid,
                               onSuccess: () {
                                 // 저장하기 성공
                                 ScaffoldMessenger.of(context)

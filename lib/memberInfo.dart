@@ -88,8 +88,8 @@ class _MemberInfoState extends State<MemberInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final authService = context.read<AuthService>();
-    final user = authService.currentUser()!;
+    //final authService = context.read<AuthService>();
+    //final user = authService.currentUser()!;
     final memberService = context.read<MemberService>();
 
     print('[MI] 시작 : initState - ${initState}');
@@ -113,7 +113,7 @@ class _MemberInfoState extends State<MemberInfo> {
     final lessonService = context.read<LessonService>();
 
     Future<int> daylessonCnt = lessonService.countTodaynote(
-      user.uid,
+      userInfo.uid,
       userInfo.docId,
     );
 
@@ -158,7 +158,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                   // FutureBuilder 예시 코드
                                   FutureBuilder(
                                       future: _readfavoriteMember(
-                                          user.uid, userInfo.docId),
+                                          userInfo.uid, userInfo.docId),
                                       builder: (BuildContext context,
                                           AsyncSnapshot snapshot) {
                                         //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
