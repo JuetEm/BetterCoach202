@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:web_project/testShowDialog.dart';
+import 'dart:io' show Platform;
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -62,9 +64,34 @@ void main() async {
   print("prefs check userEmail : ${userEmail}");
   print("prefs check userPassword : ${userPassword}");
 
-  await Firebase.initializeApp(
+  if (kIsWeb) {
+    print("Platform.kIsWeb");
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+  } else {
+    if (Platform.isAndroid) {
+      print("Platform.isAndroid");
+      await Firebase.initializeApp();
+    } else if (Platform.isIOS) {
+      print("Platform.isIOS");
+      await Firebase.initializeApp();
+    } else if (Platform.isMacOS) {
+      print("Platform.isMacOS");
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } else if (Platform.isWindows) {
+      print("Platform.isWindows");
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  }
+
+  /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  ); // firebase 앱 시작
+  ); */ // firebase 앱 시작
 
   AuthService authService = AuthService();
   final user = authService.currentUser();
@@ -97,22 +124,22 @@ void main() async {
         ),
       );
     });
-  }else{
+  } else {
     print("object user is null");
     runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => BucketService()),
-        ChangeNotifierProvider(create: (context) => GlobalService()),
-        ChangeNotifierProvider(create: (context) => MemberService()),
-        ChangeNotifierProvider(create: (context) => LessonService()),
-        ChangeNotifierProvider(create: (context) => CalendarService()),
-        ChangeNotifierProvider(create: (context) => ActionService()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => AuthService()),
+          ChangeNotifierProvider(create: (context) => BucketService()),
+          ChangeNotifierProvider(create: (context) => GlobalService()),
+          ChangeNotifierProvider(create: (context) => MemberService()),
+          ChangeNotifierProvider(create: (context) => LessonService()),
+          ChangeNotifierProvider(create: (context) => CalendarService()),
+          ChangeNotifierProvider(create: (context) => ActionService()),
+        ],
+        child: const MyApp(),
+      ),
+    );
   }
 }
 
@@ -146,7 +173,7 @@ class MyApp extends StatelessWidget {
             //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
             fontFamily: 'Pretendard',
             backgroundColor: Palette.mainBackground),
-        home: user == null ? LoginPage() : MemberList.getMemberList(resultList),
+        home: user == null ? LoginPage() : SignUp(), // MemberList.getMemberList(resultList),
       ),
     );
   }

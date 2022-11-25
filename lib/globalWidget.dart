@@ -395,7 +395,7 @@ class _BaseModalBottomSheetButton extends State<BaseModalBottomSheetButton> {
 
 // Text Field
 class BaseTextField extends StatefulWidget {
-  const BaseTextField({
+BaseTextField({
     Key? key,
     required this.customController,
     required this.hint,
@@ -422,6 +422,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
         minHeight: 40,
       ),
       child: TextField(
+        obscureText: widget.hint.contains("비밀번호") ? true : false, // 비밀번호 안보이게
         style: TextStyle(fontSize: 14),
         //focusNode: textFocus,
         textInputAction: TextInputAction.done,
