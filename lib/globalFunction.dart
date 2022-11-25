@@ -156,9 +156,11 @@ class GlobalFunction {
     List nameChoList = [];
     List targetNameList = [];
     // if (isKorean(varName)) {
-    bool isKorean = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(searchString);
-    print("isKorean : ${isKorean}");
-    if (isKorean) {
+    bool isKoreanSearchString = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(searchString);
+    bool isKoreanNameString = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(name);
+    print("isKoreanSearchString : ${isKoreanSearchString}");
+    print("isKoreanNameString : ${isKoreanNameString}");
+    if (isKoreanSearchString && isKoreanNameString) {
       String element = "";
       String tmpStr = "";
       for (int i = 0; i < varStrList.length; i++) {
@@ -226,7 +228,18 @@ class GlobalFunction {
           nameChoJoongJongString.contains(searchChoJoongJongString)) {
         print("nameChoJoongJongString : ${nameChoJoongJongString}");
         print("searchChoJoongJongString : ${searchChoJoongJongString}");
-        result = true;
+        List tmpChoList = nameChoJoongJongString.characters.toList();
+        List tmpSrchList = searchChoJoongJongString.characters.toList();
+        for (int i = 0; i < nameChoJoongJongString.length; i++) {
+          if (tmpSrchList.length > i) {
+            if (tmpChoList[i] == tmpSrchList[i]) {
+              result = true;
+            } else {
+              result = false;
+              break;
+            }
+          }
+        }
       } else if (nameChoString.contains(searchChoString)) {
         /* for (int i = 0; i < resultList.length; i++) {
           if (resultList[i].contains(searchChoString)) {
@@ -243,13 +256,25 @@ class GlobalFunction {
               result = true;
             } else {
               result = false;
+              break;
             }
           }
         }
       }
     } else {
       if (varName.trim().toLowerCase().contains(searchString.toLowerCase())) {
-        result = true;
+        List tmpChoList = varName.trim().toLowerCase().characters.toList();
+        List tmpSrchList = searchString.toLowerCase().characters.toList();
+        for (int i = 0; i < varName.trim().length; i++) {
+          if (tmpSrchList.length > i) {
+            if (tmpChoList[i] == tmpSrchList[i]) {
+              result = true;
+            } else {
+              result = false;
+              break;
+            }
+          }
+        }
       }
     }
 

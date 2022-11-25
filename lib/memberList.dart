@@ -34,6 +34,7 @@ String searchString = "";
 
 List combinedLngs = [];
 
+// 자음 검색 세로 바 작업
 late final ScrollController scrollController;
 
 String currentChar = "";
@@ -149,13 +150,13 @@ class _MemberListState extends State<MemberList> {
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;
     // 모음 검색 세로 바 구현 작업
-    /* combinedLngs.addAll(koreans);
+    combinedLngs.addAll(koreans);
     combinedLngs.addAll(alphabets);
     scrollController = ScrollController(initialScrollOffset: 0);
     scrollController.addListener(() {
       // print("Listening!");
       // print("scrollController.offset : ${scrollController.offset}");
-    }); */
+    });
     super.initState();
   }
 
