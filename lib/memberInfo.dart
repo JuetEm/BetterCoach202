@@ -136,8 +136,9 @@ class _MemberInfoState extends State<MemberInfo> {
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
             print("MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-            print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
-            Navigator.pop(context,tmpUserInfo);
+            // print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
+            // Navigator.pop(context,tmpUserInfo);
+            Navigator.pop(context,userInfo);
           }),
           body: SafeArea(
             child: Column(

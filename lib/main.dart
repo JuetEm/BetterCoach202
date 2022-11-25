@@ -44,6 +44,8 @@ TextEditingController switchController =
 String? userEmail;
 String? userPassword;
 
+List resultList = [];
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -63,7 +65,41 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // firebase 앱 시작
-  runApp(
+
+  AuthService authService = AuthService();
+  final user = authService.currentUser();
+
+  if (user != null) {
+    print("object user is not null");
+    await memberService.readMemberListAtFirstTime(user.uid).then((value) {
+      resultList.addAll(value);
+      /* for (int i = 0; i < resultList.length; i++) {
+        print("resultList[${i}] : ${resultList[i]}");
+      } */
+    }).onError((error, stackTrace) {
+      print("error : ${error}");
+      print("stackTrace : \r\n${stackTrace}");
+    }).whenComplete(() {
+      print("0 - main memberList complete!!");
+
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => AuthService()),
+            ChangeNotifierProvider(create: (context) => BucketService()),
+            ChangeNotifierProvider(create: (context) => GlobalService()),
+            ChangeNotifierProvider(create: (context) => MemberService()),
+            ChangeNotifierProvider(create: (context) => LessonService()),
+            ChangeNotifierProvider(create: (context) => CalendarService()),
+            ChangeNotifierProvider(create: (context) => ActionService()),
+          ],
+          child: const MyApp(),
+        ),
+      );
+    });
+  }else{
+    print("object user is null");
+    runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
@@ -77,6 +113,7 @@ void main() async {
       child: const MyApp(),
     ),
   );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -89,6 +126,11 @@ class MyApp extends StatelessWidget {
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
 
+    /* resultList.every((element) {
+      print("elements : ${element.toString()}");
+      return true;
+    },);
+    print("resultList.toString() : ${resultList.toString()}"); */
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
@@ -104,7 +146,7 @@ class MyApp extends StatelessWidget {
             //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
             fontFamily: 'Pretendard',
             backgroundColor: Palette.mainBackground),
-        home: user == null ? LoginPage() : MemberList(),
+        home: user == null ? LoginPage() : MemberList.getMemberList(resultList),
       ),
     );
   }
@@ -399,19 +441,46 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text,
         onSuccess: () {
-          // 로그인 성공
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("로그인 성공"),
-          ));
-          // 로그인 성공시 Home로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => MemberList()),
-            //MaterialPageRoute(builder: (_) => Mainpage()),
-          );
+          AuthService authService = AuthService();
+          var cUser = authService.currentUser();
+          Future<List> resultFirstMemberList =
+              memberService.readMemberListAtFirstTime(cUser!.uid);
 
-          emailController.clear();
-          passwordController.clear();
+          resultFirstMemberList.then((value) {
+            print("then is called!! value.length : ${value.length}");
+            resultList.addAll(value);
+            /* for (int i = 0; i < value.length; i++) {
+              print("value[${i}] : ${value[i]}");
+            } */
+          }).onError((error, stackTrace) {
+            print("error : ${error}");
+            print("stackTrace : \r\n${stackTrace}");
+          }).whenComplete(() {
+            print("memberList await init complete!");
+
+            // 로그인 성공
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("로그인 성공"),
+            ));
+            // 로그인 성공시 Home로 이동
+            /* Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => MemberList()),
+              //MaterialPageRoute(builder: (_) => Mainpage()),
+            ); */
+            List<dynamic> args = [resultList];
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberList(),
+                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                settings: RouteSettings(arguments: args),
+              ),
+            );
+
+            emailController.clear();
+            passwordController.clear();
+          });
         },
         onError: (err) {
           // 에러 발생
@@ -442,19 +511,46 @@ class _LoginPageState extends State<LoginPage> {
         email: "demo@demo.com",
         password: "123456",
         onSuccess: () {
-          // 로그인 성공
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("로그인 성공"),
-          ));
-          // 로그인 성공시 Home로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => MemberList()),
-            //MaterialPageRoute(builder: (_) => Mainpage()),
-          );
+          AuthService authService = AuthService();
+          var cUser = authService.currentUser();
+          Future<List> resultFirstMemberList =
+              memberService.readMemberListAtFirstTime(cUser!.uid);
 
-          emailController.clear();
-          passwordController.clear();
+          resultFirstMemberList.then((value) {
+            print("then is called!! value.length : ${value.length}");
+            resultList.addAll(value);
+            /* for (int i = 0; i < value.length; i++) {
+              print("value[${i}] : ${value[i]}");
+            } */
+          }).onError((error, stackTrace) {
+            print("error : ${error}");
+            print("stackTrace : \r\n${stackTrace}");
+          }).whenComplete(() {
+            print("memberList await init complete!");
+
+            // 로그인 성공
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("로그인 성공"),
+            ));
+            // 로그인 성공시 Home로 이동
+            /*  Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => MemberList()),
+              //MaterialPageRoute(builder: (_) => Mainpage()),
+            ); */
+            List<dynamic> args = [resultList];
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberList(),
+                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                settings: RouteSettings(arguments: args),
+              ),
+            );
+
+            emailController.clear();
+            passwordController.clear();
+          });
         },
         onError: (err) {
           // 에러 발생

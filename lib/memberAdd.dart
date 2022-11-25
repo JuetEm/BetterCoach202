@@ -20,7 +20,7 @@ String memberAddMode = "추가";
 
 bool initState = true;
 
-late CustomUserInfo.UserInfo customUserInfo;
+late CustomUserInfo.UserInfo ?customUserInfo;
 
 final goalList = [
   "체형교정",
@@ -119,8 +119,8 @@ class _MemberAddState extends State<MemberAdd> {
   }
 
   Widget build(BuildContext context) {
-    //final authService = context.read<AuthService>();
-    //final user = authService.currentUser()!;
+    final authService = context.read<AuthService>();
+    final user = authService.currentUser()!;
 
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
@@ -133,34 +133,33 @@ class _MemberAddState extends State<MemberAdd> {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
       print(
-          "[MA]회원수정 정보 받아오기 - customUserInfo.selectedGoals / ${customUserInfo.selectedGoals}");
+          "[MA]회원수정 정보 받아오기 - customUserInfo.selectedGoals / ${customUserInfo?.selectedGoals}");
 
-      print("MemberAdd : customUserInfo.selectedBodyAnalyzed : ${customUserInfo.selectedBodyAnalyzed}");
+      print("MemberAdd : customUserInfo.selectedBodyAnalyzed : ${customUserInfo?.selectedBodyAnalyzed}");
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        nameController.text = customUserInfo.name;
-        registerDateController.text = customUserInfo.registerDate;
-        phoneNumberController.text = customUserInfo.phoneNumber;
-        registerTypeController.text = customUserInfo.registerType;
-        goalController.text = customUserInfo.goal;
-        infoController.text = customUserInfo.info;
-        noteController.text = customUserInfo.note;
-        commentController.text = customUserInfo.comment;
-        medicalHistoryController.text = customUserInfo.medicalHistories;
-        bodyAnalyzeController.text = customUserInfo.bodyAnalyzed;
+        nameController.text = customUserInfo!.name;
+        registerDateController.text = customUserInfo!.registerDate;
+        phoneNumberController.text = customUserInfo!.phoneNumber;
+        registerTypeController.text = customUserInfo!.registerType;
+        goalController.text = customUserInfo!.goal;
+        infoController.text = customUserInfo!.info;
+        noteController.text = customUserInfo!.note;
+        commentController.text = customUserInfo!.comment;
+        medicalHistoryController.text = customUserInfo!.medicalHistories;
+        bodyAnalyzeController.text = customUserInfo!.bodyAnalyzed;
       });
 
       initState = false;
       //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
 
-      selectedGoals = customUserInfo.selectedGoals;
-      selelctedAnalyzedList = customUserInfo.selectedBodyAnalyzed;
-      selectedHistoryList = customUserInfo.selectedMedicalHistories;
+      selectedGoals = customUserInfo!.selectedGoals;
+      selelctedAnalyzedList = customUserInfo!.selectedBodyAnalyzed;
+      selectedHistoryList = customUserInfo!.selectedMedicalHistories;
 
       print(
-          "[MA]변수받아오기 : selectedGoals - ${customUserInfo.selectedGoals} / ${customUserInfo.selectedBodyAnalyzed} / ${customUserInfo.selectedMedicalHistories}");
+          "[MA]변수받아오기 : selectedGoals - ${customUserInfo!.selectedGoals} / ${customUserInfo!.selectedBodyAnalyzed} / ${customUserInfo!.selectedMedicalHistories}");
     } else if (memberAddMode == "추가" && initState == true) {
-      // 이전 화면에서 보낸 변수 받기
       print("[MA] : 신규추가 등록일 오늘로 설정 memberAddMode - ${memberAddMode}");
       registerDateController.text = now;
       selectedGoals = [];
@@ -729,12 +728,13 @@ class _MemberAddState extends State<MemberAdd> {
                           vertical: 14, horizontal: 90),
                       child: Text("저장하기", style: TextStyle(fontSize: 16)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (memberAddMode == "추가") {
                         print("추가 버튼");
                         // create bucket
                         if (globalFunction.textNullCheck(
                             context, nameController, "이름")) {
+                              customUserInfo = null;
                           // globalFunction.textNullCheck(
                           //     context, registerDateController, "등록일") &&
                           // globalFunction.textNullCheck(
@@ -747,7 +747,7 @@ class _MemberAddState extends State<MemberAdd> {
                           //     context, infoController, "통증/상해/병력") &&
                           // globalFunction.textNullCheck(
                           //     context, noteController, "체형분석")) {
-                          memberService.create(
+                          var docId = await memberService.create(
                               name: nameController.text,
                               registerDate: registerDateController.text,
                               phoneNumber: phoneNumberController.text,
@@ -761,15 +761,34 @@ class _MemberAddState extends State<MemberAdd> {
                               info: infoController.text,
                               note: noteController.text,
                               comment: commentController.text,
-                              uid: customUserInfo.uid,
+                              uid: user.uid,
                               onSuccess: () {
+                                
                                 // 저장하기 성공
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   content: Text("저장하기 성공"),
                                 ));
 
-                                Navigator.pop(context);
+                                
+                              },
+                              onError: () {
+                                print("저장하기 ERROR");
+                              }).then((value){
+                                print("value : ${value}");
+                                customUserInfo = UserInfo(value, user.uid, nameController.text, registerDateController.text, phoneNumberController.text, registerTypeController.text, goalController.text, selectedGoals, bodyAnalyzeController.text, selelctedAnalyzedList, medicalHistoryController.text, selectedHistoryList, infoController.text, noteController.text, commentController.text, true);
+                                
+                              }).onError((error, stackTrace){
+                                print("error : ${error}");
+                                print("stackTrace : ${stackTrace}");
+                              }).whenComplete(() async {
+                                print("whenComplete is called");
+
+                                List updatedList = [];
+                                await memberService.readMemberListAtFirstTime(user.uid).then((value){
+                                  updatedList.addAll(value);
+                                });
+                                Navigator.pop(context,updatedList);
 
                                 globalFunction.clearTextEditController([
                                   nameController,
@@ -784,9 +803,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   commentController,
                                 ]);
                                 registerDateController.text = now;
-                              },
-                              onError: () {
-                                print("저장하기 ERROR");
                               });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -798,7 +814,7 @@ class _MemberAddState extends State<MemberAdd> {
                         if (globalFunction.textNullCheck(
                             context, nameController, "이름")) {
                           memberService.update(
-                              docId: customUserInfo.docId,
+                              docId: customUserInfo!.docId,
                               name: nameController.text,
                               registerDate: registerDateController.text,
                               phoneNumber: phoneNumberController.text,
@@ -812,7 +828,7 @@ class _MemberAddState extends State<MemberAdd> {
                               info: infoController.text,
                               note: noteController.text,
                               comment: commentController.text,
-                              uid: customUserInfo.uid,
+                              uid: customUserInfo!.uid,
                               onSuccess: () {
                                 // 저장하기 성공
                                 ScaffoldMessenger.of(context)
@@ -824,8 +840,8 @@ class _MemberAddState extends State<MemberAdd> {
 
                                 //List<UserInfo> userupdateInfo
                                 UserInfo userInfouUpdate = UserInfo(
-                                    customUserInfo.docId,
-                                    customUserInfo.uid,
+                                    customUserInfo!.docId,
+                                    customUserInfo!.uid,
                                     nameController.text,
                                     registerDateController.text,
                                     phoneNumberController.text,
@@ -895,12 +911,12 @@ class _MemberAddState extends State<MemberAdd> {
                                     fontSize: 16, color: Palette.textRed)),
                           ),
                           onPressed: () async {
-                            print("${customUserInfo.docId}");
+                            print("${customUserInfo!.docId}");
                             // create bucket
                             final retvaldelte = await showAlertDialog(context);
                             if (retvaldelte == "OK") {
                               memberService.delete(
-                                  docId: customUserInfo.docId,
+                                  docId: customUserInfo!.docId,
                                   onSuccess: () {
                                     // 삭제하기 성공
                                     ScaffoldMessenger.of(context)
@@ -957,7 +973,7 @@ class _MemberAddState extends State<MemberAdd> {
                       onPressed: () {
                         /// Pop 함수 입력
                         if (memberAddMode == "수정") {
-                          print("MemberAdd : 취소하고 나가기 : customUserInfo.selectedBodyAnalyzed : ${customUserInfo.selectedBodyAnalyzed}");
+                          print("MemberAdd : 취소하고 나가기 : customUserInfo.selectedBodyAnalyzed : ${customUserInfo!.selectedBodyAnalyzed}");
                           Navigator.pop(context, customUserInfo);
                         } else {
                           Navigator.pop(context);

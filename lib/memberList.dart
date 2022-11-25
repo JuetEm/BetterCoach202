@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'auth_service.dart';
 import 'color.dart';
+import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'main.dart';
 import 'memberAdd.dart';
@@ -11,16 +16,30 @@ import 'memberInfo.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 
+MemberService memberService = MemberService();
+
 List<UserInfo> userInfoList = [];
 
 String conutMemberList = "";
 
 String memberAddMode = "추가";
 
-late UserInfo userInfo;
+// late UserInfo userInfo;
+
+List resultMemberList = [];
+
+TextEditingController searchController = TextEditingController();
+
+String searchString = "";
+
+List combinedLngs = [];
+
+late final ScrollController scrollController;
 
 class MemberList extends StatefulWidget {
-  const MemberList({super.key});
+  List tmpMemberList = [];
+  MemberList({super.key});
+  MemberList.getMemberList(this.tmpMemberList, {super.key});
 
   @override
   State<MemberList> createState() => _MemberListState();
@@ -28,6 +47,69 @@ class MemberList extends StatefulWidget {
 
 class _MemberListState extends State<MemberList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // 알파벳 자모음 생성
+  final alphabets =
+      List.generate(26, (index) => String.fromCharCode(index + 65));
+  final koreans = [
+    "ㄱ",
+    "ㄴ",
+    "ㄷ",
+    "ㄹ",
+    "ㅁ",
+    "ㅂ",
+    "ㅅ",
+    "ㅇ",
+    "ㅈ",
+    "ㅊ",
+    "ㅋ",
+    "ㅌ",
+    "ㅍ",
+    "ㅎ",
+    "ㄲ",
+    "ㄸ",
+    "ㅃ",
+    "ㅆ",
+    "ㅉ",
+  ];
+
+  int _searchIndex = 0;
+  final ItemScrollController _itemScrollController = ItemScrollController();
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  // https://github.com/thanikad/alphabetical_search
+  void setSearchIndex(String searchLetter) {
+    List rmNameList = [];
+    resultMemberList.forEach(
+      (element) {
+        rmNameList.add(globalFunction.getChosungFromString(element['name']));
+      },
+    );
+    // setState(() {
+    _searchIndex = rmNameList
+        .indexWhere((element) => element.toString().startsWith(searchLetter));
+    print("_searchIndex.toDouble() : ${_searchIndex.toDouble()}");
+    if (_searchIndex > 0 && scrollController.hasClients) {
+      /* SchedulerBinding.instance.addPersistentFrameCallback(
+        (timeStamp) async {
+          await scrollController.animateTo(
+              _searchIndex.toDouble(),
+              duration: Duration(milliseconds: 1),
+              curve: Curves.ease)/* .then((value){
+                print("value : ");
+              }).whenComplete((){
+                print("complete : ");
+              }) */;
+        },
+      ); */
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        scrollController.jumpTo(_searchIndex.toDouble());
+        print("WidgetsBinding : ");
+      },);
+      print("after jumpTo!!");
+    }
+    // });
+  }
 
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
@@ -44,13 +126,46 @@ class _MemberListState extends State<MemberList> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    
+    print("MemberList InitState Called!!");
+    resultMemberList = widget.tmpMemberList;
+    combinedLngs.addAll(koreans);
+    combinedLngs.addAll(alphabets);
+    scrollController = ScrollController(initialScrollOffset: 0);
+    scrollController.addListener(() {
+      // print("Listening!");
+      print("scrollController.offset : ${scrollController.offset}");
+    
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
+    print("몇 번 그리나요? - build");
     //user.uid = '11';
+    // 로그인 화면에서 보낸 멤러 리트스 변수 받기
+    List<dynamic> argsList = [];
+    // resultMemberList 비었을 경우에만 받아온다.
+    if (resultMemberList.isEmpty) {
+      argsList = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+      resultMemberList = argsList[0];
+    }
 
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
+        print("몇 번 그리나요? - Consumer");
         return SafeArea(
           child: Scaffold(
             backgroundColor: Palette.secondaryBackground,
@@ -91,10 +206,21 @@ class _MemberListState extends State<MemberList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    BaseSearchTextField(
+                      customController: searchController,
+                      hint: "동작을 검색하세요.",
+                      showArrow: true,
+                      customFunction: () {
+                        setState(() {
+                          searchString = searchController.text.toLowerCase();
+                        });
+                      },
+                    ),
+                    Divider(),
                     Row(
                       children: [
                         Text(
-                          '총 ${conutMemberList} 명',
+                          '총 ${resultMemberList.length} 명',
                           style: TextStyle(color: Palette.gray7B),
                         ),
                         Spacer(),
@@ -106,113 +232,184 @@ class _MemberListState extends State<MemberList> {
                       ],
                     ),
                     Expanded(
-                      child: FutureBuilder<QuerySnapshot>(
-                        //future: memberService.read(
-                        //    'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
-                        future: memberService.read(user.uid, 'name'),
-                        builder: (context, snapshot) {
-                          final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                          if (docs.isEmpty) {
-                            return Center(child: Text("회원 목록을 준비 중입니다."));
-                          }
-
-                          //해당 함수는 빌드가 끝난 다음 수행 된다.
-                          //https://velog.io/@jun7332568/%ED%94%8C%EB%9F%AC%ED%84%B0flutter-setState-or-markNeedsBuild-called-during-build.-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            if (conutMemberList != docs.length.toString()) {
-                              _refreshMemberCount(docs.length.toString());
-                            }
-                          });
-
-                          return ListView.separated(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: docs.length,
+                      child: Stack(
+                        children: [
+                          ListView.builder(
+                            itemCount: 1,
                             itemBuilder: (BuildContext context, int index) {
-                              final doc = docs[index];
-                              String docId = doc.id;
-                              String name = doc.get('name');
-                              String registerDate = doc.get('registerDate');
-                              String phoneNumber = doc.get('phoneNumber');
-                              String registerType = doc.get('registerType');
-                              String goal = doc.get('goal');
-                              List<String> selectedGoals =
-                                  List<String>.from(doc.get('selectedGoals'));
-                              print(
-                                  "[ML] ListView 회원정보 가져오기 selectedGoals : ${selectedGoals}");
-                              String bodyAnalyzed = doc.get('bodyanalyzed');
-                              print(
-                                  "[ML] ListView 회원정보 가져오기 bodyAnalyzed : ${bodyAnalyzed}");
-                              List<String> selectedBodyAnalyzed =
-                                  List<String>.from(
-                                      doc.get('selectedBodyAnalyzed'));
-                              ;
-                              String medicalHistories =
-                                  doc.get('medicalHistories');
-                              List<String> selectedMedicalHistories =
-                                  List<String>.from(
-                                      doc.get('selectedMedicalHistories'));
-                              ;
-                              String info = doc.get('info');
-                              String note = doc.get('note');
-                              String comment = doc.get('comment');
-                              bool isActive = doc.get('isActive');
+                              print("몇 번 그리나요? - ListView.builder");
+                              final docs;
 
-                              UserInfo userInfo = UserInfo(
-                                doc.id,
-                                user.uid,
-                                name,
-                                registerDate,
-                                phoneNumber,
-                                registerType,
-                                goal,
-                                selectedGoals,
-                                bodyAnalyzed,
-                                selectedBodyAnalyzed,
-                                medicalHistories,
-                                selectedMedicalHistories,
-                                info,
-                                note,
-                                comment,
-                                isActive,
-                              );
+                              if (searchString.isNotEmpty) {
+                                print(
+                                    "searchString.isNotEmpty : ${searchString}");
+                                List searchedList = [];
+                                String varName = "";
 
-                              return InkWell(
-                                onTap: () async {
-                                  // 회원 카드 선택시 MemberInfo로 이동
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MemberInfo(),
-                                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                      settings: RouteSettings(
-                                        arguments: userInfo,
-                                      ),
-                                    ),
-                                  ).then((result){
-                                    print("MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-                                    UserInfo tmpUserInfo = result;
-                                    print("MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
-                                  });
+                                resultMemberList.forEach((element) {
+                                  varName = element['name'];
+                                  // 검색 기능 함수 convert
+                                  if (globalFunction.searchString(
+                                      varName, searchString)) {
+                                    searchedList.add(element);
+                                  }
+                                });
+                                docs = searchedList ?? []; // 문서들 가져오기
+                              } else {
+                                docs = resultMemberList ?? []; // 문서들 가져오기
+                              }
+                              /* 멤버 리트스 최초 1번 받아오기 리뉴얼 작업위해 주석 - 정규호 2022/11/23 
+                              FutureBuilder<QuerySnapshot>(
+                                //future: memberService.read(
+                                //    'w5ahp6WhpQdLgqNhA6B8afrWWeA3', 'name'),
+                                future: memberService.read(user.uid, 'name'),
+                                builder: (context, snapshot) {
+                                  final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                                  */
+
+                              //해당 함수는 빌드가 끝난 다음 수행 된다.
+                              //https://velog.io/@jun7332568/%ED%94%8C%EB%9F%AC%ED%84%B0flutter-setState-or-markNeedsBuild-called-during-build.-%EC%98%A4%EB%A5%98-%ED%95%B4%EA%B2%B0
+                              /* WidgetsBinding.instance!
+                                  .addPostFrameCallback((_) {
+                                if (conutMemberList != docs.length.toString()) {
+                                  _refreshMemberCount(docs.length.toString());
+                                }
+                              }); */
+
+                              // 위 refreshMemberCount 아래에 있어야 회원 목록 없을 때 총 0 명 리턴
+                              if (docs.isEmpty) {
+                                return Center(child: Text("회원 목록을 준비 중입니다."));
+                              }
+
+                              return NotificationListener(
+                                onNotification: (notification) {
+                                  if(notification is UserScrollNotification){
+                                    /* if(scrollController.offset != scrollController.position.maxScrollExtent && docs){
+
+                                    } */
+                                    
+                                  }
+                                  print("notification : ${notification}");
+                                  return false;
                                 },
-                                child: BaseContainer(
-                                  docId: docId,
-                                  name: name,
-                                  registerDate: registerDate,
-                                  goal: goal,
-                                  info: info,
-                                  note: note,
-                                  phoneNumber: phoneNumber,
-                                  isActive: isActive,
-                                  memberService: memberService,
+                                child: ListView.separated(
+                                  controller: scrollController,
+                                 
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: docs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    print("몇 번 그리나요? - ListView.separated");
+                                    final doc = docs[index];
+                                    String docId = doc['id'];
+                                    String name = doc['name'];
+                                    String registerDate = doc['registerDate'];
+                                    String phoneNumber = doc['phoneNumber'];
+                                    String registerType = doc['registerType'];
+                                    String goal = doc['goal'];
+                                    List<String> selectedGoals =
+                                        List<String>.from(doc['selectedGoals']);
+                                    /* print(
+                                        "[ML] ListView 회원정보 가져오기 selectedGoals : ${selectedGoals}"); */
+                                    String bodyAnalyzed = doc['bodyanalyzed'];
+                                    /* print(
+                                        "[ML] ListView 회원정보 가져오기 bodyAnalyzed : ${bodyAnalyzed}"); */
+                                    List<String> selectedBodyAnalyzed =
+                                        List<String>.from(
+                                            doc['selectedBodyAnalyzed']);
+                                    ;
+                                    String medicalHistories =
+                                        doc['medicalHistories'];
+                                    List<String> selectedMedicalHistories =
+                                        List<String>.from(
+                                            doc['selectedMedicalHistories']);
+                                    ;
+                                    String info = doc['info'];
+                                    String note = doc['note'];
+                                    String comment = doc['comment'];
+                                    bool isActive = doc['isActive'];
+                                                            
+                                    UserInfo userInfo = UserInfo(
+                                      doc['id'],
+                                      user.uid,
+                                      name,
+                                      registerDate,
+                                      phoneNumber,
+                                      registerType,
+                                      goal,
+                                      selectedGoals,
+                                      bodyAnalyzed,
+                                      selectedBodyAnalyzed,
+                                      medicalHistories,
+                                      selectedMedicalHistories,
+                                      info,
+                                      note,
+                                      comment,
+                                      isActive,
+                                    );
+                                                            
+                                    return InkWell(
+                                      onTap: () async {
+                                        // 회원 카드 선택시 MemberInfo로 이동
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MemberInfo(),
+                                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                            settings: RouteSettings(
+                                              arguments: userInfo,
+                                            ),
+                                          ),
+                                        ).then((result) {
+                                          print(
+                                              "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                          UserInfo tmpUserInfo = result;
+                                          print(
+                                              "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                        });
+                                      },
+                                      child: BaseContainer(
+                                        docId: docId,
+                                        name: name,
+                                        registerDate: registerDate,
+                                        goal: goal,
+                                        info: info,
+                                        note: note,
+                                        phoneNumber: phoneNumber,
+                                        isActive: isActive,
+                                        memberService: memberService,
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: ((context, index) =>
+                                      Divider(
+                                        height: 0,
+                                      )),
                                 ),
                               );
                             },
-                            separatorBuilder: ((context, index) => Divider(
-                                  height: 0,
-                                )),
-                          );
-                        },
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: combinedLngs
+                                  .map((character) => InkWell(
+                                        onTap: () {
+                                          print("character : ${character}");
+                                          setSearchIndex(character);
+                                        },
+                                        child: Text(
+                                          character,
+                                          style: const TextStyle(fontSize: 8),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -309,7 +506,11 @@ class _MemberListState extends State<MemberList> {
                         arguments: args,
                       ),
                     ),
-                  );
+                  ).then((value) {
+                    setState(() {
+                      resultMemberList = value;
+                    });
+                  });
                 },
                 label: Text(
                   '회원 추가',

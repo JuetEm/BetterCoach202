@@ -915,11 +915,11 @@ class _BaseContainerState extends State<BaseContainer> {
                 ],
               ),
               Spacer(flex: 1),
-              Icon(
+              /* Icon(
                 Icons.arrow_forward_ios,
                 color: Palette.gray95,
                 size: 22.0,
-              ),
+              ), */
             ],
           ),
         ],

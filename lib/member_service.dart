@@ -16,6 +16,24 @@ class MemberService extends ChangeNotifier {
         .get();
   }
 
+  Future<List> readMemberListAtFirstTime(String uid) async {
+    var result = await memberCollection.where('uid', isEqualTo: uid)
+        .orderBy('name', descending: false)
+        .get();
+    
+    
+    List resultList = [];
+    var docsLength = result.docs.length;
+    var rstObj = {};
+        for(int i=0; i<result.docs.length; i++){
+          // print("result.docs[i].data() : ${result.docs[i].data()}");
+          rstObj = result.docs[i].data();
+          rstObj['id'] = result.docs[i].id;
+          resultList.add(rstObj);
+        }
+        return resultList;
+  }
+
   Future<bool> readisActive(String uid, String docId) async {
     bool result = false;
     //   .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
@@ -67,7 +85,7 @@ class MemberService extends ChangeNotifier {
     //return result;
   }
 
-  void create({
+  Future<String> create({
     required String uid,
     required String name,
     required String registerDate,
@@ -104,7 +122,7 @@ class MemberService extends ChangeNotifier {
     //   'note': note, // 메모
     //   'isActive': true, // 회원권 활성화 여부
     // });
-    await memberCollection.add({
+    var result = await memberCollection.add({
       'uid': uid, // 유저(강사) 식별자
       'name': name, // 회원 이름
       'registerDate': registerDate, // 회원 등록일
@@ -121,8 +139,11 @@ class MemberService extends ChangeNotifier {
       'comment': comment,
       'isActive': true, // 회원권 활성화 여부
     });
+    print("result.id : ${result.id}");
     notifyListeners(); // 화면 갱신
     onSuccess();
+
+    return result.id;
   }
 
   void update({

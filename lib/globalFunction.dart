@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,8 +8,271 @@ import 'action_service.dart';
 import 'baseTableCalendar.dart';
 import 'bottomSheetContent.dart';
 
+List firstChars = [
+  "ㄱ",
+  "ㄲ",
+  "ㄴ",
+  "ㄷ",
+  "ㄸ",
+  "ㄹ",
+  "ㅁ",
+  "ㅂ",
+  "ㅃ",
+  "ㅅ",
+  "ㅆ",
+  "ㅇ",
+  "ㅈ",
+  "ㅉ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ"
+];
+List middleChars = [
+  "ㅏ",
+  "ㅐ",
+  "ㅑ",
+  "ㅒ",
+  "ㅓ",
+  "ㅔ",
+  "ㅕ",
+  "ㅖ",
+  "ㅗ",
+  "ㅘ",
+  "ㅙ",
+  "ㅚ",
+  "ㅛ",
+  "ㅜ",
+  "ㅝ",
+  "ㅞ",
+  "ㅟ",
+  "ㅠ",
+  "ㅡ",
+  "ㅢ",
+  "ㅣ"
+];
+
+List lastChars = [
+  "",
+  "ㄱ",
+  "ㄲ",
+  "ㄳ",
+  "ㄴ",
+  "ㄵ",
+  "ㄶ",
+  "ㄷ",
+  "ㄹ",
+  "ㄺ",
+  "ㄻ",
+  "ㄼ",
+  "ㄽ",
+  "ㄾ",
+  "ㄿ",
+  "ㅀ",
+  "ㅁ",
+  "ㅂ",
+  "ㅄ",
+  "ㅅ",
+  "ㅆ",
+  "ㅇ",
+  "ㅈ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ"
+];
+
 class GlobalFunction {
   GlobalFunction();
+
+  /* final firestore = FirebaseFirestore.instance;
+
+  Future<void> readMemberListAtFirstTime(String uid) async {
+    var result = await firestore.collection('member').where('uid', isEqualTo: uid)
+        .orderBy('name', descending: false)
+        .get();
+        for(int i=0; i<result.docs.length; i++){
+          print("result.docs[i].data() : ${result.docs[i].data()}");
+        }
+  } */
+
+  String getChosungFromString(String name) {
+    String result = "";
+    bool isKoreanName = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(name);
+    print("isKoreanName : ${isKoreanName}");
+    if (isKoreanName) {
+      String element = "";
+      String tmpStr = "";
+      String varName = name;
+      element = varName;
+
+      var base = ((element.codeUnits[0].toInt()) - ('가'.codeUnits[0].toInt()));
+
+      var firstCharPeriod = ('까'.codeUnits[0] - '가'.codeUnits[0]).toInt();
+      var middleCharPeriod = ('개'.codeUnits[0] - '가'.codeUnits[0]).toInt();
+      var chosung = firstChars[(base / firstCharPeriod).toInt()];
+      print("chosung : ${chosung}");
+      var joongsung = middleChars[
+          (((base - (firstCharPeriod)) / middleCharPeriod) % 21).toInt()];
+      // print("joongsung : ${joongsung}");
+      var jongsung = lastChars[base % 28];
+      // print("jongsung : ${jongsung}");
+
+        result = chosung;
+    } else {
+      String firstChar = name.trim().toLowerCase().substring(0,1);
+      print("firstChar : ${firstChar}");
+        result = firstChar;
+    }
+
+    return result;
+  }
+
+  // https://smilehugo.tistory.com/entry/javascript-algorithm-a-korean-character-breakdown-into-array
+  bool searchString(String name, String searchString) {
+    print("convertStringArray is called => searchString : ${searchString}");
+    bool result = false;
+    List searchedList = [];
+    String varName = "";
+
+    varName = name.trim();
+    print("varName : ${varName}");
+    List varStrList = [];
+    varName.characters.forEach((element) {
+      varStrList.add(element);
+    });
+    List searchStrList = [];
+    searchString.characters.forEach((element) {
+      searchStrList.add(element);
+    });
+
+    String nameChoString = "";
+    String nameChoJoongJongString = "";
+    String searchChoString = "";
+    String searchChoJoongJongString = "";
+
+    List nameChoList = [];
+    List targetNameList = [];
+    // if (isKorean(varName)) {
+    bool isKorean = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(searchString);
+    print("isKorean : ${isKorean}");
+    if (isKorean) {
+      String element = "";
+      String tmpStr = "";
+      for (int i = 0; i < varStrList.length; i++) {
+        element = varStrList[i];
+
+        var base =
+            ((element.codeUnits[0].toInt()) - ('가'.codeUnits[0].toInt()));
+
+        var firstCharPeriod = ('까'.codeUnits[0] - '가'.codeUnits[0]).toInt();
+        var middleCharPeriod = ('개'.codeUnits[0] - '가'.codeUnits[0]).toInt();
+        var chosung = firstChars[(base / firstCharPeriod).toInt()];
+        print("chosung : ${chosung}");
+        var joongsung = middleChars[
+            (((base - (firstCharPeriod)) / middleCharPeriod) % 21).toInt()];
+        // print("joongsung : ${joongsung}");
+        var jongsung = lastChars[base % 28];
+        // print("jongsung : ${jongsung}");
+
+        nameChoJoongJongString += chosung + joongsung + jongsung;
+        nameChoString += chosung;
+        tmpStr = varName.substring(0, i + 1);
+        targetNameList.add(tmpStr);
+        // print("varName.substring(0,${i}+1) : ${varName.substring(0,i+1)}");
+      }
+
+      List resultList = [];
+      for (int i = 0; i < targetNameList.length; i++) {
+        resultList.add(targetNameList[i] +
+            nameChoString.substring(i + 1, nameChoString.length));
+        print("resultList[${i}] : ${resultList[i]}");
+        if (targetNameList.length - 1 == i) {
+          resultList.add(nameChoString);
+        }
+      }
+
+      for (int i = 0; i < searchStrList.length; i++) {
+        element = searchStrList[i];
+        if (element.codeUnits[0] >= 12593 && element.codeUnits[0] <= 12643) {
+          searchChoJoongJongString += element;
+        } else {
+          var base =
+              ((element.codeUnits[0].toInt()) - ('가'.codeUnits[0].toInt()));
+
+          var firstCharPeriod = ('까'.codeUnits[0] - '가'.codeUnits[0]).toInt();
+          var middleCharPeriod = ('개'.codeUnits[0] - '가'.codeUnits[0]).toInt();
+          var chosung = firstChars[(base / firstCharPeriod).toInt()];
+          print("chosung : ${chosung}");
+          var joongsung = middleChars[
+              (((base - (firstCharPeriod)) / middleCharPeriod) % 21).toInt()];
+          // print("joongsung : ${joongsung}");
+          var jongsung = lastChars[base % 28];
+          // print("jongsung : ${jongsung}");
+
+          searchChoJoongJongString += chosung + joongsung + jongsung;
+          searchChoString += chosung;
+        }
+      }
+
+      /* if (nameChoString.contains(searchChoString)) {
+        result = true;
+      }else if(varName.contains(searchChoString)){
+        result = true;
+      } */
+      if (searchChoJoongJongString.isNotEmpty &&
+          nameChoJoongJongString.contains(searchChoJoongJongString)) {
+        print("nameChoJoongJongString : ${nameChoJoongJongString}");
+        print("searchChoJoongJongString : ${searchChoJoongJongString}");
+        result = true;
+      } else if (nameChoString.contains(searchChoString)) {
+        /* for (int i = 0; i < resultList.length; i++) {
+          if (resultList[i].contains(searchChoString)) {
+            print("resultList[${i}] : ${resultList[i]}");
+            result = true;
+            break;
+          }
+        } */
+        List tmpChoList = nameChoString.characters.toList();
+        List tmpSrchList = searchString.characters.toList();
+        for (int i = 0; i < nameChoString.length; i++) {
+          if (tmpSrchList.length > i) {
+            if (tmpChoList[i] == tmpSrchList[i]) {
+              result = true;
+            } else {
+              result = false;
+            }
+          }
+        }
+      }
+    } else {
+      if (varName.trim().toLowerCase().contains(searchString.toLowerCase())) {
+        result = true;
+      }
+    }
+
+    return result;
+  }
+
+  /* isKorean함수는 말 그대로 해당 String이 한글인지 확인하는 함수이다.
+      한글을 Unicode로 바꾸었을때 자음들은 12593부터 12643사이의 값을 가진다
+      자음과 모음을 합친 경우 -> '가' 부터 '힣'까지의 값들은 44032부터 55203까지의 값을 가진다.
+      그렇기에 확인하고자 하는 String을 Unicode로 변환후 해당값을 확인하면 된다. */
+  bool isKorean(String searchString) {
+    bool isKorean = false;
+    int inputToUniCode = searchString.codeUnits[0];
+    print("inputToUniCode : ${inputToUniCode}");
+
+    isKorean = (inputToUniCode >= 12593 && inputToUniCode <= 12643)
+        ? true
+        : (inputToUniCode >= 44032 && inputToUniCode <= 55203)
+            ? true
+            : false;
+
+    return isKorean;
+  }
 
   void showBottomSheetContent(BuildContext context,
       {Function? customEditFunction, Function? customDeleteFunction}) {
