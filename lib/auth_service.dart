@@ -7,7 +7,7 @@ class AuthService extends ChangeNotifier {
     return FirebaseAuth.instance.currentUser;
   }
 
-  void signUp({
+  Future<UserCredential?> signUp({
     required String email, // 이메일
     required String password, // 비밀번호
     required Function onSuccess, // 가입 성공시 호출되는 함수
@@ -18,18 +18,26 @@ class AuthService extends ChangeNotifier {
     // 이메일 및 비밀번호 입력 여부 확인
     if (email.isEmpty) {
       onError("이메일을 입력해 주세요.");
-      return;
+      return null;
     } else if (password.isEmpty) {
       onError("비밀번호를 입력해 주세요.");
-      return;
+      return null;
     }
 
     // firebase auth 회원 가입
+    var result;
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      ).then((value){
+        print("value : ${value}");
+      }).onError((error, stackTrace){
+        print("error : ${error}");
+        print("stackTrace : ${stackTrace}");
+      }).whenComplete((){
+        print("sign-in completed!");
+      });
 
       // 성공 함수 호출
       onSuccess();
@@ -52,6 +60,7 @@ class AuthService extends ChangeNotifier {
       // Firebase auth 이외의 에러 발생
       onError(e.toString());
     }
+    return result;
   }
 
   void signIn({
