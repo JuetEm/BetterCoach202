@@ -9,7 +9,7 @@ import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'dart:js';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

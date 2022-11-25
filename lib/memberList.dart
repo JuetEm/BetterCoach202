@@ -36,6 +36,8 @@ List combinedLngs = [];
 
 late final ScrollController scrollController;
 
+String currentChar = "";
+
 class MemberList extends StatefulWidget {
   List tmpMemberList = [];
   MemberList({super.key});
@@ -65,11 +67,11 @@ class _MemberListState extends State<MemberList> {
     "ㅌ",
     "ㅍ",
     "ㅎ",
-    "ㄲ",
+    /* "ㄲ",
     "ㄸ",
     "ㅃ",
     "ㅆ",
-    "ㅉ",
+    "ㅉ", */
   ];
 
   int _searchIndex = 0;
@@ -77,6 +79,7 @@ class _MemberListState extends State<MemberList> {
   final ItemPositionsListener _itemPositionsListener =
       ItemPositionsListener.create();
 
+  // 모음 검색 세로 바 구현 작업
   // https://github.com/thanikad/alphabetical_search
   void setSearchIndex(String searchLetter) {
     List rmNameList = [];
@@ -85,11 +88,16 @@ class _MemberListState extends State<MemberList> {
         rmNameList.add(globalFunction.getChosungFromString(element['name']));
       },
     );
+    /* rmNameList.forEach((element) { 
+      print("element : ${element}");
+    }); */
     // setState(() {
-    _searchIndex = rmNameList
-        .indexWhere((element) => element.toString().startsWith(searchLetter));
+    _searchIndex = rmNameList.indexWhere(
+        (element) => element.toString().startsWith(searchLetter.toLowerCase()));
     print("_searchIndex.toDouble() : ${_searchIndex.toDouble()}");
-    if (_searchIndex > 0 && scrollController.hasClients) {
+    double contentHeight = MediaQuery.of(context).size.height > 700 ? MediaQuery.of(context).size.height * 0.89 : MediaQuery.of(context).size.height * 0.85;
+    print("contentHeight : ${contentHeight}");
+    if (_searchIndex >= 0 && scrollController.hasClients) {
       /* SchedulerBinding.instance.addPersistentFrameCallback(
         (timeStamp) async {
           await scrollController.animateTo(
@@ -102,10 +110,19 @@ class _MemberListState extends State<MemberList> {
               }) */;
         },
       ); */
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        scrollController.jumpTo(_searchIndex.toDouble());
-        print("WidgetsBinding : ");
-      },);
+      // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        print("scrollController.position.maxScrollExtent : ${scrollController.position.maxScrollExtent}");
+        scrollController.animateTo(
+              scrollController.position.maxScrollExtent,
+              duration: Duration(milliseconds: 1),
+              curve: Curves.ease);/* .then((value){
+                print("value : ");
+              }).whenComplete((){
+                print("complete : ");
+              }) */
+      // scrollController.jumpTo(contentHeight);
+      print("WidgetsBinding : ");
+      // },);
       print("after jumpTo!!");
     }
     // });
@@ -128,24 +145,24 @@ class _MemberListState extends State<MemberList> {
   @override
   void initState() {
     // TODO: implement initState
-    
+
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;
-    combinedLngs.addAll(koreans);
+    // 모음 검색 세로 바 구현 작업
+    /* combinedLngs.addAll(koreans);
     combinedLngs.addAll(alphabets);
     scrollController = ScrollController(initialScrollOffset: 0);
     scrollController.addListener(() {
       // print("Listening!");
-      print("scrollController.offset : ${scrollController.offset}");
-    
-    });
+      // print("scrollController.offset : ${scrollController.offset}");
+    }); */
     super.initState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    scrollController.dispose();
+    // scrollController.dispose();
     super.dispose();
   }
 
@@ -169,7 +186,7 @@ class _MemberListState extends State<MemberList> {
         return SafeArea(
           child: Scaffold(
             backgroundColor: Palette.secondaryBackground,
-            key: _scaffoldKey,
+            // key: _scaffoldKey,
             appBar: MainAppBarMethod(context, "회원목록"),
             /* endDrawer: Container(
               child: Drawer(
@@ -208,7 +225,7 @@ class _MemberListState extends State<MemberList> {
                   children: [
                     BaseSearchTextField(
                       customController: searchController,
-                      hint: "동작을 검색하세요.",
+                      hint: "이름을 검색하세요.",
                       showArrow: true,
                       customFunction: () {
                         setState(() {
@@ -283,18 +300,18 @@ class _MemberListState extends State<MemberList> {
 
                               return NotificationListener(
                                 onNotification: (notification) {
-                                  if(notification is UserScrollNotification){
+                                  if (notification is UserScrollNotification) {
                                     /* if(scrollController.offset != scrollController.position.maxScrollExtent && docs){
 
                                     } */
-                                    
+
                                   }
-                                  print("notification : ${notification}");
+                                  // print("notification : ${notification}");
                                   return false;
                                 },
                                 child: ListView.separated(
+                                  physics: PageScrollPhysics(),
                                   controller: scrollController,
-                                 
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: docs.length,
@@ -329,7 +346,7 @@ class _MemberListState extends State<MemberList> {
                                     String note = doc['note'];
                                     String comment = doc['comment'];
                                     bool isActive = doc['isActive'];
-                                                            
+
                                     UserInfo userInfo = UserInfo(
                                       doc['id'],
                                       user.uid,
@@ -348,7 +365,7 @@ class _MemberListState extends State<MemberList> {
                                       comment,
                                       isActive,
                                     );
-                                                            
+
                                     return InkWell(
                                       onTap: () async {
                                         // 회원 카드 선택시 MemberInfo로 이동
@@ -390,25 +407,75 @@ class _MemberListState extends State<MemberList> {
                               );
                             },
                           ),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: combinedLngs
-                                  .map((character) => InkWell(
-                                        onTap: () {
-                                          print("character : ${character}");
-                                          setSearchIndex(character);
-                                        },
-                                        child: Text(
-                                          character,
-                                          style: const TextStyle(fontSize: 8),
-                                        ),
-                                      ))
-                                  .toList(),
+                          // 자음 검색 세로 바 구현 작업
+                          /* GestureDetector(
+                            onVerticalDragUpdate: (details) {
+                              print(
+                                  "update details.localPosition.dy : ${details.localPosition.dy}");
+                              print("update currentChar : ${currentChar}");
+                              setSearchIndex(currentChar);
+                            },
+                            onVerticalDragStart: (details) {
+                              print(
+                                  "start details.localPosition.dy : ${details.localPosition.dy}");
+                              print("start currentChar : ${currentChar}");
+                              setSearchIndex(currentChar);
+                            },
+                            onVerticalDragEnd: (details) {
+                              print("End currentChar : ${currentChar}");
+                              setState(() {
+                                currentChar = "";
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 30),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: combinedLngs
+                                    .map((character) => InkWell(
+                                          onTap: () async {
+                                            print("character : ${character}");
+                                            setState(() {
+                                              currentChar = character;
+                                            });
+
+                                            setSearchIndex(currentChar);
+
+                                            Future.delayed(Duration(seconds: 3),
+                                                () {
+                                              setState(() {
+                                                currentChar = "";
+                                              });
+                                            });
+
+                                            /* currentChar = character; */
+                                            
+                                          },
+                                          child: Text(
+                                            character,
+                                            style: TextStyle(
+                                                fontSize: (MediaQuery.of(context).size.height/65).floorToDouble()),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
                             ),
-                          )
+                          ),
+                          currentChar.isEmpty
+                              ? Container()
+                              : Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    color: Colors.black.withAlpha(80),
+                                    padding: EdgeInsets.all(16),
+                                    child: Text(
+                                      currentChar,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 36.0),
+                                    ),
+                                  ),
+                                ) */
                         ],
                       ),
                     ),
