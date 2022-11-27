@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,11 +10,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
+import 'package:web_project/local_info.dart';
 import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:web_project/testShowDialog.dart';
 import 'dart:io' show Platform;
+import 'package:http/http.dart' as http;
 
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -67,8 +71,8 @@ void main() async {
   if (kIsWeb) {
     print("Platform.kIsWeb");
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   } else {
     if (Platform.isAndroid) {
       print("Platform.isAndroid");
@@ -173,7 +177,9 @@ class MyApp extends StatelessWidget {
             //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
             fontFamily: 'Pretendard',
             backgroundColor: Palette.mainBackground),
-        home: user == null ? LoginPage() : SignUp(), // MemberList.getMemberList(resultList),
+        home: LoginPage()/* user == null
+            ? LoginPage()
+            : SignUp(), */ // MemberList.getMemberList(resultList),
       ),
     );
   }
@@ -375,9 +381,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     backgroundColor: Palette.buttonOrange,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     // 회원가입
                     print("sign up");
+                    await getLocalInfos();
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => SignUp()),
@@ -448,6 +456,48 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         );
+      },
+    );
+  }
+
+  Future<void> getLocalInfos() async {
+    List cityList = [];
+    List districtList = [];
+    List townList = [];
+    String urlString = "http://icanidevelop.com/getLocalInfos";
+    var url = Uri.parse(urlString);
+    var response = await http.get(url);
+    print("response.statusCode : ${response.statusCode}");
+    final List<LocalInfo> ilList = jsonDecode(response.body)
+        .map<LocalInfo>((json) => LocalInfo.fromJson(json))
+        .toList();
+    ilList.forEach(
+      (apiElement) {
+        print("apiElement.id['\$oid'] : ${apiElement.id['\$oid']}");
+        print("apiElement.title : ${apiElement.title}");
+        // print("apiElement : ${apiElement.info}");
+        apiElement.info.forEach((infoElement) {
+          print("infoElement[0] : ${infoElement[0]}");
+          Map ifMap = infoElement[0];
+          print("ifMap.keys.toList()[0] : ${ifMap.keys.toList()[0]}");
+          cityList.add(ifMap.keys.toList()[0]);
+          
+          infoElement.forEach((mElement) {
+            print("mElement : ${mElement}");
+            Map jMap = mElement;
+            jMap.keys.forEach((kElement) {
+              
+              print(
+                  "=========================================== ${kElement} ===========================================");
+              districtList.add(kElement);
+              List jList = jMap[kElement];
+              jList.forEach((lElement) {
+                print("lElement : ${lElement}");
+                townList.add(lElement);
+              });
+            });
+          });
+        });
       },
     );
   }

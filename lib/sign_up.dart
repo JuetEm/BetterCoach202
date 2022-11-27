@@ -3,6 +3,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/coachInfo.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/locationAdd.dart';
 
 import 'auth_service.dart';
 import 'color.dart';
@@ -11,6 +12,7 @@ import 'main.dart';
 bool isPswdSame = false;
 bool isEmailValidate = false;
 bool isPhoneValidated = false;
+bool isLocationValidated = false;
 
 IconData emailUnvalidated = Icons.mail_outline_outlined;
 IconData emailValidated = Icons.mark_email_read_outlined;
@@ -19,6 +21,10 @@ IconData emailValidateResult = emailUnvalidated;
 IconData phoneUnvalidated = Icons.smartphone_sharp;
 IconData phoneValidated = Icons.mobile_friendly_outlined;
 IconData phoneValidateResult = phoneUnvalidated;
+
+IconData locationUnvalidated = Icons.add_location_alt_outlined;
+IconData locationValidated = Icons.place;
+IconData locationValidateResult = locationUnvalidated;
 
 enum Gender { MAN, WOMAN, NONE }
 
@@ -91,6 +97,13 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       phoneValidateResult =
           isPhoneValidated ? phoneValidated : phoneUnvalidated;
+    });
+  }
+
+  void setLocationIcon() {
+    setState(() {
+      locationValidateResult =
+          isLocationValidated ? locationValidated : locationUnvalidated;
     });
   }
 
@@ -383,6 +396,7 @@ class _SignUpState extends State<SignUp> {
                     minHeight: 40,
                   ),
                   child: TextField(
+                    readOnly: true,
                     style: TextStyle(fontSize: 14),
                     //focusNode: textFocus,
                     textInputAction: TextInputAction.done,
@@ -477,6 +491,7 @@ class _SignUpState extends State<SignUp> {
                     minHeight: 40,
                   ),
                   child: TextField(
+                    readOnly: true,
                     style: TextStyle(fontSize: 14),
                     //focusNode: textFocus,
                     textInputAction: TextInputAction.done,
@@ -571,6 +586,7 @@ class _SignUpState extends State<SignUp> {
                     minHeight: 40,
                   ),
                   child: TextField(
+                    readOnly: true,
                     style: TextStyle(fontSize: 14),
                     //focusNode: textFocus,
                     textInputAction: TextInputAction.done,
@@ -665,6 +681,7 @@ class _SignUpState extends State<SignUp> {
                     minHeight: 40,
                   ),
                   child: TextField(
+                    readOnly: true,
                     style: TextStyle(fontSize: 14),
                     //focusNode: textFocus,
                     textInputAction: TextInputAction.done,
@@ -680,7 +697,7 @@ class _SignUpState extends State<SignUp> {
                                 child: Padding(
                               padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                               child: Text(
-                                "나이 ${currentAge} 세",
+                                "나이 \r\n${currentAge} 세",
                                 style: TextStyle(
                                     fontSize: 14, color: Palette.gray95),
                               ),
@@ -739,6 +756,7 @@ class _SignUpState extends State<SignUp> {
                     minHeight: 40,
                   ),
                   child: TextField(
+                    readOnly: true,
                     style: TextStyle(fontSize: 14),
                     //focusNode: textFocus,
                     textInputAction: TextInputAction.done,
@@ -832,11 +850,69 @@ class _SignUpState extends State<SignUp> {
                 ),
 
                 /// 근무 가능지역 입력창
-                BaseTextField(
+                /* BaseTextField(
                   customController: workingAreaController,
                   hint: "근무 가능지역",
                   showArrow: false,
                   customFunction: () {},
+                ), */
+                Container(
+                  constraints: BoxConstraints(
+                    minHeight: 40,
+                  ),
+                  child: TextField(
+                    // enabled: false,
+                    readOnly: true,
+                    style: TextStyle(fontSize: 14),
+                    //focusNode: textFocus,
+                    textInputAction: TextInputAction.none,
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: "근무 가능지역",
+                      suffixIcon: TextButton.icon(
+                        onPressed: () async {
+                          print("suffixIcon Taped");
+                          final result = await showDialog(
+                          context: context,
+                          builder: (context) => StatefulBuilder(
+                            builder: (context, setState) {
+                              return LocationAdd();
+                            },
+                          ),
+                        );
+                        },
+                        icon: Icon(locationValidateResult),
+                        label: Text("선택하기"),
+                      ),
+                      hintText: "선택하기",
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: Palette.gray95,
+                      ),
+                      border: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 1,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.all(4),
+                    ),
+                    onChanged: (text) {
+                      // 현재 텍스트필드의 텍스트를 출력
+                      // print("First text field: $text");
+                    },
+                    onEditingComplete: () {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+                    },
+                    onTap: () {
+                      print("textfield Taped");
+                    },
+                  ),
                 ),
 
                 /// 출강센터 입력창
