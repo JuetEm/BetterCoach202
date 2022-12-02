@@ -167,20 +167,21 @@ class MyApp extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
       },
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
-        ],
-        theme: ThemeData(
-            // appBarTheme: AppBarTheme(
-            //     systemOverlayStyle:
-            //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
-            fontFamily: 'Pretendard',
-            backgroundColor: Palette.mainBackground),
-        home: LoginPage()/* user == null
+          debugShowCheckedModeBanner: false,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
+          theme: ThemeData(
+              // appBarTheme: AppBarTheme(
+              //     systemOverlayStyle:
+              //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
+              fontFamily: 'Pretendard',
+              backgroundColor: Palette.mainBackground),
+          home:
+              LoginPage() /* user == null
             ? LoginPage()
             : SignUp(), */ // MemberList.getMemberList(resultList),
-      ),
+          ),
     );
   }
 }
@@ -384,11 +385,12 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     // 회원가입
                     print("sign up");
-                    await getLocalInfos();
+                    Map locationMap = await getLocalInfos();
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => SignUp()),
+                      MaterialPageRoute(
+                          builder: (_) => SignUp.getLocationMap(locationMap)),
                     );
                   },
                 ),
@@ -460,46 +462,81 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> getLocalInfos() async {
-    List cityList = [];
-    List districtList = [];
-    List townList = [];
-    String urlString = "http://icanidevelop.com/getLocalInfos";
+  Future<Map> getLocalInfos() async {
+    String urlString = "https://www.icanidevelop.com/getLocalInfos";
     var url = Uri.parse(urlString);
     var response = await http.get(url);
     print("response.statusCode : ${response.statusCode}");
     final List<LocalInfo> ilList = jsonDecode(response.body)
         .map<LocalInfo>((json) => LocalInfo.fromJson(json))
         .toList();
+
+    Map resultObj = {};
+    Map resultMap = {};
+    List resultList = [];
+    List totalTownList = [];
+    String region = "";
     ilList.forEach(
       (apiElement) {
-        print("apiElement.id['\$oid'] : ${apiElement.id['\$oid']}");
-        print("apiElement.title : ${apiElement.title}");
+        // print("apiElement.id['\$oid'] : ${apiElement.id['\$oid']}");
+        // print("apiElement.title : ${apiElement.title}");
         // print("apiElement : ${apiElement.info}");
+        List infoList = apiElement.info;
+        region = "";
         apiElement.info.forEach((infoElement) {
-          print("infoElement[0] : ${infoElement[0]}");
+          // print("infoElement[0] : ${infoElement[0]}");
           Map ifMap = infoElement[0];
-          print("ifMap.keys.toList()[0] : ${ifMap.keys.toList()[0]}");
-          cityList.add(ifMap.keys.toList()[0]);
-          
+          // print("ifMap.keys.toList()[0] : ${ifMap.keys.toList()[0]}");
+          region = ifMap.keys.toList()[0].toString().split("전체")[0];
+          resultMap = {};
+          totalTownList = [];
+          List resultMapList = ifMap.keys.toList();
           infoElement.forEach((mElement) {
-            print("mElement : ${mElement}");
+            // print("mElement : ${mElement}");
             Map jMap = mElement;
+
             jMap.keys.forEach((kElement) {
-              
-              print(
-                  "=========================================== ${kElement} ===========================================");
-              districtList.add(kElement);
+              /* print(
+                  "=========================================== ${kElement} ==========================================="); */
+
               List jList = jMap[kElement];
+              resultList = [];
               jList.forEach((lElement) {
-                print("lElement : ${lElement}");
-                townList.add(lElement);
+                /* print("lElement : ${lElement}"); */
+
+                resultList.add(lElement);
+                /* if (!lElement.toString().contains("전체")) {
+                  totalTownList.add(lElement);
+                } */
+                totalTownList.add(lElement);
               });
+              resultMap[kElement] = resultList;
+              /* print(
+                    "jMap[jmKeyList.length-1] : ${resultMapList[resultMapList.length-1]}"); */
+              if (resultMapList[resultMapList.length - 1] ==
+                  kElement.toString()) {
+                /* print(
+                    "jmKeyList[jmKeyList.length-1] : ${resultMapList[resultMapList.length-1]}");
+                print("kElement : ${kElement}"); */
+                resultMap[jMap.keys.first] = totalTownList;
+              }
+              // print("resultMap[${kElement}] : ${resultMap[kElement]}");
             });
           });
+          resultObj.putIfAbsent(region, () => resultMap);
         });
       },
     );
+
+    /* resultObj.forEach((key, value) {
+      print("key : ${key}");
+      value.forEach((key, value) {
+        print("second key : ${key}");
+        print("value : ${value}");
+      });
+    }); */
+
+    return resultObj;
   }
 
   void loginMethod(BuildContext context, AuthService authService) {

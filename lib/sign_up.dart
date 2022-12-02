@@ -3,6 +3,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/coachInfo.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/localavailable_Info.dart';
 import 'package:web_project/locationAdd.dart';
 
 import 'auth_service.dart';
@@ -41,8 +42,13 @@ int currentMonth = DateTime.now().month;
 int careerYears = 3;
 int careerMonths = 7;
 
+List<LocalAvailableInfo>? tmpResultList = [];
+List<String> tmpResultStringList = [];
+
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  Map tmpLocationMap = {};
+  SignUp({super.key});
+  SignUp.getLocationMap(this.tmpLocationMap, {super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -111,6 +117,11 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     displayYear = getCareer(careerYears, careerMonths)[0];
     displayMonth = getCareer(careerYears, careerMonths)[1];
+
+    // selectedGoals 값 반영하여 FilterChips 동적 생성
+    var localInfoChips = [];
+    localInfoChips = makeChips(
+        localInfoChips, tmpResultStringList, Palette.backgroundOrange);
     return Consumer<AuthService>(
       builder: (context, authService, child) {
         return Scaffold(
@@ -866,25 +877,67 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(fontSize: 14),
                     //focusNode: textFocus,
                     textInputAction: TextInputAction.none,
-                    controller: emailController,
+                    controller: workingAreaController,
                     decoration: InputDecoration(
-                      labelText: "근무 가능지역",
-                      suffixIcon: TextButton.icon(
-                        onPressed: () async {
-                          print("suffixIcon Taped");
-                          final result = await showDialog(
-                          context: context,
-                          builder: (context) => StatefulBuilder(
-                            builder: (context, setState) {
-                              return LocationAdd();
-                            },
+                      // labelText: "근무 가능지역",
+                      suffixIcon: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                            child: Text(
+                              "근무 가능지역",
+                              style: TextStyle(
+                                  fontSize: 14, color: Palette.gray95),
+                            ),
                           ),
-                        );
-                        },
-                        icon: Icon(locationValidateResult),
-                        label: Text("선택하기"),
+                          Expanded(
+                            child: Container(),
+                          ),
+                          TextButton.icon(
+                            onPressed: () async {
+                              print("suffixIcon Taped");
+                              if(widget.tmpLocationMap == null){
+                                print("widget.tmpLocationMap is null");
+                              }
+                              if(tmpResultList == null){
+                                print("tmpResultList is null");
+                              }
+                              final result = await showDialog(
+                                context: context,
+                                builder: (context) => StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return LocationAdd.getLocationMap(
+                                        widget.tmpLocationMap, tmpResultList!);
+                                  },
+                                ),
+                              );
+                              String localInfoString = "";
+                              if(result != null){
+                                tmpResultList = result;
+                              }
+                              
+                              if(tmpResultList != null){
+                                tmpResultStringList = [];
+                              }
+                              tmpResultList?.sort(
+                                (a, b) => a.city.compareTo(b.city),
+                              );
+                              tmpResultList?.forEach((element) {
+                                print(
+                                    "signUp result => element.city : ${element.city}, element.district : ${element.district}, element.town : ${element.town}");
+                                localInfoString =
+                                    "${element.city} ${element.district} ${element.town}";
+                                tmpResultStringList.add(localInfoString);
+                              });
+                              setState(() {});
+                            },
+                            icon: Icon(locationValidateResult),
+                            label: Text("선택하기"),
+                          ),
+                        ],
                       ),
-                      hintText: "선택하기",
+
+                      // hintText: "선택하기",
                       hintStyle: TextStyle(
                         fontSize: 14,
                         color: Palette.gray95,
@@ -904,7 +957,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     onEditingComplete: () {
                       FocusScopeNode currentFocus = FocusScope.of(context);
-                
+
                       if (!currentFocus.hasPrimaryFocus) {
                         currentFocus.unfocus();
                       }
@@ -912,6 +965,25 @@ class _SignUpState extends State<SignUp> {
                     onTap: () {
                       print("textfield Taped");
                     },
+                  ),
+                ),
+                Offstage(
+                  offstage: localInfoChips.isEmpty,
+                  child: Container(
+                    height: 40,
+                    width: double.infinity,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (final chip in localInfoChips)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(4.0, 8, 4, 0),
+                              child: chip,
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
 
@@ -1052,5 +1124,55 @@ class _SignUpState extends State<SignUp> {
     result.add(tmpMonth);
 
     return result;
+  }
+
+  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList,
+      Color chipBackgroundColor) {
+    if (targetList.isNotEmpty) {
+      resultChips = targetList
+          .map((e) => FilterChip(
+                label: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(e),
+                    SizedBox(width: 1),
+                    Icon(
+                      Icons.close_outlined,
+                      size: 14,
+                      color: targetList.contains(e)
+                          ? Palette.gray00
+                          : Palette.gray99,
+                    )
+                  ],
+                ),
+                onSelected: ((value) {
+                  setState(() {
+                    for (int i = 0; i < targetList.length; i++) {
+                      if (e == targetList[i]) {
+                        tmpResultList?.removeAt(i);
+                      }
+                    }
+                    targetList.remove(e);
+                  });
+                  print("value : ${value}");
+                }),
+                selected: targetList.contains(e),
+                labelStyle: TextStyle(
+                    fontSize: 14,
+                    color: targetList.contains(e)
+                        ? Palette.gray00
+                        : Palette.gray99),
+                selectedColor: chipBackgroundColor,
+                backgroundColor: Colors.transparent,
+                showCheckmark: false,
+                side: targetList.contains(e)
+                    ? BorderSide.none
+                    : BorderSide(color: Palette.grayB4),
+              ))
+          .toList();
+    }
+    print("[MA] makeChips : ${resultChips}");
+    return resultChips;
   }
 }
