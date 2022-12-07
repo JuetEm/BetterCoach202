@@ -145,6 +145,15 @@ class _ActionSelectorState extends State<ActionSelector> {
     tmpLessonInfoList = args[5];
     resultActionList = args[6];
 
+    /* setState(() {
+      selectedActionCount = tmpLessonInfoList.length;
+    }); */
+    if(tmpLessonInfoList.isNotEmpty){
+      selectedActionCount = tmpLessonInfoList.length;
+      isFloating = true;
+    }
+    
+
     List docs = resultActionList;
     if (searchString.isNotEmpty) {
       print("searchString.isNotEmpty : ${searchString}");
@@ -1022,7 +1031,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     final doc = docs[index];
-                                    print("doc : ${doc}");
+                                    // print("doc : ${doc}");
                                     String apparatus = doc['apparatus'];
                                     String otherApparatusName =
                                         doc['otherApparatusName'];
