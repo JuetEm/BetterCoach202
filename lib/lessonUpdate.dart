@@ -27,6 +27,9 @@ TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController todayNoteController = TextEditingController();
 TextEditingController totalNoteController = TextEditingController();
 
+FocusNode lessonDateFocusNode = FocusNode();
+FocusNode totalNoteFocusNode = FocusNode();
+
 // 가변적으로 만들어지는 TextFields
 var totalNoteControllers = [];
 
@@ -153,6 +156,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
                         /// 수업일 입력창
                         BaseTextField(
                           customController: lessonDateController,
+                          customFocusNode: lessonDateFocusNode,
                           hint: "수업일",
                           showArrow: true,
                           customFunction: () {
@@ -181,6 +185,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
 
                               return BaseTextField(
                                 customController: todayNoteController,
+                                customFocusNode: totalNoteFocusNode,
                                 hint: "일별 메모",
                                 showArrow: false,
                                 customFunction: () {},
@@ -191,6 +196,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
                               todayNotedocId = docsTodayNote[0].id;
                               return BaseTextField(
                                 customController: todayNoteController,
+                                customFocusNode: totalNoteFocusNode,
                                 hint: "일별 메모",
                                 showArrow: false,
                                 customFunction: () {},

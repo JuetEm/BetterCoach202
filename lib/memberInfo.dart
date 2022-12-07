@@ -40,8 +40,19 @@ bool favoriteMember = true;
 late UserInfo userInfo;
 UserInfo? tmpUserInfo = null;
 
+List resultList = [];
+
+List resultActionList = [];
+List resultMemberList = [];
+
 class MemberInfo extends StatefulWidget {
-  const MemberInfo({super.key});
+  UserInfo? userInfo = null;
+  List tmpResultActionList = [];
+  List tmpResultMemeberList = [];
+  MemberInfo({super.key});
+  MemberInfo.getUserInfoAndActionList(
+      this.userInfo, this.tmpResultMemeberList, this.tmpResultActionList,
+      {super.key});
 
   @override
   State<MemberInfo> createState() => _MemberInfoState();
@@ -96,7 +107,10 @@ class _MemberInfoState extends State<MemberInfo> {
 
     if (initState) {
       // 이전 화면에서 보낸 변수 받기
-      userInfo = ModalRoute.of(context)!.settings.arguments as UserInfo;
+      // resultList = ModalRoute.of(context)!.settings.arguments as List;
+      userInfo = widget.userInfo!;
+      resultMemberList = widget.tmpResultMemeberList;
+      resultActionList = widget.tmpResultActionList;
       initState = false;
       print("[MI]시작 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
       print("[MI]시작 - userInfo.goal / ${userInfo.goal}");
@@ -135,10 +149,11 @@ class _MemberInfoState extends State<MemberInfo> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
-            print("MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+            print(
+                "MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
             // print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
             // Navigator.pop(context,tmpUserInfo);
-            Navigator.pop(context,userInfo);
+            Navigator.pop(context, userInfo);
           }),
           body: SafeArea(
             child: Column(
@@ -548,6 +563,8 @@ class _MemberInfoState extends State<MemberInfo> {
                   List<dynamic> args = [
                     memberAddMode,
                     userInfo,
+                    resultMemberList,
+                    resultActionList,
                   ];
 
                   //userInfo = result;
@@ -569,7 +586,10 @@ class _MemberInfoState extends State<MemberInfo> {
                   );
 
                   if (result != null) {
-                    userInfo = result;
+                    List tmpResult = result as List;
+                    userInfo = tmpResult[0];
+                    resultMemberList = tmpResult[1];
+                    resultActionList = tmpResult[2];
                     //initState = true;
                     _updatefavoriteMember();
                     //lessonService.notifyListeners();
@@ -611,6 +631,7 @@ class _MemberInfoState extends State<MemberInfo> {
                     lessonNoteId,
                     lessonAddMode,
                     tmpLessonInfoList,
+                    resultActionList,
                   ];
                   print(
                       "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
@@ -1319,6 +1340,7 @@ class LessonCard extends StatelessWidget {
                   lessonNoteId,
                   lessonAddMode,
                   tmpLessonInfoList,
+                  resultActionList,
                 ];
                 print("args.length : ${args.length}");
                 print("[MI]LessonCard-lessonDate : ${lessonDate}");
@@ -1479,6 +1501,7 @@ class LessonCard extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                Text(index.toString()+" - "),
                                 Text(
                                   apratusNameTrim,
                                   style: TextStyle(

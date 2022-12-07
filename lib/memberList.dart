@@ -27,6 +27,9 @@ String memberAddMode = "추가";
 // late UserInfo userInfo;
 
 List resultMemberList = [];
+List resultActionList = [];
+
+List resultList = [];
 
 TextEditingController searchController = TextEditingController();
 
@@ -41,8 +44,9 @@ String currentChar = "";
 
 class MemberList extends StatefulWidget {
   List tmpMemberList = [];
+  List tmpActionList = [];
   MemberList({super.key});
-  MemberList.getMemberList(this.tmpMemberList, {super.key});
+  MemberList.getMemberList(this.tmpMemberList, this.tmpActionList, {super.key});
 
   @override
   State<MemberList> createState() => _MemberListState();
@@ -96,7 +100,9 @@ class _MemberListState extends State<MemberList> {
     _searchIndex = rmNameList.indexWhere(
         (element) => element.toString().startsWith(searchLetter.toLowerCase()));
     print("_searchIndex.toDouble() : ${_searchIndex.toDouble()}");
-    double contentHeight = MediaQuery.of(context).size.height > 700 ? MediaQuery.of(context).size.height * 0.89 : MediaQuery.of(context).size.height * 0.85;
+    double contentHeight = MediaQuery.of(context).size.height > 700
+        ? MediaQuery.of(context).size.height * 0.89
+        : MediaQuery.of(context).size.height * 0.85;
     print("contentHeight : ${contentHeight}");
     if (_searchIndex >= 0 && scrollController.hasClients) {
       /* SchedulerBinding.instance.addPersistentFrameCallback(
@@ -112,11 +118,12 @@ class _MemberListState extends State<MemberList> {
         },
       ); */
       // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        print("scrollController.position.maxScrollExtent : ${scrollController.position.maxScrollExtent}");
-        scrollController.animateTo(
-              scrollController.position.maxScrollExtent,
-              duration: Duration(milliseconds: 1),
-              curve: Curves.ease);/* .then((value){
+      print(
+          "scrollController.position.maxScrollExtent : ${scrollController.position.maxScrollExtent}");
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 1),
+          curve: Curves
+              .ease); /* .then((value){
                 print("value : ");
               }).whenComplete((){
                 print("complete : ");
@@ -149,6 +156,7 @@ class _MemberListState extends State<MemberList> {
 
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;
+    resultActionList = widget.tmpActionList;
     // 모음 검색 세로 바 구현 작업
     combinedLngs.addAll(koreans);
     combinedLngs.addAll(alphabets);
@@ -179,6 +187,12 @@ class _MemberListState extends State<MemberList> {
     if (resultMemberList.isEmpty) {
       argsList = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
       resultMemberList = argsList[0];
+    }
+
+    if (resultActionList.isEmpty) {
+      argsList = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+      resultActionList = argsList[1];
+      print("resultActionList.length : ${resultActionList.length}");
     }
 
     return Consumer<MemberService>(
@@ -233,6 +247,12 @@ class _MemberListState extends State<MemberList> {
                           searchString = searchController.text.toLowerCase();
                         });
                       },
+                      clearfunction: () {
+                        setState(() {
+                          searchController.clear();
+                          searchString = "";
+                        });
+                      },
                     ),
                     Divider(),
                     Row(
@@ -268,7 +288,7 @@ class _MemberListState extends State<MemberList> {
                                   varName = element['name'];
                                   // 검색 기능 함수 convert
                                   if (globalFunction.searchString(
-                                      varName, searchString)) {
+                                      varName, searchString, "member")) {
                                     searchedList.add(element);
                                   }
                                 });
@@ -321,31 +341,37 @@ class _MemberListState extends State<MemberList> {
                                     print("몇 번 그리나요? - ListView.separated");
                                     final doc = docs[index];
                                     String docId = doc['id'];
-                                    String name = doc['name'];
-                                    String registerDate = doc['registerDate'];
-                                    String phoneNumber = doc['phoneNumber'];
-                                    String registerType = doc['registerType'];
-                                    String goal = doc['goal'];
+                                    String name = doc['name'] ?? "";
+                                    String registerDate =
+                                        doc['registerDate'] ?? "";
+                                    String phoneNumber =
+                                        doc['phoneNumber'] ?? "";
+                                    String registerType =
+                                        doc['registerType'] ?? "";
+                                    String goal = doc['goal'] ?? "";
                                     List<String> selectedGoals =
-                                        List<String>.from(doc['selectedGoals']);
+                                        List<String>.from(
+                                            doc['selectedGoals'] ?? []);
                                     /* print(
                                         "[ML] ListView 회원정보 가져오기 selectedGoals : ${selectedGoals}"); */
-                                    String bodyAnalyzed = doc['bodyanalyzed'];
+                                    String bodyAnalyzed =
+                                        doc['bodyanalyzed'] ?? "";
                                     /* print(
                                         "[ML] ListView 회원정보 가져오기 bodyAnalyzed : ${bodyAnalyzed}"); */
                                     List<String> selectedBodyAnalyzed =
                                         List<String>.from(
-                                            doc['selectedBodyAnalyzed']);
-                                    ;
+                                            doc['selectedBodyAnalyzed'] ?? []);
+
                                     String medicalHistories =
-                                        doc['medicalHistories'];
+                                        doc['medicalHistories'] ?? "";
                                     List<String> selectedMedicalHistories =
                                         List<String>.from(
-                                            doc['selectedMedicalHistories']);
-                                    ;
-                                    String info = doc['info'];
-                                    String note = doc['note'];
-                                    String comment = doc['comment'];
+                                            doc['selectedMedicalHistories'] ??
+                                                []);
+
+                                    String info = doc['info'] ?? "";
+                                    String note = doc['note'] ?? "";
+                                    String comment = doc['comment'] ?? "";
                                     bool isActive = doc['isActive'];
 
                                     UserInfo userInfo = UserInfo(
@@ -370,14 +396,20 @@ class _MemberListState extends State<MemberList> {
                                     return InkWell(
                                       onTap: () async {
                                         // 회원 카드 선택시 MemberInfo로 이동
+
+                                        // resultList.add(resultActionList);
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MemberInfo(),
+                                            builder: (context) => MemberInfo
+                                                .getUserInfoAndActionList(
+                                                    userInfo,
+                                                    resultMemberList,
+                                                    resultActionList),
                                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                            settings: RouteSettings(
-                                              arguments: userInfo,
-                                            ),
+                                            /* settings: RouteSettings(
+                                              arguments: userInfo
+                                            ), */
                                           ),
                                         ).then((result) {
                                           print(
@@ -562,6 +594,8 @@ class _MemberListState extends State<MemberList> {
 
                   List<dynamic> args = [
                     memberAddMode,
+                    resultMemberList,
+                    resultActionList,
                   ];
 
                   // 저장하기 성공시 Home로 이동
@@ -575,8 +609,11 @@ class _MemberListState extends State<MemberList> {
                       ),
                     ),
                   ).then((value) {
+                    List tmpResultList = value as List;
+                    // print("어디지?");
                     setState(() {
-                      resultMemberList = value;
+                      resultMemberList = tmpResultList[0];
+                      resultActionList = tmpResultList[1];
                     });
                   });
                 },

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
 import 'action_service.dart';
@@ -98,6 +99,43 @@ class GlobalFunction {
         }
   } */
 
+  Future<Position> getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
   String getChosungFromString(String name) {
     String result = "";
     bool isKoreanName = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(name);
@@ -120,18 +158,18 @@ class GlobalFunction {
       var jongsung = lastChars[base % 28];
       // print("jongsung : ${jongsung}");
 
-        result = chosung;
+      result = chosung;
     } else {
-      String firstChar = name.trim().toLowerCase().substring(0,1);
+      String firstChar = name.trim().toLowerCase().substring(0, 1);
       // print("firstChar : ${firstChar}");
-        result = firstChar;
+      result = firstChar;
     }
 
     return result;
   }
 
   // https://smilehugo.tistory.com/entry/javascript-algorithm-a-korean-character-breakdown-into-array
-  bool searchString(String name, String searchString) {
+  bool searchString(String name, String searchString, String searchType) {
     print("convertStringArray is called => searchString : ${searchString}");
     bool result = false;
     List searchedList = [];
@@ -156,7 +194,8 @@ class GlobalFunction {
     List nameChoList = [];
     List targetNameList = [];
     // if (isKorean(varName)) {
-    bool isKoreanSearchString = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(searchString);
+    bool isKoreanSearchString =
+        RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(searchString);
     bool isKoreanNameString = RegExp(r'^[ㄱ-ㅎ|ㅏ-ㅑ|가-힣]*$').hasMatch(name);
     print("isKoreanSearchString : ${isKoreanSearchString}");
     print("isKoreanNameString : ${isKoreanNameString}");
@@ -263,17 +302,21 @@ class GlobalFunction {
       }
     } else {
       if (varName.trim().toLowerCase().contains(searchString.toLowerCase())) {
-        List tmpChoList = varName.trim().toLowerCase().characters.toList();
-        List tmpSrchList = searchString.toLowerCase().characters.toList();
-        for (int i = 0; i < varName.trim().length; i++) {
-          if (tmpSrchList.length > i) {
-            if (tmpChoList[i] == tmpSrchList[i]) {
-              result = true;
-            } else {
-              result = false;
-              break;
+        if (searchType == "member") {
+          List tmpChoList = varName.trim().toLowerCase().characters.toList();
+          List tmpSrchList = searchString.toLowerCase().characters.toList();
+          for (int i = 0; i < varName.trim().length; i++) {
+            if (tmpSrchList.length > i) {
+              if (tmpChoList[i] == tmpSrchList[i]) {
+                result = true;
+              } else {
+                result = false;
+                break;
+              }
             }
           }
+        }else if(searchType == "action"){
+          result = true;
         }
       }
     }
@@ -343,7 +386,8 @@ class GlobalFunction {
     String controllerName,
   ) {
     bool notEmpty = true;
-    if (!checkController.text.isNotEmpty) {
+    String tmpVal = checkController.text.trim();
+    if (!tmpVal.isNotEmpty) {
       print("${controllerName} is Empty");
       notEmpty = !notEmpty;
 

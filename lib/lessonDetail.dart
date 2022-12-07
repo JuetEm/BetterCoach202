@@ -30,6 +30,10 @@ TextEditingController lessonDateController = TextEditingController(text: now);
 TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController totalNoteController = TextEditingController();
 
+FocusNode lessonDateFocusNode = FocusNode();
+FocusNode gradeFocusNode = FocusNode();
+FocusNode totalNoteFocusNode = FocusNode();
+
 GlobalFunction globalFunction = GlobalFunction();
 
 String selectedDropdown = '기구';
@@ -447,6 +451,7 @@ class _LessonDetailState extends State<LessonDetail> {
                         /// 수업일 입력창
                         BaseTextField(
                           customController: lessonDateController,
+                          customFocusNode: lessonDateFocusNode,
                           hint: "수업일",
                           showArrow: true,
                           customFunction: () {
@@ -461,6 +466,7 @@ class _LessonDetailState extends State<LessonDetail> {
                         /// 수행도 입력창
                         BaseTextField(
                           customController: gradeController,
+                          customFocusNode: gradeFocusNode,
                           hint: "수행도",
                           showArrow: true,
                           customFunction: () {},
@@ -491,6 +497,7 @@ class _LessonDetailState extends State<LessonDetail> {
                         /// 동작 노트
                         BaseTextField(
                           customController: totalNoteController,
+                          customFocusNode: totalNoteFocusNode,
                           hint: "노트 입력",
                           showArrow: false,
                           customFunction: () {},

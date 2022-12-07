@@ -14,6 +14,8 @@ class MembershipList extends StatefulWidget {
 
 TextEditingController membershipController = TextEditingController();
 
+FocusNode memberShipFocusNode = FocusNode();
+
 class _MembershipListState extends State<MembershipList> {
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class _MembershipListState extends State<MembershipList> {
             children: [
               BaseTextField(
                 customController: membershipController,
+                customFocusNode: memberShipFocusNode,
                 hint: "횟수입력",
                 showArrow: false,
                 customFunction: () {},

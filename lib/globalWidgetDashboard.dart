@@ -22,6 +22,8 @@ TextEditingController controller1 = TextEditingController();
 TextEditingController controller2 = TextEditingController();
 TextEditingController controller3 = TextEditingController();
 
+FocusNode focusNode = FocusNode();
+
 class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
             // ),
             BaseTextField(
               customController: controller1,
+              customFocusNode: focusNode,
               hint: "힌트 입력",
               showArrow: true, // 화살표 보여주기
               customFunction: () {

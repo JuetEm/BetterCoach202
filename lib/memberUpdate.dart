@@ -24,6 +24,15 @@ TextEditingController infoController = TextEditingController();
 TextEditingController noteController = TextEditingController();
 TextEditingController commentController = TextEditingController();
 
+FocusNode nameFocusNode = FocusNode();
+FocusNode registerDateFocusNode = FocusNode();
+FocusNode phoneNumberFocusNode = FocusNode();
+FocusNode registerTypeFocusNode = FocusNode();
+FocusNode goalFocusNode = FocusNode();
+FocusNode infoFocusNode = FocusNode();
+FocusNode noteFocusNode = FocusNode();
+FocusNode commentFocusNode = FocusNode();
+
 class MemberUpdate extends StatefulWidget {
   const MemberUpdate({super.key});
 
@@ -100,6 +109,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 이름 입력창
                         BaseTextField(
                           customController: nameController,
+                          customFocusNode: nameFocusNode,
                           hint: "이름",
                           showArrow: false,
                           customFunction: () {},
@@ -108,6 +118,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 등록일 입력창
                         BaseTextField(
                           customController: registerDateController,
+                          customFocusNode: registerDateFocusNode,
                           hint: "등록일",
                           showArrow: true,
                           customFunction: () {
@@ -122,6 +133,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 전화번호 입력창
                         BaseTextField(
                           customController: phoneNumberController,
+                          customFocusNode: phoneNumberFocusNode,
                           hint: "전화번호",
                           showArrow: false,
                           customFunction: () {},
@@ -130,6 +142,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 등록횟수입력창
                         BaseTextField(
                           customController: registerTypeController,
+                          customFocusNode: registerTypeFocusNode,
                           hint: "등록횟수입력",
                           showArrow: true,
                           customFunction: () {
@@ -141,6 +154,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 운동목표 입력창
                         BaseTextField(
                           customController: goalController,
+                          customFocusNode: goalFocusNode,
                           hint: "운동목표",
                           showArrow: false,
                           customFunction: () {},
@@ -149,6 +163,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 신체 특이사항/체형분석 입력창
                         BaseTextField(
                           customController: infoController,
+                          customFocusNode: infoFocusNode,
                           hint: "통증/상해/병력",
                           showArrow: false,
                           customFunction: () {},
@@ -157,6 +172,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 체형분석 입력창
                         BaseTextField(
                           customController: noteController,
+                          customFocusNode: noteFocusNode,
                           hint: "체형분석",
                           showArrow: false,
                           customFunction: () {},
@@ -165,6 +181,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                         /// 특이사항 입력창
                         BaseTextField(
                           customController: commentController,
+                          customFocusNode: commentFocusNode,
                           hint: "특이사항",
                           showArrow: false,
                           customFunction: () {},

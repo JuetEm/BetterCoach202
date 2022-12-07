@@ -26,6 +26,8 @@ TextEditingController lessonDateController = TextEditingController(text: now);
 //TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController todayNoteController = TextEditingController();
 
+FocusNode lessonDateFocusNode = FocusNode();
+
 // 가변적으로 TextFields
 List<TextEditingController> totalNoteControllers = [];
 
@@ -75,6 +77,8 @@ String editTotalNote = "";
 bool keyboardOpenBefore = false;
 String todayNotedocId = "";
 String todayNoteView = "";
+
+List resultActionList = [];
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
@@ -131,6 +135,7 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonNoteId = argsList[3];
     String lessonAddMode = argsList[4];
     tmpLessonInfoList = argsList[5];
+    resultActionList = argsList[6];
 
     print(
         '[LA] 시작 initState - ${initState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
@@ -228,6 +233,7 @@ class _LessonAddState extends State<LessonAdd> {
                           /// 수업일 입력창
                           BaseTextField(
                             customController: lessonDateController,
+                            customFocusNode: lessonDateFocusNode,
                             hint: "수업일",
                             showArrow: true,
                             customFunction: () async {
@@ -593,7 +599,8 @@ class _LessonAddState extends State<LessonAdd> {
                                         lessonDate,
                                         initState,
                                         totalNote,
-                                        tmpLessonInfoList
+                                        tmpLessonInfoList,
+                                        resultActionList,
                                       ]),
                                     ),
                                   );

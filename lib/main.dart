@@ -32,6 +32,9 @@ import 'lesson_service.dart';
 import 'memberList.dart';
 import 'member_service.dart';
 import 'globalWidget.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 bool adminMode = false;
 
@@ -51,6 +54,9 @@ String? userEmail;
 String? userPassword;
 
 List resultList = [];
+List actionList = [];
+
+ActionService actionService = ActionService();
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -73,6 +79,7 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    WebView.platform = WebWebViewPlatform();
   } else {
     if (Platform.isAndroid) {
       print("Platform.isAndroid");
@@ -110,9 +117,19 @@ void main() async {
     }).onError((error, stackTrace) {
       print("error : ${error}");
       print("stackTrace : \r\n${stackTrace}");
-    }).whenComplete(() {
+    }).whenComplete(() async {
       print("0 - main memberList complete!!");
 
+      await actionService.readActionListAtFirstTime(user.uid).then((value) {
+        print(
+            "resultFirstActionList then is called!! value.length : ${value.length}");
+        actionList.addAll(value);
+      }).onError((error, stackTrace) {
+        print("error : ${error}");
+        print("stackTrace : \r\n${stackTrace}");
+      }).whenComplete(() {
+        print("actionList await init complete!");
+      });
       runApp(
         MultiProvider(
           providers: [
@@ -153,6 +170,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print("resultList : ${resultList}\r\nactionList : ${actionList}");
     final user = context.read<AuthService>().currentUser();
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
@@ -167,21 +185,22 @@ class MyApp extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
       },
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: analytics),
-          ],
-          theme: ThemeData(
-              // appBarTheme: AppBarTheme(
-              //     systemOverlayStyle:
-              //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
-              fontFamily: 'Pretendard',
-              backgroundColor: Palette.mainBackground),
-          home:
-              LoginPage() /* user == null
-            ? LoginPage()
-            : SignUp(), */ // MemberList.getMemberList(resultList),
-          ),
+        debugShowCheckedModeBanner: false,
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
+        theme: ThemeData(
+            // appBarTheme: AppBarTheme(
+            //     systemOverlayStyle:
+            //         SystemUiOverlayStyle(statusBarColor: Palette.grayFF)),
+            fontFamily: 'Pretendard',
+            backgroundColor: Palette.mainBackground),
+        home:
+            // LoginPage()
+            user == null
+                ? LoginPage()
+                /* : SignUp(), */ : MemberList.getMemberList(resultList, actionList),
+      ),
     );
   }
 }
@@ -561,7 +580,8 @@ class _LoginPageState extends State<LoginPage> {
               memberService.readMemberListAtFirstTime(cUser!.uid);
 
           resultFirstMemberList.then((value) {
-            print("then is called!! value.length : ${value.length}");
+            print(
+                "resultFirstMemberList then is called!! value.length : ${value.length}");
             resultList.addAll(value);
             /* for (int i = 0; i < value.length; i++) {
               print("value[${i}] : ${value[i]}");
@@ -569,31 +589,45 @@ class _LoginPageState extends State<LoginPage> {
           }).onError((error, stackTrace) {
             print("error : ${error}");
             print("stackTrace : \r\n${stackTrace}");
-          }).whenComplete(() {
+          }).whenComplete(() async {
             print("memberList await init complete!");
 
-            // 로그인 성공
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("로그인 성공"),
-            ));
-            // 로그인 성공시 Home로 이동
-            /* Navigator.pushReplacement(
+            Future<List> resultFirstActionList =
+                actionService.readActionListAtFirstTime(cUser.uid);
+
+            resultFirstActionList.then((value) {
+              print(
+                  "resultFirstActionList then is called!! value.length : ${value.length}");
+              actionList.addAll(value);
+            }).onError((error, stackTrace) {
+              print("error : ${error}");
+              print("stackTrace : \r\n${stackTrace}");
+            }).whenComplete(() {
+              print("actionList await init complete!");
+
+              // 로그인 성공
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("로그인 성공"),
+              ));
+              // 로그인 성공시 Home로 이동
+              /*  Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => MemberList()),
               //MaterialPageRoute(builder: (_) => Mainpage()),
             ); */
-            List<dynamic> args = [resultList];
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MemberList(),
-                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                settings: RouteSettings(arguments: args),
-              ),
-            );
+              List<dynamic> args = [resultList, actionList];
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MemberList(),
+                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                  settings: RouteSettings(arguments: args),
+                ),
+              );
 
-            emailController.clear();
-            passwordController.clear();
+              emailController.clear();
+              passwordController.clear();
+            });
           });
         },
         onError: (err) {
@@ -631,7 +665,8 @@ class _LoginPageState extends State<LoginPage> {
               memberService.readMemberListAtFirstTime(cUser!.uid);
 
           resultFirstMemberList.then((value) {
-            print("then is called!! value.length : ${value.length}");
+            print(
+                "resultFirstMemberList then is called!! value.length : ${value.length}");
             resultList.addAll(value);
             /* for (int i = 0; i < value.length; i++) {
               print("value[${i}] : ${value[i]}");
@@ -639,31 +674,45 @@ class _LoginPageState extends State<LoginPage> {
           }).onError((error, stackTrace) {
             print("error : ${error}");
             print("stackTrace : \r\n${stackTrace}");
-          }).whenComplete(() {
+          }).whenComplete(() async {
             print("memberList await init complete!");
 
-            // 로그인 성공
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("로그인 성공"),
-            ));
-            // 로그인 성공시 Home로 이동
-            /*  Navigator.pushReplacement(
+            Future<List> resultFirstActionList =
+                actionService.readActionListAtFirstTime(cUser.uid);
+
+            resultFirstActionList.then((value) {
+              print(
+                  "resultFirstActionList then is called!! value.length : ${value.length}");
+              actionList.addAll(value);
+            }).onError((error, stackTrace) {
+              print("error : ${error}");
+              print("stackTrace : \r\n${stackTrace}");
+            }).whenComplete(() {
+              print("actionList await init complete!");
+
+              // 로그인 성공
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("로그인 성공"),
+              ));
+              // 로그인 성공시 Home로 이동
+              /*  Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => MemberList()),
               //MaterialPageRoute(builder: (_) => Mainpage()),
             ); */
-            List<dynamic> args = [resultList];
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MemberList(),
-                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                settings: RouteSettings(arguments: args),
-              ),
-            );
+              List<dynamic> args = [resultList, actionList];
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MemberList(),
+                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                  settings: RouteSettings(arguments: args),
+                ),
+              );
 
-            emailController.clear();
-            passwordController.clear();
+              emailController.clear();
+              passwordController.clear();
+            });
           });
         },
         onError: (err) {

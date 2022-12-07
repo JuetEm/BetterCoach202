@@ -37,6 +37,7 @@ bool isOthersPositionSelected = false;
 String searchString = "";
 
 List positionArray = [];
+List apparatusArray = [];
 
 int positionFilteredSize = 0;
 
@@ -55,6 +56,11 @@ late Color actionNameTextColor;
 late List<LessonInfo> lessonInfoList;
 late List<TmpLessonInfo> tmpLessonInfoList;
 late List<int> checkedTileList;
+
+late List<TmpLessonInfo> unEditedTmpLessonInfo;
+
+List resultActionList = [];
+List searchedList = [];
 
 class ActionSelector extends StatefulWidget {
   const ActionSelector({super.key});
@@ -101,6 +107,7 @@ class _ActionSelectorState extends State<ActionSelector> {
     isOthersPositionSelected = false;
 
     positionArray = [];
+    apparatusArray = [];
     initStateVar = !initStateVar;
 
     searchString = "";
@@ -111,6 +118,10 @@ class _ActionSelectorState extends State<ActionSelector> {
     lessonInfoList = [];
     tmpLessonInfoList = [];
     checkedTileList = [];
+
+    
+
+    searchController.clear();
     super.dispose();
   }
 
@@ -132,6 +143,25 @@ class _ActionSelectorState extends State<ActionSelector> {
     // initState = args[3];
     final String totalNote = args[4];
     tmpLessonInfoList = args[5];
+    resultActionList = args[6];
+
+    List docs = resultActionList;
+    if (searchString.isNotEmpty) {
+      print("searchString.isNotEmpty : ${searchString}");
+      List searchedList = [];
+      String varName = "";
+
+      resultActionList.forEach((element) {
+        varName = element['name'];
+        // 검색 기능 함수 convert
+        if (globalFunction.searchString(varName, searchString, "action")) {
+          searchedList.add(element);
+        }
+      });
+      docs = searchedList ?? []; // 문서들 가져오기
+    } else {
+      docs = resultActionList ?? []; // 문서들 가져오기
+    }
 
     print("[AS] 시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
 
@@ -250,6 +280,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             () {
               isMatSelected = !isMatSelected;
               print("isMatSelected : ${isMatSelected}");
+              if (isMatSelected) {
+                apparatusArray.add("MAT");
+              } else {
+                apparatusArray.remove("MAT");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -271,6 +307,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             () {
               isReformerSelected = !isReformerSelected;
               print("isReformerSelected : ${isReformerSelected}");
+              if (isReformerSelected) {
+                apparatusArray.add("RE");
+              } else {
+                apparatusArray.remove("RE");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -293,6 +335,12 @@ class _ActionSelectorState extends State<ActionSelector> {
               isCadillacSelected = !isCadillacSelected;
               print(
                   "isSupineisCadillacSelectedSelected : ${isCadillacSelected}");
+              if (isCadillacSelected) {
+                apparatusArray.add("CA");
+              } else {
+                apparatusArray.remove("CA");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -314,6 +362,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             () {
               isChairSelected = !isChairSelected;
               print("isChairSelected : ${isChairSelected}");
+              if (isChairSelected) {
+                apparatusArray.add("CH");
+              } else {
+                apparatusArray.remove("CH");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -335,6 +389,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             () {
               isLadderBarrelSelected = !isLadderBarrelSelected;
               print("isLadderBarrelSelected : ${isLadderBarrelSelected}");
+              if (isLadderBarrelSelected) {
+                apparatusArray.add("BA");
+              } else {
+                apparatusArray.remove("BA");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -356,6 +416,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             () {
               isSpringBoardSelected = !isSpringBoardSelected;
               print("isSpringBoardSelected : ${isSpringBoardSelected}");
+              if (isSpringBoardSelected) {
+                apparatusArray.add("SB");
+              } else {
+                apparatusArray.remove("SB");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -377,6 +443,12 @@ class _ActionSelectorState extends State<ActionSelector> {
             () {
               isSpineCorrectorSelected = !isSpineCorrectorSelected;
               print("isSpineCorrectorSelected : ${isSpineCorrectorSelected}");
+              if (isSpineCorrectorSelected) {
+                apparatusArray.add("SC");
+              } else {
+                apparatusArray.remove("SC");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -399,6 +471,12 @@ class _ActionSelectorState extends State<ActionSelector> {
               isOthersApparatusSelected = !isOthersApparatusSelected;
               print(
                   "isOthersApparatusSelectedSelected : ${isOthersApparatusSelected}");
+              if (isOthersApparatusSelected) {
+                apparatusArray.add("OT");
+              } else {
+                apparatusArray.remove("OT");
+              }
+              print("apparatusArray : ${apparatusArray}");
             },
           );
         },
@@ -688,7 +766,7 @@ class _ActionSelectorState extends State<ActionSelector> {
             positionArray = [];
 
             searchString = "";
-            Navigator.pop(context, tmpLessonInfoList);
+            Navigator.pop(context,tmpLessonInfoList);
           }),
           floatingActionButton: tmpLessonInfoList.isEmpty
               ? null
@@ -718,6 +796,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                   customFunction: () {
                     setState(() {
                       searchString = searchController.text.toLowerCase();
+                    });
+                  },
+                  clearfunction: () {
+                    setState(() {
+                      searchController.clear();
+                      searchString = "";
                     });
                   },
                 ),
@@ -827,15 +911,25 @@ class _ActionSelectorState extends State<ActionSelector> {
                           context: context,
                           builder: (context) => StatefulBuilder(
                             builder: (context, setState) {
-                              return ActionAdd();
+                              return ActionAdd.manageList(resultActionList);
                             },
                           ),
                         );
                         setState(() {
-                          searchController.text =
-                              result.toString().toLowerCase().split(" ")[0];
-                          searchString =
-                              result.toString().toLowerCase().split(" ")[0];
+                          if (result == null) {
+                            searchString = "";
+                          } else {
+                            List resultList = result as List;
+                            String tmpSearchStr = resultList[0].toString().trim();
+                            if (tmpSearchStr.isNotEmpty) {
+                              searchController.text = tmpSearchStr;
+                              searchString = tmpSearchStr;
+                            } else {
+                              searchString = "";
+                            }
+
+                            resultActionList = resultList[1];
+                          }
                         });
                       },
                     ),
@@ -895,7 +989,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                 /// 동작 리스트
                 Expanded(
-                  child: FutureBuilder<QuerySnapshot>(
+                    child: /* FutureBuilder<QuerySnapshot>(
                     future: actionService.read(
                       isReformerSelected,
                       isCadillacSelected,
@@ -907,118 +1001,210 @@ class _ActionSelectorState extends State<ActionSelector> {
                       isOthersApparatusSelected,
                       searchString,
                     ),
-                    builder: (context, snapshot) {
+                    builder: (context, snapshot) { 
                       final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
                       print("docs : ${docs.length}");
                       if (docs.isEmpty) {
                         return Center(child: Text("운동 목록을 준비 중입니다."));
                       }
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Palette.mainBackground,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: docs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final doc = docs[index];
+                      return*/
+                        resultActionList.isEmpty
+                            ? Center(child: Text("운동 목록을 준비 중입니다."))
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: Palette.mainBackground,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: docs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final doc = docs[index];
+                                    print("doc : ${doc}");
+                                    String apparatus = doc['apparatus'];
+                                    String otherApparatusName =
+                                        doc['otherApparatusName'];
+                                    String position = doc['position'];
+                                    String name = doc['name'];
+                                    String lowerCaseName = doc['lowerCaseName'];
+                                    List<dynamic> nGramizedLowerCaseName =
+                                        doc['nGramizedLowerCaseName'] ?? [];
 
-                            String apparatus = doc.get('apparatus');
-                            String position = doc.get('position');
-                            String name = doc.get('name');
-                            String lowerCaseName = doc.get('lowerCaseName');
-                            List<dynamic> nGramizedLowerCaseName =
-                                doc.get('nGramizedLowerCaseName');
-                            ;
-                            final ActionInfo actionInfo = ActionInfo(
-                              name,
-                              apparatus,
-                              position,
-                            );
+                                    final ActionInfo actionInfo = ActionInfo(
+                                      name,
+                                      apparatus,
+                                      position,
+                                    );
 
-                            // print(
-                            //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+                                    // print(
+                                    //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
 
-                            if (searchString.isEmpty) {
-                              if (positionArray.isEmpty) {
-                                return ActionTile(
-                                    memberdocId: customUserInfo.docId,
-                                    apparatus: apparatus,
-                                    actionName: name,
-                                    name: customUserInfo.name,
-                                    phoneNumber: "temp",
-                                    lessonDate: lessonDate,
-                                    grade: "50",
-                                    totalNote: totalNote,
-                                    docId: "",
-                                    uid: user.uid,
-                                    pos: index);
-                              } else {
-                                if (positionArray.contains(position)) {
-                                  positionFilteredSize++;
-                                  return ActionTile(
-                                      memberdocId: customUserInfo.docId,
-                                      apparatus: apparatus,
-                                      actionName: name,
-                                      name: customUserInfo.name,
-                                      phoneNumber: "temp",
-                                      lessonDate: lessonDate,
-                                      grade: "50",
-                                      totalNote: totalNote,
-                                      docId: customUserInfo.docId,
-                                      uid: user.uid,
-                                      pos: index);
-                                } else {
-                                  return SizedBox.shrink();
-                                }
-                              }
-                            } else {
-                              // if (lowerCaseName
-                              //     .startsWith(searchString.toLowerCase())) {
-                              if (positionArray.isEmpty) {
-                                return ActionTile(
-                                    memberdocId: customUserInfo.docId,
-                                    apparatus: apparatus,
-                                    actionName: name,
-                                    name: customUserInfo.name,
-                                    phoneNumber: "temp",
-                                    lessonDate: lessonDate,
-                                    grade: "50",
-                                    totalNote: totalNote,
-                                    docId: customUserInfo.docId,
-                                    uid: user.uid,
-                                    pos: index);
-                              } else {
-                                if (positionArray.contains(position)) {
-                                  positionFilteredSize++;
-                                  return ActionTile(
-                                      apparatus: apparatus,
-                                      actionName: name,
-                                      name: customUserInfo.name,
-                                      phoneNumber: "temp",
-                                      lessonDate: lessonDate,
-                                      grade: "50",
-                                      totalNote: totalNote,
-                                      docId: "",
-                                      memberdocId: customUserInfo.docId,
-                                      uid: user.uid,
-                                      pos: index);
-                                } else {
-                                  return SizedBox.shrink();
-                                }
-                              }
-                              // } else {
-                              //   return SizedBox.shrink();
-                              // }
-                            }
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                                    if (searchString.isEmpty) {
+                                      if (positionArray.isEmpty) {
+                                        if (apparatusArray.isEmpty) {
+                                          return ActionTile(
+                                              memberdocId: customUserInfo.docId,
+                                              apparatus: apparatus,
+                                              actionName: name,
+                                              name: customUserInfo.name,
+                                              phoneNumber: "temp",
+                                              lessonDate: lessonDate,
+                                              grade: "50",
+                                              totalNote: totalNote,
+                                              docId: "",
+                                              uid: user.uid,
+                                              pos: index);
+                                        } else {
+                                          if (apparatusArray
+                                              .contains(apparatus)) {
+                                            return ActionTile(
+                                                memberdocId:
+                                                    customUserInfo.docId,
+                                                apparatus: apparatus,
+                                                actionName: name,
+                                                name: customUserInfo.name,
+                                                phoneNumber: "temp",
+                                                lessonDate: lessonDate,
+                                                grade: "50",
+                                                totalNote: totalNote,
+                                                docId: "",
+                                                uid: user.uid,
+                                                pos: index);
+                                          } else {
+                                            return SizedBox.shrink();
+                                          }
+                                        }
+                                      } else {
+                                        if (positionArray.contains(position)) {
+                                          positionFilteredSize++;
+                                          if (apparatusArray.isEmpty) {
+                                            return ActionTile(
+                                                memberdocId:
+                                                    customUserInfo.docId,
+                                                apparatus: apparatus,
+                                                actionName: name,
+                                                name: customUserInfo.name,
+                                                phoneNumber: "temp",
+                                                lessonDate: lessonDate,
+                                                grade: "50",
+                                                totalNote: totalNote,
+                                                docId: customUserInfo.docId,
+                                                uid: user.uid,
+                                                pos: index);
+                                          } else {
+                                            if (apparatusArray
+                                                .contains(apparatus)) {
+                                              return ActionTile(
+                                                  memberdocId:
+                                                      customUserInfo.docId,
+                                                  apparatus: apparatus,
+                                                  actionName: name,
+                                                  name: customUserInfo.name,
+                                                  phoneNumber: "temp",
+                                                  lessonDate: lessonDate,
+                                                  grade: "50",
+                                                  totalNote: totalNote,
+                                                  docId: customUserInfo.docId,
+                                                  uid: user.uid,
+                                                  pos: index);
+                                            } else {
+                                              return SizedBox.shrink();
+                                            }
+                                          }
+                                        } else {
+                                          return SizedBox.shrink();
+                                        }
+                                      }
+                                    } else {
+                                      // if (lowerCaseName
+                                      //     .startsWith(searchString.toLowerCase())) {
+                                      if (positionArray.isEmpty) {
+                                        if (apparatusArray.isEmpty) {
+                                          return ActionTile(
+                                              memberdocId: customUserInfo.docId,
+                                              apparatus: apparatus,
+                                              actionName: name,
+                                              name: customUserInfo.name,
+                                              phoneNumber: "temp",
+                                              lessonDate: lessonDate,
+                                              grade: "50",
+                                              totalNote: totalNote,
+                                              docId: customUserInfo.docId,
+                                              uid: user.uid,
+                                              pos: index);
+                                        } else {
+                                          if (apparatusArray
+                                              .contains(apparatus)) {
+                                            return ActionTile(
+                                                memberdocId:
+                                                    customUserInfo.docId,
+                                                apparatus: apparatus,
+                                                actionName: name,
+                                                name: customUserInfo.name,
+                                                phoneNumber: "temp",
+                                                lessonDate: lessonDate,
+                                                grade: "50",
+                                                totalNote: totalNote,
+                                                docId: customUserInfo.docId,
+                                                uid: user.uid,
+                                                pos: index);
+                                          } else {
+                                            return SizedBox.shrink();
+                                          }
+                                        }
+                                      } else {
+                                        if (positionArray.contains(position)) {
+                                          positionFilteredSize++;
+                                          if (apparatusArray.isEmpty) {
+                                            return ActionTile(
+                                                apparatus: apparatus,
+                                                actionName: name,
+                                                name: customUserInfo.name,
+                                                phoneNumber: "temp",
+                                                lessonDate: lessonDate,
+                                                grade: "50",
+                                                totalNote: totalNote,
+                                                docId: "",
+                                                memberdocId:
+                                                    customUserInfo.docId,
+                                                uid: user.uid,
+                                                pos: index);
+                                          } else {
+                                            if (apparatusArray
+                                                .contains(apparatus)) {
+                                              return ActionTile(
+                                                  apparatus: apparatus,
+                                                  actionName: name,
+                                                  name: customUserInfo.name,
+                                                  phoneNumber: "temp",
+                                                  lessonDate: lessonDate,
+                                                  grade: "50",
+                                                  totalNote: totalNote,
+                                                  docId: "",
+                                                  memberdocId:
+                                                      customUserInfo.docId,
+                                                  uid: user.uid,
+                                                  pos: index);
+                                            } else {
+                                              return SizedBox.shrink();
+                                            }
+                                          }
+                                        } else {
+                                          return SizedBox.shrink();
+                                        }
+                                      }
+                                      // } else {
+                                      //   return SizedBox.shrink();
+                                      // }
+                                    }
+                                  },
+                                ),
+                              )
+                    /* },
+                  ), */
+                    ),
 
                 Offstage(
                   offstage: tmpLessonInfoList.isEmpty,

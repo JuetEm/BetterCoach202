@@ -1,14 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/coachInfo.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/kakaomap_webview.dart';
 import 'package:web_project/localavailable_Info.dart';
 import 'package:web_project/locationAdd.dart';
 
 import 'auth_service.dart';
 import 'color.dart';
-import 'main.dart';
+import 'kakao_map.dart';
+import 'dart:io' show Platform;
+
+import 'kakaomap_web.dart';
 
 bool isPswdSame = false;
 bool isEmailValidate = false;
@@ -74,6 +79,13 @@ class _SignUpState extends State<SignUp> {
   TextEditingController otherRelatedQualificationsController =
       TextEditingController();
   TextEditingController teacherIntroController = TextEditingController();
+
+  FocusNode nameFocusNode = FocusNode();
+  FocusNode passWordFocusNode = FocusNode();
+  FocusNode classCenterFocusNode = FocusNode();
+  FocusNode pilatesRelatedQualificationsFocusNode = FocusNode();
+  FocusNode otherRelatedQualificationsFocusNode = FocusNode();
+  FocusNode teacherIntroFocusNode = FocusNode();
 
   Gender gender = Gender.WOMAN;
   SubYn subYn = SubYn.YES;
@@ -172,6 +184,7 @@ class _SignUpState extends State<SignUp> {
                 /// 이름 입력창
                 BaseTextField(
                   customController: nameController,
+                  customFocusNode: nameFocusNode,
                   hint: "이름",
                   showArrow: false,
                   customFunction: () {},
@@ -234,6 +247,7 @@ class _SignUpState extends State<SignUp> {
                 ), */
                 BaseTextField(
                   customController: passwordController,
+                  customFocusNode: passWordFocusNode,
                   hint: "비밀번호",
                   showArrow: false,
                   customFunction: () {},
@@ -896,10 +910,10 @@ class _SignUpState extends State<SignUp> {
                           TextButton.icon(
                             onPressed: () async {
                               print("suffixIcon Taped");
-                              if(widget.tmpLocationMap == null){
+                              if (widget.tmpLocationMap == null) {
                                 print("widget.tmpLocationMap is null");
                               }
-                              if(tmpResultList == null){
+                              if (tmpResultList == null) {
                                 print("tmpResultList is null");
                               }
                               final result = await showDialog(
@@ -912,11 +926,11 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               );
                               String localInfoString = "";
-                              if(result != null){
+                              if (result != null) {
                                 tmpResultList = result;
                               }
-                              
-                              if(tmpResultList != null){
+
+                              if (tmpResultList != null) {
                                 tmpResultStringList = [];
                               }
                               tmpResultList?.sort(
@@ -990,14 +1004,28 @@ class _SignUpState extends State<SignUp> {
                 /// 출강센터 입력창
                 BaseTextField(
                   customController: classCenterController,
+                  customFocusNode: classCenterFocusNode,
                   hint: "출강센터",
-                  showArrow: false,
-                  customFunction: () {},
+                  showArrow: true,
+                  customFunction: () {
+                    if (kIsWeb) {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => KakaoMapWebview()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => KakaoMapWeb()));
+                    } else {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => KakaoMapWebview()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => KakaoMap()));
+                    }
+                  },
                 ),
 
                 /// 필라테스 관련 자격증 입력창
                 BaseTextField(
                   customController: pilatesRelatedQualificationsController,
+                  customFocusNode: pilatesRelatedQualificationsFocusNode,
                   hint: "필라테스 관련 자격증",
                   showArrow: false,
                   customFunction: () {},
@@ -1006,6 +1034,7 @@ class _SignUpState extends State<SignUp> {
                 /// 타 종목 관련 자격증 입력창
                 BaseTextField(
                   customController: otherRelatedQualificationsController,
+                  customFocusNode: otherRelatedQualificationsFocusNode,
                   hint: "타 종목 관련 자격증",
                   showArrow: false,
                   customFunction: () {},
@@ -1014,6 +1043,7 @@ class _SignUpState extends State<SignUp> {
                 /// 강사님 소개 입력창
                 BaseTextField(
                   customController: teacherIntroController,
+                  customFocusNode: teacherIntroFocusNode,
                   hint: "강사님 소개",
                   showArrow: false,
                   customFunction: () {},

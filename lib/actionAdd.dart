@@ -1,17 +1,28 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/action.dart';
 
 import 'action_service.dart';
 import 'auth_service.dart';
 import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
+import 'action.dart' as tmpActionClass;
 
 GlobalFunction globalFunction = GlobalFunction();
 
+List resultActionList = [];
+
+late FocusNode apparatusFocusNode;
+late FocusNode positionFocusNode;
+late FocusNode actionNameFocusNode;
+
+
 class ActionAdd extends StatefulWidget {
-  const ActionAdd({super.key});
+  List tmpActionList = [];
+  ActionAdd({super.key});
+  ActionAdd.manageList(this.tmpActionList,{super.key});
 
   @override
   State<ActionAdd> createState() => _ActionAddState();
@@ -40,6 +51,12 @@ class _ActionAddState extends State<ActionAdd> {
     otherApparatusController = TextEditingController();
     otherPositionController = TextEditingController();
     nameController = TextEditingController();
+
+    resultActionList = widget.tmpActionList;
+
+    apparatusFocusNode = FocusNode();
+    positionFocusNode = FocusNode();
+    actionNameFocusNode = FocusNode();
     super.initState();
   }
 
@@ -53,6 +70,10 @@ class _ActionAddState extends State<ActionAdd> {
     selectedApparatus = "";
     selectecPosition = "";
     actionName = "";
+
+    apparatusFocusNode.dispose();
+    positionFocusNode.dispose();
+    actionNameFocusNode.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -97,7 +118,7 @@ class _ActionAddState extends State<ActionAdd> {
   Widget build(BuildContext context) {
     // final actionService = context.read<ActionService>();
     final authService = context.read<AuthService>();
-    final user = authService.currentUser()!;
+    final user = authService.currentUser()!; 
     return Consumer<ActionService>(builder: (context, actionService, child) {
       return Dialog(
         shape: RoundedRectangleBorder(
@@ -120,7 +141,7 @@ class _ActionAddState extends State<ActionAdd> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                       child: DropDownTextField(
                         controller: apparatusController,
                         isEnabled: true,
@@ -177,6 +198,7 @@ class _ActionAddState extends State<ActionAdd> {
                             if (apparatusController.dropDownValue!.name ==
                                 "OTHERS") {
                               apparatusOffstage = false;
+                              apparatusFocusNode.requestFocus();
                             } else {
                               apparatusOffstage = true;
                             }
@@ -188,16 +210,20 @@ class _ActionAddState extends State<ActionAdd> {
                     /// 기구 OTHERS 입력창
                     Offstage(
                       offstage: apparatusOffstage,
-                      child: BaseTextField(
-                        customController: otherApparatusController,
-                        hint: "새로운 기구를 입력해주세요.",
-                        showArrow: false,
-                        customFunction: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        child: BaseTextField(
+                          customController: otherApparatusController,
+                          customFocusNode: apparatusFocusNode,
+                          hint: "새로운 기구를 입력해주세요.",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
                       ),
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                       child: DropDownTextField(
                         controller: positionController,
                         isEnabled: true,
@@ -254,6 +280,7 @@ class _ActionAddState extends State<ActionAdd> {
                             if (positionController.dropDownValue!.name ==
                                 "OTHERS") {
                               positionOffstage = false;
+                              positionFocusNode.requestFocus();
                             } else {
                               positionOffstage = true;
                             }
@@ -265,17 +292,22 @@ class _ActionAddState extends State<ActionAdd> {
                     /// 자세 OTHERS 입력창
                     Offstage(
                       offstage: positionOffstage,
-                      child: BaseTextField(
-                        customController: otherPositionController,
-                        hint: "새로운 자세를 입력해주세요.",
-                        showArrow: false,
-                        customFunction: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        child: BaseTextField(
+                          customController: otherPositionController,
+                          customFocusNode: positionFocusNode,
+                          hint: "새로운 자세를 입력해주세요.",
+                          showArrow: false,
+                          customFunction: () {},
+                        ),
                       ),
                     ),
 
                     /// 동작 이름 입력창
                     BaseTextField(
                       customController: nameController,
+                      customFocusNode: actionNameFocusNode,
                       hint: "새로운 동작명을 입력해주세요.",
                       showArrow: false,
                       customFunction: () {},
@@ -283,7 +315,7 @@ class _ActionAddState extends State<ActionAdd> {
                     Divider(height: 1),
                     SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                      padding: const EdgeInsets.fromLTRB(0, 6, 0, 22),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(0),
@@ -310,7 +342,7 @@ class _ActionAddState extends State<ActionAdd> {
                               ],
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             print("추가 버튼");
                             // create action
                             if (apparatusOffstage) {
@@ -324,6 +356,7 @@ class _ActionAddState extends State<ActionAdd> {
                             } else {
                               if (globalFunction.textNullCheck(context,
                                   otherApparatusController, "새로운 기구 이름")) {
+                                    
                                 selectedApparatus =
                                     apparatusController.dropDownValue!.value;
                                 otherApparatusName =
@@ -354,7 +387,7 @@ class _ActionAddState extends State<ActionAdd> {
                             if (selectedApparatus.isNotEmpty &&
                                 selectecPosition.isNotEmpty &&
                                 actionName.isNotEmpty) {
-                              actionService.create(
+                              String id = await actionService.create(
                                 selectedApparatus,
                                 otherApparatusName,
                                 selectecPosition,
@@ -364,8 +397,29 @@ class _ActionAddState extends State<ActionAdd> {
                                 actionName.toUpperCase(),
                                 actionName.toLowerCase(),
                               );
-                              // 신규 동작 추가 성공시 actionSelect로 이동
-                              Navigator.pop(context, actionName);
+
+                              List tmpResultList = [];
+                              //tmpActionClass.Action tmpAction = tmpActionClass.Action(selectedApparatus, otherApparatusName, selectecPosition, otherPositionName, actionName, id, actionName.toUpperCase(), actionName.toLowerCase(), actionName.toLowerCase().split(" "), user.uid);
+                              // {name: 핸드 스트랩을 이용하여 Hugging, upperCaseName: 핸드 스트랩을 이용하여 HUGGING, otherApparatusName: SPRING BOARD, nGramizedLowerCaseName: [핸드, 스트랩을, 이용하여, hugging], position: standing, otherPositionName: STANDING, apparatus: SB, author: p0gKIY1vArckS6JTZQdYG4RymEk2, lowerCaseName: 핸드 스트랩을 이용하여 hugging, id: 2RqZOEQK09sRx7bcqQ6n}
+                              resultActionList.add({});
+                              resultActionList[resultActionList.length-1]['name']=actionName;
+                              resultActionList[resultActionList.length-1]['upperCaseName']=actionName.toUpperCase();
+                              resultActionList[resultActionList.length-1]['otherApparatusName']=otherApparatusName;
+                              resultActionList[resultActionList.length-1]['nGramizedLowerCaseName']=actionName.toLowerCase().split(" ");
+                              resultActionList[resultActionList.length-1]['position']=selectecPosition;
+                              resultActionList[resultActionList.length-1]['otherPositionName']=otherPositionName;
+                              resultActionList[resultActionList.length-1]['apparatus']=selectedApparatus;
+                              resultActionList[resultActionList.length-1]['author']=user.uid;
+                              resultActionList[resultActionList.length-1]['lowerCaseName']=actionName.toLowerCase();
+                              resultActionList[resultActionList.length-1]['id']=id;
+                              // resultActionList.add(tmpAction);
+                              print(resultActionList);
+                              resultActionList.sort(((a, b) => a['name'].compareTo(b['name'])));
+
+                              tmpResultList.add(actionName);
+                              tmpResultList.add(resultActionList);
+                              // 신규 동작 추가 성공시 actionSelector로 이동
+                              Navigator.pop(context, tmpResultList);
                             } else {
                               // 빈 값 있을 때
                               ScaffoldMessenger.of(context)

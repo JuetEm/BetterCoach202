@@ -398,12 +398,14 @@ class BaseTextField extends StatefulWidget {
 BaseTextField({
     Key? key,
     required this.customController,
+    required this.customFocusNode,
     required this.hint,
     required this.showArrow,
     required this.customFunction,
   }) : super(key: key);
 
   final TextEditingController customController;
+  final FocusNode customFocusNode;
   final String hint;
   final showArrow;
   final Function customFunction;
@@ -428,6 +430,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
         textInputAction: TextInputAction.done,
         readOnly: widget.showArrow,
         controller: widget.customController,
+        focusNode: widget.customFocusNode,
         decoration: InputDecoration(
           labelText: widget.hint,
           suffixIcon: widget.hint == "수행도"
@@ -613,12 +616,14 @@ class BaseSearchTextField extends StatefulWidget {
     required this.hint,
     required this.showArrow,
     required this.customFunction,
+    required this.clearfunction,
   }) : super(key: key);
 
   final TextEditingController customController;
   final String hint;
   final showArrow;
   final Function customFunction;
+  final Function clearfunction;
 
   @override
   State<BaseSearchTextField> createState() => _BaseSearchTextFieldState();
@@ -649,8 +654,10 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
               ? null
               : widget.showArrow
                   ? IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.search),
+                      onPressed: () {
+                      widget.clearfunction();
+                      },
+                      icon: Icon(Icons.clear),
                     )
                   : null,
           hintText: widget.hint,

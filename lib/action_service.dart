@@ -97,7 +97,25 @@ class ActionService extends ChangeNotifier {
     return result;
   }
 
-  void create(
+  Future<List> readActionListAtFirstTime(String uid) async {
+    var result = await actionCollection //.where('uid', isEqualTo: uid)
+        .orderBy('name', descending: false)
+        .get();
+    
+    
+    List resultList = [];
+    var docsLength = result.docs.length;
+    var rstObj = {};
+        for(int i=0; i<result.docs.length; i++){
+          // print("result.docs[i].data() : ${result.docs[i].data()}");
+          rstObj = result.docs[i].data();
+          rstObj['id'] = result.docs[i].id;
+          resultList.add(rstObj);
+        }
+        return resultList;
+  }
+
+  Future<String> create(
     String apparatus,
     String otherApparatusName,
     String position,
@@ -111,6 +129,7 @@ class ActionService extends ChangeNotifier {
     nGramizedLowerCaseName = lowerCaseName.split(" ");
     print("nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
     // bucket 만들기
+    String id = "";
     await actionCollection.add({
       'apparatus': apparatus, // 기구 카테고리 구분자
       'otherApparatusName': otherApparatusName, // 기구명 전체
@@ -122,11 +141,14 @@ class ActionService extends ChangeNotifier {
       'lowerCaseName': lowerCaseName, // 소문자 동작 이름
       'nGramizedLowerCaseName': nGramizedLowerCaseName,
     }).then((value) {
+      id = value.id;
       print("Successfully completed");
     }, onError: (e) {
       print("Error completing: ${e}");
     });
     notifyListeners(); // 화면 갱신
+
+    return id;
   }
 
   void createDummy(
