@@ -119,8 +119,6 @@ class _ActionSelectorState extends State<ActionSelector> {
     tmpLessonInfoList = [];
     checkedTileList = [];
 
-    
-
     searchController.clear();
     super.dispose();
   }
@@ -148,11 +146,10 @@ class _ActionSelectorState extends State<ActionSelector> {
     /* setState(() {
       selectedActionCount = tmpLessonInfoList.length;
     }); */
-    if(tmpLessonInfoList.isNotEmpty){
+    if (tmpLessonInfoList.isNotEmpty) {
       selectedActionCount = tmpLessonInfoList.length;
       isFloating = true;
     }
-    
 
     List docs = resultActionList;
     if (searchString.isNotEmpty) {
@@ -775,7 +772,7 @@ class _ActionSelectorState extends State<ActionSelector> {
             positionArray = [];
 
             searchString = "";
-            Navigator.pop(context,tmpLessonInfoList);
+            Navigator.pop(context, tmpLessonInfoList);
           }),
           floatingActionButton: tmpLessonInfoList.isEmpty
               ? null
@@ -874,127 +871,138 @@ class _ActionSelectorState extends State<ActionSelector> {
                 //     ),
                 //   ),
                 // ),
-
-                /// 신규동작추가 버튼
-                SizedBox(height: 5),
-                SizedBox(
-                  height: 40,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(0),
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          elevation: 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Palette.buttonOrange,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          color: Colors.transparent,
-                        ),
-                        height: 60,
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "신규 동작 생성 +",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Palette.buttonOrange,
+                Offstage(
+                  offstage: searchString.isNotEmpty,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 5),
+                      SizedBox(
+                        height: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(0),
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                elevation: 0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Palette.buttonOrange,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                                color: Colors.transparent,
+                              ),
+                              height: 60,
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "신규 동작 생성 +",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.buttonOrange,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () async {
-                        print("신규 동작 추가");
-                        // LessonAdd로 이동
-                        final result = await showDialog(
-                          context: context,
-                          builder: (context) => StatefulBuilder(
-                            builder: (context, setState) {
-                              return ActionAdd.manageList(resultActionList);
+                            onPressed: () async {
+                              print("신규 동작 추가");
+                              // LessonAdd로 이동
+                              final result = await showDialog(
+                                context: context,
+                                builder: (context) => StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return ActionAdd.manageList(
+                                        resultActionList);
+                                  },
+                                ),
+                              );
+                              setState(() {
+                                if (result == null) {
+                                  searchString = "";
+                                } else {
+                                  List resultList = result as List;
+                                  String tmpSearchStr =
+                                      resultList[0].toString().trim();
+                                  if (tmpSearchStr.isNotEmpty) {
+                                    searchController.text = tmpSearchStr;
+                                    searchString = tmpSearchStr;
+                                  } else {
+                                    searchString = "";
+                                  }
+
+                                  resultActionList = resultList[1];
+                                }
+                              });
                             },
                           ),
-                        );
-                        setState(() {
-                          if (result == null) {
-                            searchString = "";
-                          } else {
-                            List resultList = result as List;
-                            String tmpSearchStr = resultList[0].toString().trim();
-                            if (tmpSearchStr.isNotEmpty) {
-                              searchController.text = tmpSearchStr;
-                              searchString = tmpSearchStr;
-                            } else {
-                              searchString = "";
-                            }
-
-                            resultActionList = resultList[1];
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  height: 30,
-                  width: double.infinity,
-                  child: Text(
-                    "동작을 선택하세요",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-
-                /// 기구 필터
-                SizedBox(
-                  height: 30,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        for (final chip in apparatusChips)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                            child: chip,
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 4),
-
-                /// 자세 필터
-                SizedBox(
-                  height: 30,
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (final chip in positionChips)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                              child: chip,
-                            ),
-                        ],
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 30,
+                        width: double.infinity,
+                        child: Text(
+                          "동작을 선택하세요",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+
+                      /// 기구 필터
+                      SizedBox(
+                        height: 30,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final chip in apparatusChips)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                                  child: chip,
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 4),
+
+                      /// 자세 필터
+                      SizedBox(
+                        height: 30,
+                        child: Center(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                for (final chip in positionChips)
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                                    child: chip,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10),
+
+                /// 신규동작추가 버튼
 
                 /// 동작 리스트
                 Expanded(
