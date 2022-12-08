@@ -151,7 +151,7 @@ class GlobalFunction {
       var firstCharPeriod = ('까'.codeUnits[0] - '가'.codeUnits[0]).toInt();
       var middleCharPeriod = ('개'.codeUnits[0] - '가'.codeUnits[0]).toInt();
       var chosung = firstChars[(base / firstCharPeriod).toInt()];
-      // print("chosung : ${chosung}");
+      print("chosung : ${chosung}");
       var joongsung = middleChars[
           (((base - (firstCharPeriod)) / middleCharPeriod) % 21).toInt()];
       // print("joongsung : ${joongsung}");
@@ -161,7 +161,7 @@ class GlobalFunction {
       result = chosung;
     } else {
       String firstChar = name.trim().toLowerCase().substring(0, 1);
-      // print("firstChar : ${firstChar}");
+      print("firstChar : ${firstChar}");
       result = firstChar;
     }
 

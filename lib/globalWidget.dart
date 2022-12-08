@@ -614,6 +614,7 @@ class BaseSearchTextField extends StatefulWidget {
     Key? key,
     required this.customController,
     required this.hint,
+    required this.label,
     required this.showArrow,
     required this.customFunction,
     required this.clearfunction,
@@ -621,6 +622,7 @@ class BaseSearchTextField extends StatefulWidget {
 
   final TextEditingController customController;
   final String hint;
+  final label;
   final showArrow;
   final Function customFunction;
   final Function clearfunction;
@@ -649,7 +651,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
         },
         controller: widget.customController,
         decoration: InputDecoration(
-          labelText: widget.hint,
+          labelText: widget.label,
           suffixIcon: widget.hint == ""
               ? null
               : widget.showArrow

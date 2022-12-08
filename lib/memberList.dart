@@ -241,6 +241,7 @@ class _MemberListState extends State<MemberList> {
                     BaseSearchTextField(
                       customController: searchController,
                       hint: "이름을 검색하세요.",
+                      label: "이름을 검색하세요.",
                       showArrow: true,
                       customFunction: () {
                         setState(() {

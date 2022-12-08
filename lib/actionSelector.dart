@@ -47,6 +47,8 @@ bool initStateVar = true;
 
 TextEditingController searchController = TextEditingController();
 
+ScrollController scrollController = ScrollController();
+
 late bool isFloating;
 late int selectedActionCount = -1;
 
@@ -62,6 +64,39 @@ late List<TmpLessonInfo> unEditedTmpLessonInfo;
 List resultActionList = [];
 List searchedList = [];
 
+// 세로 자음 검색 바 구현
+List combinedLngs = [];
+
+String currentChar = "";
+
+// 알파벳 자모음 생성
+final alphabets = List.generate(26, (index) => String.fromCharCode(index + 65));
+final koreans = [
+  "ㄱ",
+  "ㄴ",
+  "ㄷ",
+  "ㄹ",
+  "ㅁ",
+  "ㅂ",
+  "ㅅ",
+  "ㅇ",
+  "ㅈ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ",
+  /* "ㄲ",
+    "ㄸ",
+    "ㅃ",
+    "ㅆ",
+    "ㅉ", */
+];
+
+List rmNameList = [];
+
+int _searchIndex = 0;
+
 class ActionSelector extends StatefulWidget {
   const ActionSelector({super.key});
 
@@ -70,6 +105,61 @@ class ActionSelector extends StatefulWidget {
 }
 
 class _ActionSelectorState extends State<ActionSelector> {
+  // 모음 검색 세로 바 구현 작업
+  // https://github.com/thanikad/alphabetical_search
+  Future<void> setSearchIndex(String searchLetter) async {
+    print("searchLetter : ${searchLetter}");
+    /* rmNameList.forEach((element) { 
+      print("element : ${element}");
+    }); */
+    // setState(() {
+    _searchIndex = rmNameList.indexWhere(
+        (element) => element.toString().startsWith(searchLetter.toLowerCase()));
+    print("_searchIndex.toDouble() : ${_searchIndex.toDouble()}");
+    double contentHeight = MediaQuery.of(context).size.height > 700
+        ? MediaQuery.of(context).size.height * 0.89
+        : MediaQuery.of(context).size.height * 0.85;
+    print("contentHeight : ${contentHeight}");
+    if (_searchIndex >= 0 && scrollController.hasClients) {
+      await scrollController
+          .animateTo(_searchIndex.toDouble(),
+              duration: Duration(milliseconds: 1), curve: Curves.ease)
+          .then((value) {
+        print("value : ");
+      }).whenComplete(() {
+        print("complete : ");
+      });
+      /* SchedulerBinding.instance.addPersistentFrameCallback(
+        (timeStamp) async {
+          await scrollController.animateTo(
+              _searchIndex.toDouble(),
+              duration: Duration(milliseconds: 1),
+              curve: Curves.ease)/* .then((value){
+                print("value : ");
+              }).whenComplete((){
+                print("complete : ");
+              }) */;
+        },
+      ); */
+      // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      /* print(
+          "scrollController.position.maxScrollExtent : ${scrollController.position.maxScrollExtent}");
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 1),
+          curve: Curves
+              .ease); /* .then((value){
+                print("value : ");
+              }).whenComplete((){
+                print("complete : ");
+              }) */
+      // scrollController.jumpTo(contentHeight);
+      print("WidgetsBinding : ");
+      // },);
+      print("after jumpTo!!"); */
+    }
+    // });
+  }
+
   @override
   void initState() {
     isFloating = false;
@@ -80,6 +170,13 @@ class _ActionSelectorState extends State<ActionSelector> {
     lessonInfoList = [];
     tmpLessonInfoList = [];
     checkedTileList = [];
+
+    combinedLngs.addAll(koreans);
+    combinedLngs.addAll(alphabets);
+
+    scrollController.addListener(() {
+      print("scrollController.offset : ${scrollController.offset}");
+    });
     super.initState();
   }
 
@@ -120,6 +217,9 @@ class _ActionSelectorState extends State<ActionSelector> {
     checkedTileList = [];
 
     searchController.clear();
+
+    combinedLngs.clear();
+    rmNameList.clear();
     super.dispose();
   }
 
@@ -142,6 +242,15 @@ class _ActionSelectorState extends State<ActionSelector> {
     final String totalNote = args[4];
     tmpLessonInfoList = args[5];
     resultActionList = args[6];
+
+    if (rmNameList.isEmpty) {
+      rmNameList = [];
+      resultActionList.forEach(
+        (element) {
+          rmNameList.add(globalFunction.getChosungFromString(element['name']));
+        },
+      );
+    }
 
     /* setState(() {
       selectedActionCount = tmpLessonInfoList.length;
@@ -798,6 +907,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                 BaseSearchTextField(
                   customController: searchController,
                   hint: "동작을 검색하세요.",
+                  label: "동작을 검색하세요.",
                   showArrow: true,
                   customFunction: () {
                     setState(() {
@@ -1025,330 +1135,441 @@ class _ActionSelectorState extends State<ActionSelector> {
                         return Center(child: Text("운동 목록을 준비 중입니다."));
                       }
                       return*/
-                        resultActionList.isEmpty
-                            ? Center(child: Text("운동 목록을 준비 중입니다."))
-                            : Container(
-                                decoration: BoxDecoration(
-                                  color: Palette.mainBackground,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: docs.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final doc = docs[index];
-                                    // print("doc : ${doc}");
-                                    String apparatus = doc['apparatus'];
-                                    String otherApparatusName =
-                                        doc['otherApparatusName'];
-                                    String position = doc['position'];
-                                    String name = doc['name'];
-                                    String lowerCaseName = doc['lowerCaseName'];
-                                    List<dynamic> nGramizedLowerCaseName =
-                                        doc['nGramizedLowerCaseName'] ?? [];
+                        Stack(children: [
+                  resultActionList.isEmpty
+                      ? Center(child: Text("운동 목록을 준비 중입니다."))
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: Palette.mainBackground,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            controller: scrollController,
+                            shrinkWrap: true,
+                            itemCount: docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final doc = docs[index];
+                              // print("doc : ${doc}");
+                              String apparatus = doc['apparatus'];
+                              String otherApparatusName =
+                                  doc['otherApparatusName'];
+                              String position = doc['position'];
+                              String name = doc['name'];
+                              String lowerCaseName = doc['lowerCaseName'];
+                              List<dynamic> nGramizedLowerCaseName =
+                                  doc['nGramizedLowerCaseName'] ?? [];
 
-                                    final ActionInfo actionInfo = ActionInfo(
-                                      name,
-                                      apparatus,
-                                      position,
-                                    );
+                              final ActionInfo actionInfo = ActionInfo(
+                                name,
+                                apparatus,
+                                position,
+                              );
 
-                                    // print(
-                                    //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+                              // print(
+                              //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
 
-                                    if (searchString.isEmpty) {
-                                      if (positionArray.isEmpty) {
-                                        if (apparatusArray.isEmpty) {
-                                          return ActionTile(
-                                              memberdocId: customUserInfo.docId,
-                                              apparatus: apparatus,
-                                              actionName: name,
-                                              name: customUserInfo.name,
-                                              phoneNumber: "temp",
-                                              lessonDate: lessonDate,
-                                              grade: "50",
-                                              totalNote: totalNote,
-                                              docId: "",
-                                              uid: user.uid,
-                                              pos: index);
-                                        } else {
-                                          if (apparatusArray
-                                              .contains(apparatus)) {
-                                            return ActionTile(
-                                                memberdocId:
-                                                    customUserInfo.docId,
-                                                apparatus: apparatus,
-                                                actionName: name,
-                                                name: customUserInfo.name,
-                                                phoneNumber: "temp",
-                                                lessonDate: lessonDate,
-                                                grade: "50",
-                                                totalNote: totalNote,
-                                                docId: "",
-                                                uid: user.uid,
-                                                pos: index);
-                                          } else {
-                                            return SizedBox.shrink();
-                                          }
-                                        }
-                                      } else {
-                                        if (positionArray.contains(position)) {
-                                          positionFilteredSize++;
-                                          if (apparatusArray.isEmpty) {
-                                            return ActionTile(
-                                                memberdocId:
-                                                    customUserInfo.docId,
-                                                apparatus: apparatus,
-                                                actionName: name,
-                                                name: customUserInfo.name,
-                                                phoneNumber: "temp",
-                                                lessonDate: lessonDate,
-                                                grade: "50",
-                                                totalNote: totalNote,
-                                                docId: customUserInfo.docId,
-                                                uid: user.uid,
-                                                pos: index);
-                                          } else {
-                                            if (apparatusArray
-                                                .contains(apparatus)) {
-                                              return ActionTile(
-                                                  memberdocId:
-                                                      customUserInfo.docId,
-                                                  apparatus: apparatus,
-                                                  actionName: name,
-                                                  name: customUserInfo.name,
-                                                  phoneNumber: "temp",
-                                                  lessonDate: lessonDate,
-                                                  grade: "50",
-                                                  totalNote: totalNote,
-                                                  docId: customUserInfo.docId,
-                                                  uid: user.uid,
-                                                  pos: index);
-                                            } else {
-                                              return SizedBox.shrink();
-                                            }
-                                          }
-                                        } else {
-                                          return SizedBox.shrink();
-                                        }
-                                      }
+                              if (searchString.isEmpty) {
+                                if (positionArray.isEmpty) {
+                                  if (apparatusArray.isEmpty) {
+                                    return ActionTile(
+                                        memberdocId: customUserInfo.docId,
+                                        apparatus: apparatus,
+                                        actionName: name,
+                                        name: customUserInfo.name,
+                                        phoneNumber: "temp",
+                                        lessonDate: lessonDate,
+                                        grade: "50",
+                                        totalNote: totalNote,
+                                        docId: "",
+                                        uid: user.uid,
+                                        pos: index);
+                                  } else {
+                                    if (apparatusArray.contains(apparatus)) {
+                                      return ActionTile(
+                                          memberdocId: customUserInfo.docId,
+                                          apparatus: apparatus,
+                                          actionName: name,
+                                          name: customUserInfo.name,
+                                          phoneNumber: "temp",
+                                          lessonDate: lessonDate,
+                                          grade: "50",
+                                          totalNote: totalNote,
+                                          docId: "",
+                                          uid: user.uid,
+                                          pos: index);
                                     } else {
-                                      // if (lowerCaseName
-                                      //     .startsWith(searchString.toLowerCase())) {
-                                      if (positionArray.isEmpty) {
-                                        if (apparatusArray.isEmpty) {
-                                          return ActionTile(
-                                              memberdocId: customUserInfo.docId,
-                                              apparatus: apparatus,
-                                              actionName: name,
-                                              name: customUserInfo.name,
-                                              phoneNumber: "temp",
-                                              lessonDate: lessonDate,
-                                              grade: "50",
-                                              totalNote: totalNote,
-                                              docId: customUserInfo.docId,
-                                              uid: user.uid,
-                                              pos: index);
-                                        } else {
-                                          if (apparatusArray
-                                              .contains(apparatus)) {
-                                            return ActionTile(
-                                                memberdocId:
-                                                    customUserInfo.docId,
-                                                apparatus: apparatus,
-                                                actionName: name,
-                                                name: customUserInfo.name,
-                                                phoneNumber: "temp",
-                                                lessonDate: lessonDate,
-                                                grade: "50",
-                                                totalNote: totalNote,
-                                                docId: customUserInfo.docId,
-                                                uid: user.uid,
-                                                pos: index);
-                                          } else {
-                                            return SizedBox.shrink();
-                                          }
-                                        }
-                                      } else {
-                                        if (positionArray.contains(position)) {
-                                          positionFilteredSize++;
-                                          if (apparatusArray.isEmpty) {
-                                            return ActionTile(
-                                                apparatus: apparatus,
-                                                actionName: name,
-                                                name: customUserInfo.name,
-                                                phoneNumber: "temp",
-                                                lessonDate: lessonDate,
-                                                grade: "50",
-                                                totalNote: totalNote,
-                                                docId: "",
-                                                memberdocId:
-                                                    customUserInfo.docId,
-                                                uid: user.uid,
-                                                pos: index);
-                                          } else {
-                                            if (apparatusArray
-                                                .contains(apparatus)) {
-                                              return ActionTile(
-                                                  apparatus: apparatus,
-                                                  actionName: name,
-                                                  name: customUserInfo.name,
-                                                  phoneNumber: "temp",
-                                                  lessonDate: lessonDate,
-                                                  grade: "50",
-                                                  totalNote: totalNote,
-                                                  docId: "",
-                                                  memberdocId:
-                                                      customUserInfo.docId,
-                                                  uid: user.uid,
-                                                  pos: index);
-                                            } else {
-                                              return SizedBox.shrink();
-                                            }
-                                          }
-                                        } else {
-                                          return SizedBox.shrink();
-                                        }
-                                      }
-                                      // } else {
-                                      //   return SizedBox.shrink();
-                                      // }
+                                      return SizedBox.shrink();
                                     }
+                                  }
+                                } else {
+                                  if (positionArray.contains(position)) {
+                                    positionFilteredSize++;
+                                    if (apparatusArray.isEmpty) {
+                                      return ActionTile(
+                                          memberdocId: customUserInfo.docId,
+                                          apparatus: apparatus,
+                                          actionName: name,
+                                          name: customUserInfo.name,
+                                          phoneNumber: "temp",
+                                          lessonDate: lessonDate,
+                                          grade: "50",
+                                          totalNote: totalNote,
+                                          docId: customUserInfo.docId,
+                                          uid: user.uid,
+                                          pos: index);
+                                    } else {
+                                      if (apparatusArray.contains(apparatus)) {
+                                        return ActionTile(
+                                            memberdocId: customUserInfo.docId,
+                                            apparatus: apparatus,
+                                            actionName: name,
+                                            name: customUserInfo.name,
+                                            phoneNumber: "temp",
+                                            lessonDate: lessonDate,
+                                            grade: "50",
+                                            totalNote: totalNote,
+                                            docId: customUserInfo.docId,
+                                            uid: user.uid,
+                                            pos: index);
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    }
+                                  } else {
+                                    return SizedBox.shrink();
+                                  }
+                                }
+                              } else {
+                                // if (lowerCaseName
+                                //     .startsWith(searchString.toLowerCase())) {
+                                if (positionArray.isEmpty) {
+                                  if (apparatusArray.isEmpty) {
+                                    return ActionTile(
+                                        memberdocId: customUserInfo.docId,
+                                        apparatus: apparatus,
+                                        actionName: name,
+                                        name: customUserInfo.name,
+                                        phoneNumber: "temp",
+                                        lessonDate: lessonDate,
+                                        grade: "50",
+                                        totalNote: totalNote,
+                                        docId: customUserInfo.docId,
+                                        uid: user.uid,
+                                        pos: index);
+                                  } else {
+                                    if (apparatusArray.contains(apparatus)) {
+                                      return ActionTile(
+                                          memberdocId: customUserInfo.docId,
+                                          apparatus: apparatus,
+                                          actionName: name,
+                                          name: customUserInfo.name,
+                                          phoneNumber: "temp",
+                                          lessonDate: lessonDate,
+                                          grade: "50",
+                                          totalNote: totalNote,
+                                          docId: customUserInfo.docId,
+                                          uid: user.uid,
+                                          pos: index);
+                                    } else {
+                                      return SizedBox.shrink();
+                                    }
+                                  }
+                                } else {
+                                  if (positionArray.contains(position)) {
+                                    positionFilteredSize++;
+                                    if (apparatusArray.isEmpty) {
+                                      return ActionTile(
+                                          apparatus: apparatus,
+                                          actionName: name,
+                                          name: customUserInfo.name,
+                                          phoneNumber: "temp",
+                                          lessonDate: lessonDate,
+                                          grade: "50",
+                                          totalNote: totalNote,
+                                          docId: "",
+                                          memberdocId: customUserInfo.docId,
+                                          uid: user.uid,
+                                          pos: index);
+                                    } else {
+                                      if (apparatusArray.contains(apparatus)) {
+                                        return ActionTile(
+                                            apparatus: apparatus,
+                                            actionName: name,
+                                            name: customUserInfo.name,
+                                            phoneNumber: "temp",
+                                            lessonDate: lessonDate,
+                                            grade: "50",
+                                            totalNote: totalNote,
+                                            docId: "",
+                                            memberdocId: customUserInfo.docId,
+                                            uid: user.uid,
+                                            pos: index);
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    }
+                                  } else {
+                                    return SizedBox.shrink();
+                                  }
+                                }
+                                // } else {
+                                //   return SizedBox.shrink();
+                                // }
+                              }
+                            },
+                          ),
+                        ),
+                  /* GestureDetector(
+                    onVerticalDragUpdate: (details) {
+                      print(
+                          "update details.localPosition.dy : ${details.localPosition.dy}");
+                      print("update currentChar : ${currentChar}");
+                      setSearchIndex(currentChar);
+                    },
+                    onVerticalDragStart: (details) {
+                      print(
+                          "start details.localPosition.dy : ${details.localPosition.dy}");
+                      print("start currentChar : ${currentChar}");
+                      setSearchIndex(currentChar);
+                    },
+                    onVerticalDragEnd: (details) {
+                      print("End currentChar : ${currentChar}");
+                      setState(() {
+                        currentChar = "";
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: combinedLngs
+                            .map((character) => InkWell(
+                                  onTap: () async {
+                                    print("character : ${character}");
+                                    setState(() {
+                                      currentChar = character;
+                                    });
+
+                                    setSearchIndex(currentChar);
+
+                                    Future.delayed(Duration(seconds: 3),
+                                        () {
+                                      setState(() {
+                                        currentChar = "";
+                                      });
+                                    });
+
+                                    /* currentChar = character; */
                                   },
-                                ),
-                              )
+                                  child: Text(
+                                    character,
+                                    style: TextStyle(
+                                        fontSize: 8
+                                            ),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                  currentChar.isEmpty
+                      ? Container()
+                      : Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            color: Colors.black.withAlpha(80),
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              currentChar,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 36.0),
+                            ),
+                          ),
+                        ) */
+                ])
                     /* },
                   ), */
                     ),
 
                 Offstage(
-                  offstage: tmpLessonInfoList.isEmpty,
-                  child: SizedBox(
-                    height: 30,
-                    child: Center(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            for (final chip in actionChips)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                                child: chip,
+                  offstage: searchString.isNotEmpty,
+                  child: Column(
+                    children: [
+                      Offstage(
+                        offstage: tmpLessonInfoList.isEmpty,
+                        child: SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (final chip in actionChips)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          4.0, 0, 4, 0),
+                                      child: chip,
+                                    ),
+                                ],
                               ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      /// 추가 버튼
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(0),
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(48.0),
+                              ),
+                              color: Palette.buttonOrange,
+                            ),
+                            height: 48,
+                            width: 238,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "동작추가",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onPressed: () {
+                            print("동작추가");
+                            // LessonAdd로 이동
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ActionAdd(),
+                            //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                            //     settings: RouteSettings(
+                            //       arguments: customUserInfo,
+                            //     ),
+                            //   ),
+                            // );
+
+                            // lessonAdd
+                            if (tmpLessonInfoList.isNotEmpty) {
+                              print("userInfo.docId : ${customUserInfo.docId}");
+
+                              // for (int i = 0; i < tmpLessonInfoList.length; i++) {
+                              //   lessonService.create(
+                              //     docId: customUserInfo.docId,
+                              //     uid: user.uid,
+                              //     name: customUserInfo.name,
+                              //     phoneNumber: customUserInfo.phoneNumber,
+                              //     apratusName: tmpLessonInfoList[i].apparatusName,
+                              //     actionName: tmpLessonInfoList[i].actionName,
+                              //     lessonDate: lessonDate,
+                              //     grade: "50",
+                              //     totalNote: totalNote,
+                              //     pos: i,
+                              //     onSuccess: () {
+                              //       print(
+                              //           "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                              //     },
+                              //     onError: () {
+                              //       print(
+                              //           "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                              //     },
+                              //   );
+                              // }
+
+                              List<DateTime> tmpEventList = [];
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("동작추가 성공"),
+                              ));
+                              // 저장하기 성공시 MemberInfo로 이동
+                              Navigator.pop(context, tmpLessonInfoList);
+                              //initStateVar = !initStateVar;
+                              //Navigator.pop(context);
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => LessonAdd(),
+                              //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                              //     settings: RouteSettings(
+                              //       arguments: [
+                              //         customUserInfo,
+                              //         lessonDate,
+                              //         tmpEventList,
+                              //         "",
+                              //         "",
+                              //         tmpLessonInfoList
+                              //       ],
+                              //     ),
+                              //   ),
+                              // );
+                              initStateVar = !initStateVar;
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("동작을 선택해주세요."),
+                              ));
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Offstage(
+                  offstage: searchString.isEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(48.0),
+                          ),
+                          color: Palette.buttonOrange,
+                        ),
+                        height: 48,
+                        width: 238,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "확인",
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ],
                         ),
                       ),
+                      onPressed: () {
+                        print("동작추가");
+                        setState(() {
+                          searchString = "";
+                          searchController.clear();
+                          scrollController.jumpTo(
+                              scrollController.position.minScrollExtent);
+                        });
+                      },
                     ),
                   ),
-                ),
-
-                /// 추가 버튼
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(0),
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(48.0),
-                        ),
-                        color: Palette.buttonOrange,
-                      ),
-                      height: 48,
-                      width: 238,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "동작추가",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                    onPressed: () {
-                      print("동작추가");
-                      // LessonAdd로 이동
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => ActionAdd(),
-                      //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                      //     settings: RouteSettings(
-                      //       arguments: customUserInfo,
-                      //     ),
-                      //   ),
-                      // );
-
-                      // lessonAdd
-                      if (tmpLessonInfoList.isNotEmpty) {
-                        print("userInfo.docId : ${customUserInfo.docId}");
-
-                        // for (int i = 0; i < tmpLessonInfoList.length; i++) {
-                        //   lessonService.create(
-                        //     docId: customUserInfo.docId,
-                        //     uid: user.uid,
-                        //     name: customUserInfo.name,
-                        //     phoneNumber: customUserInfo.phoneNumber,
-                        //     apratusName: tmpLessonInfoList[i].apparatusName,
-                        //     actionName: tmpLessonInfoList[i].actionName,
-                        //     lessonDate: lessonDate,
-                        //     grade: "50",
-                        //     totalNote: totalNote,
-                        //     pos: i,
-                        //     onSuccess: () {
-                        //       print(
-                        //           "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                        //     },
-                        //     onError: () {
-                        //       print(
-                        //           "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                        //     },
-                        //   );
-                        // }
-
-                        List<DateTime> tmpEventList = [];
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("동작추가 성공"),
-                        ));
-                        // 저장하기 성공시 MemberInfo로 이동
-                        Navigator.pop(context, tmpLessonInfoList);
-                        //initStateVar = !initStateVar;
-                        //Navigator.pop(context);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => LessonAdd(),
-                        //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        //     settings: RouteSettings(
-                        //       arguments: [
-                        //         customUserInfo,
-                        //         lessonDate,
-                        //         tmpEventList,
-                        //         "",
-                        //         "",
-                        //         tmpLessonInfoList
-                        //       ],
-                        //     ),
-                        //   ),
-                        // );
-                        initStateVar = !initStateVar;
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("동작을 선택해주세요."),
-                        ));
-                      }
-                    },
-                  ),
-                ),
+                )
               ],
             ),
           ),
@@ -1416,14 +1637,14 @@ class _ActionTileState extends State<ActionTile> {
         actionTileColor = Palette.buttonOrange;
         apparatusTextColor = Palette.grayFF;
         actionNameTextColor = Palette.grayFF;
-        print(
-            "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+        /* print(
+            "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
       } else {
         actionTileColor = Palette.grayFA;
         apparatusTextColor = Palette.gray99;
         actionNameTextColor = Palette.gray66;
-        print(
-            "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+        /* print(
+            "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
       }
     });
     return Column(
@@ -1441,8 +1662,8 @@ class _ActionTileState extends State<ActionTile> {
                 apparatusTextColor = Palette.gray99;
                 actionNameTextColor = Palette.gray66;
 
-                print(
-                    "YES contain!! remove item => widget.apparatus : ${widget.uid}/${widget.docId}/${widget.lessonDate}/${widget.apparatus}, widget.actionName : ${widget.actionName}");
+                /* print(
+                    "YES contain!! remove item => widget.apparatus : ${widget.uid}/${widget.docId}/${widget.lessonDate}/${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
                 // checkedTileList.remove(widget.pos);
 
                 lessonService.deleteFromActionSelect(
@@ -1456,8 +1677,8 @@ class _ActionTileState extends State<ActionTile> {
                 apparatusTextColor = Palette.grayFF;
                 actionNameTextColor = Palette.grayFF;
 
-                print(
-                    "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
+                /* print(
+                    "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
                 // checkedTileList.add(widget.pos);
 
                 print("[AS createFromActionSelect - ${widget.memberdocId}]");
