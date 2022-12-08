@@ -47,6 +47,8 @@ bool initStateVar = true;
 
 TextEditingController searchController = TextEditingController();
 
+FocusNode searchFocusNode = FocusNode();
+
 ScrollController scrollController = ScrollController();
 
 late bool isFloating;
@@ -906,6 +908,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                 // SizedBox(height: 10),
                 BaseSearchTextField(
                   customController: searchController,
+                  customFocusNode: searchFocusNode,
                   hint: "동작을 검색하세요.",
                   label: "동작을 검색하세요.",
                   showArrow: true,
@@ -1563,8 +1566,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                         setState(() {
                           searchString = "";
                           searchController.clear();
-                          scrollController.jumpTo(
-                              scrollController.position.minScrollExtent);
+                          searchFocusNode.unfocus();
+                          /* scrollController.jumpTo(
+                              scrollController.position.minScrollExtent); */
                         });
                       },
                     ),

@@ -33,6 +33,8 @@ List resultList = [];
 
 TextEditingController searchController = TextEditingController();
 
+FocusNode searchFocusNode = FocusNode();
+
 String searchString = "";
 
 List combinedLngs = [];
@@ -240,6 +242,7 @@ class _MemberListState extends State<MemberList> {
                   children: [
                     BaseSearchTextField(
                       customController: searchController,
+                      customFocusNode: searchFocusNode,
                       hint: "이름을 검색하세요.",
                       label: "이름을 검색하세요.",
                       showArrow: true,

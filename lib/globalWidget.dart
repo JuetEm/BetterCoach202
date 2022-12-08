@@ -613,6 +613,7 @@ class BaseSearchTextField extends StatefulWidget {
   const BaseSearchTextField({
     Key? key,
     required this.customController,
+    required this.customFocusNode,
     required this.hint,
     required this.label,
     required this.showArrow,
@@ -621,6 +622,7 @@ class BaseSearchTextField extends StatefulWidget {
   }) : super(key: key);
 
   final TextEditingController customController;
+  final FocusNode customFocusNode;
   final String hint;
   final label;
   final showArrow;
