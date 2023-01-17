@@ -15,7 +15,7 @@ import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:web_project/testShowDialog.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show HttpHeaders, Platform;
 import 'package:http/http.dart' as http;
 
 import 'auth_service.dart';
@@ -58,6 +58,15 @@ List actionList = [];
 
 ActionService actionService = ActionService();
 
+enum LoginPlatform {
+  kakao,
+  none, // logout
+}
+
+LoginPlatform loginPlatform = LoginPlatform.none;
+
+bool isKakaoInstalled = false;
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -65,6 +74,11 @@ void main() async {
     ),
   );
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
+  // 카카오 소셜 로그인 init, void main 함수 맨 첫 줄에 선언하면 오류 발생, 아마도 async 문제 인 듯
+  // 카카오 소셜 로그인 https://dalgoodori.tistory.com/46 참고 
+  // KakaoSdk.init(nativeAppKey: 'kakaob59deaa3a0ff4912ca55fc3d71ccd6aa');
+  KakaoSdk.init(nativeAppKey: 'b59deaa3a0ff4912ca55fc3d71ccd6aa',
+  javaScriptAppKey: 'fec10c47ab2237004c266efcb7e31726');
   prefs = await SharedPreferences.getInstance();
 
   isLogInActiveChecked = prefs.getBool("isLogInActiveChecked") ?? false;
@@ -199,7 +213,8 @@ class MyApp extends StatelessWidget {
             // LoginPage()
             user == null
                 ? LoginPage()
-                /* : SignUp(), */ : MemberList.getMemberList(resultList, actionList),
+                /* : SignUp(), */ : MemberList.getMemberList(
+                    resultList, actionList),
       ),
     );
   }
@@ -367,6 +382,45 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 SizedBox(height: 20),
+                // 카카오톡으로 로그인 버튼
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("카카오 로그인", style: TextStyle(fontSize: 16)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
+                  onPressed: () async {
+                    try {
+                      isKakaoInstalled = await isKakaoTalkInstalled();
+                      print("isKakaoInstalled : ${isKakaoInstalled}");
+                      OAuthToken token = isKakaoInstalled
+                          ? await UserApi.instance.loginWithKakaoTalk()
+                          : await UserApi.instance.loginWithKakaoAccount();
+                      print("카카오톡으로 로그인 성공 - token : ${token}");
+                      final url = Uri.https('kapi.kakao.com', '/v2/user/me');
+                      final response = await http.get(
+                        url,
+                        headers: {
+                          HttpHeaders.authorizationHeader:
+                              'Bearer ${token.accessToken}'
+                        },
+                      );
+
+                      final profileInfo = json.decode(response.body);
+                      print("profileInfo.toString() : "+profileInfo.toString());
+                    } catch (error) {
+                      print('카카오톡으로 로그인 실패 - error : ${error}');
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
 
                 /// 로그인 버튼
                 ElevatedButton(
