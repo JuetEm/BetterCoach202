@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /bucket/{document} {
+      // document의 uid와 일치하는 유저만 RUD 가능
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.uid;
+      // Create의 경우, 로그인 되어있으면 가능
+			allow create: if request.auth != null;
+    }
+    match /member/{document} {
+      // document의 uid와 일치하는 유저만 RUD 가능
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.uid;
+      //allow read, update, delete: if true;
+      // Create의 경우, 로그인 되어있으면 가능
+			allow create: if request.auth != null;
+    }
+    match /lesson/{document} {
+      // document의 uid와 일치하는 유저만 RUD 가능
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.uid;
+      // Create의 경우, 로그인 되어있으면 가능
+			allow create: if request.auth != null;
+    }
+    match /action/{document} {
+      // document의 uid와 일치하는 유저만 RUD 가능
+      allow read, update, delete: if true;
+      // Create의 경우, 로그인 되어있으면 가능
+			allow create: if true;
+    }
+    match /daylesson/{document} {
+      // document의 uid와 일치하는 유저만 RUD 가능
+      allow read, update, delete: if true;
+      //request.auth != null && request.auth.uid == resource.data.uid;
+      // Create의 경우, 로그인 되어있으면 가능
+			allow create: if true;
+      // request.auth != null;
+    }
+  }
+}

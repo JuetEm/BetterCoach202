@@ -400,7 +400,10 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       isKakaoInstalled = await isKakaoTalkInstalled();
                       print("isKakaoInstalled : ${isKakaoInstalled}");
-                      OAuthToken token = isKakaoInstalled
+                      if (kIsWeb) {
+                        // web 방식 로그인 구현
+                      }else{
+                        OAuthToken token = isKakaoInstalled
                           ? await UserApi.instance.loginWithKakaoTalk()
                           : await UserApi.instance.loginWithKakaoAccount();
                       print("카카오톡으로 로그인 성공 - token : ${token}");
@@ -415,6 +418,8 @@ class _LoginPageState extends State<LoginPage> {
 
                       final profileInfo = json.decode(response.body);
                       print("profileInfo.toString() : "+profileInfo.toString());
+                      }
+                      
                     } catch (error) {
                       print('카카오톡으로 로그인 실패 - error : ${error}');
                     }

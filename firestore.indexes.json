@@ -1,0 +1,271 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "position",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "apparatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "action",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "nGramizedLowerCaseName",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "lowerCaseName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "daylesson",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "docId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lessonDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lesson",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "docId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lessonDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pos",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lesson",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "docId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lessonDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pos",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "member",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "registerDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "member",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "action",
+      "fieldPath": "nGramizedLowerCaseName",
+      "ttl": false,
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        }
+      ]
+    }
+  ]
+}
