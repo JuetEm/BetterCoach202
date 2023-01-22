@@ -33,8 +33,8 @@ import 'memberList.dart';
 import 'member_service.dart';
 import 'globalWidget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_web/webview_flutter_web.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 bool adminMode = false;
 
@@ -74,6 +74,9 @@ void main() async {
     ),
   );
   WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
+
+  String result = await KakaoSdk.origin;
+  print("origin result : ${result}");
   // 카카오 소셜 로그인 init, void main 함수 맨 첫 줄에 선언하면 오류 발생, 아마도 async 문제 인 듯
   // 카카오 소셜 로그인 https://dalgoodori.tistory.com/46 참고 
   // KakaoSdk.init(nativeAppKey: 'kakaob59deaa3a0ff4912ca55fc3d71ccd6aa');
@@ -93,7 +96,7 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    WebView.platform = WebWebViewPlatform();
+   // WebView.platform = WebWebViewPlatform();
   } else {
     if (Platform.isAndroid) {
       print("Platform.isAndroid");

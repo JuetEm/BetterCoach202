@@ -858,8 +858,8 @@ class _BaseContainerState extends State<BaseContainer> {
                       icon: SvgPicture.asset(
                         widget.isActive //svg파일이 firebase에서 안보이는 경우
                             //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
-                            ? "favorite_selected.svg"
-                            : "favorite_unselected.svg",
+                            ? "assets/icons/favoriteSelected.svg"
+                            : "assets/icons/favoriteUnselected.svg",
                       ),
                       iconSize: 40,
                       onPressed: () async {

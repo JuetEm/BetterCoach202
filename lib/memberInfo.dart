@@ -181,7 +181,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                         if (snapshot.hasData == false) {
                                           return IconButton(
                                               icon: SvgPicture.asset(
-                                                "favorite_unselected.svg",
+                                                "assets/icons/favoriteUnselected.svg",
                                               ),
                                               iconSize: 40,
                                               onPressed: () {});
@@ -206,8 +206,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                           return IconButton(
                                               icon: SvgPicture.asset(
                                                 favoriteMember
-                                                    ? "favorite_selected.svg"
-                                                    : "favorite_unselected.svg",
+                                                    ? "assets/icons/favoriteSelected.svg"
+                                                    : "assets/icons/favoriteUnselected.svg",
                                               ),
                                               iconSize: 40,
                                               onPressed: () async {

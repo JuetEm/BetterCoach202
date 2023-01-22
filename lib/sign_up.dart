@@ -1010,10 +1010,10 @@ class _SignUpState extends State<SignUp> {
                   customFunction: () {
                     if (kIsWeb) {
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => KakaoMapWebview()));
-                      Navigator.push(
+                      /* Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => KakaoMapWeb()));
+                              builder: (context) => KakaoMapWeb())); */
                     } else {
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => KakaoMapWebview()));
                       Navigator.push(context,
