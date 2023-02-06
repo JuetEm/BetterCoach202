@@ -291,7 +291,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 SizedBox(height: 30),
 
-                /// 이메일
+                /* /// 이메일
                 LoginTextField(
                   customController: emailController,
                   hint: "이메일",
@@ -312,7 +312,7 @@ class _LoginPageState extends State<LoginPage> {
                   isSecure: true,
                 ),
 
-                SizedBox(height: 10),
+                SizedBox(height: 10), 
 
                 Center(
                   child: SizedBox(
@@ -345,7 +345,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
+                
                 SizedBox(height: 26),
+                */
 
                 /// 기능 없는 텍스트 _ 잠시 주석처리 해두겠습니다.
                 // Row(
@@ -366,30 +368,12 @@ class _LoginPageState extends State<LoginPage> {
                 //   ],
                 // ),
                 // SizedBox(height: 32),
-                /// 로그인 없이 사용하기 버튼
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text("로그인없이 사용하기", style: TextStyle(fontSize: 16)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.gray66,
-                  ),
-                  onPressed: () {
-                    loginMethodforDemo(context, authService);
-                  },
-                ),
-                SizedBox(height: 20),
+                
                 // 카카오톡으로 로그인 버튼
                 ElevatedButton(
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
-                    child: Text("카카오 로그인", style: TextStyle(fontSize: 16)),
+                    child: Text("카카오로 로그인하기", style: TextStyle(fontSize: 16)),
                   ),
                   style: ElevatedButton.styleFrom(
                     shape: new RoundedRectangleBorder(
@@ -430,7 +414,117 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 10),
 
-                /// 로그인 버튼
+                // Apple로 로그인 버튼
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("Apple로 로그인하기", style: TextStyle(fontSize: 16)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    elevation: 0,
+                    backgroundColor: Palette.gray00,
+                  ),
+                  onPressed: () async {
+                    try {
+                      isKakaoInstalled = await isKakaoTalkInstalled();
+                      print("isKakaoInstalled : ${isKakaoInstalled}");
+                      if (kIsWeb) {
+                        // web 방식 로그인 구현
+                      }else{
+                        OAuthToken token = isKakaoInstalled
+                          ? await UserApi.instance.loginWithKakaoTalk()
+                          : await UserApi.instance.loginWithKakaoAccount();
+                      print("카카오톡으로 로그인 성공 - token : ${token}");
+                      final url = Uri.https('kapi.kakao.com', '/v2/user/me');
+                      final response = await http.get(
+                        url,
+                        headers: {
+                          HttpHeaders.authorizationHeader:
+                              'Bearer ${token.accessToken}'
+                        },
+                      );
+
+                      final profileInfo = json.decode(response.body);
+                      print("profileInfo.toString() : "+profileInfo.toString());
+                      }
+                      
+                    } catch (error) {
+                      print('카카오톡으로 로그인 실패 - error : ${error}');
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
+
+                // Google로 로그인 버튼
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("Google로 로그인하기", style: TextStyle(fontSize: 16, color: Palette.gray00)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    elevation: 0,
+                    backgroundColor: Palette.grayFF,
+                  ),
+                  onPressed: () async {
+                    try {
+                      isKakaoInstalled = await isKakaoTalkInstalled();
+                      print("isKakaoInstalled : ${isKakaoInstalled}");
+                      if (kIsWeb) {
+                        // web 방식 로그인 구현
+                      }else{
+                        OAuthToken token = isKakaoInstalled
+                          ? await UserApi.instance.loginWithKakaoTalk()
+                          : await UserApi.instance.loginWithKakaoAccount();
+                      print("카카오톡으로 로그인 성공 - token : ${token}");
+                      final url = Uri.https('kapi.kakao.com', '/v2/user/me');
+                      final response = await http.get(
+                        url,
+                        headers: {
+                          HttpHeaders.authorizationHeader:
+                              'Bearer ${token.accessToken}'
+                        },
+                      );
+
+                      final profileInfo = json.decode(response.body);
+                      print("profileInfo.toString() : "+profileInfo.toString());
+                      }
+                      
+                    } catch (error) {
+                      print('카카오톡으로 로그인 실패 - error : ${error}');
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
+
+                /// 로그인 없이 사용하기 버튼
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("로그인 없이 사용하기", style: TextStyle(fontSize: 16)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    elevation: 0,
+                    backgroundColor: Palette.gray66,
+                  ),
+                  onPressed: () {
+                    loginMethodforDemo(context, authService);
+                  },
+                ),
+                SizedBox(height: 20),
+
+                /* /// 로그인 버튼
                 ElevatedButton(
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
@@ -475,7 +569,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 30), */
 
                 //   // 버켓리스트 버튼
                 //   ElevatedButton(
