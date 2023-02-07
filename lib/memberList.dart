@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:web_project/testShowDialog.dart';
 
 import 'auth_service.dart';
 import 'color.dart';
@@ -606,6 +607,10 @@ class _MemberListState extends State<MemberList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                      // 로그아웃 용 야매버튼
+                      // builder: (context) =>
+                      //     LoginPage(analytics: MyApp.analytics),
+                      // 이게 진짜 버튼
                       builder: (context) => MemberAdd(),
                       // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                       settings: RouteSettings(

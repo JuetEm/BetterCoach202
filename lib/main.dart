@@ -269,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
           // 디자인적 요소 더하기 위해 appBar 제거
           // appBar: BaseAppBarMethod(context, "로그인", null),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(50),
+            padding: const EdgeInsets.all(30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -278,6 +278,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(height: 120),
                       SizedBox(
                         height: 100,
                         child:
@@ -298,9 +299,9 @@ class _LoginPageState extends State<LoginPage> {
                             Text(
                               "필라테스 강사를 위한 레슨 기록 솔루션",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   color: Palette.textOrange,
-                                  fontWeight: FontWeight.normal),
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -309,7 +310,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 60),
+                SizedBox(height: 80),
 
                 /* /// 이메일
                 LoginTextField(

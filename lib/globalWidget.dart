@@ -395,7 +395,7 @@ class _BaseModalBottomSheetButton extends State<BaseModalBottomSheetButton> {
 
 // Text Field
 class BaseTextField extends StatefulWidget {
-BaseTextField({
+  BaseTextField({
     Key? key,
     required this.customController,
     required this.customFocusNode,
@@ -659,7 +659,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
               : widget.showArrow
                   ? IconButton(
                       onPressed: () {
-                      widget.clearfunction();
+                        widget.clearfunction();
                       },
                       icon: Icon(Icons.clear),
                     )
@@ -927,6 +927,23 @@ class _BaseContainerState extends State<BaseContainer> {
                 ],
               ),
               Spacer(flex: 1),
+              // 노트 개수 UI
+              Column(
+                children: [
+                  Icon(
+                    Icons.text_snippet_outlined,
+                    color: Palette.gray99,
+                  ),
+                  SizedBox(width: 3),
+                  Text(
+                    "999",
+                    style: TextStyle(
+                        color: Palette.gray66,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12),
+                  ),
+                ],
+              ),
               /* Icon(
                 Icons.arrow_forward_ios,
                 color: Palette.gray95,
