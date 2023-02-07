@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
                     // 로그인 페이지로 이동
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => LoginPage(analytics: MyApp.analytics,)),
                     );
                   },
                   icon: Icon(Icons.account_circle),
@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
                           context.read<AuthService>().signOut();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (_) => LoginPage()),
+                            MaterialPageRoute(builder: (_) => LoginPage(analytics: MyApp.analytics,)),
                           );
                         },
                         child: const Text('Log Out'),

@@ -1,14 +1,17 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as FB;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
+import 'package:web_project/analyticLog.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/local_info.dart';
 import 'package:web_project/sign_up.dart';
@@ -67,6 +70,8 @@ LoginPlatform loginPlatform = LoginPlatform.none;
 
 bool isKakaoInstalled = false;
 
+AnalyticLog analyticLog = AnalyticLog();
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -123,7 +128,7 @@ void main() async {
   ); */ // firebase 앱 시작
 
   AuthService authService = AuthService();
-  final user = authService.currentUser();
+  FB.User? user = authService.currentUser();
 
   if (user != null) {
     print("object user is not null");
@@ -204,6 +209,7 @@ class MyApp extends StatelessWidget {
       },
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        // Google Analytics 설정
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
         ],
@@ -216,7 +222,7 @@ class MyApp extends StatelessWidget {
         home:
             // LoginPage()
             user == null
-                ? LoginPage()
+                ? LoginPage(analytics: analytics)
                 /* : SignUp(), */ : MemberList.getMemberList(
                     resultList, actionList),
       ),
@@ -226,12 +232,24 @@ class MyApp extends StatelessWidget {
 
 /// 로그인 페이지
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key, required this.analytics}) : super(key: key);
+  final FirebaseAnalytics analytics;
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("init 울린다!");
+    // GA 커스텀 로그 테스트
+
+    analyticLog.sendAnalyticsEvent("로그인 Init", "로그인 메인", "테스트 스트링", "테스트 파라미터");
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     userEmail = prefs.getString("userEmail");
@@ -403,11 +421,15 @@ class _LoginPageState extends State<LoginPage> {
                       print("isKakaoInstalled : ${isKakaoInstalled}");
                       if (kIsWeb) {
                         // web 방식 로그인 구현
+                        OAuthToken token = isKakaoInstalled
+                            ? await UserApi.instance.loginWithKakaoTalk()
+                            : await UserApi.instance.loginWithKakaoAccount();
+                        print("JAVASCRIPT - 카카오톡으로 로그인 성공 - token : ${token}");
                       } else {
                         OAuthToken token = isKakaoInstalled
                             ? await UserApi.instance.loginWithKakaoTalk()
                             : await UserApi.instance.loginWithKakaoAccount();
-                        print("카카오톡으로 로그인 성공 - token : ${token}");
+                        print("NATIVE - 카카오톡으로 로그인 성공 - token : ${token}");
                         final url = Uri.https('kapi.kakao.com', '/v2/user/me');
                         final response = await http.get(
                           url,
@@ -511,31 +533,11 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Palette.grayFF,
                   ),
                   onPressed: () async {
+                    print("Google onPress 울립니다!");
                     try {
-                      isKakaoInstalled = await isKakaoTalkInstalled();
-                      print("isKakaoInstalled : ${isKakaoInstalled}");
-                      if (kIsWeb) {
-                        // web 방식 로그인 구현
-                      } else {
-                        OAuthToken token = isKakaoInstalled
-                            ? await UserApi.instance.loginWithKakaoTalk()
-                            : await UserApi.instance.loginWithKakaoAccount();
-                        print("카카오톡으로 로그인 성공 - token : ${token}");
-                        final url = Uri.https('kapi.kakao.com', '/v2/user/me');
-                        final response = await http.get(
-                          url,
-                          headers: {
-                            HttpHeaders.authorizationHeader:
-                                'Bearer ${token.accessToken}'
-                          },
-                        );
-
-                        final profileInfo = json.decode(response.body);
-                        print("profileInfo.toString() : " +
-                            profileInfo.toString());
-                      }
+                      signInWithGoogle();
                     } catch (error) {
-                      print('카카오톡으로 로그인 실패 - error : ${error}');
+                      print('Google로 로그인 실패 - error : ${error}');
                     }
                   },
                 ),
@@ -944,7 +946,28 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-/// 홈페이지
+Future<FB.UserCredential> signInWithGoogle() async {
+  FB.FirebaseAuth auth = FB.FirebaseAuth.instance;
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = FB.GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  print("Google credential.idToken : ${credential.idToken}");
+
+  // Once signed in, return the UserCredential
+  return await auth.signInWithCredential(credential);
+}
+
+/* /// 홈페이지
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -1066,4 +1089,4 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-}
+} */
