@@ -39,6 +39,9 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
 
+// GA 용 화면 이름 정의
+String screenName = "메인 로그인";
+
 bool adminMode = false;
 
 GlobalFunction globalfunction = GlobalFunction();
@@ -245,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
     print("init 울린다!");
     // GA 커스텀 로그 테스트
 
-    analyticLog.sendAnalyticsEvent("로그인 Init", "로그인 메인", "테스트 스트링", "테스트 파라미터");
+    analyticLog.sendAnalyticsEvent(screenName, "로그인 이벤트 init", "init 테스트 스트링", "init 테스트 파라미터");
 
     super.initState();
   }
@@ -312,7 +315,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 SizedBox(height: 80),
 
-                /* /// 이메일
+                /// 이메일
                 LoginTextField(
                   customController: emailController,
                   hint: "이메일",
@@ -368,7 +371,27 @@ class _LoginPageState extends State<LoginPage> {
 
                 
                 SizedBox(height: 26),
-                */
+               
+
+                /// 로그인 버튼
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text("로그인", style: TextStyle(fontSize: 16)),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
+                  onPressed: () {
+                    loginMethod(context, authService);
+                  },
+                ),
+                SizedBox(height: 10),
 
                 /// 기능 없는 텍스트 _ 잠시 주석처리 해두겠습니다.
                 // Row(
@@ -417,16 +440,20 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Palette.buttonKakao,
                   ),
                   onPressed: () async {
+                    analyticLog.sendAnalyticsEvent(screenName, "카카오로 로그인하기", "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
                     try {
                       isKakaoInstalled = await isKakaoTalkInstalled();
                       print("isKakaoInstalled : ${isKakaoInstalled}");
                       if (kIsWeb) {
                         // web 방식 로그인 구현
+                        print("JAVASCRIPT - 카카오톡으로 로그인 시작");
                         OAuthToken token = isKakaoInstalled
                             ? await UserApi.instance.loginWithKakaoTalk()
                             : await UserApi.instance.loginWithKakaoAccount();
                         print("JAVASCRIPT - 카카오톡으로 로그인 성공 - token : ${token}");
                       } else {
+                        // Navtive App 방식 로그인 구현
+                        print("NATIVE - 카카오톡으로 로그인 시작");
                         OAuthToken token = isKakaoInstalled
                             ? await UserApi.instance.loginWithKakaoTalk()
                             : await UserApi.instance.loginWithKakaoAccount();
@@ -476,6 +503,7 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Palette.gray00,
                   ),
                   onPressed: () async {
+                    analyticLog.sendAnalyticsEvent(screenName, "Apple로 로그인하기", "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
                     try {
                       isKakaoInstalled = await isKakaoTalkInstalled();
                       print("isKakaoInstalled : ${isKakaoInstalled}");
@@ -535,6 +563,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () async {
                     print("Google onPress 울립니다!");
+                    analyticLog.sendAnalyticsEvent(screenName, "Google로 로그인하기", "Google로 로그인하기 테스트 스트링", "Google로 로그인하기 테스트 파라미터");
                     try {
                       signInWithGoogle();
                     } catch (error) {
@@ -572,31 +601,13 @@ class _LoginPageState extends State<LoginPage> {
                       elevation: 0,
                       backgroundColor: Palette.grayFF),
                   onPressed: () {
+                    analyticLog.sendAnalyticsEvent(screenName, "로그인 없이 체험하기", "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
                     loginMethodforDemo(context, authService);
                   },
                 ),
                 SizedBox(height: 20),
 
-                /* /// 로그인 버튼
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text("로그인", style: TextStyle(fontSize: 16)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.buttonOrange,
-                  ),
-                  onPressed: () {
-                    loginMethod(context, authService);
-                  },
-                ),
-                SizedBox(height: 10),
-
+                /* 
                 /// 회원가입 버튼
                 ElevatedButton(
                   child: Padding(
