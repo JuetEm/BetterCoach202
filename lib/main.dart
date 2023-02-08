@@ -451,6 +451,18 @@ class _LoginPageState extends State<LoginPage> {
                             ? await UserApi.instance.loginWithKakaoTalk()
                             : await UserApi.instance.loginWithKakaoAccount();
                         print("JAVASCRIPT - 카카오톡으로 로그인 성공 - token : ${token}");
+                        final url = Uri.https('kapi.kakao.com', '/v2/user/me');
+                        final response = await http.get(
+                          url,
+                          headers: {
+                            HttpHeaders.authorizationHeader:
+                                'Bearer ${token.accessToken}'
+                          },
+                        );
+
+                        final profileInfo = json.decode(response.body);
+                        print("profileInfo.toString() : " +
+                            profileInfo.toString());
                       } else {
                         // Navtive App 방식 로그인 구현
                         print("NATIVE - 카카오톡으로 로그인 시작");
@@ -961,7 +973,7 @@ class _LoginPageState extends State<LoginPage> {
 Future<FB.UserCredential> signInWithGoogle() async {
   FB.FirebaseAuth auth = FB.FirebaseAuth.instance;
   // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  final GoogleSignInAccount? googleUser = await GoogleSignIn(clientId: '417922293739-s126kapoqnnpsddig5bht1dkmiclne44.apps.googleusercontent.com').signIn();
 
   // Obtain the auth details from the request
   final GoogleSignInAuthentication? googleAuth =
