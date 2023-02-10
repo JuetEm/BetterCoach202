@@ -186,18 +186,21 @@ class _MemberListState extends State<MemberList> {
     //user.uid = '11';
     // 로그인 화면에서 보낸 멤러 리트스 변수 받기
     List<dynamic> argsList = [];
+    argsList =
+        (ModalRoute.of(context)!.settings.arguments ?? []) as List<dynamic>;
+    print("argsList.length : ${argsList.length}");
     // resultMemberList 비었을 경우에만 받아온다.
-    if (resultMemberList.isEmpty) {
-      argsList = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-      resultMemberList = argsList[0];
-    }
+    if (argsList.length > 0) {
+      if (resultMemberList.isEmpty) {
+        resultMemberList = argsList[0];
+        print("resultMemberList.length : ${resultMemberList.length}");
+      }
 
-    if (resultActionList.isEmpty) {
-      argsList = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-      resultActionList = argsList[1];
-      print("resultActionList.length : ${resultActionList.length}");
+      if (resultActionList.isEmpty) {
+        resultActionList = argsList[1];
+        print("resultActionList.length : ${resultActionList.length}");
+      }
     }
-
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         print("몇 번 그리나요? - Consumer");
@@ -330,7 +333,6 @@ class _MemberListState extends State<MemberList> {
                                     /* if(scrollController.offset != scrollController.position.maxScrollExtent && docs){
 
                                     } */
-
                                   }
                                   // print("notification : ${notification}");
                                   return false;

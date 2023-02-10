@@ -14,6 +14,7 @@ import 'package:web_project/action_service.dart';
 import 'package:web_project/analyticLog.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/local_info.dart';
+import 'package:web_project/login_controller.dart';
 import 'package:web_project/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -105,24 +106,36 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    analyticLog.sendAnalyticsEvent(
+        screenName, "플랫폼체크", "웹으로 접속 스트링", "웹으로 접속 파라미터");
     // WebView.platform = WebWebViewPlatform();
   } else {
     if (Platform.isAndroid) {
       print("Platform.isAndroid");
       await Firebase.initializeApp();
+      analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "Android 접속 스트링", "Android 접속 파라미터");
     } else if (Platform.isIOS) {
       print("Platform.isIOS");
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "IOS 접속 스트링", "IOS 접속 파라미터");
     } else if (Platform.isMacOS) {
       print("Platform.isMacOS");
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "MACOS 접속 스트링", "MACOS 접속 파라미터");
     } else if (Platform.isWindows) {
       print("Platform.isWindows");
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "WINDOWS 접속 스트링", "WINDOWS 접속 파라미터");
     }
   }
 
@@ -132,6 +145,9 @@ void main() async {
 
   AuthService authService = AuthService();
   FB.User? user = authService.currentUser();
+  print("user?.email : ${user?.email}");
+  print("user?.photoURL : ${user?.photoURL}");
+  print("user?.displayName : ${user?.displayName}");
 
   if (user != null) {
     print("object user is not null");
@@ -248,7 +264,8 @@ class _LoginPageState extends State<LoginPage> {
     print("init 울린다!");
     // GA 커스텀 로그 테스트
 
-    analyticLog.sendAnalyticsEvent(screenName, "로그인 이벤트 init", "init 테스트 스트링", "init 테스트 파라미터");
+    analyticLog.sendAnalyticsEvent(
+        screenName, "로그인_이벤트_init", "init 테스트 스트링", "init 테스트 파라미터");
 
     super.initState();
   }
@@ -336,7 +353,7 @@ class _LoginPageState extends State<LoginPage> {
                   isSecure: true,
                 ),
 
-                SizedBox(height: 10), 
+                SizedBox(height: 10),
 
                 Center(
                   child: SizedBox(
@@ -369,9 +386,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                
                 SizedBox(height: 26),
-               
 
                 /// 로그인 버튼
                 ElevatedButton(
@@ -440,7 +455,8 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Palette.buttonKakao,
                   ),
                   onPressed: () async {
-                    analyticLog.sendAnalyticsEvent(screenName, "카카오로 로그인하기", "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
+                    analyticLog.sendAnalyticsEvent(screenName, "카카오로_로그인하기",
+                        "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
                     try {
                       isKakaoInstalled = await isKakaoTalkInstalled();
                       print("isKakaoInstalled : ${isKakaoInstalled}");
@@ -515,7 +531,8 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Palette.gray00,
                   ),
                   onPressed: () async {
-                    analyticLog.sendAnalyticsEvent(screenName, "Apple로 로그인하기", "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
+                    analyticLog.sendAnalyticsEvent(screenName, "Apple로_로그인하기",
+                        "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
                     try {
                       isKakaoInstalled = await isKakaoTalkInstalled();
                       print("isKakaoInstalled : ${isKakaoInstalled}");
@@ -575,9 +592,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () async {
                     print("Google onPress 울립니다!");
-                    analyticLog.sendAnalyticsEvent(screenName, "Google로 로그인하기", "Google로 로그인하기 테스트 스트링", "Google로 로그인하기 테스트 파라미터");
+                    analyticLog.sendAnalyticsEvent(screenName, "Google로_로그인하기",
+                        "Google로 로그인하기 테스트 스트링", "Google로 로그인하기 테스트 파라미터");
                     try {
-                      signInWithGoogle();
+                      // if (Platform.isIOS || Platform.isAndroid) {
+                        LoginController loginController = LoginController();
+                        loginController.googleSignIn().then((value) => null);
+                      // } else {
+                      //   signInWithGoogle();
+                      // }
                     } catch (error) {
                       print('Google로 로그인 실패 - error : ${error}');
                     }
@@ -613,7 +636,8 @@ class _LoginPageState extends State<LoginPage> {
                       elevation: 0,
                       backgroundColor: Palette.grayFF),
                   onPressed: () {
-                    analyticLog.sendAnalyticsEvent(screenName, "로그인 없이 체험하기", "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
+                    analyticLog.sendAnalyticsEvent(screenName, "로그인_없이_체험하기",
+                        "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
                     loginMethodforDemo(context, authService);
                   },
                 ),
@@ -968,27 +992,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-}
-
-Future<FB.UserCredential> signInWithGoogle() async {
-  FB.FirebaseAuth auth = FB.FirebaseAuth.instance;
-  // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn(clientId: '417922293739-s126kapoqnnpsddig5bht1dkmiclne44.apps.googleusercontent.com').signIn();
-
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
-
-  // Create a new credential
-  final credential = FB.GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
-
-  print("Google credential.idToken : ${credential.idToken}");
-
-  // Once signed in, return the UserCredential
-  return await auth.signInWithCredential(credential);
 }
 
 /* /// 홈페이지

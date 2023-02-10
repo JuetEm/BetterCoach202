@@ -30,6 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaob59deaa3a0ff4912ca55fc3d71ccd6aa</string>
+				<string>com.googleusercontent.apps.417922293739-u2a892q9iip44gobrqt8d4rqa3vref58</string>
 			</array>
 		</dict>
 	</array>
@@ -44,6 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/member_service.dart';
+import 'auth_service.dart';
 import 'baseTableCalendar.dart';
 import 'home.dart';
 import 'main.dart';
@@ -113,18 +114,21 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
     // ),
     actions: [
       // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined))
-      // IconButton(
-      //   onPressed: () {
-      //     print('profile');
-      //     // 로그인 페이지로 이동
-      //     Navigator.pushReplacement(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => LoginPage()),
-      //     );
-      //   },
-      //   color: Palette.gray33,
-      //   icon: Icon(Icons.account_circle),
-      // ),
+      IconButton(
+        onPressed: () {
+          print('profile');
+          AuthService authService = AuthService();
+          authService.signOut();
+          // 로그인 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage(analytics: MyApp.analytics,)),
+          );
+        },
+        color: Palette.gray33,
+        // icon: Icon(Icons.account_circle),
+        icon: Icon(Icons.logout),
+      ),
       // IconButton(
       //   onPressed: () {
       //     _openEndDrawer();
