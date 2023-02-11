@@ -17,6 +17,9 @@ import 'memberInfo.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 
+// GA 용 화면 이름 정의
+String screenName = "강사별 회원 목록";
+
 MemberService memberService = MemberService();
 
 List<UserInfo> userInfoList = [];
@@ -156,6 +159,8 @@ class _MemberListState extends State<MemberList> {
   @override
   void initState() {
     // TODO: implement initState
+    analyticLog.sendAnalyticsEvent(
+        screenName, "플랫폼체크", "웹으로 접속 스트링", "웹으로 접속 파라미터");
 
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;

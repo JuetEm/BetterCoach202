@@ -40,6 +40,9 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
 
+// 소셜 로그인 Controller
+LoginController loginController = LoginController();
+
 // GA 용 화면 이름 정의
 String screenName = "메인 로그인";
 
@@ -458,46 +461,15 @@ class _LoginPageState extends State<LoginPage> {
                     analyticLog.sendAnalyticsEvent(screenName, "카카오로_로그인하기",
                         "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
                     try {
-                      isKakaoInstalled = await isKakaoTalkInstalled();
-                      print("isKakaoInstalled : ${isKakaoInstalled}");
+                      
                       if (kIsWeb) {
                         // web 방식 로그인 구현
                         print("JAVASCRIPT - 카카오톡으로 로그인 시작");
-                        OAuthToken token = isKakaoInstalled
-                            ? await UserApi.instance.loginWithKakaoTalk()
-                            : await UserApi.instance.loginWithKakaoAccount();
-                        print("JAVASCRIPT - 카카오톡으로 로그인 성공 - token : ${token}");
-                        final url = Uri.https('kapi.kakao.com', '/v2/user/me');
-                        final response = await http.get(
-                          url,
-                          headers: {
-                            HttpHeaders.authorizationHeader:
-                                'Bearer ${token.accessToken}'
-                          },
-                        );
-
-                        final profileInfo = json.decode(response.body);
-                        print("profileInfo.toString() : " +
-                            profileInfo.toString());
+                        loginController.kakaoSignIn();
                       } else {
                         // Navtive App 방식 로그인 구현
                         print("NATIVE - 카카오톡으로 로그인 시작");
-                        OAuthToken token = isKakaoInstalled
-                            ? await UserApi.instance.loginWithKakaoTalk()
-                            : await UserApi.instance.loginWithKakaoAccount();
-                        print("NATIVE - 카카오톡으로 로그인 성공 - token : ${token}");
-                        final url = Uri.https('kapi.kakao.com', '/v2/user/me');
-                        final response = await http.get(
-                          url,
-                          headers: {
-                            HttpHeaders.authorizationHeader:
-                                'Bearer ${token.accessToken}'
-                          },
-                        );
-
-                        final profileInfo = json.decode(response.body);
-                        print("profileInfo.toString() : " +
-                            profileInfo.toString());
+                        loginController.kakaoSignIn();
                       }
                     } catch (error) {
                       print('카카오톡으로 로그인 실패 - error : ${error}');
@@ -596,7 +568,7 @@ class _LoginPageState extends State<LoginPage> {
                         "Google로 로그인하기 테스트 스트링", "Google로 로그인하기 테스트 파라미터");
                     try {
                       // if (Platform.isIOS || Platform.isAndroid) {
-                        LoginController loginController = LoginController();
+                        
                         loginController.googleSignIn().then((value) => null);
                       // } else {
                       //   signInWithGoogle();
