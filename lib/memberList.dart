@@ -18,7 +18,7 @@ import 'member_service.dart';
 import 'userInfo.dart';
 
 // GA 용 화면 이름 정의
-String screenName = "강사별 회원 목록";
+String screenName = "회원 목록";
 
 MemberService memberService = MemberService();
 
@@ -44,7 +44,7 @@ String searchString = "";
 List combinedLngs = [];
 
 // 자음 검색 세로 바 작업
-late final ScrollController scrollController;
+ScrollController scrollController = ScrollController();
 
 String currentChar = "";
 
@@ -159,8 +159,9 @@ class _MemberListState extends State<MemberList> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     analyticLog.sendAnalyticsEvent(
-        screenName, "플랫폼체크", "웹으로 접속 스트링", "웹으로 접속 파라미터");
+        screenName, "init", "init 스트링", "init파라미터");
 
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;
@@ -173,14 +174,17 @@ class _MemberListState extends State<MemberList> {
       // print("Listening!");
       // print("scrollController.offset : ${scrollController.offset}");
     });
-    super.initState();
+    
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    // scrollController.dispose();
     super.dispose();
+    scrollController.dispose();
+    
+    analyticLog.sendAnalyticsEvent(
+        screenName, "dispose", "dispose 스트링", "dispose 파라미터");
   }
 
   @override
