@@ -95,7 +95,8 @@ AppBar BaseAppBarMethod(
   );
 }
 
-AppBar MainAppBarMethod(BuildContext context, String pageName) {
+AppBar MainAppBarMethod(BuildContext context, String pageName){
+  State<MemberList>? memberList = context.findAncestorStateOfType();
   IconData reportIcon = Icons.report_problem_outlined;
   return AppBar(
     leading: IconButton(
@@ -140,13 +141,15 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
       //   },
       //   icon: Icon(Icons.menu),
       // ),
+      
       IconButton(
         onPressed: () {
+          
           print("IconButton onPressed!!");
-           reportIcon = Icons.report_problem;
            
         },
         icon: Icon(
+          
           reportIcon,
           color: Palette.gray66,
         ),

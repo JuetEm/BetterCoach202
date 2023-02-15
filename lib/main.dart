@@ -275,6 +275,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    resultList = [];
+    actionList = [];
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     userEmail = prefs.getString("userEmail");
     userPassword = prefs.getString("userPassword");
