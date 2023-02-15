@@ -165,8 +165,8 @@ class _MemberListState extends State<MemberList> {
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;
     resultActionList = widget.tmpActionList;
-    print("resultMemberList.length : ${resultMemberList.length}");
-    print("resultActionList.length : ${resultActionList.length}");
+    print("1. resultMemberList.length : ${resultMemberList.length}");
+    print("1. resultActionList.length : ${resultActionList.length}");
     // 모음 검색 세로 바 구현 작업
     combinedLngs.addAll(koreans);
     combinedLngs.addAll(alphabets);
@@ -210,12 +210,12 @@ class _MemberListState extends State<MemberList> {
     if (argsList.length > 0) {
       if (resultMemberList.isEmpty) {
         resultMemberList = argsList[0];
-        print("resultMemberList.length : ${resultMemberList.length}");
+        print("2. resultMemberList.length : ${resultMemberList.length}");
       }
 
       if (resultActionList.isEmpty) {
         resultActionList = argsList[1];
-        print("resultActionList.length : ${resultActionList.length}");
+        print("2. resultActionList.length : ${resultActionList.length}");
       }
     }
 

@@ -281,7 +281,6 @@ class _LoginPageState extends State<LoginPage> {
 
     resultList = [];
     actionList = [];
-
   }
 
   @override
@@ -472,18 +471,17 @@ class _LoginPageState extends State<LoginPage> {
                     analyticLog.sendAnalyticsEvent(screenName, "카카오로_로그인하기",
                         "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
                     try {
-                      
                       if (kIsWeb) {
                         // web 방식 로그인 구현
                         print("JAVASCRIPT - 카카오톡으로 로그인 시작");
-                        loginController.kakaoSignIn().then((value){
+                        loginController.kakaoSignIn().then((value) {
                           print("value : ${value}");
                           loginWithCurrentUser(value, context);
                         });
                       } else {
                         // Navtive App 방식 로그인 구현
                         print("NATIVE - 카카오톡으로 로그인 시작");
-                        loginController.kakaoSignIn().then((value){
+                        loginController.kakaoSignIn().then((value) {
                           print("value : ${value}");
                           loginWithCurrentUser(value, context);
                         });
@@ -585,11 +583,11 @@ class _LoginPageState extends State<LoginPage> {
                         "Google로 로그인하기 테스트 스트링", "Google로 로그인하기 테스트 파라미터");
                     try {
                       // if (Platform.isIOS || Platform.isAndroid) {
-                        
-                        loginController.googleSignIn().then((value){
-                          print("value : ${value}");
-                          loginWithCurrentUser(value, context);
-                        });
+
+                      loginController.googleSignIn().then((value) {
+                        print("value : ${value}");
+                        loginWithCurrentUser(value, context);
+                      });
                       // } else {
                       //   signInWithGoogle();
                       // }
@@ -936,10 +934,11 @@ class _LoginPageState extends State<LoginPage> {
   void loginWithCurrentUser(FB.User? cUser, BuildContext context) {
     Future<List> resultFirstMemberList =
         memberService.readMemberListAtFirstTime(cUser!.uid);
-    
+
     resultFirstMemberList.then((value) {
       print(
           "resultFirstMemberList then is called!! value.length : ${value.length}");
+      resultList = [];
       resultList.addAll(value);
       /* for (int i = 0; i < value.length; i++) {
         print("value[${i}] : ${value[i]}");
@@ -949,20 +948,21 @@ class _LoginPageState extends State<LoginPage> {
       print("stackTrace : \r\n${stackTrace}");
     }).whenComplete(() async {
       print("memberList await init complete!");
-    
+
       Future<List> resultFirstActionList =
           actionService.readActionListAtFirstTime(cUser.uid);
-    
+
       resultFirstActionList.then((value) {
         print(
             "3. resultFirstActionList then is called!! value.length : ${value.length}");
+        actionList = [];
         actionList.addAll(value);
       }).onError((error, stackTrace) {
         print("error : ${error}");
         print("stackTrace : \r\n${stackTrace}");
       }).whenComplete(() {
         print("actionList await init complete!");
-    
+
         // 로그인 성공
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("로그인 성공"),
@@ -982,7 +982,7 @@ class _LoginPageState extends State<LoginPage> {
             settings: RouteSettings(arguments: args),
           ),
         );
-    
+
         emailController.clear();
         passwordController.clear();
       });
