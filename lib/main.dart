@@ -154,6 +154,7 @@ void main() async {
 
   if (user != null) {
     print("object user is not null");
+    print("user.email : ${user.email}, user.displayName : ${user.displayName}");
     await memberService.readMemberListAtFirstTime(user.uid).then((value) {
       resultList.addAll(value);
       /* for (int i = 0; i < resultList.length; i++) {
@@ -167,7 +168,7 @@ void main() async {
 
       await actionService.readActionListAtFirstTime(user.uid).then((value) {
         print(
-            "resultFirstActionList then is called!! value.length : ${value.length}");
+            "1. resultFirstActionList then is called!! value.length : ${value.length}");
         actionList.addAll(value);
       }).onError((error, stackTrace) {
         print("error : ${error}");
@@ -834,7 +835,7 @@ class _LoginPageState extends State<LoginPage> {
 
             resultFirstActionList.then((value) {
               print(
-                  "resultFirstActionList then is called!! value.length : ${value.length}");
+                  "2. resultFirstActionList then is called!! value.length : ${value.length}");
               actionList.addAll(value);
             }).onError((error, stackTrace) {
               print("error : ${error}");
@@ -944,7 +945,7 @@ class _LoginPageState extends State<LoginPage> {
     
       resultFirstActionList.then((value) {
         print(
-            "resultFirstActionList then is called!! value.length : ${value.length}");
+            "3. resultFirstActionList then is called!! value.length : ${value.length}");
         actionList.addAll(value);
       }).onError((error, stackTrace) {
         print("error : ${error}");

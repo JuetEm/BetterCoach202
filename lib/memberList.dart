@@ -166,6 +166,8 @@ class _MemberListState extends State<MemberList> {
     print("MemberList InitState Called!!");
     resultMemberList = widget.tmpMemberList;
     resultActionList = widget.tmpActionList;
+    print("resultMemberList.length : ${resultMemberList.length}");
+    print("resultActionList.length : ${resultActionList.length}");
     // 모음 검색 세로 바 구현 작업
     combinedLngs.addAll(koreans);
     combinedLngs.addAll(alphabets);
