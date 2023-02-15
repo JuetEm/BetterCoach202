@@ -96,7 +96,26 @@ AppBar BaseAppBarMethod(
 }
 
 AppBar MainAppBarMethod(BuildContext context, String pageName) {
+  IconData reportIcon = Icons.report_problem_outlined;
   return AppBar(
+    leading: IconButton(
+      onPressed: () {
+        print('signOut');
+        AuthService authService = AuthService();
+        authService.signOut();
+        // 로그인 페이지로 이동
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginPage(
+                    analytics: MyApp.analytics,
+                  )),
+        );
+      },
+      color: Palette.gray33,
+      // icon: Icon(Icons.account_circle),
+      icon: Icon(Icons.logout),
+    ),
     elevation: 0,
     backgroundColor: Palette.mainBackground,
     title: Text(
@@ -114,27 +133,24 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
     // ),
     actions: [
       // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined))
-      IconButton(
-        onPressed: () {
-          print('profile');
-          AuthService authService = AuthService();
-          authService.signOut();
-          // 로그인 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage(analytics: MyApp.analytics,)),
-          );
-        },
-        color: Palette.gray33,
-        // icon: Icon(Icons.account_circle),
-        icon: Icon(Icons.logout),
-      ),
+
       // IconButton(
       //   onPressed: () {
       //     _openEndDrawer();
       //   },
       //   icon: Icon(Icons.menu),
       // ),
+      IconButton(
+        onPressed: () {
+          print("IconButton onPressed!!");
+           reportIcon = Icons.report_problem;
+           
+        },
+        icon: Icon(
+          reportIcon,
+          color: Palette.gray66,
+        ),
+      ),
     ],
   );
 }
