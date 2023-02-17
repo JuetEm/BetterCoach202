@@ -524,14 +524,8 @@ class _MemberListState extends State<MemberList> {
                                     ),
                                   );
                                 },
-<<<<<<< HEAD
                                 separatorBuilder: ((context, index) =>
                                     SizedBox(height: 0)),
-=======
-                                separatorBuilder: ((context, index) => Divider(
-                                      height: 0,
-                                    )),
->>>>>>> a07975b (FCM 작업 시작)
                               ),
                             );
                           },
