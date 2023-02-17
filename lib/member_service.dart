@@ -17,21 +17,21 @@ class MemberService extends ChangeNotifier {
   }
 
   Future<List> readMemberListAtFirstTime(String uid) async {
-    var result = await memberCollection.where('uid', isEqualTo: uid)
+    var result = await memberCollection
+        .where('uid', isEqualTo: uid)
         .orderBy('name', descending: false)
         .get();
-    
-    
+
     List resultList = [];
     var docsLength = result.docs.length;
     var rstObj = {};
-        for(int i=0; i<result.docs.length; i++){
-          // print("result.docs[i].data() : ${result.docs[i].data()}");
-          rstObj = result.docs[i].data();
-          rstObj['id'] = result.docs[i].id;
-          resultList.add(rstObj);
-        }
-        return resultList;
+    for (int i = 0; i < result.docs.length; i++) {
+      // print("result.docs[i].data() : ${result.docs[i].data()}");
+      rstObj = result.docs[i].data();
+      rstObj['id'] = result.docs[i].id;
+      resultList.add(rstObj);
+    }
+    return resultList;
   }
 
   Future<bool> readisActive(String uid, String docId) async {

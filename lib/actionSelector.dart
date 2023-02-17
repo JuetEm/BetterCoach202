@@ -899,207 +899,188 @@ class _ActionSelectorState extends State<ActionSelector> {
                   ),
                   backgroundColor: Palette.grayFA,
                 ),
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // SizedBox(height: 10),
-                BaseSearchTextField(
-                  customController: searchController,
-                  customFocusNode: searchFocusNode,
-                  hint: "동작을 검색하세요.",
-                  label: "동작을 검색하세요.",
-                  showArrow: true,
-                  customFunction: () {
-                    setState(() {
-                      searchString = searchController.text.toLowerCase();
-                    });
-                  },
-                  clearfunction: () {
-                    setState(() {
-                      searchController.clear();
-                      searchString = "";
-                    });
-                  },
-                ),
-                // SizedBox(height: 10),
-                // SizedBox(
-                //   height: 30,
-                //   width: double.infinity,
-                //   child: Text(
-                //     "기구별",
-                //     style: TextStyle(
-                //       fontSize: 18,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //     textAlign: TextAlign.left,
-                //   ),
-                // ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // SizedBox(height: 10),
+                  BaseSearchTextField(
+                    customController: searchController,
+                    customFocusNode: searchFocusNode,
+                    hint: "동작을 검색하세요.",
+                    label: "동작을 검색하세요.",
+                    showArrow: true,
+                    customFunction: () {
+                      setState(() {
+                        searchString = searchController.text.toLowerCase();
+                      });
+                    },
+                    clearfunction: () {
+                      setState(() {
+                        searchController.clear();
+                        searchString = "";
+                      });
+                    },
+                  ),
+                  // SizedBox(height: 10),
+                  // SizedBox(
+                  //   height: 30,
+                  //   width: double.infinity,
+                  //   child: Text(
+                  //     "기구별",
+                  //     style: TextStyle(
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.bold,
+                  //     ),
+                  //     textAlign: TextAlign.left,
+                  //   ),
+                  // ),
 
-                // SizedBox(height: 5),
-                // SizedBox(
-                //   height: 30,
-                //   width: double.infinity,
-                //   child: Text(
-                //     "자세별",
-                //     style: TextStyle(
-                //       fontSize: 18,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //     textAlign: TextAlign.left,
-                //   ),
-                // ),
+                  // SizedBox(height: 5),
+                  // SizedBox(
+                  //   height: 30,
+                  //   width: double.infinity,
+                  //   child: Text(
+                  //     "자세별",
+                  //     style: TextStyle(
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.bold,
+                  //     ),
+                  //     textAlign: TextAlign.left,
+                  //   ),
+                  // ),
 
-                SizedBox(height: 5),
-                // SizedBox(
-                //   height: 50,
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(14.0),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //       children: [
-                //         Text(
-                //           "APPARATUS",
-                //           style: TextStyle(
-                //             fontSize: 14,
-                //           ),
-                //         ),
-                //         Spacer(),
-                //         Text(
-                //           "POSITION",
-                //           style: TextStyle(
-                //             fontSize: 14,
-                //           ),
-                //         ),
-                //         Spacer(),
-                //         Text(
-                //           "NAME",
-                //           style: TextStyle(
-                //             fontSize: 14,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                Offstage(
-                  offstage: searchString.isNotEmpty,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 5),
-                      SizedBox(
-                        height: 40,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(0),
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                elevation: 0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Palette.buttonOrange,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                                color: Colors.transparent,
-                              ),
-                              height: 60,
-                              width: double.infinity,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "신규 동작 생성 +",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Palette.buttonOrange,
-                                    ),
+                  SizedBox(height: 5),
+                  // SizedBox(
+                  //   height: 50,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(14.0),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //       children: [
+                  //         Text(
+                  //           "APPARATUS",
+                  //           style: TextStyle(
+                  //             fontSize: 14,
+                  //           ),
+                  //         ),
+                  //         Spacer(),
+                  //         Text(
+                  //           "POSITION",
+                  //           style: TextStyle(
+                  //             fontSize: 14,
+                  //           ),
+                  //         ),
+                  //         Spacer(),
+                  //         Text(
+                  //           "NAME",
+                  //           style: TextStyle(
+                  //             fontSize: 14,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  Offstage(
+                    offstage: searchString.isNotEmpty,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 5),
+                        SizedBox(
+                          height: 40,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(0),
+                                  backgroundColor: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  elevation: 0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Palette.buttonOrange,
                                   ),
-                                ],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.0),
+                                  ),
+                                  color: Colors.transparent,
+                                ),
+                                height: 60,
+                                width: double.infinity,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "신규 동작 생성 +",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Palette.buttonOrange,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            onPressed: () async {
-                              print("신규 동작 추가");
-                              // LessonAdd로 이동
-                              final result = await showDialog(
-                                context: context,
-                                builder: (context) => StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return ActionAdd.manageList(
-                                        resultActionList);
-                                  },
-                                ),
-                              );
-                              setState(() {
-                                if (result == null) {
-                                  searchString = "";
-                                } else {
-                                  List resultList = result as List;
-                                  String tmpSearchStr =
-                                      resultList[0].toString().trim();
-                                  if (tmpSearchStr.isNotEmpty) {
-                                    searchController.text = tmpSearchStr;
-                                    searchString = tmpSearchStr;
-                                  } else {
+                              onPressed: () async {
+                                print("신규 동작 추가");
+                                // LessonAdd로 이동
+                                final result = await showDialog(
+                                  context: context,
+                                  builder: (context) => StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return ActionAdd.manageList(
+                                          resultActionList);
+                                    },
+                                  ),
+                                );
+                                setState(() {
+                                  if (result == null) {
                                     searchString = "";
+                                  } else {
+                                    List resultList = result as List;
+                                    String tmpSearchStr =
+                                        resultList[0].toString().trim();
+                                    if (tmpSearchStr.isNotEmpty) {
+                                      searchController.text = tmpSearchStr;
+                                      searchString = tmpSearchStr;
+                                    } else {
+                                      searchString = "";
+                                    }
+
+                                    resultActionList = resultList[1];
                                   }
-
-                                  resultActionList = resultList[1];
-                                }
-                              });
-                            },
+                                });
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      SizedBox(
-                        height: 30,
-                        width: double.infinity,
-                        child: Text(
-                          "동작을 선택하세요",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-
-                      /// 기구 필터
-                      SizedBox(
-                        height: 30,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              for (final chip in apparatusChips)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                                  child: chip,
-                                ),
-                            ],
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 30,
+                          width: double.infinity,
+                          child: Text(
+                            "동작을 선택하세요",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 4),
 
-                      /// 자세 필터
-                      SizedBox(
-                        height: 30,
-                        child: Center(
+                        /// 기구 필터
+                        SizedBox(
+                          height: 30,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
-                                for (final chip in positionChips)
+                                for (final chip in apparatusChips)
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
@@ -1109,86 +1090,92 @@ class _ActionSelectorState extends State<ActionSelector> {
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                ),
+                        SizedBox(height: 4),
 
-                /// 신규동작추가 버튼
-
-                /// 동작 리스트
-                Expanded(
-                    child: /* FutureBuilder<QuerySnapshot>(
-                    future: actionService.read(
-                      isReformerSelected,
-                      isCadillacSelected,
-                      isChairSelected,
-                      isLadderBarrelSelected,
-                      isSpringBoardSelected,
-                      isSpineCorrectorSelected,
-                      isMatSelected,
-                      isOthersApparatusSelected,
-                      searchString,
-                    ),
-                    builder: (context, snapshot) { 
-                      final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                      print("docs : ${docs.length}");
-                      if (docs.isEmpty) {
-                        return Center(child: Text("운동 목록을 준비 중입니다."));
-                      }
-                      return*/
-                        Stack(children: [
-                  resultActionList.isEmpty
-                      ? Center(child: Text("운동 목록을 준비 중입니다."))
-                      : Container(
-                          decoration: BoxDecoration(
-                            color: Palette.mainBackground,
-                            borderRadius: BorderRadius.circular(10),
+                        /// 자세 필터
+                        SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (final chip in positionChips)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          4.0, 0, 4, 0),
+                                      child: chip,
+                                    ),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            controller: scrollController,
-                            shrinkWrap: true,
-                            itemCount: docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final doc = docs[index];
-                              // print("doc : ${doc}");
-                              String apparatus = doc['apparatus'];
-                              String otherApparatusName =
-                                  doc['otherApparatusName'];
-                              String position = doc['position'];
-                              String name = doc['name'];
-                              String lowerCaseName = doc['lowerCaseName'];
-                              List<dynamic> nGramizedLowerCaseName =
-                                  doc['nGramizedLowerCaseName'] ?? [];
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
 
-                              final ActionInfo actionInfo = ActionInfo(
-                                name,
-                                apparatus,
-                                position,
-                              );
+                  /// 신규동작추가 버튼
 
-                              // print(
-                              //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+                  /// 동작 리스트
+                  Expanded(
+                      child: /* FutureBuilder<QuerySnapshot>(
+                      future: actionService.read(
+                        isReformerSelected,
+                        isCadillacSelected,
+                        isChairSelected,
+                        isLadderBarrelSelected,
+                        isSpringBoardSelected,
+                        isSpineCorrectorSelected,
+                        isMatSelected,
+                        isOthersApparatusSelected,
+                        searchString,
+                      ),
+                      builder: (context, snapshot) { 
+                        final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                        print("docs : ${docs.length}");
+                        if (docs.isEmpty) {
+                          return Center(child: Text("운동 목록을 준비 중입니다."));
+                        }
+                        return*/
+                          Stack(children: [
+                    resultActionList.isEmpty
+                        ? Center(child: Text("운동 목록을 준비 중입니다."))
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Palette.mainBackground,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              controller: scrollController,
+                              shrinkWrap: true,
+                              itemCount: docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final doc = docs[index];
+                                // print("doc : ${doc}");
+                                String apparatus = doc['apparatus'];
+                                String otherApparatusName =
+                                    doc['otherApparatusName'];
+                                String position = doc['position'];
+                                String name = doc['name'];
+                                String lowerCaseName = doc['lowerCaseName'];
+                                List<dynamic> nGramizedLowerCaseName =
+                                    doc['nGramizedLowerCaseName'] ?? [];
 
-                              if (searchString.isEmpty) {
-                                if (positionArray.isEmpty) {
-                                  if (apparatusArray.isEmpty) {
-                                    return ActionTile(
-                                        memberdocId: customUserInfo.docId,
-                                        apparatus: apparatus,
-                                        actionName: name,
-                                        name: customUserInfo.name,
-                                        phoneNumber: "temp",
-                                        lessonDate: lessonDate,
-                                        grade: "50",
-                                        totalNote: totalNote,
-                                        docId: "",
-                                        uid: user.uid,
-                                        pos: index);
-                                  } else {
-                                    if (apparatusArray.contains(apparatus)) {
+                                final ActionInfo actionInfo = ActionInfo(
+                                  name,
+                                  apparatus,
+                                  position,
+                                );
+
+                                // print(
+                                //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+
+                                if (searchString.isEmpty) {
+                                  if (positionArray.isEmpty) {
+                                    if (apparatusArray.isEmpty) {
                                       return ActionTile(
                                           memberdocId: customUserInfo.docId,
                                           apparatus: apparatus,
@@ -1202,12 +1189,66 @@ class _ActionSelectorState extends State<ActionSelector> {
                                           uid: user.uid,
                                           pos: index);
                                     } else {
+                                      if (apparatusArray.contains(apparatus)) {
+                                        return ActionTile(
+                                            memberdocId: customUserInfo.docId,
+                                            apparatus: apparatus,
+                                            actionName: name,
+                                            name: customUserInfo.name,
+                                            phoneNumber: "temp",
+                                            lessonDate: lessonDate,
+                                            grade: "50",
+                                            totalNote: totalNote,
+                                            docId: "",
+                                            uid: user.uid,
+                                            pos: index);
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    }
+                                  } else {
+                                    if (positionArray.contains(position)) {
+                                      positionFilteredSize++;
+                                      if (apparatusArray.isEmpty) {
+                                        return ActionTile(
+                                            memberdocId: customUserInfo.docId,
+                                            apparatus: apparatus,
+                                            actionName: name,
+                                            name: customUserInfo.name,
+                                            phoneNumber: "temp",
+                                            lessonDate: lessonDate,
+                                            grade: "50",
+                                            totalNote: totalNote,
+                                            docId: customUserInfo.docId,
+                                            uid: user.uid,
+                                            pos: index);
+                                      } else {
+                                        if (apparatusArray
+                                            .contains(apparatus)) {
+                                          return ActionTile(
+                                              memberdocId: customUserInfo.docId,
+                                              apparatus: apparatus,
+                                              actionName: name,
+                                              name: customUserInfo.name,
+                                              phoneNumber: "temp",
+                                              lessonDate: lessonDate,
+                                              grade: "50",
+                                              totalNote: totalNote,
+                                              docId: customUserInfo.docId,
+                                              uid: user.uid,
+                                              pos: index);
+                                        } else {
+                                          return SizedBox.shrink();
+                                        }
+                                      }
+                                    } else {
                                       return SizedBox.shrink();
                                     }
                                   }
                                 } else {
-                                  if (positionArray.contains(position)) {
-                                    positionFilteredSize++;
+                                  // if (lowerCaseName
+                                  //     .startsWith(searchString.toLowerCase())) {
+                                  if (positionArray.isEmpty) {
                                     if (apparatusArray.isEmpty) {
                                       return ActionTile(
                                           memberdocId: customUserInfo.docId,
@@ -1240,62 +1281,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                                       }
                                     }
                                   } else {
-                                    return SizedBox.shrink();
-                                  }
-                                }
-                              } else {
-                                // if (lowerCaseName
-                                //     .startsWith(searchString.toLowerCase())) {
-                                if (positionArray.isEmpty) {
-                                  if (apparatusArray.isEmpty) {
-                                    return ActionTile(
-                                        memberdocId: customUserInfo.docId,
-                                        apparatus: apparatus,
-                                        actionName: name,
-                                        name: customUserInfo.name,
-                                        phoneNumber: "temp",
-                                        lessonDate: lessonDate,
-                                        grade: "50",
-                                        totalNote: totalNote,
-                                        docId: customUserInfo.docId,
-                                        uid: user.uid,
-                                        pos: index);
-                                  } else {
-                                    if (apparatusArray.contains(apparatus)) {
-                                      return ActionTile(
-                                          memberdocId: customUserInfo.docId,
-                                          apparatus: apparatus,
-                                          actionName: name,
-                                          name: customUserInfo.name,
-                                          phoneNumber: "temp",
-                                          lessonDate: lessonDate,
-                                          grade: "50",
-                                          totalNote: totalNote,
-                                          docId: customUserInfo.docId,
-                                          uid: user.uid,
-                                          pos: index);
-                                    } else {
-                                      return SizedBox.shrink();
-                                    }
-                                  }
-                                } else {
-                                  if (positionArray.contains(position)) {
-                                    positionFilteredSize++;
-                                    if (apparatusArray.isEmpty) {
-                                      return ActionTile(
-                                          apparatus: apparatus,
-                                          actionName: name,
-                                          name: customUserInfo.name,
-                                          phoneNumber: "temp",
-                                          lessonDate: lessonDate,
-                                          grade: "50",
-                                          totalNote: totalNote,
-                                          docId: "",
-                                          memberdocId: customUserInfo.docId,
-                                          uid: user.uid,
-                                          pos: index);
-                                    } else {
-                                      if (apparatusArray.contains(apparatus)) {
+                                    if (positionArray.contains(position)) {
+                                      positionFilteredSize++;
+                                      if (apparatusArray.isEmpty) {
                                         return ActionTile(
                                             apparatus: apparatus,
                                             actionName: name,
@@ -1309,272 +1297,289 @@ class _ActionSelectorState extends State<ActionSelector> {
                                             uid: user.uid,
                                             pos: index);
                                       } else {
-                                        return SizedBox.shrink();
+                                        if (apparatusArray
+                                            .contains(apparatus)) {
+                                          return ActionTile(
+                                              apparatus: apparatus,
+                                              actionName: name,
+                                              name: customUserInfo.name,
+                                              phoneNumber: "temp",
+                                              lessonDate: lessonDate,
+                                              grade: "50",
+                                              totalNote: totalNote,
+                                              docId: "",
+                                              memberdocId: customUserInfo.docId,
+                                              uid: user.uid,
+                                              pos: index);
+                                        } else {
+                                          return SizedBox.shrink();
+                                        }
                                       }
+                                    } else {
+                                      return SizedBox.shrink();
                                     }
-                                  } else {
-                                    return SizedBox.shrink();
                                   }
+                                  // } else {
+                                  //   return SizedBox.shrink();
+                                  // }
                                 }
-                                // } else {
-                                //   return SizedBox.shrink();
+                              },
+                            ),
+                          ),
+                    /* GestureDetector(
+                      onVerticalDragUpdate: (details) {
+                        print(
+                            "update details.localPosition.dy : ${details.localPosition.dy}");
+                        print("update currentChar : ${currentChar}");
+                        setSearchIndex(currentChar);
+                      },
+                      onVerticalDragStart: (details) {
+                        print(
+                            "start details.localPosition.dy : ${details.localPosition.dy}");
+                        print("start currentChar : ${currentChar}");
+                        setSearchIndex(currentChar);
+                      },
+                      onVerticalDragEnd: (details) {
+                        print("End currentChar : ${currentChar}");
+                        setState(() {
+                          currentChar = "";
+                        });
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: combinedLngs
+                              .map((character) => InkWell(
+                                    onTap: () async {
+                                      print("character : ${character}");
+                                      setState(() {
+                                        currentChar = character;
+                                      });
+          
+                                      setSearchIndex(currentChar);
+          
+                                      Future.delayed(Duration(seconds: 3),
+                                          () {
+                                        setState(() {
+                                          currentChar = "";
+                                        });
+                                      });
+          
+                                      /* currentChar = character; */
+                                    },
+                                    child: Text(
+                                      character,
+                                      style: TextStyle(
+                                          fontSize: 8
+                                              ),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                    currentChar.isEmpty
+                        ? Container()
+                        : Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              color: Colors.black.withAlpha(80),
+                              padding: EdgeInsets.all(16),
+                              child: Text(
+                                currentChar,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 36.0),
+                              ),
+                            ),
+                          ) */
+                  ])
+                      /* },
+                    ), */
+                      ),
+
+                  Offstage(
+                    offstage: searchString.isNotEmpty,
+                    child: Column(
+                      children: [
+                        Offstage(
+                          offstage: tmpLessonInfoList.isEmpty,
+                          child: SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (final chip in actionChips)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4.0, 0, 4, 0),
+                                        child: chip,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /// 추가 버튼
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(0),
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(48.0),
+                                ),
+                                color: Palette.buttonOrange,
+                              ),
+                              height: 48,
+                              width: 238,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "동작추가",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onPressed: () {
+                              print("동작추가");
+                              // LessonAdd로 이동
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => ActionAdd(),
+                              //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                              //     settings: RouteSettings(
+                              //       arguments: customUserInfo,
+                              //     ),
+                              //   ),
+                              // );
+
+                              // lessonAdd
+                              if (tmpLessonInfoList.isNotEmpty) {
+                                print(
+                                    "userInfo.docId : ${customUserInfo.docId}");
+
+                                // for (int i = 0; i < tmpLessonInfoList.length; i++) {
+                                //   lessonService.create(
+                                //     docId: customUserInfo.docId,
+                                //     uid: user.uid,
+                                //     name: customUserInfo.name,
+                                //     phoneNumber: customUserInfo.phoneNumber,
+                                //     apratusName: tmpLessonInfoList[i].apparatusName,
+                                //     actionName: tmpLessonInfoList[i].actionName,
+                                //     lessonDate: lessonDate,
+                                //     grade: "50",
+                                //     totalNote: totalNote,
+                                //     pos: i,
+                                //     onSuccess: () {
+                                //       print(
+                                //           "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                                //     },
+                                //     onError: () {
+                                //       print(
+                                //           "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
+                                //     },
+                                //   );
                                 // }
+
+                                List<DateTime> tmpEventList = [];
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("동작추가 성공"),
+                                ));
+                                // 저장하기 성공시 MemberInfo로 이동
+                                Navigator.pop(context, tmpLessonInfoList);
+                                //initStateVar = !initStateVar;
+                                //Navigator.pop(context);
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => LessonAdd(),
+                                //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                //     settings: RouteSettings(
+                                //       arguments: [
+                                //         customUserInfo,
+                                //         lessonDate,
+                                //         tmpEventList,
+                                //         "",
+                                //         "",
+                                //         tmpLessonInfoList
+                                //       ],
+                                //     ),
+                                //   ),
+                                // );
+                                initStateVar = !initStateVar;
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("동작을 선택해주세요."),
+                                ));
                               }
                             },
                           ),
                         ),
-                  /* GestureDetector(
-                    onVerticalDragUpdate: (details) {
-                      print(
-                          "update details.localPosition.dy : ${details.localPosition.dy}");
-                      print("update currentChar : ${currentChar}");
-                      setSearchIndex(currentChar);
-                    },
-                    onVerticalDragStart: (details) {
-                      print(
-                          "start details.localPosition.dy : ${details.localPosition.dy}");
-                      print("start currentChar : ${currentChar}");
-                      setSearchIndex(currentChar);
-                    },
-                    onVerticalDragEnd: (details) {
-                      print("End currentChar : ${currentChar}");
-                      setState(() {
-                        currentChar = "";
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: combinedLngs
-                            .map((character) => InkWell(
-                                  onTap: () async {
-                                    print("character : ${character}");
-                                    setState(() {
-                                      currentChar = character;
-                                    });
-
-                                    setSearchIndex(currentChar);
-
-                                    Future.delayed(Duration(seconds: 3),
-                                        () {
-                                      setState(() {
-                                        currentChar = "";
-                                      });
-                                    });
-
-                                    /* currentChar = character; */
-                                  },
-                                  child: Text(
-                                    character,
-                                    style: TextStyle(
-                                        fontSize: 8
-                                            ),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
+                      ],
                     ),
                   ),
-                  currentChar.isEmpty
-                      ? Container()
-                      : Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            color: Colors.black.withAlpha(80),
-                            padding: EdgeInsets.all(16),
-                            child: Text(
-                              currentChar,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 36.0),
+                  Offstage(
+                    offstage: searchString.isEmpty,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(0),
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(48.0),
                             ),
+                            color: Palette.buttonOrange,
                           ),
-                        ) */
-                ])
-                    /* },
-                  ), */
-                    ),
-
-                Offstage(
-                  offstage: searchString.isNotEmpty,
-                  child: Column(
-                    children: [
-                      Offstage(
-                        offstage: tmpLessonInfoList.isEmpty,
-                        child: SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  for (final chip in actionChips)
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          4.0, 0, 4, 0),
-                                      child: chip,
-                                    ),
-                                ],
+                          height: 48,
+                          width: 238,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "확인",
+                                style: TextStyle(fontSize: 16),
                               ),
-                            ),
+                            ],
                           ),
                         ),
+                        onPressed: () {
+                          print("동작추가");
+                          setState(() {
+                            searchString = "";
+                            searchController.clear();
+                            searchFocusNode.unfocus();
+                            /* scrollController.jumpTo(
+                                scrollController.position.minScrollExtent); */
+                          });
+                        },
                       ),
-
-                      /// 추가 버튼
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(0),
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(48.0),
-                              ),
-                              color: Palette.buttonOrange,
-                            ),
-                            height: 48,
-                            width: 238,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "동작추가",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onPressed: () {
-                            print("동작추가");
-                            // LessonAdd로 이동
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ActionAdd(),
-                            //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                            //     settings: RouteSettings(
-                            //       arguments: customUserInfo,
-                            //     ),
-                            //   ),
-                            // );
-
-                            // lessonAdd
-                            if (tmpLessonInfoList.isNotEmpty) {
-                              print("userInfo.docId : ${customUserInfo.docId}");
-
-                              // for (int i = 0; i < tmpLessonInfoList.length; i++) {
-                              //   lessonService.create(
-                              //     docId: customUserInfo.docId,
-                              //     uid: user.uid,
-                              //     name: customUserInfo.name,
-                              //     phoneNumber: customUserInfo.phoneNumber,
-                              //     apratusName: tmpLessonInfoList[i].apparatusName,
-                              //     actionName: tmpLessonInfoList[i].actionName,
-                              //     lessonDate: lessonDate,
-                              //     grade: "50",
-                              //     totalNote: totalNote,
-                              //     pos: i,
-                              //     onSuccess: () {
-                              //       print(
-                              //           "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                              //     },
-                              //     onError: () {
-                              //       print(
-                              //           "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                              //     },
-                              //   );
-                              // }
-
-                              List<DateTime> tmpEventList = [];
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("동작추가 성공"),
-                              ));
-                              // 저장하기 성공시 MemberInfo로 이동
-                              Navigator.pop(context, tmpLessonInfoList);
-                              //initStateVar = !initStateVar;
-                              //Navigator.pop(context);
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => LessonAdd(),
-                              //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                              //     settings: RouteSettings(
-                              //       arguments: [
-                              //         customUserInfo,
-                              //         lessonDate,
-                              //         tmpEventList,
-                              //         "",
-                              //         "",
-                              //         tmpLessonInfoList
-                              //       ],
-                              //     ),
-                              //   ),
-                              // );
-                              initStateVar = !initStateVar;
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("동작을 선택해주세요."),
-                              ));
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Offstage(
-                  offstage: searchString.isEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(48.0),
-                          ),
-                          color: Palette.buttonOrange,
-                        ),
-                        height: 48,
-                        width: 238,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "확인",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () {
-                        print("동작추가");
-                        setState(() {
-                          searchString = "";
-                          searchController.clear();
-                          searchFocusNode.unfocus();
-                          /* scrollController.jumpTo(
-                              scrollController.position.minScrollExtent); */
-                        });
-                      },
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
           // bottomNavigationBar: BaseBottomAppBar(),

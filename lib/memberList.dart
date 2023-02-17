@@ -219,7 +219,6 @@ class _MemberListState extends State<MemberList> {
       }
     }
 
-    
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         print("몇 번 그리나요? - Consumer");
@@ -275,12 +274,11 @@ class _MemberListState extends State<MemberList> {
                   reportButtonIsClicked = !reportButtonIsClicked;
                   print("IconButton onPressed!!");
                   setState(() {
-                    if(reportButtonIsClicked){
+                    if (reportButtonIsClicked) {
                       reportIcon = Icons.report_problem;
-                    }else{
+                    } else {
                       reportIcon = Icons.report_problem_outlined;
                     }
-                    
                   });
                 },
                 icon: Icon(
@@ -424,16 +422,14 @@ class _MemberListState extends State<MemberList> {
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemCount: docs.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
+                                itemBuilder: (BuildContext context, int index) {
                                   print("몇 번 그리나요? - ListView.separated");
                                   final doc = docs[index];
                                   String docId = doc['id'];
                                   String name = doc['name'] ?? "";
                                   String registerDate =
                                       doc['registerDate'] ?? "";
-                                  String phoneNumber =
-                                      doc['phoneNumber'] ?? "";
+                                  String phoneNumber = doc['phoneNumber'] ?? "";
                                   String registerType =
                                       doc['registerType'] ?? "";
                                   String goal = doc['goal'] ?? "";
@@ -521,9 +517,7 @@ class _MemberListState extends State<MemberList> {
                                   );
                                 },
                                 separatorBuilder: ((context, index) =>
-                                    Divider(
-                                      height: 0,
-                                    )),
+                                    SizedBox(height: 0)),
                               ),
                             );
                           },

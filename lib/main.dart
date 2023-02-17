@@ -552,26 +552,10 @@ class _LoginPageState extends State<LoginPage> {
 
                 // Google로 로그인 버튼
                 ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            width: 16,
-                            child: Image.asset("assets/images/google.png")),
-                        SizedBox(width: 5),
-                        Text("Google로 로그인하기",
-                            style:
-                                TextStyle(fontSize: 16, color: Palette.gray00)),
-                      ],
-                    )),
-                  ),
                   style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                       side: BorderSide(color: Palette.grayB4, width: 1.0),
-                      borderRadius: new BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     padding: EdgeInsets.all(0),
                     elevation: 0,
@@ -595,11 +579,32 @@ class _LoginPageState extends State<LoginPage> {
                       print('Google로 로그인 실패 - error : ${error}');
                     }
                   },
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: SizedBox(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            width: 16,
+                            child: Image.asset("assets/images/google.png")),
+                        SizedBox(width: 5),
+                        Text("Google로 로그인하기",
+                            style:
+                                TextStyle(fontSize: 16, color: Palette.gray00)),
+                      ],
+                    )),
+                  ),
                 ),
                 SizedBox(height: 10),
 
                 /// 로그인 없이 사용하기 버튼
-                ElevatedButton(
+                TextButton(
+                  onPressed: () {
+                    analyticLog.sendAnalyticsEvent(screenName, "로그인_없이_체험하기",
+                        "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
+                    loginMethodforDemo(context, authService);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: SizedBox(
@@ -618,18 +623,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.all(0),
-                      elevation: 0,
-                      backgroundColor: Palette.grayFF),
-                  onPressed: () {
-                    analyticLog.sendAnalyticsEvent(screenName, "로그인_없이_체험하기",
-                        "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
-                    loginMethodforDemo(context, authService);
-                  },
                 ),
                 SizedBox(height: 20),
 
