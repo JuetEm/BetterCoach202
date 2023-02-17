@@ -260,19 +260,11 @@ class _MemberListState extends State<MemberList> {
             //   icon: Icon(Icons.calendar_month),
             // ),
             actions: [
-              // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined))
+              InkWell(
+                onTapDown: (details) {
+                  print("IconButton onTapDown!! details : ${details}");
+                  reportButtonIsClicked = true;
 
-              // IconButton(
-              //   onPressed: () {
-              //     _openEndDrawer();
-              //   },
-              //   icon: Icon(Icons.menu),
-              // ),
-
-              IconButton(
-                onPressed: () {
-                  reportButtonIsClicked = !reportButtonIsClicked;
-                  print("IconButton onPressed!!");
                   setState(() {
                     if (reportButtonIsClicked) {
                       reportIcon = Icons.report_problem;
@@ -281,9 +273,23 @@ class _MemberListState extends State<MemberList> {
                     }
                   });
                 },
-                icon: Icon(
-                  reportIcon,
-                  color: Palette.gray66,
+                onTapUp: (details) {
+                  print("IconButton onTapUp!! details : ${details}");
+                  reportButtonIsClicked = false;
+                  setState(() {
+                    if (reportButtonIsClicked) {
+                      reportIcon = Icons.report_problem;
+                    } else {
+                      reportIcon = Icons.report_problem_outlined;
+                    }
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                  child: Icon(
+                    reportIcon,
+                    color: Palette.gray66,
+                  ),
                 ),
               ),
             ],
@@ -516,8 +522,14 @@ class _MemberListState extends State<MemberList> {
                                     ),
                                   );
                                 },
+<<<<<<< HEAD
                                 separatorBuilder: ((context, index) =>
                                     SizedBox(height: 0)),
+=======
+                                separatorBuilder: ((context, index) => Divider(
+                                      height: 0,
+                                    )),
+>>>>>>> a07975b (FCM 작업 시작)
                               ),
                             );
                           },
