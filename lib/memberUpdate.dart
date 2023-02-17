@@ -8,7 +8,7 @@ import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'memberInfo.dart';
-import 'memberList.dart';
+import 'app/ui/memberList.dart';
 import 'member_service.dart';
 import 'membershipList.dart';
 import 'userInfo.dart';

@@ -15,7 +15,7 @@ import 'lessonAdd.dart';
 import 'lessonUpdate.dart';
 import 'lesson_service.dart';
 import 'memberAdd.dart';
-import 'memberList.dart';
+import 'app/ui/memberList.dart';
 import 'memberUpdate.dart';
 import 'member_service.dart';
 import 'userInfo.dart';

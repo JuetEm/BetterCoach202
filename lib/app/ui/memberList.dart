@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/testShowDialog.dart';
 
-import 'auth_service.dart';
-import 'color.dart';
-import 'globalFunction.dart';
-import 'globalWidget.dart';
-import 'main.dart';
-import 'memberAdd.dart';
-import 'memberInfo.dart';
-import 'member_service.dart';
-import 'userInfo.dart';
+import '../../auth_service.dart';
+import '../../color.dart';
+import '../../globalFunction.dart';
+import '../../globalWidget.dart';
+import '../../main.dart';
+import '../../memberAdd.dart';
+import '../../memberInfo.dart';
+import '../../member_service.dart';
+import '../../userInfo.dart';
 
 // GA 용 화면 이름 정의
 String screenName = "회원 목록";
@@ -59,6 +60,7 @@ class MemberList extends StatefulWidget {
 }
 
 class _MemberListState extends State<MemberList> {
+  IconData reportIcon = Icons.report_problem_outlined;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // 알파벳 자모음 생성
   final alphabets =
@@ -160,6 +162,9 @@ class _MemberListState extends State<MemberList> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    reportIcon = Icons.report_problem_outlined;
+
     analyticLog.sendAnalyticsEvent(screenName, "init", "init 스트링", "init파라미터");
 
     print("MemberList InitState Called!!");
@@ -191,9 +196,6 @@ class _MemberListState extends State<MemberList> {
     analyticLog.sendAnalyticsEvent(
         screenName, "dispose", "dispose 스트링", "dispose 파라미터");
   }
-
-  bool reportButtonIsClicked = false;
-  IconData reportIcon = Icons.report_problem_outlined;
 
   @override
   Widget build(BuildContext context) {
@@ -261,27 +263,27 @@ class _MemberListState extends State<MemberList> {
             // ),
             actions: [
               InkWell(
-                onTapDown: (details) {
+                onTapDown: (details) async {
                   print("IconButton onTapDown!! details : ${details}");
-                  reportButtonIsClicked = true;
 
                   setState(() {
-                    if (reportButtonIsClicked) {
-                      reportIcon = Icons.report_problem;
-                    } else {
+                    reportIcon = Icons.report_problem;
+                  });
+
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Report()),
+                  ).then((value) {
+                    print("Navigator.push value : ${value}");
+                    setState(() {
                       reportIcon = Icons.report_problem_outlined;
-                    }
+                    });
                   });
                 },
                 onTapUp: (details) {
                   print("IconButton onTapUp!! details : ${details}");
-                  reportButtonIsClicked = false;
                   setState(() {
-                    if (reportButtonIsClicked) {
-                      reportIcon = Icons.report_problem;
-                    } else {
-                      reportIcon = Icons.report_problem_outlined;
-                    }
+                    reportIcon = Icons.report_problem_outlined;
                   });
                 },
                 child: Padding(

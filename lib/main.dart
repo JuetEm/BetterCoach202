@@ -33,7 +33,7 @@ import 'global_service.dart';
 import 'home.dart';
 import 'lessonDetail.dart';
 import 'lesson_service.dart';
-import 'memberList.dart';
+import 'app/ui/memberList.dart';
 import 'member_service.dart';
 import 'globalWidget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
