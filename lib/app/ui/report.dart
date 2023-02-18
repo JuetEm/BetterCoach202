@@ -78,7 +78,7 @@ class _ReportState extends State<Report> {
         elevation: 0,
         backgroundColor: Palette.mainBackground,
         title: Text(
-          "리포트",
+          "오류 및 개선요청",
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -88,110 +88,114 @@ class _ReportState extends State<Report> {
         centerTitle: true,
       ),
       body: Container(
-        color: Palette.mainBackground,
+        color: Palette.secondaryBackground,
         child: Padding(
           padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(color: Palette.grayFF),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('오류 및 개선요청', style: TextStyle(fontSize: 16)),
-                Container(
-                  width: double.infinity,
-                  height: 10,
-                ),
-                Align(
-                  alignment: AlignmentDirectional(-1, 0),
-                  child: Text('문제 페이지',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: Palette.gray00, fontSize: 14)),
-                ),
-                Container(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                    child: DropDownTextField(
-                      controller: reportPageController,
-                      isEnabled: true,
-                      clearOption: false,
-                      enableSearch: true,
-                      // textFieldFocusNode: textFieldFocusNode,
-                      // searchFocusNode: searchFocusNode,
-                      clearIconProperty:
-                          IconProperty(color: Palette.buttonOrange),
-                      textFieldDecoration: InputDecoration(
-                        labelStyle: TextStyle(fontSize: 14),
-                        labelText: "페이지를 선택하세요.",
-                        hintText: "페이지를 선택하세요.",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox(height: 10),
+              Align(
+                alignment: AlignmentDirectional(-1, 0),
+                child: Text('문제 페이지',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Palette.gray00,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                  child: DropDownTextField(
+                    controller: reportPageController,
+                    isEnabled: true,
+                    clearOption: false,
+                    enableSearch: true,
+                    // textFieldFocusNode: textFieldFocusNode,
+                    // searchFocusNode: searchFocusNode,
+                    clearIconProperty:
+                        IconProperty(color: Palette.buttonOrange),
+                    textFieldDecoration: InputDecoration(
+                      hintText: "페이지를 선택하세요.",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
                         ),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(16),
-                        fillColor: Colors.white,
                       ),
-                      searchDecoration: InputDecoration(
-                        labelText: "페이지 검색",
-                        hintText: "검색하고 싶은 페이지를 입력하세요",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
-                        ),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(16),
-                        fillColor: Colors.white,
-                      ),
-                      validator: (value) {
-                        print("position validator value : ${value}");
-                        if (value == null) {
-                          return "required field";
-                        } else {
-                          return null;
-                        }
-                      },
-                      dropDownItemCount: pages.length,
-                      dropDownList: pages,
-                      onChanged: (val) {
-                        print("position onChange val : ${val}");
-                        print(
-                            "positionController.dropDownValue : ${reportPageController.dropDownValue!.value}");
-                        setState(() {
-                          if (reportPageController.dropDownValue!.name ==
-                              "OTHERS") {
-                            pageOffstage = false;
-                            pageFocusNode.requestFocus();
-                          } else {
-                            pageOffstage = true;
-                          }
-                        });
-                      },
+                      filled: true,
+                      contentPadding: EdgeInsets.all(16),
+                      fillColor: Colors.white,
                     ),
+                    searchDecoration: InputDecoration(
+                      hintText: "검색하고 싶은 페이지를 입력하세요",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      contentPadding: EdgeInsets.all(16),
+                      fillColor: Colors.white,
+                    ),
+                    validator: (value) {
+                      print("position validator value : ${value}");
+                      if (value == null) {
+                        return "required field";
+                      } else {
+                        return null;
+                      }
+                    },
+                    dropDownItemCount: pages.length,
+                    dropDownList: pages,
+                    onChanged: (val) {
+                      print("position onChange val : ${val}");
+                      print(
+                          "positionController.dropDownValue : ${reportPageController.dropDownValue!.value}");
+                      setState(() {
+                        if (reportPageController.dropDownValue!.name ==
+                            "OTHERS") {
+                          pageOffstage = false;
+                          pageFocusNode.requestFocus();
+                        } else {
+                          pageOffstage = true;
+                        }
+                      });
+                    },
                   ),
                 ),
-                Align(
-                  alignment: AlignmentDirectional(-1, 0),
-                  child: Text('오류 및 개선요청 내용',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: Palette.gray00, fontSize: 14)),
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: AlignmentDirectional(-1, 0),
+                child: Text('오류 및 개선요청 내용',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: Palette.gray00,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Palette.mainBackground,
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
                   child: TextFormField(
+                    maxLines: null,
                     controller: errorContents,
                     autofocus: true,
                     obscureText: false,
                     decoration: InputDecoration(
-                      hintText: '오류가 발생한 내용 혹은 개선이 필요한 부분을 알려주세요.',
+                      hintText: '오류가 발생한 내용 또는 개선이 필요한 부분을 알려주세요.',
                       hintStyle: TextStyle(color: Palette.gray99),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -239,20 +243,38 @@ class _ReportState extends State<Report> {
                           _model.textControllerValidator.asValidator(context), */
                   ),
                 ),
-                Spacer(),
-                Align(
-                  alignment: AlignmentDirectional(0, -0.05),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(onPressed: () {}, child: Text("취소")),
-                      TextButton(onPressed: () {}, child: Text("제출"))
-                    ],
-                  ),
+              ),
+              Spacer(),
+              Align(
+                alignment: AlignmentDirectional(0, -0.05),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                        onPressed: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 80,
+                          height: 50,
+                          child: Text("취소",
+                              style: TextStyle(
+                                  color: Palette.textRed, fontSize: 16)),
+                        )),
+                    TextButton(
+                        onPressed: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 80,
+                          height: 50,
+                          child: Text("제출",
+                              style: TextStyle(
+                                  color: Palette.textBlue, fontSize: 16)),
+                        )),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
