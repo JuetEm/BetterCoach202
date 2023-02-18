@@ -73,7 +73,7 @@ class _ReportState extends State<Report> {
           },
           color: Palette.gray33,
           // icon: Icon(Icons.account_circle),
-          icon: Icon(Icons.logout),
+          icon: Icon(Icons.arrow_back),
         ),
         elevation: 0,
         backgroundColor: Palette.mainBackground,
@@ -187,6 +187,7 @@ class _ReportState extends State<Report> {
                   borderRadius: BorderRadius.circular(10),
                   color: Palette.mainBackground,
                 ),
+                height: 300,
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
                   child: TextFormField(

@@ -851,13 +851,7 @@ class _BaseContainerState extends State<BaseContainer> {
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 20, 20, 20),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-          color: Palette.mainBackground,
-          //color: Palette.backgroundPink,
-          borderRadius: BorderRadius.circular(10)),
-      height: 90,
+      padding: EdgeInsets.fromLTRB(10, 15, 20, 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

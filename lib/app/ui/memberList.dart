@@ -263,6 +263,7 @@ class _MemberListState extends State<MemberList> {
             // ),
             actions: [
               InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 onTapDown: (details) async {
                   print("IconButton onTapDown!! details : ${details}");
 
@@ -364,6 +365,7 @@ class _MemberListState extends State<MemberList> {
                       // Icon(Icons.keyboard_arrow_down_outlined)
                     ],
                   ),
+                  SizedBox(height: 10),
                   Expanded(
                     child: Stack(
                       children: [
@@ -485,47 +487,51 @@ class _MemberListState extends State<MemberList> {
                                     isActive,
                                   );
 
-                                  return InkWell(
-                                    onTap: () async {
-                                      // 회원 카드 선택시 MemberInfo로 이동
+                                  return Material(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Palette.mainBackground,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        // 회원 카드 선택시 MemberInfo로 이동
 
-                                      // resultList.add(resultActionList);
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MemberInfo
-                                              .getUserInfoAndActionList(
-                                                  userInfo,
-                                                  resultMemberList,
-                                                  resultActionList),
-                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                          /* settings: RouteSettings(
-                                            arguments: userInfo
-                                          ), */
-                                        ),
-                                      ).then((result) {
-                                        print(
-                                            "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-                                        UserInfo tmpUserInfo = result;
-                                        print(
-                                            "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
-                                      });
-                                    },
-                                    child: BaseContainer(
-                                      docId: docId,
-                                      name: name,
-                                      registerDate: registerDate,
-                                      goal: goal,
-                                      info: info,
-                                      note: note,
-                                      phoneNumber: phoneNumber,
-                                      isActive: isActive,
-                                      memberService: memberService,
+                                        // resultList.add(resultActionList);
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MemberInfo
+                                                .getUserInfoAndActionList(
+                                                    userInfo,
+                                                    resultMemberList,
+                                                    resultActionList),
+                                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                            /* settings: RouteSettings(
+                                              arguments: userInfo
+                                            ), */
+                                          ),
+                                        ).then((result) {
+                                          print(
+                                              "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                          UserInfo tmpUserInfo = result;
+                                          print(
+                                              "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                        });
+                                      },
+                                      child: BaseContainer(
+                                        docId: docId,
+                                        name: name,
+                                        registerDate: registerDate,
+                                        goal: goal,
+                                        info: info,
+                                        note: note,
+                                        phoneNumber: phoneNumber,
+                                        isActive: isActive,
+                                        memberService: memberService,
+                                      ),
                                     ),
                                   );
                                 },
                                 separatorBuilder: ((context, index) =>
-                                    SizedBox(height: 0)),
+                                    SizedBox(height: 5)),
                               ),
                             );
                           },
