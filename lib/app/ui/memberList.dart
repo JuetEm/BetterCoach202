@@ -531,7 +531,7 @@ class _MemberListState extends State<MemberList> {
                                   );
                                 },
                                 separatorBuilder: ((context, index) =>
-                                    SizedBox(height: 5)),
+                                    SizedBox(height: 8)),
                               ),
                             );
                           },

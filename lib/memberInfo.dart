@@ -302,7 +302,6 @@ class _MemberInfoState extends State<MemberInfo> {
                                   topLeft: Radius.circular(10.0),
                                   topRight: Radius.circular(10.0),
                                 ),
-                                color: Palette.grayFF,
                                 //color: Colors.red.withOpacity(0),
                               ),
                               //padding: const EdgeInsets.all(20.0),
@@ -311,40 +310,43 @@ class _MemberInfoState extends State<MemberInfo> {
                                 children: [
                                   Flexible(
                                     flex: 5,
-                                    child: InkWell(
-                                      onTap: () {
-                                        if (viewMode == "레슨노트") {
-                                          setState(() {
-                                            viewMode = "기본정보";
-                                          });
-                                        }
-                                        ;
-                                      },
-                                      child: Container(
-                                        height: 54,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              color: viewMode == "기본정보"
-                                                  ? Palette.buttonOrange
-                                                  : Palette.grayEE,
-                                              width: 2,
+                                    child: Material(
+                                      color: Palette.mainBackground,
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (viewMode == "레슨노트") {
+                                            setState(() {
+                                              viewMode = "기본정보";
+                                            });
+                                          }
+                                          ;
+                                        },
+                                        child: Container(
+                                          height: 54,
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: viewMode == "기본정보"
+                                                    ? Palette.buttonOrange
+                                                    : Palette.grayEE,
+                                                width: 2,
+                                              ),
                                             ),
                                           ),
-                                        ),
 
-                                        //color: Colors.red.withOpacity(0),
+                                          //color: Colors.red.withOpacity(0),
 
-                                        width: double.infinity,
-                                        child: Center(
-                                          child: Text(
-                                            "기본정보",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: viewMode == "기본정보"
-                                                  ? Palette.buttonOrange
-                                                  : Palette.gray99,
+                                          width: double.infinity,
+                                          child: Center(
+                                            child: Text(
+                                              "기본정보",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: viewMode == "기본정보"
+                                                    ? Palette.buttonOrange
+                                                    : Palette.gray99,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -353,40 +355,43 @@ class _MemberInfoState extends State<MemberInfo> {
                                   ),
                                   Flexible(
                                     flex: 5,
-                                    child: InkWell(
-                                      onTap: () {
-                                        if (viewMode == "기본정보") {
-                                          setState(() {
-                                            viewMode = "레슨노트";
-                                          });
-                                        }
-                                        ;
-                                      },
-                                      child: Container(
-                                        height: 54,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              color: viewMode == "레슨노트"
-                                                  ? Palette.buttonOrange
-                                                  : Palette.grayEE,
-                                              width: 2,
+                                    child: Material(
+                                      color: Palette.mainBackground,
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (viewMode == "기본정보") {
+                                            setState(() {
+                                              viewMode = "레슨노트";
+                                            });
+                                          }
+                                          ;
+                                        },
+                                        child: Container(
+                                          height: 54,
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: viewMode == "레슨노트"
+                                                    ? Palette.buttonOrange
+                                                    : Palette.grayEE,
+                                                width: 2,
+                                              ),
                                             ),
                                           ),
-                                        ),
 
-                                        //color: Colors.red.withOpacity(0),
+                                          //color: Colors.red.withOpacity(0),
 
-                                        width: double.infinity,
-                                        child: Center(
-                                          child: Text(
-                                            "레슨노트",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: viewMode == "레슨노트"
-                                                  ? Palette.buttonOrange
-                                                  : Palette.gray99,
+                                          width: double.infinity,
+                                          child: Center(
+                                            child: Text(
+                                              "레슨노트",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: viewMode == "레슨노트"
+                                                    ? Palette.buttonOrange
+                                                    : Palette.gray99,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -728,9 +733,10 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             Spacer(
               flex: 1,
             ),
-            Container(
-              //color: Colors.red,
+            Material(
+              color: Palette.mainBackground,
               child: InkWell(
+                borderRadius: BorderRadius.circular(10),
                 onTap: () {
                   if (listMode == "동작별") {
                     setState(() {
@@ -743,24 +749,27 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                   }
                   ;
                 },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.sync,
-                      color: Palette.gray99,
-                      size: 15.0,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      listMode == "동작별" ? "날짜별" : "동작별",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Palette.gray66,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.sync,
+                        color: Palette.gray99,
+                        size: 15.0,
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        listMode == "동작별" ? "날짜별" : "동작별",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Palette.gray66,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -1501,7 +1510,7 @@ class LessonCard extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(index.toString()+" - "),
+                                Text(index.toString() + " - "),
                                 Text(
                                   apratusNameTrim,
                                   style: TextStyle(

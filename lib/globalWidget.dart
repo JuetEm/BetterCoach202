@@ -440,9 +440,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
     //FocusNode textFocus = FocusNode();
 
     return Container(
-      constraints: BoxConstraints(
-        minHeight: 40,
-      ),
+      alignment: Alignment.center,
       child: TextField(
         obscureText: widget.hint.contains("비밀번호") ? true : false, // 비밀번호 안보이게
         style: TextStyle(fontSize: 14),
@@ -452,7 +450,8 @@ class _BaseTextFieldState extends State<BaseTextField> {
         controller: widget.customController,
         focusNode: widget.customFocusNode,
         decoration: InputDecoration(
-          labelText: widget.hint,
+          // contentPadding: EdgeInsets.all(5),
+          // labelText: widget.hint,
           suffixIcon: widget.hint == "수행도"
               ? null
               : widget.hint == ""
@@ -477,7 +476,6 @@ class _BaseTextFieldState extends State<BaseTextField> {
               style: BorderStyle.none,
             ),
           ),
-          contentPadding: EdgeInsets.all(4),
         ),
         onChanged: (text) {
           // 현재 텍스트필드의 텍스트를 출력

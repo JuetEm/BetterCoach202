@@ -128,7 +128,7 @@ class _ReportState extends State<Report> {
                         ),
                       ),
                       filled: true,
-                      contentPadding: EdgeInsets.all(16),
+                      contentPadding: EdgeInsets.all(20),
                       fillColor: Colors.white,
                     ),
                     searchDecoration: InputDecoration(
@@ -189,61 +189,59 @@ class _ReportState extends State<Report> {
                 ),
                 constraints:
                     BoxConstraints(minHeight: 300, minWidth: double.infinity),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
-                  child: TextFormField(
-                    maxLines: null,
-                    controller: errorContents,
-                    autofocus: true,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      hintText: '오류가 발생한 내용 또는 개선이 필요한 부분을 알려주세요.',
-                      hintStyle: TextStyle(color: Palette.gray99),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(4.0),
-                          topRight: Radius.circular(4.0),
-                        ),
+                child: TextFormField(
+                  maxLines: null,
+                  controller: errorContents,
+                  autofocus: true,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(20),
+                    hintText: '오류가 발생한 내용 또는 개선이 필요한 부분을 알려주세요.',
+                    hintStyle: TextStyle(color: Palette.gray99),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(4.0),
-                          topRight: Radius.circular(4.0),
-                        ),
-                      ),
-                      errorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(4.0),
-                          topRight: Radius.circular(4.0),
-                        ),
-                      ),
-                      focusedErrorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(4.0),
-                          topRight: Radius.circular(4.0),
-                        ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4.0),
+                        topRight: Radius.circular(4.0),
                       ),
                     ),
-                    style: TextStyle(color: Palette.gray00),
-                    /* validator:
-                          _model.textControllerValidator.asValidator(context), */
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4.0),
+                        topRight: Radius.circular(4.0),
+                      ),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4.0),
+                        topRight: Radius.circular(4.0),
+                      ),
+                    ),
+                    focusedErrorBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4.0),
+                        topRight: Radius.circular(4.0),
+                      ),
+                    ),
                   ),
+                  style: TextStyle(color: Palette.gray00),
+                  /* validator:
+                        _model.textControllerValidator.asValidator(context), */
                 ),
               ),
               Spacer(),
