@@ -851,7 +851,7 @@ class _BaseContainerState extends State<BaseContainer> {
     }
 
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 15, 20, 15),
+      padding: EdgeInsets.fromLTRB(5, 15, 20, 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

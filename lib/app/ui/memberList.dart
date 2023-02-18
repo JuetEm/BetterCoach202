@@ -328,7 +328,7 @@ class _MemberListState extends State<MemberList> {
           ), */
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(22.0),
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

@@ -187,7 +187,8 @@ class _ReportState extends State<Report> {
                   borderRadius: BorderRadius.circular(10),
                   color: Palette.mainBackground,
                 ),
-                height: 300,
+                constraints:
+                    BoxConstraints(minHeight: 300, minWidth: double.infinity),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
                   child: TextFormField(
