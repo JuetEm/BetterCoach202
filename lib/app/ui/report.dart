@@ -12,7 +12,6 @@ import 'package:web_project/memberList_admin.dart';
 
 String pageName = "리포트 페이지";
 
-
 var fcmToken = null;
 
 late FocusNode pageFocusNode;
@@ -38,7 +37,9 @@ class _ReportState extends State<Report> {
 회원등록/노트추가/동작선택/동작추가 */
   final pages = [
     DropDownValueModel(
-        name: "OTHERS", value: 'others', toolTipMsg: "선택하려는 페이지가 없는 경우 선택해주세요."),
+        name: "OTHERS",
+        value: 'others',
+        toolTipMsg: "선택하려는 페이지가 없는 경우 선택해주세요."),
     DropDownValueModel(name: "회원목록", value: '회원목록', toolTipMsg: "회원목록"),
     DropDownValueModel(name: "회원목록", value: '회원목록', toolTipMsg: "회원목록"),
     DropDownValueModel(name: "노트보기", value: '노트보기', toolTipMsg: "노트보기"),
@@ -170,7 +171,8 @@ class _ReportState extends State<Report> {
                       print("position onChange val : ${val}");
                       print(
                           "positionController.dropDownValue : ${reportPageController.dropDownValue!.value}");
-                      selectedPageName = reportPageController.dropDownValue!.value;
+                      selectedPageName =
+                          reportPageController.dropDownValue!.value;
                     },
                   ),
                 ),
@@ -237,8 +239,18 @@ class _ReportState extends State<Report> {
                           AuthService authService = AuthService();
                           var user = authService.currentUser();
                           ReportService reportService = ReportService();
-                          reportService.create(user!.uid, user.displayName, user.phoneNumber, user.email, selectedPageName, content, 
-                          DateTime.now(), 'N', null).then((value){
+                          reportService
+                              .create(
+                                  user!.uid,
+                                  user.displayName,
+                                  user.phoneNumber,
+                                  user.email,
+                                  selectedPageName,
+                                  content,
+                                  DateTime.now(),
+                                  'N',
+                                  null)
+                              .then((value) {
                             Navigator.pop(context);
                           });
                         },

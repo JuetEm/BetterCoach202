@@ -25,7 +25,10 @@ showAlertDialog(BuildContext context, String title, String content) async {
         // title: Text('정말로 삭제하시겠습니까?'),
         title: Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Palette.textRed),
         ),
         // content: Text("회원과 관련된 레슨노트 정보도 모두 삭제됩니다."),
         content: Text(
