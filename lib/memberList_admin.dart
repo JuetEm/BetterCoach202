@@ -160,6 +160,7 @@ class _MemberListState extends State<MemberList> {
                               String note = doc.get('note');
                               String comment = doc.get('comment');
                               bool isActive = doc.get('isActive');
+                              bool isFavorite = doc.get('isFavorite') ?? false;
 
                               final UserInfo userInfo = UserInfo(
                                 doc.id,
@@ -180,6 +181,7 @@ class _MemberListState extends State<MemberList> {
                                 note,
                                 comment,
                                 isActive,
+                                isFavorite,
                               );
 
                               return InkWell(
@@ -205,7 +207,9 @@ class _MemberListState extends State<MemberList> {
                                   note: note,
                                   phoneNumber: phoneNumber,
                                   isActive: isActive,
+                                  isFavorite: isFavorite,
                                   memberService: memberService,
+                                  resultMemberList: [],
                                 ),
                               );
                             },

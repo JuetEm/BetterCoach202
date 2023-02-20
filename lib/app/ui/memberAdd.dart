@@ -295,7 +295,7 @@ class _MemberAddState extends State<MemberAdd> {
                           BaseTextField(
                             customController: nameController,
                             customFocusNode: nameFocusNode,
-                            hint: "이름",
+                            hint: "이름(9자 미만)",
                             showArrow: false,
                             customFunction: () {},
                           ),
@@ -407,7 +407,8 @@ class _MemberAddState extends State<MemberAdd> {
                                           BaseTextField(
                                             customController:
                                                 membershipController,
-                                                customFocusNode: memberShipFocusNode,
+                                            customFocusNode:
+                                                memberShipFocusNode,
                                             hint: "횟수입력",
                                             showArrow: false,
                                             customFunction: () {},
@@ -827,7 +828,8 @@ class _MemberAddState extends State<MemberAdd> {
                                 infoController.text,
                                 noteController.text,
                                 commentController.text,
-                                true);
+                                true,
+                                false);
                           }).onError((error, stackTrace) {
                             print("error : ${error}");
                             print("stackTrace : ${stackTrace}");
@@ -909,7 +911,8 @@ class _MemberAddState extends State<MemberAdd> {
                                     infoController.text,
                                     noteController.text,
                                     commentController.text,
-                                    true);
+                                    true,
+                                    false);
 
                                 //memberInfo.notifyListeners();
                                 // 저장하기 성공시 MemberInfo로 이동

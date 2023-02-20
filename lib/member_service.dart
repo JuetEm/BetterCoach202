@@ -36,21 +36,7 @@ class MemberService extends ChangeNotifier {
 
   Future<bool> readisActive(String uid, String docId) async {
     bool result = false;
-    //   .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-    // .get()
-    // .then((value) {
-    //   value.docs.forEach((element) {
-    //     print(element.id);
-    //   });
 
-    // await FirebaseFirestore.instance
-    //     .collection('member')
-    //     .doc(docID)
-    //     .get()
-    //     .then((DocumentSnapshot ds) {
-    //   title = ds.data["title"];
-    //   print(title);
-    // });
     await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
       print('[MS] readisActive 실행 - readisActive : ${data['isActive']}');
@@ -58,31 +44,18 @@ class MemberService extends ChangeNotifier {
     });
 
     return result;
+  }
 
-    // await memberCollection
-    //     .where('uid', isEqualTo: uid)
-    //     .where(
-    //       'docId',
-    //       isEqualTo: docId,
-    //     )
-    //     .get()
-    //     .then((DocumentSnapshot ds) {
-    //   String title = ds.data["isActive"];
-    //   print(title);
-    //   //bool result = value[isActive];
-    // });
-    // //final docs = docRaw.docs ?? [];
-    // DocumentSnapshot docs = docRaw["isActive"];
-    // print('[MS] readisActive 실행 - readisActive : ${docs}');
-    // //print('[MS] readisActive 실행 - readisActive : ${docs.get('isActive')}');
+  Future<bool> readIsFavorite(String uid, String docId) async {
+    bool result = false;
 
-    // bool result = docs[0].get('isActive');
-    // return result;
-    // // return memberCollection
-    // //     .where('uid', isEqualTo: uid)
-    // //     .get('isActive')
-    // //     .then(value);
-    //return result;
+    await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      print('[MS] readisActive 실행 - readisActive : ${data['isFavorite']}');
+      result = data['isFavorite'];
+    });
+
+    return result;
   }
 
   Future<String> create({
@@ -210,6 +183,18 @@ class MemberService extends ChangeNotifier {
     // 업데이트
     await memberCollection.doc(docId).update({
       'isActive': isActive, // 회원권 활성화 여부
+    });
+
+    notifyListeners();
+  }
+
+  Future<void> updateIsFavorite(
+    String docId,
+    bool isFavorite,
+  ) async {
+    // 업데이트
+    await memberCollection.doc(docId).update({
+      'isFavorite': isFavorite, // 회원권 활성화 여부
     });
 
     notifyListeners();

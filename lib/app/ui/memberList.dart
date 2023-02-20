@@ -18,6 +18,8 @@ import 'memberInfo.dart';
 import '../../member_service.dart';
 import '../../userInfo.dart';
 
+GlobalFunction globalFunction = GlobalFunction();
+
 // GA 용 화면 이름 정의
 String screenName = "회원 목록";
 
@@ -28,13 +30,6 @@ List<UserInfo> userInfoList = [];
 String conutMemberList = "";
 
 String memberAddMode = "추가";
-
-// late UserInfo userInfo;
-
-List resultMemberList = [];
-List resultActionList = [];
-
-List resultList = [];
 
 TextEditingController searchController = TextEditingController();
 
@@ -96,7 +91,7 @@ class _MemberListState extends State<MemberList> {
   // https://github.com/thanikad/alphabetical_search
   void setSearchIndex(String searchLetter) {
     List rmNameList = [];
-    resultMemberList.forEach(
+    globalVariables.resultList.forEach(
       (element) {
         rmNameList.add(globalFunction.getChosungFromString(element['name']));
       },
@@ -168,10 +163,6 @@ class _MemberListState extends State<MemberList> {
     analyticLog.sendAnalyticsEvent(screenName, "init", "init 스트링", "init파라미터");
 
     print("MemberList InitState Called!!");
-    resultMemberList = widget.tmpMemberList;
-    resultActionList = widget.tmpActionList;
-    print("1. resultMemberList.length : ${resultMemberList.length}");
-    print("1. resultActionList.length : ${resultActionList.length}");
     // 모음 검색 세로 바 구현 작업
     combinedLngs.addAll(koreans);
     combinedLngs.addAll(alphabets);
@@ -187,8 +178,6 @@ class _MemberListState extends State<MemberList> {
     // TODO: implement dispose
     super.dispose();
     scrollController.dispose();
-    resultActionList = [];
-    resultMemberList = [];
 
     widget.tmpActionList = [];
     widget.tmpMemberList = [];
@@ -210,14 +199,16 @@ class _MemberListState extends State<MemberList> {
     print("argsList.length : ${argsList.length}");
     // resultMemberList 비었을 경우에만 받아온다.
     if (argsList.length > 0) {
-      if (resultMemberList.isEmpty) {
-        resultMemberList = argsList[0];
-        print("2. resultMemberList.length : ${resultMemberList.length}");
+      if (globalVariables.resultList.isEmpty) {
+        globalVariables.resultList = argsList[0];
+        print(
+            "2. resultMemberList.length : ${globalVariables.resultList.length}");
       }
 
-      if (resultActionList.isEmpty) {
-        resultActionList = argsList[1];
-        print("2. resultActionList.length : ${resultActionList.length}");
+      if (globalVariables.actionList.isEmpty) {
+        globalVariables.actionList = argsList[1];
+        print(
+            "2. resultActionList.length : ${globalVariables.actionList.length}");
       }
     }
 
@@ -354,7 +345,7 @@ class _MemberListState extends State<MemberList> {
                   Row(
                     children: [
                       Text(
-                        '총 ${resultMemberList.length} 명',
+                        '총 ${globalVariables.resultList.length} 명',
                         style: TextStyle(color: Palette.gray7B),
                       ),
                       Spacer(),
@@ -381,7 +372,7 @@ class _MemberListState extends State<MemberList> {
                               List searchedList = [];
                               String varName = "";
 
-                              resultMemberList.forEach((element) {
+                              globalVariables.resultList.forEach((element) {
                                 varName = element['name'];
                                 // 검색 기능 함수 convert
                                 if (globalFunction.searchString(
@@ -391,7 +382,8 @@ class _MemberListState extends State<MemberList> {
                               });
                               docs = searchedList ?? []; // 문서들 가져오기
                             } else {
-                              docs = resultMemberList ?? []; // 문서들 가져오기
+                              docs =
+                                  globalVariables.resultList ?? []; // 문서들 가져오기
                             }
                             /* 멤버 리트스 최초 1번 받아오기 리뉴얼 작업위해 주석 - 정규호 2022/11/23 
                             FutureBuilder<QuerySnapshot>(
@@ -467,6 +459,10 @@ class _MemberListState extends State<MemberList> {
                                   String note = doc['note'] ?? "";
                                   String comment = doc['comment'] ?? "";
                                   bool isActive = doc['isActive'];
+                                  bool isFavorite = doc['isFavorite'] ?? false;
+
+                                  print(
+                                      "${screenName} name : ${name}, isFavorite : ${isFavorite}");
 
                                   UserInfo userInfo = UserInfo(
                                     doc['id'],
@@ -485,6 +481,7 @@ class _MemberListState extends State<MemberList> {
                                     note,
                                     comment,
                                     isActive,
+                                    isFavorite,
                                   );
 
                                   return Material(
@@ -501,8 +498,8 @@ class _MemberListState extends State<MemberList> {
                                             builder: (context) => MemberInfo
                                                 .getUserInfoAndActionList(
                                                     userInfo,
-                                                    resultMemberList,
-                                                    resultActionList),
+                                                    globalVariables.resultList,
+                                                    globalVariables.actionList),
                                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                             /* settings: RouteSettings(
                                               arguments: userInfo
@@ -514,6 +511,10 @@ class _MemberListState extends State<MemberList> {
                                           UserInfo tmpUserInfo = result;
                                           print(
                                               "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                          setState(() {
+                                            print(
+                                                "memberList - memberinfo pop setState!!");
+                                          });
                                         });
                                       },
                                       child: BaseContainer(
@@ -525,7 +526,10 @@ class _MemberListState extends State<MemberList> {
                                         note: note,
                                         phoneNumber: phoneNumber,
                                         isActive: isActive,
+                                        isFavorite: isFavorite,
                                         memberService: memberService,
+                                        resultMemberList:
+                                            globalVariables.resultList,
                                       ),
                                     ),
                                   );
@@ -690,8 +694,8 @@ class _MemberListState extends State<MemberList> {
 
                 List<dynamic> args = [
                   memberAddMode,
-                  resultMemberList,
-                  resultActionList,
+                  globalVariables.resultList,
+                  globalVariables.actionList,
                 ];
 
                 // 저장하기 성공시 Home로 이동
@@ -712,8 +716,8 @@ class _MemberListState extends State<MemberList> {
                   List tmpResultList = value as List;
                   // print("어디지?");
                   setState(() {
-                    resultMemberList = tmpResultList[0];
-                    resultActionList = tmpResultList[1];
+                    globalVariables.resultList = tmpResultList[0];
+                    globalVariables.actionList = tmpResultList[1];
                   });
                 });
               },

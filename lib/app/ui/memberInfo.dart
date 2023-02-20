@@ -6,7 +6,9 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/ui/ticketManage.dart';
+import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/main.dart';
 
 import '../../actionSelector.dart';
 import '../../auth_service.dart';
@@ -20,6 +22,8 @@ import 'memberList.dart';
 import '../../memberUpdate.dart';
 import '../../member_service.dart';
 import '../../userInfo.dart';
+
+GlobalFunction globalFunction = GlobalFunction();
 
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
@@ -78,24 +82,6 @@ class _MemberInfoState extends State<MemberInfo> {
     setState(() {});
   }
 
-  Future<bool> _readfavoriteMember(String uid, String docId) async {
-    bool result = false;
-    final memberService = context.read<MemberService>();
-    await memberService
-        .readisActive(
-      uid,
-      docId,
-    )
-        .then((val) {
-      result = val;
-      print('[MI]회원정보 화면 _readfavoriteMember : 즐겨찾기 ${val}');
-    });
-    return result;
-  }
-
-  void _updatefavoriteMember() {
-    setState(() {});
-  }
   //setState(() {});
 
   @override
@@ -174,67 +160,85 @@ class _MemberInfoState extends State<MemberInfo> {
                                 children: [
                                   // FutureBuilder 예시 코드
                                   FutureBuilder(
-                                      future: _readfavoriteMember(
-                                          userInfo.uid, userInfo.docId),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot snapshot) {
-                                        //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
-                                        if (snapshot.hasData == false) {
-                                          return IconButton(
-                                              icon: SvgPicture.asset(
-                                                "assets/icons/favoriteUnselected.svg",
-                                              ),
-                                              iconSize: 40,
-                                              onPressed: () {});
-                                        }
-
-                                        //error가 발생하게 될 경우 반환하게 되는 부분
-                                        else if (snapshot.hasError) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              'Error: ${snapshot.error}', // 에러명을 텍스트에 뿌려줌
-                                              style: TextStyle(fontSize: 15),
+                                    future: globalFunction.readfavoriteMember(
+                                        userInfo.uid, userInfo.docId),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
+                                      if (snapshot.hasData == false) {
+                                        return IconButton(
+                                            icon: SvgPicture.asset(
+                                              "assets/icons/favoriteUnselected.svg",
                                             ),
-                                          );
-                                        }
+                                            iconSize: 40,
+                                            onPressed: () {});
+                                      }
+                                      //error가 발생하게 될 경우 반환하게 되는 부분
+                                      else if (snapshot.hasError) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Error: ${snapshot.error}', // 에러명을 텍스트에 뿌려줌
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        );
+                                      }
 
-                                        // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 부분
-                                        else {
-                                          print(
-                                              "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo.docId}");
-                                          favoriteMember = snapshot.data;
-                                          return IconButton(
-                                              icon: SvgPicture.asset(
-                                                favoriteMember
-                                                    ? "assets/icons/favoriteSelected.svg"
-                                                    : "assets/icons/favoriteUnselected.svg",
-                                              ),
-                                              iconSize: 40,
-                                              onPressed: () async {
-                                                favoriteMember =
-                                                    !favoriteMember;
+                                      // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 부분
+                                      else {
+                                        print(
+                                            "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo.docId}");
+                                        favoriteMember = snapshot.data;
+                                        return IconButton(
+                                            icon: SvgPicture.asset(
+                                              favoriteMember
+                                                  ? "assets/icons/favoriteSelected.svg"
+                                                  : "assets/icons/favoriteUnselected.svg",
+                                            ),
+                                            iconSize: 40,
+                                            onPressed: () async {
+                                              favoriteMember = !favoriteMember;
 
-                                                await memberService
-                                                    .updateisActive(
-                                                        userInfo.docId,
-                                                        favoriteMember);
-                                                print(
-                                                    "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+                                              await memberService
+                                                  .updateIsFavorite(
+                                                      userInfo.docId,
+                                                      favoriteMember);
+                                              int rstLnth = globalVariables
+                                                  .resultList.length;
+                                              for (int i = 0;
+                                                  i < rstLnth;
+                                                  i++) {
+                                                if (userInfo.docId ==
+                                                    globalVariables
+                                                        .resultList[i]['id']) {
+                                                  print(
+                                                      "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
+                                                  globalVariables.resultList[i]
+                                                          ['isFavorite'] =
+                                                      !globalVariables
+                                                              .resultList[i]
+                                                          ['isFavorite'];
+                                                  break;
+                                                }
+                                              }
 
-                                                _updatefavoriteMember();
-                                                //lessonService.notifyListeners();
+                                              print(
+                                                  "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
 
-                                                //setState(() {});
-                                                // setState(() {
-                                                //   userInfo.isActive
-                                                //       ? favoriteMember = false
-                                                //       : favoriteMember = true;
-                                                // }
-                                                //);
-                                              });
-                                        }
-                                      }),
+                                              // globalFunction.updatefavoriteMember();
+                                              //lessonService.notifyListeners();
+
+                                              //setState(() {});
+                                              // setState(() {
+                                              //   userInfo.isActive
+                                              //       ? favoriteMember = false
+                                              //       : favoriteMember = true;
+                                              // }
+                                              //);
+                                            });
+                                      }
+                                    },
+                                  ),
 
                                   Container(
                                     constraints: BoxConstraints(maxWidth: 150),
@@ -597,7 +601,7 @@ class _MemberInfoState extends State<MemberInfo> {
                     resultMemberList = tmpResult[1];
                     resultActionList = tmpResult[2];
                     //initState = true;
-                    _updatefavoriteMember();
+                    globalFunction.updatefavoriteMember();
                     //lessonService.notifyListeners();
                   } else {
                     print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
@@ -903,7 +907,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           //const SizedBox(height: 20),
 
           Container(
-            width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -915,9 +918,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     color: Palette.gray66,
                   ),
                 ),
+                const SizedBox(height: 10),
                 true
                     ? Container(
-                        constraints: BoxConstraints(maxWidth: 280),
+                        constraints: BoxConstraints(
+                            maxWidth: 280, minHeight: 100, maxHeight: 120),
                         child: Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -982,9 +987,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                 Container(
                                     width: 1,
                                     color: Palette.grayEE,
-                                    height: 80),
+                                    height: double.infinity),
                                 Container(
-                                    width: 180,
+                                    constraints: BoxConstraints(minWidth: 140),
                                     padding: EdgeInsets.only(left: 10),
                                     child: Column(
                                       mainAxisAlignment:
