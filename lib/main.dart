@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
 import 'package:web_project/analyticLog.dart';
+import 'package:web_project/globalVariables.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/local_info.dart';
 import 'package:web_project/app/controller/login_controller.dart';
@@ -41,6 +42,8 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
 
+GlobalVariables globalVariables = GlobalVariables();
+
 // 소셜 로그인 Controller
 LoginController loginController = LoginController();
 
@@ -64,8 +67,7 @@ TextEditingController switchController =
 String? userEmail;
 String? userPassword;
 
-List resultList = [];
-List actionList = [];
+
 
 ActionService actionService = ActionService();
 
@@ -157,7 +159,7 @@ void main() async {
     print("object user is not null");
     print("user.email : ${user.email}, user.displayName : ${user.displayName}");
     await memberService.readMemberListAtFirstTime(user.uid).then((value) {
-      resultList.addAll(value);
+      globalVariables.resultList.addAll(value);
       /* for (int i = 0; i < resultList.length; i++) {
         print("resultList[${i}] : ${resultList[i]}");
       } */
@@ -170,7 +172,7 @@ void main() async {
       await actionService.readActionListAtFirstTime(user.uid).then((value) {
         print(
             "1. resultFirstActionList then is called!! value.length : ${value.length}");
-        actionList.addAll(value);
+        globalVariables.actionList.addAll(value);
       }).onError((error, stackTrace) {
         print("error : ${error}");
         print("stackTrace : \r\n${stackTrace}");
@@ -250,7 +252,7 @@ class MyApp extends StatelessWidget {
             user == null
                 ? LoginPage(analytics: analytics)
                 /* : SignUp(), */ : MemberList.getMemberList(
-                    resultList, actionList),
+                    globalVariables.resultList, globalVariables.actionList),
       ),
     );
   }
@@ -282,8 +284,8 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement dispose
     super.dispose();
 
-    resultList = [];
-    actionList = [];
+    globalVariables.resultList = [];
+    globalVariables.actionList = [];
   }
 
   @override
@@ -824,7 +826,7 @@ class _LoginPageState extends State<LoginPage> {
           resultFirstMemberList.then((value) {
             print(
                 "resultFirstMemberList then is called!! value.length : ${value.length}");
-            resultList.addAll(value);
+            globalVariables.resultList.addAll(value);
             /* for (int i = 0; i < value.length; i++) {
               print("value[${i}] : ${value[i]}");
             } */
@@ -840,7 +842,7 @@ class _LoginPageState extends State<LoginPage> {
             resultFirstActionList.then((value) {
               print(
                   "2. resultFirstActionList then is called!! value.length : ${value.length}");
-              actionList.addAll(value);
+              globalVariables.actionList.addAll(value);
             }).onError((error, stackTrace) {
               print("error : ${error}");
               print("stackTrace : \r\n${stackTrace}");
@@ -857,7 +859,7 @@ class _LoginPageState extends State<LoginPage> {
               MaterialPageRoute(builder: (_) => MemberList()),
               //MaterialPageRoute(builder: (_) => Mainpage()),
             ); */
-              List<dynamic> args = [resultList, actionList];
+              List<dynamic> args = [globalVariables.resultList, globalVariables.actionList];
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -934,8 +936,8 @@ class _LoginPageState extends State<LoginPage> {
     resultFirstMemberList.then((value) {
       print(
           "resultFirstMemberList then is called!! value.length : ${value.length}");
-      resultList = [];
-      resultList.addAll(value);
+      globalVariables.resultList = [];
+      globalVariables.resultList.addAll(value);
       /* for (int i = 0; i < value.length; i++) {
         print("value[${i}] : ${value[i]}");
       } */
@@ -951,8 +953,8 @@ class _LoginPageState extends State<LoginPage> {
       resultFirstActionList.then((value) {
         print(
             "3. resultFirstActionList then is called!! value.length : ${value.length}");
-        actionList = [];
-        actionList.addAll(value);
+        globalVariables.actionList = [];
+        globalVariables.actionList.addAll(value);
       }).onError((error, stackTrace) {
         print("error : ${error}");
         print("stackTrace : \r\n${stackTrace}");
@@ -969,7 +971,7 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (_) => MemberList()),
         //MaterialPageRoute(builder: (_) => Mainpage()),
       ); */
-        List<dynamic> args = [resultList, actionList];
+        List<dynamic> args = [globalVariables.resultList, globalVariables.actionList];
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/color.dart';
+import 'package:web_project/globalFunction.dart';
 import 'package:web_project/member_service.dart';
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
@@ -12,6 +13,8 @@ import 'app/ui/memberList.dart';
 
 import 'search.dart';
 import 'color.dart';
+
+GlobalFunction globalFunction = GlobalFunction();
 
 GlobalKey appBapKey = GlobalKey();
 GlobalKey bottomAppBapKey = GlobalKey();
@@ -817,8 +820,10 @@ class BaseContainer extends StatefulWidget {
     required this.info,
     required this.note,
     required this.isActive,
+    required this.isFavorite,
     required this.phoneNumber,
     required this.memberService,
+    required this.resultMemberList,
   }) : super(key: key);
   final String docId;
   final String name;
@@ -828,7 +833,9 @@ class BaseContainer extends StatefulWidget {
   final String note;
   final String phoneNumber;
   final bool isActive;
+  final bool isFavorite;
   final MemberService memberService;
+  final List resultMemberList;
 
   @override
   State<BaseContainer> createState() => _BaseContainerState();
@@ -836,14 +843,15 @@ class BaseContainer extends StatefulWidget {
 
 class _BaseContainerState extends State<BaseContainer> {
   bool favoriteMember = false;
-
+  String isFavIconPath = "";
+  
   @override
   Widget build(BuildContext context) {
     String nameFirst = ' ';
     if (widget.name.length > 0) {
       nameFirst = widget.name.substring(0, 1);
     }
-
+    
     return Container(
       padding: EdgeInsets.fromLTRB(5, 15, 20, 15),
       child: Column(
@@ -864,14 +872,14 @@ class _BaseContainerState extends State<BaseContainer> {
                     width: 60,
                     child: IconButton(
                       icon: SvgPicture.asset(
-                        widget.isActive //svg파일이 firebase에서 안보이는 경우
+                        widget.isFavorite //svg파일이 firebase에서 안보이는 경우
                             //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
                             ? "assets/icons/favoriteSelected.svg"
                             : "assets/icons/favoriteUnselected.svg",
                       ),
                       iconSize: 40,
                       onPressed: () async {
-                        favoriteMember = !widget.isActive;
+                        // favoriteMember = !widget.isFavorite;
 
                         //                   for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
                         //   await lessonService.updateTotalNote(
@@ -880,8 +888,29 @@ class _BaseContainerState extends State<BaseContainer> {
                         //   );
                         // }
 
+                        int rstLnth = widget.resultMemberList.length;
+                        for(int i=0; i<rstLnth; i++){
+                          
+                          if(widget.docId == widget.resultMemberList[i]['id']){
+                            print("globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
+                            if(widget.resultMemberList[i]['isFavorite'] == null){
+                              widget.resultMemberList[i]['isFavorite'] = true;
+                              print("widget.resultMemberList[i]['isFavorite'] is null!!");
+                            }else{
+                              widget.resultMemberList[i]['isFavorite'] = !widget.resultMemberList[i]['isFavorite'];
+                              print("widget.resultMemberList[i]['isFavorite'] is not null!!");
+                            }
+                            
+                            break;
+                          }
+                        }
+
+                        print("favoriteMember : ${favoriteMember}");
+
+                        
+
                         await widget.memberService
-                            .updateisActive(widget.docId, favoriteMember);
+                            .updateIsFavorite(widget.docId, !widget.isFavorite);
                         // setState(() {
                         //   widget.isActive
                         //       ? favoriteMember = false

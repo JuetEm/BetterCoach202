@@ -125,6 +125,7 @@ class _HomeState extends State<Home> {
                           String info = doc.get('info');
                           String note = doc.get('note');
                           bool isActive = doc.get('isActive');
+                          bool isFavorite = doc.get('isFavorite') ?? false;
                           return InkWell(
                             onTap: () {
                               //memberService.update(doc.id, !isActive);
@@ -138,7 +139,9 @@ class _HomeState extends State<Home> {
                               note: note,
                               phoneNumber: phoneNumber,
                               isActive: isActive,
+                              isFavorite: isFavorite,
                               memberService: memberService,
+                              resultMemberList: globalVariables.resultList,
                             ),
                           );
                         },

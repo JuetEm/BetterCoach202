@@ -16,6 +16,7 @@ class UserInfo {
     this.note,
     this.comment,
     this.isActive,
+    this.isFavorite,
   );
   final String docId;
   final String uid;
@@ -33,4 +34,5 @@ class UserInfo {
   final String note;
   final String comment;
   final bool isActive;
+  final bool isFavorite;
 }

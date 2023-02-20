@@ -827,7 +827,8 @@ class _MemberAddState extends State<MemberAdd> {
                                 infoController.text,
                                 noteController.text,
                                 commentController.text,
-                                true);
+                                true,
+                                false);
                           }).onError((error, stackTrace) {
                             print("error : ${error}");
                             print("stackTrace : ${stackTrace}");
@@ -909,7 +910,8 @@ class _MemberAddState extends State<MemberAdd> {
                                     infoController.text,
                                     noteController.text,
                                     commentController.text,
-                                    true);
+                                    true,
+                                    false);
 
                                 //memberInfo.notifyListeners();
                                 // 저장하기 성공시 MemberInfo로 이동

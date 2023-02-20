@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:web_project/member_service.dart';
 
 import 'action_service.dart';
 import 'baseTableCalendar.dart';
@@ -98,6 +99,25 @@ class GlobalFunction {
           print("result.docs[i].data() : ${result.docs[i].data()}");
         }
   } */
+
+  Future<bool> readfavoriteMember(
+      String uid, String docId) async {
+    bool result = false;
+    MemberService memberService = MemberService();
+    await memberService
+        .readIsFavorite(
+      uid,
+      docId,
+    )
+        .then((val) {
+      result = val;
+      print('[MI]회원정보 화면 _readfavoriteMember : 즐겨찾기 ${val}');
+
+    });
+    return result;
+  }
+
+  void updatefavoriteMember() {}
 
   Future<Position> getGeoLocationPosition() async {
     bool serviceEnabled;
@@ -315,7 +335,7 @@ class GlobalFunction {
               }
             }
           }
-        }else if(searchType == "action"){
+        } else if (searchType == "action") {
           result = true;
         }
       }
