@@ -195,49 +195,12 @@ class _ReportState extends State<Report> {
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
+                    /* content padding을 20이상 잡아두지 않으면,
+                    한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
                     contentPadding: EdgeInsets.all(20),
                     hintText: '오류가 발생한 내용 또는 개선이 필요한 부분을 알려주세요.',
                     hintStyle: TextStyle(color: Palette.gray99),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedErrorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
+                    border: InputBorder.none,
                   ),
                   style: TextStyle(color: Palette.gray00),
                   /* validator:
