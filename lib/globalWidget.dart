@@ -33,11 +33,7 @@ showAlertDialog(BuildContext context, String title, String content) async {
           style: TextStyle(fontSize: 14),
         ),
         actions: <Widget>[
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            ),
+          TextButton(
             child: Text(
               '취소',
               style: TextStyle(color: Palette.textRed),

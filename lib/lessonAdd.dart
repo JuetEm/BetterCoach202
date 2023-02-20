@@ -425,7 +425,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     Column(
                                       children: [
                                         SizedBox(
-                                          height: 10,
+                                          height: 12,
                                         ),
                                         Icon(
                                           Icons.text_snippet_outlined,
@@ -1561,8 +1561,7 @@ class _LessonAddState extends State<LessonAdd> {
                           ]),
                         ),
 
-                        /// 추가버튼 UI 수정
-                        ///
+                        /// 저장버튼 추가버튼 UI 수정
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -1602,8 +1601,8 @@ class _LessonAddState extends State<LessonAdd> {
                                 await todayNoteSave(
                                     lessonService, customUserInfo, context);
 
-                                await totalNoteSave(
-                                    lessonService, customUserInfo, context);
+                                // await totalNoteSave(
+                                //     lessonService, customUserInfo, context);
 
                                 lessonService.notifyListeners();
                                 Navigator.pop(context);
@@ -1816,14 +1815,17 @@ class DeleteButton extends StatefulWidget {
 class _DeleteButtonState extends State<DeleteButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          elevation: 0, backgroundColor: Colors.transparent),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text("삭제하기",
-            style: TextStyle(fontSize: 16, color: Palette.textRed)),
+    return TextButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       ),
+      child: Container(
+          alignment: Alignment.center,
+          width: 260,
+          height: 50,
+          child: Text("삭제하기",
+              style: TextStyle(fontSize: 16, color: Palette.textRed))),
       onPressed: () async {
         // create bucket
         final retvaldelte = await showAlertDialog(
