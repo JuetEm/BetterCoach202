@@ -119,7 +119,7 @@ class _ReportState extends State<Report> {
                     clearIconProperty:
                         IconProperty(color: Palette.buttonOrange),
                     textFieldDecoration: InputDecoration(
-                      hintText: "페이지를 선택하세요.",
+                      hintText: "선택하세요.",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
