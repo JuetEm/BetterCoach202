@@ -912,28 +912,31 @@ class _BaseContainerState extends State<BaseContainer> {
                 ],
               ),
               SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${widget.name}',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Palette.gray00,
+              Container(
+                constraints: BoxConstraints(maxWidth: 150),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${widget.name}',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Palette.gray00,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Text(
-                    '등록일 : ${widget.registerDate}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      //fontWeight: FontWeight.bold,
-                      color: Palette.grayB4,
+                    const SizedBox(height: 5.0),
+                    Text(
+                      '등록일 : ${widget.registerDate}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        //fontWeight: FontWeight.bold,
+                        color: Palette.grayB4,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Spacer(flex: 1),
               // 노트 개수 UI

@@ -237,8 +237,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                       }),
 
                                   Container(
-                                    constraints: BoxConstraints(
-                                        minWidth: 150, maxWidth: 200),
+                                    constraints: BoxConstraints(maxWidth: 150),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -918,6 +917,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 ),
                 true
                     ? Container(
+                        constraints: BoxConstraints(maxWidth: 280),
                         child: Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -984,6 +984,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                     color: Palette.grayEE,
                                     height: 80),
                                 Container(
+                                    width: 180,
                                     padding: EdgeInsets.only(left: 10),
                                     child: Column(
                                       mainAxisAlignment:
