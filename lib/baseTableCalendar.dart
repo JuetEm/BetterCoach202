@@ -7,7 +7,7 @@ import 'package:web_project/lessonAdd.dart';
 import 'calendar_service.dart';
 import 'color.dart';
 import 'globalWidget.dart';
-import 'memberAdd.dart';
+import 'app/ui/memberAdd.dart';
 
 class BaseTableCalendar extends StatefulWidget {
   const BaseTableCalendar({

@@ -5,20 +5,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/ui/ticketManage.dart';
 import 'package:web_project/globalWidget.dart';
 
-import 'actionSelector.dart';
-import 'auth_service.dart';
-import 'color.dart';
-import 'lessonAdd.dart';
+import '../../actionSelector.dart';
+import '../../auth_service.dart';
+import '../../color.dart';
+import '../../lessonAdd.dart';
 
-import 'lessonUpdate.dart';
-import 'lesson_service.dart';
+import '../../lessonUpdate.dart';
+import '../../lesson_service.dart';
 import 'memberAdd.dart';
-import 'app/ui/memberList.dart';
-import 'memberUpdate.dart';
-import 'member_service.dart';
-import 'userInfo.dart';
+import 'memberList.dart';
+import '../../memberUpdate.dart';
+import '../../member_service.dart';
+import '../../userInfo.dart';
 
 Map<DateTime, dynamic> eventSource = {};
 List<DateTime> eventList = [];
@@ -912,6 +913,39 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                InkWell(
+                  onHover: (value) {
+                    print("수강권 추가 onHover!!");
+                  },
+                  onTap: () async {
+                    print("수강권 추가 onTap!!");
+                    var result = await // 저장하기 성공시 Home로 이동
+                      Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TicketManage.getUserInfo(userInfo)
+                    ),
+                  ).then((value){
+                    print("수강권 추가 result");
+                  });
+                  },
+                  child: Center(
+                    child: Card(
+                      color: Palette.statusGray,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(100, 20, 100, 20),
+                        child: Text("수강권 추가"),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Divider(),
                 Text(
                   '수강정보',
                   style: TextStyle(

@@ -6,8 +6,8 @@ import 'auth_service.dart';
 import 'color.dart';
 import 'globalWidget.dart';
 import 'main.dart';
-import 'memberAdd.dart';
-import 'memberInfo.dart';
+import 'app/ui/memberAdd.dart';
+import 'app/ui/memberInfo.dart';
 import 'member_service.dart';
 import 'userInfo.dart';
 
