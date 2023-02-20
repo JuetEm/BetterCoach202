@@ -165,7 +165,7 @@ class _MemberInfoState extends State<MemberInfo> {
                     child: Column(
                       children: [
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 22, 22, 10),
@@ -237,7 +237,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                       }),
 
                                   Container(
-                                    width: 200,
+                                    constraints: BoxConstraints(
+                                        minWidth: 150, maxWidth: 200),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -723,14 +724,6 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 color: Palette.gray66,
               ),
             ),
-            // Text(
-            //   '레슨노트',
-            //   style: TextStyle(
-            //     fontSize: 20,
-            //     fontWeight: FontWeight.bold,
-            //     color: Palette.gray33,
-            //   ),
-            // ),
             Spacer(
               flex: 1,
             ),
@@ -909,39 +902,167 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           //   ],
           // ),
           //const SizedBox(height: 20),
+
           Container(
+            width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onHover: (value) {
-                    print("수강권 추가 onHover!!");
-                  },
-                  onTap: () async {
-                    print("수강권 추가 onTap!!");
-                    var result = await // 저장하기 성공시 Home로 이동
-                      Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TicketManage.getUserInfo(userInfo)
-                    ),
-                  ).then((value){
-                    print("수강권 추가 result");
-                  });
-                  },
-                  child: Center(
-                    child: Card(
-                      color: Palette.statusGray,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(100, 20, 100, 20),
-                        child: Text("수강권 추가"),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
+                Text(
+                  '수강정보',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Palette.gray66,
                   ),
                 ),
+                true
+                    ? Container(
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                  width: 2, color: Palette.buttonOrange)),
+                          child: InkWell(
+                            onHover: (value) {
+                              print("수강권 추가 onHover!!");
+                            },
+                            onTap: () async {
+                              print("수강권 추가 onTap!!");
+                              var result = await // 저장하기 성공시 Home로 이동
+                                  Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TicketManage.getUserInfo(userInfo)),
+                              ).then((value) {
+                                print("수강권 추가 result");
+                              });
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 100,
+                                  width: 80,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("남은 횟수",
+                                          style: TextStyle(
+                                              color: Palette.gray66,
+                                              fontSize: 12)),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "13",
+                                            style: TextStyle(
+                                                color: Palette.textOrange,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 24),
+                                          ),
+                                          Text(
+                                            "/20",
+                                            style: TextStyle(
+                                                color: Palette.grayB4,
+                                                fontSize: 24),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                    width: 1,
+                                    color: Palette.grayEE,
+                                    height: 80),
+                                Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("재등록 수강권",
+                                            style: TextStyle(
+                                                color: Palette.gray00,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18)),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "신규등록 20회 + 1회 서비스",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Palette.gray66),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text("시작일: 2023.01.14",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            )),
+                                        Row(
+                                          children: [
+                                            Text("종료일: 2023.02.13",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
+                                                )),
+                                            Text(
+                                              " (D-7)",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
+                                                  color: true
+                                                      ? Palette.textRed
+                                                      : Palette.gray66),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        constraints: BoxConstraints(maxWidth: 280),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: 100,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side:
+                                  BorderSide(width: 2, color: Palette.grayEE)),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "수강권 추가하기",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.gray99),
+                              ),
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: Palette.gray99,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                 SizedBox(
                   height: 20,
                 ),
@@ -964,6 +1085,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   textAlign: TextAlign.right,
                 ),
                 const SizedBox(height: 30),
+                Divider(),
                 Text(
                   '운동목표',
                   style: TextStyle(
@@ -1006,6 +1128,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                Divider(),
                 Text(
                   '체형분석',
                   style: TextStyle(
@@ -1048,6 +1171,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                Divider(),
                 Text(
                   '통증/상해/병력',
                   style: TextStyle(
@@ -1089,6 +1213,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                Divider(),
                 Text(
                   '특이사항',
                   style: TextStyle(
