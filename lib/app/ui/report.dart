@@ -215,7 +215,10 @@ class _ReportState extends State<Report> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // 로그인 페이지로 이동
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           width: 80,
