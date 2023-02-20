@@ -116,7 +116,7 @@ class _TicketManageState extends State<TicketManage> {
                             }
                           }),
                       Container(
-                        width: 200,
+                        constraints: BoxConstraints(maxWidth: 150),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
