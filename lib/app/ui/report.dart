@@ -2,15 +2,24 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:web_project/app/binding/report_service.dart';
+import 'package:web_project/auth_service.dart';
 import 'package:web_project/color.dart';
+import 'package:web_project/main.dart';
 import 'package:web_project/memberList_admin.dart';
 
 // BBZKGmz56W-GOXCUlzkRuupvFLEOZcvJpt3NCmst0ZibT8SFS-5Q4X3jxUEac3D726CV_i4mW6kCE0ldyBUykHM
+
+String pageName = "리포트 페이지";
+
 
 var fcmToken = null;
 
 late FocusNode pageFocusNode;
 late SingleValueDropDownController reportPageController;
+
+String selectedPageName = "";
+String content = "";
 
 class Report extends StatefulWidget {
   const Report({super.key});
@@ -29,7 +38,7 @@ class _ReportState extends State<Report> {
 회원등록/노트추가/동작선택/동작추가 */
   final pages = [
     DropDownValueModel(
-        name: "OTHERS", value: 'others', toolTipMsg: "등록하려는 자세가 없는 경우 선택해주세요."),
+        name: "OTHERS", value: 'others', toolTipMsg: "선택하려는 페이지가 없는 경우 선택해주세요."),
     DropDownValueModel(name: "회원목록", value: '회원목록', toolTipMsg: "회원목록"),
     DropDownValueModel(name: "회원목록", value: '회원목록', toolTipMsg: "회원목록"),
     DropDownValueModel(name: "노트보기", value: '노트보기', toolTipMsg: "노트보기"),
@@ -45,6 +54,9 @@ class _ReportState extends State<Report> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    analyticLog.sendAnalyticsEvent(
+        screenName, "리포트_이벤트_init", "init 테스트 스트링", "init 테스트 파라미터");
 
     reportPageController = SingleValueDropDownController();
 
@@ -158,15 +170,7 @@ class _ReportState extends State<Report> {
                       print("position onChange val : ${val}");
                       print(
                           "positionController.dropDownValue : ${reportPageController.dropDownValue!.value}");
-                      setState(() {
-                        if (reportPageController.dropDownValue!.name ==
-                            "OTHERS") {
-                          pageOffstage = false;
-                          pageFocusNode.requestFocus();
-                        } else {
-                          pageOffstage = true;
-                        }
-                      });
+                      selectedPageName = reportPageController.dropDownValue!.value;
                     },
                   ),
                 ),
@@ -228,7 +232,16 @@ class _ReportState extends State<Report> {
                                   color: Palette.textRed, fontSize: 16)),
                         )),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          content = errorContents.text;
+                          AuthService authService = AuthService();
+                          var user = authService.currentUser();
+                          ReportService reportService = ReportService();
+                          reportService.create(user!.uid, user.displayName, user.phoneNumber, user.email, selectedPageName, content, 
+                          DateTime.now(), 'N', null).then((value){
+                            Navigator.pop(context);
+                          });
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           width: 80,

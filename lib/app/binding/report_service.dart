@@ -7,27 +7,27 @@ class ReportService extends ChangeNotifier {
 
   Future<String> create(
     String uid,
-    String name,
-    String phoneNumber,
-    String email,
-    String pageName,
-    String content,
-    String dateTime,
-    String reportStatus,
-    String solvedDatetime,
+    String? name,
+    String? phoneNumber,
+    String? email,
+    String? pageName,
+    String? content,
+    DateTime? dateTime,
+    String? solvingStatus,
+    DateTime? solvedDatetime,
   ) async {
     // report 만들기
     String id = "";
     await reportCollection.add({
       'uid': uid, // 작성자 uid
-      'name': name, // 기구명 전체
-      'phoneNumber': phoneNumber, // 자세 구분자
-      'email': email,
-      'pageName': name, // 동작 이름
-      'content': content, // 동작 등록인 구분자
-      'dateTime': dateTime, // 대분자 동작 이름
-      'reportStatus': reportStatus, // 소문자 동작 이름
-      'solvedDatetime' : solvedDatetime,
+      'name': name, // 작성자 displayName
+      'phoneNumber': phoneNumber, // 전화번호
+      'email': email, // 이메일
+      'pageName': pageName, // 페이지 명
+      'content': content, // 오류/개선 보고 내용
+      'dateTime': dateTime, // 등록 일시
+      'solvingStatus': solvingStatus, // 해결 상태
+      'solvedDatetime' : solvedDatetime, // 해결 일시
     }).then((value) {
       id = value.id;
       print("Successfully completed");

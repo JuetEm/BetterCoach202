@@ -22,6 +22,7 @@ import 'package:web_project/testShowDialog.dart';
 import 'dart:io' show HttpHeaders, Platform;
 import 'package:http/http.dart' as http;
 
+import 'app/binding/report_service.dart';
 import 'auth_service.dart';
 import 'bucket_service.dart';
 import 'calendar_service.dart';
@@ -186,6 +187,7 @@ void main() async {
             ChangeNotifierProvider(create: (context) => LessonService()),
             ChangeNotifierProvider(create: (context) => CalendarService()),
             ChangeNotifierProvider(create: (context) => ActionService()),
+            ChangeNotifierProvider(create: (context) => ReportService()),
           ],
           child: const MyApp(),
         ),
@@ -203,6 +205,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => LessonService()),
           ChangeNotifierProvider(create: (context) => CalendarService()),
           ChangeNotifierProvider(create: (context) => ActionService()),
+          ChangeNotifierProvider(create: (context) => ReportService()),
         ],
         child: const MyApp(),
       ),
