@@ -13,7 +13,7 @@ import 'baseTableCalendar.dart';
 import 'color.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';
-import 'memberInfo.dart';
+import 'app/ui/memberInfo.dart';
 import 'lessonInfo.dart';
 import 'lesson_service.dart';
 

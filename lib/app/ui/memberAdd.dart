@@ -5,16 +5,16 @@ import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 import 'package:web_project/userInfo.dart';
 
-import 'actionSelector.dart';
-import 'auth_service.dart';
-import 'baseTableCalendar.dart';
-import 'color.dart';
-import 'globalFunction.dart';
-import 'globalWidget.dart';
+import '../../actionSelector.dart';
+import '../../auth_service.dart';
+import '../../baseTableCalendar.dart';
+import '../../color.dart';
+import '../../globalFunction.dart';
+import '../../globalWidget.dart';
 import 'memberInfo.dart';
-import 'app/ui/memberList.dart';
-import 'member_service.dart';
-import 'membershipList.dart';
+import 'memberList.dart';
+import '../../member_service.dart';
+import '../../membershipList.dart';
 
 String memberAddMode = "추가";
 

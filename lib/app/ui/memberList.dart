@@ -13,8 +13,8 @@ import '../../color.dart';
 import '../../globalFunction.dart';
 import '../../globalWidget.dart';
 import '../../main.dart';
-import '../../memberAdd.dart';
-import '../../memberInfo.dart';
+import 'memberAdd.dart';
+import 'memberInfo.dart';
 import '../../member_service.dart';
 import '../../userInfo.dart';
 
