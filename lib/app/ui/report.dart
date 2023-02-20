@@ -34,13 +34,13 @@ class _ReportState extends State<Report> {
   TextEditingController pageName = TextEditingController();
   TextEditingController errorContents = TextEditingController();
 
-  /* 회원목록/회원목록/노트보기/회원정보 수정/
+  /* 회원목록/회원관리/노트보기/회원정보 수정/
 회원등록/노트추가/동작선택/동작추가 */
   final pages = [
     DropDownValueModel(
         name: "OTHERS", value: 'others', toolTipMsg: "선택하려는 페이지가 없는 경우 선택해주세요."),
     DropDownValueModel(name: "회원목록", value: '회원목록', toolTipMsg: "회원목록"),
-    DropDownValueModel(name: "회원목록", value: '회원목록', toolTipMsg: "회원목록"),
+    DropDownValueModel(name: "회원관리", value: '회원관리', toolTipMsg: "회원관리"),
     DropDownValueModel(name: "노트보기", value: '노트보기', toolTipMsg: "노트보기"),
     DropDownValueModel(
         name: "회원정보 수정", value: '회원정보 수정', toolTipMsg: "회원정보 수정"),
