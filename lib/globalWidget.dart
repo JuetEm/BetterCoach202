@@ -26,9 +26,9 @@ showAlertDialog(BuildContext context, String title, String content) async {
         title: Text(
           title,
           style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Palette.textRed),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         // content: Text("회원과 관련된 레슨노트 정보도 모두 삭제됩니다."),
         content: Text(
@@ -45,11 +45,7 @@ showAlertDialog(BuildContext context, String title, String content) async {
               Navigator.pop(context, "Cancel");
             },
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            ),
+          TextButton(
             child: Text(
               '확인',
               style: TextStyle(color: Palette.textBlue),

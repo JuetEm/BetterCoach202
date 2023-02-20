@@ -1609,7 +1609,7 @@ class _LessonAddState extends State<LessonAdd> {
                               }
                             }),
 
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         lessonAddMode == "노트보기"
                             ? DeleteButton(
                                 actionNullCheck: actionNullCheck,
@@ -1619,6 +1619,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     totalNoteTextFieldDocId,
                               )
                             : const SizedBox(height: 15),
+                        const SizedBox(height: 30),
                       ],
                     ),
                   ],
@@ -1828,8 +1829,8 @@ class _DeleteButtonState extends State<DeleteButton> {
               style: TextStyle(fontSize: 16, color: Palette.textRed))),
       onPressed: () async {
         // create bucket
-        final retvaldelte = await showAlertDialog(
-            context, '정말로 삭제하시겠습니까?', '레슨노트 전체내용을 삭제합니다.');
+        final retvaldelte = await showAlertDialog(context, '정말로 삭제하시겠습니까?',
+            '해당 노트의 전체 내용이 삭제됩니다. 삭제된 내용은 이후 복구가 불가능합니다.');
         if (retvaldelte == "OK") {
           if (widget.actionNullCheck) {
             print(
