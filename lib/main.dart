@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
 import 'package:web_project/analyticLog.dart';
+import 'package:web_project/app/binding/ticket_service.dart';
 import 'package:web_project/globalVariables.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/local_info.dart';
@@ -68,6 +69,8 @@ String? userEmail;
 String? userPassword;
 
 ActionService actionService = ActionService();
+
+TicketService ticketService = TicketService();
 
 enum LoginPlatform {
   kakao,
@@ -176,8 +179,17 @@ void main() async {
       }).onError((error, stackTrace) {
         print("error : ${error}");
         print("stackTrace : \r\n${stackTrace}");
-      }).whenComplete(() {
+      }).whenComplete(() async {
         print("actionList await init complete!");
+
+        await ticketService.read(user.uid).then((value) {
+          globalVariables.ticketList.addAll(value);
+        }).onError((error, stackTrace) {
+          print("error : ${error}");
+          print("stackTrace : \r\n${stackTrace}");
+        }).whenComplete(() {
+          print("ticketList await init complete!");
+        });
       });
       runApp(
         MultiProvider(
@@ -190,6 +202,7 @@ void main() async {
             ChangeNotifierProvider(create: (context) => CalendarService()),
             ChangeNotifierProvider(create: (context) => ActionService()),
             ChangeNotifierProvider(create: (context) => ReportService()),
+            ChangeNotifierProvider(create: (context) => TicketService()),
           ],
           child: const MyApp(),
         ),
@@ -208,6 +221,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => CalendarService()),
           ChangeNotifierProvider(create: (context) => ActionService()),
           ChangeNotifierProvider(create: (context) => ReportService()),
+          ChangeNotifierProvider(create: (context) => TicketService()),
         ],
         child: const MyApp(),
       ),
@@ -860,34 +874,43 @@ class _LoginPageState extends State<LoginPage> {
             }).onError((error, stackTrace) {
               print("error : ${error}");
               print("stackTrace : \r\n${stackTrace}");
-            }).whenComplete(() {
+            }).whenComplete(() async {
               print("actionList await init complete!");
 
-              // 로그인 성공
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("로그인 성공"),
-              ));
-              // 로그인 성공시 Home로 이동
-              /*  Navigator.pushReplacement(
+              await ticketService.read(cUser.uid).then((value) {
+                globalVariables.ticketList.addAll(value);
+              }).onError((error, stackTrace) {
+                print("error : ${error}");
+                print("stackTrace : \r\n${stackTrace}");
+              }).whenComplete(() {
+                print("ticketList await init complete!");
+
+                // 로그인 성공
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("로그인 성공"),
+                ));
+                // 로그인 성공시 Home로 이동
+                /*  Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => MemberList()),
               //MaterialPageRoute(builder: (_) => Mainpage()),
             ); */
-              List<dynamic> args = [
-                globalVariables.resultList,
-                globalVariables.actionList
-              ];
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MemberList(),
-                  // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                  settings: RouteSettings(arguments: args),
-                ),
-              );
+                List<dynamic> args = [
+                  globalVariables.resultList,
+                  globalVariables.actionList
+                ];
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MemberList(),
+                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                    settings: RouteSettings(arguments: args),
+                  ),
+                );
 
-              emailController.clear();
-              passwordController.clear();
+                emailController.clear();
+                passwordController.clear();
+              });
             });
           });
         },
@@ -975,34 +998,42 @@ class _LoginPageState extends State<LoginPage> {
       }).onError((error, stackTrace) {
         print("error : ${error}");
         print("stackTrace : \r\n${stackTrace}");
-      }).whenComplete(() {
+      }).whenComplete(() async {
         print("actionList await init complete!");
 
-        // 로그인 성공
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("로그인 성공"),
-        ));
-        // 로그인 성공시 Home로 이동
-        /*  Navigator.pushReplacement(
+        await ticketService.read(cUser.uid).then((value) {
+          globalVariables.ticketList.addAll(value);
+        }).onError((error, stackTrace) {
+          print("error : ${error}");
+          print("stackTrace : \r\n${stackTrace}");
+        }).whenComplete(() {
+          print("ticketList await init complete!");
+          // 로그인 성공
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("로그인 성공"),
+          ));
+          // 로그인 성공시 Home로 이동
+          /*  Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => MemberList()),
         //MaterialPageRoute(builder: (_) => Mainpage()),
       ); */
-        List<dynamic> args = [
-          globalVariables.resultList,
-          globalVariables.actionList
-        ];
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MemberList(),
-            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-            settings: RouteSettings(arguments: args),
-          ),
-        );
+          List<dynamic> args = [
+            globalVariables.resultList,
+            globalVariables.actionList
+          ];
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MemberList(),
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(arguments: args),
+            ),
+          );
 
-        emailController.clear();
-        passwordController.clear();
+          emailController.clear();
+          passwordController.clear();
+        });
       });
     });
   }

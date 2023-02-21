@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:web_project/app/ui/memberInfo.dart';
 
 class GlobalVariables {
+  // member list
   List resultList = [];
+  // action list
   List actionList = [];
+  // ticket list
+  List ticketList = [];
+
 
   sortList() {
     print("GlobalVariables - sortList is called");
