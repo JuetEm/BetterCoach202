@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/ui/ticketManage.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/locationAdd.dart';
 import 'package:web_project/main.dart';
 
 import '../../actionSelector.dart';
@@ -908,141 +909,14 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           Container(
             alignment: Alignment.center,
             child: true
-                ? Container(
-                    alignment: Alignment.center,
-                    width: 280,
-                    height: 140,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
-                              width: 1, color: Palette.buttonOrange)),
-                      child: InkWell(
-                        onHover: (value) {
-                          print("수강권 추가 onHover!!");
-                        },
-                        onTap: () async {
-                          print("수강권 추가 onTap!!");
-                          var result = await // 저장하기 성공시 Home로 이동
-                              Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    TicketManage.getUserInfo(userInfo)),
-                          ).then((value) {
-                            print("수강권 추가 result");
-                            setState(() {
-                              print("memberInfo then setState called!");
-                            });
-                            parent?.setState(() {
-                              print("memberInfo then parent setState called!");
-                            });
-                          });
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 100,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("남은 횟수",
-                                        style: TextStyle(
-                                            color: Palette.gray66,
-                                            fontSize: 12)),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "13",
-                                          style: TextStyle(
-                                              color: Palette.textOrange,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 28),
-                                        ),
-                                        Text(
-                                          "/",
-                                          style: TextStyle(
-                                              color: Palette.textOrange,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 28),
-                                        ),
-                                        Text(
-                                          "20",
-                                          style: TextStyle(
-                                              color: Palette.gray99,
-                                              fontSize: 28),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                  width: 1,
-                                  color: Palette.grayEE,
-                                  height: double.infinity),
-                              Container(
-                                  width: 160,
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("일이삼사오육칠팔구십",
-                                          style: TextStyle(
-                                              color: Palette.gray00,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16)),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Palette.gray66),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text("시작일: 2023.01.14",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          )),
-                                      Row(
-                                        children: [
-                                          Text("종료일: 2023.02.13",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                              )),
-                                          Text(
-                                            " (D-7)",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                                color: true
-                                                    ? Palette.textRed
-                                                    : Palette.gray66),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                ? TicketWidget((){
+                  setState(() {
+                  print("memberInfo then setState called!");
+                });
+                parent?.setState(() {
+                  print("memberInfo then parent setState called!");
+                });
+                })
                 : Container(
                     alignment: Alignment.center,
                     child: Card(
@@ -1379,6 +1253,153 @@ class _MemberInfoViewState extends State<MemberInfoView> {
 
     print("[MI] makeChips : ${resultChips}");
     return resultChips;
+  }
+}
+
+class TicketWidget extends StatelessWidget {
+  final customFunction;
+  TicketWidget(this.customFunction, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.center,
+        width: 280,
+        height: 140,
+        child: Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                  width: 1, color: Palette.buttonOrange)),
+          child: InkWell(
+            onHover: (value) {
+              print("수강권 추가 onHover!!");
+            },
+            onTap: () async {
+              print("수강권 추가 onTap!!");
+              var result = await // 저장하기 성공시 Home로 이동
+                  Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        TicketManage.getUserInfo(userInfo)),
+              ).then((value) {
+                print("수강권 추가 result");
+                /* setState(() {
+                  print("memberInfo then setState called!");
+                });
+                parent?.setState(() {
+                  print("memberInfo then parent setState called!");
+                }); */
+                customFunction();
+              });
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("남은 횟수",
+                            style: TextStyle(
+                                color: Palette.gray66,
+                                fontSize: 12)),
+                        Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center,
+                          crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "13",
+                              style: TextStyle(
+                                  color: Palette.textOrange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28),
+                            ),
+                            Text(
+                              "/",
+                              style: TextStyle(
+                                  color: Palette.textOrange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28),
+                            ),
+                            Text(
+                              "20",
+                              style: TextStyle(
+                                  color: Palette.gray99,
+                                  fontSize: 28),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      width: 1,
+                      color: Palette.grayEE,
+                      height: double.infinity),
+                  Container(
+                      width: 160,
+                      padding: EdgeInsets.only(left: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          Text("일이삼사오육칠팔구십",
+                              style: TextStyle(
+                                  color: Palette.gray00,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16)),
+                          SizedBox(height: 5),
+                          Text(
+                            "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Palette.gray66),
+                          ),
+                          SizedBox(height: 5),
+                          Text("시작일: 2023.01.14",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              )),
+                          Row(
+                            children: [
+                              Text("종료일: 2023.02.13",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  )),
+                              Text(
+                                " (D-7)",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: true
+                                        ? Palette.textRed
+                                        : Palette.gray66),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
   }
 }
 
