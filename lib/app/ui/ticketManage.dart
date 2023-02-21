@@ -210,12 +210,16 @@ class _TicketManageState extends State<TicketManage> {
                           ),
                           InkWell(
                             onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("사용가능한 수강권(${ticketCnt})"),
-                                Icon(Icons.expand_less)
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("사용가능한 수강권(${ticketCnt})"),
+                                  Icon(Icons.expand_less)
+                                ],
+                              ),
                             ),
                           ),
                           Container(
