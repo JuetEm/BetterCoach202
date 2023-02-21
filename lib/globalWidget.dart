@@ -843,14 +843,14 @@ class BaseContainer extends StatefulWidget {
 class _BaseContainerState extends State<BaseContainer> {
   bool favoriteMember = false;
   String isFavIconPath = "";
-  
+
   @override
   Widget build(BuildContext context) {
     String nameFirst = ' ';
     if (widget.name.length > 0) {
       nameFirst = widget.name.substring(0, 1);
     }
-    
+
     return Container(
       padding: EdgeInsets.fromLTRB(5, 15, 20, 15),
       child: Column(
@@ -888,25 +888,28 @@ class _BaseContainerState extends State<BaseContainer> {
                         // }
 
                         int rstLnth = widget.resultMemberList.length;
-                        for(int i=0; i<rstLnth; i++){
-                          
-                          if(widget.docId == widget.resultMemberList[i]['id']){
-                            print("globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
-                            if(widget.resultMemberList[i]['isFavorite'] == null){
+                        for (int i = 0; i < rstLnth; i++) {
+                          if (widget.docId ==
+                              widget.resultMemberList[i]['id']) {
+                            print(
+                                "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
+                            if (widget.resultMemberList[i]['isFavorite'] ==
+                                null) {
                               widget.resultMemberList[i]['isFavorite'] = true;
-                              print("widget.resultMemberList[i]['isFavorite'] is null!!");
-                            }else{
-                              widget.resultMemberList[i]['isFavorite'] = !widget.resultMemberList[i]['isFavorite'];
-                              print("widget.resultMemberList[i]['isFavorite'] is not null!!");
+                              print(
+                                  "widget.resultMemberList[i]['isFavorite'] is null!!");
+                            } else {
+                              widget.resultMemberList[i]['isFavorite'] =
+                                  !widget.resultMemberList[i]['isFavorite'];
+                              print(
+                                  "widget.resultMemberList[i]['isFavorite'] is not null!!");
                             }
-                            
+
                             break;
                           }
                         }
 
                         print("favoriteMember : ${favoriteMember}");
-
-                        
 
                         await widget.memberService
                             .updateIsFavorite(widget.docId, !widget.isFavorite);
@@ -919,9 +922,7 @@ class _BaseContainerState extends State<BaseContainer> {
                         // setState(() {});
 
                         globalVariables.sortList();
-                        setState(() {
-                          
-                        });
+                        setState(() {});
                       },
                     ),
                     // child: Image.asset(
@@ -1264,6 +1265,3 @@ class GroupActionContainerDate extends StatelessWidget {
     );
   }
 }
-
-/// 별모양 위젯
-

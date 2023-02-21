@@ -905,49 +905,49 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           const SizedBox(height: 10),
 
           /// 티켓모양 수강권
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              true
-                  ? Container(
-                      alignment: Alignment.center,
-                      constraints: BoxConstraints(
-                          maxWidth: 280, minHeight: 100, maxHeight: 120),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                                width: 2, color: Palette.buttonOrange)),
-                        child: InkWell(
-                          onHover: (value) {
-                            print("수강권 추가 onHover!!");
-                          },
-                          onTap: () async {
-                            print("수강권 추가 onTap!!");
-                            var result = await // 저장하기 성공시 Home로 이동
-                                Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      TicketManage.getUserInfo(userInfo)),
-                            ).then((value) {
-                              print("수강권 추가 result");
-                              setState(() {
-                                print("memberInfo then setState called!");
-                              });
-                              parent?.setState(() {
-                                print(
-                                    "memberInfo then parent setState called!");
-                              });
+          Container(
+            alignment: Alignment.center,
+            child: true
+                ? Container(
+                    alignment: Alignment.center,
+                    width: 280,
+                    height: 140,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(
+                              width: 1, color: Palette.buttonOrange)),
+                      child: InkWell(
+                        onHover: (value) {
+                          print("수강권 추가 onHover!!");
+                        },
+                        onTap: () async {
+                          print("수강권 추가 onTap!!");
+                          var result = await // 저장하기 성공시 Home로 이동
+                              Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TicketManage.getUserInfo(userInfo)),
+                          ).then((value) {
+                            print("수강권 추가 result");
+                            setState(() {
+                              print("memberInfo then setState called!");
                             });
-                          },
+                            parent?.setState(() {
+                              print("memberInfo then parent setState called!");
+                            });
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
                                 height: 100,
-                                width: 80,
+                                width: 100,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -967,13 +967,20 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                           style: TextStyle(
                                               color: Palette.textOrange,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 24),
+                                              fontSize: 28),
                                         ),
                                         Text(
-                                          "/20",
+                                          "/",
                                           style: TextStyle(
-                                              color: Palette.grayB4,
-                                              fontSize: 24),
+                                              color: Palette.textOrange,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 28),
+                                        ),
+                                        Text(
+                                          "20",
+                                          style: TextStyle(
+                                              color: Palette.gray99,
+                                              fontSize: 28),
                                         )
                                       ],
                                     ),
@@ -985,21 +992,21 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                   color: Palette.grayEE,
                                   height: double.infinity),
                               Container(
-                                  constraints: BoxConstraints(minWidth: 140),
+                                  width: 160,
                                   padding: EdgeInsets.only(left: 10),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text("재등록 수강권",
+                                      Text("일이삼사오육칠팔구십",
                                           style: TextStyle(
                                               color: Palette.gray00,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 18)),
+                                              fontSize: 16)),
                                       SizedBox(height: 5),
                                       Text(
-                                        "신규등록 20회 + 1회 서비스",
+                                        "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Palette.gray66),
@@ -1034,36 +1041,60 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           ),
                         ),
                       ),
-                    )
-                  : Container(
-                      constraints: BoxConstraints(maxWidth: 280),
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: 100,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(width: 2, color: Palette.grayEE)),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "수강권 추가하기",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Palette.gray99),
-                            ),
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Palette.gray99,
-                            )
-                          ],
+                    ),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(width: 2, color: Palette.grayEE)),
+                      child: InkWell(
+                        onHover: (value) {
+                          print("수강권 추가 onHover!!");
+                        },
+                        onTap: () async {
+                          print("수강권 추가 onTap!!");
+                          var result = await // 저장하기 성공시 Home로 이동
+                              Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TicketManage.getUserInfo(userInfo)),
+                          ).then((value) {
+                            print("수강권 추가 result");
+                            setState(() {
+                              print("memberInfo then setState called!");
+                            });
+                            parent?.setState(() {
+                              print("memberInfo then parent setState called!");
+                            });
+                          });
+                        },
+                        child: Container(
+                          width: 280,
+                          height: 140,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "수강권 추가하기",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.gray99),
+                              ),
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: Palette.gray99,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-            ],
+                  ),
           ),
           SizedBox(
             height: 20,
