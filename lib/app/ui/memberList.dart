@@ -385,6 +385,7 @@ class _MemberListState extends State<MemberList> {
                               });
                               docs = searchedList ?? []; // 문서들 가져오기
                             } else {
+                              globalVariables.sortList();
                               docs =
                                   globalVariables.resultList ?? []; // 문서들 가져오기
                             }
