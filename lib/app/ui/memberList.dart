@@ -15,7 +15,7 @@ import '../../globalWidget.dart';
 import '../../main.dart';
 import 'memberAdd.dart';
 import 'memberInfo.dart';
-import '../../member_service.dart';
+import '../binding/member_service.dart';
 import '../../userInfo.dart';
 
 GlobalFunction globalFunction = GlobalFunction();

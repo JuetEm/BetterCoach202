@@ -8,7 +8,7 @@ import 'globalWidget.dart';
 import 'main.dart';
 import 'app/ui/memberAdd.dart';
 import 'app/ui/memberInfo.dart';
-import 'member_service.dart';
+import 'app/binding/member_service.dart';
 import 'userInfo.dart';
 
 String conutMemberList = "";

@@ -7,7 +7,7 @@ import 'package:web_project/color.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/main.dart';
-import 'package:web_project/member_service.dart';
+import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/userInfo.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
@@ -73,7 +73,7 @@ class _TicketManageState extends State<TicketManage> {
                             // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 부분
                             else {
                               print(
-                                  "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo!.docId}");
+                                  "[TM] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo!.docId}");
                               favoriteMember = snapshot.data;
                               return IconButton(
                                   icon: SvgPicture.asset(
@@ -85,33 +85,42 @@ class _TicketManageState extends State<TicketManage> {
                                   onPressed: () async {
                                     favoriteMember = !favoriteMember;
 
-                                    await memberService.updateIsFavorite(
-                                        userInfo!.docId, favoriteMember);
-                                    int rstLnth =
-                                        globalVariables.resultList.length;
-                                    for (int i = 0; i < rstLnth; i++) {
-                                      if (userInfo!.docId ==
-                                          globalVariables.resultList[i]['id']) {
-                                        print(
-                                            "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
-                                        globalVariables.resultList[i]
-                                                ['isFavorite'] =
-                                            !globalVariables.resultList[i]
-                                                ['isFavorite'];
-                                        break;
-                                      }
-                                    }
+                                              await memberService
+                                                  .updateIsFavorite(
+                                                      userInfo!.docId,
+                                                      favoriteMember);
+                                              int rstLnth = globalVariables
+                                                  .resultList.length;
+                                              for (int i = 0;
+                                                  i < rstLnth;
+                                                  i++) {
+                                                if (userInfo!.docId ==
+                                                    globalVariables
+                                                        .resultList[i]['id']) {
+                                                  print(
+                                                      "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
+                                                  if(globalVariables.resultList[i]
+                                                          ['isFavorite'] == null){
+                                                            globalVariables.resultList[i]
+                                                          ['isFavorite'] = true;
+                                                  }else{
+                                                    globalVariables.resultList[i]
+                                                          ['isFavorite'] =
+                                                      !globalVariables
+                                                              .resultList[i]
+                                                          ['isFavorite'];
+                                                  }
+                                                  
+                                                  
+                                                  break;
+                                                }
+                                              }
 
-                                    // globalFunction.updatefavoriteMember();
-                                    //lessonService.notifyListeners();
-
-                                    //setState(() {});
-                                    // setState(() {
-                                    //   userInfo.isActive
-                                    //       ? favoriteMember = false
-                                    //       : favoriteMember = true;
-                                    // }
-                                    //);
+                                              print(
+                                                  "[TM] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo!.docId}");
+                                                  setState(() {
+                                                    print("ticketManage setState called!");
+                                                  });
                                   });
                             }
                           }),
@@ -166,21 +175,6 @@ class _TicketManageState extends State<TicketManage> {
                           //       color: Palette.gray99),
                           // ),
                         ],
-                      ),
-                      Container(
-                        // width: double.infinity,
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10.0),
-                            bottomRight: Radius.circular(10.0),
-                          ),
-                          color: Palette.mainBackground,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
-                        ),
                       ),
                     ],
                   ),

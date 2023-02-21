@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalFunction.dart';
-import 'package:web_project/member_service.dart';
+import 'package:web_project/app/binding/member_service.dart';
 import 'auth_service.dart';
 import 'baseTableCalendar.dart';
 import 'home.dart';
@@ -917,6 +917,11 @@ class _BaseContainerState extends State<BaseContainer> {
                         // });
 
                         // setState(() {});
+
+                        globalVariables.sortList();
+                        setState(() {
+                          
+                        });
                       },
                     ),
                     // child: Image.asset(

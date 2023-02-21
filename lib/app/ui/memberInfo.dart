@@ -20,7 +20,7 @@ import '../../lesson_service.dart';
 import 'memberAdd.dart';
 import 'memberList.dart';
 import '../../memberUpdate.dart';
-import '../../member_service.dart';
+import '../binding/member_service.dart';
 import '../../userInfo.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
@@ -857,8 +857,10 @@ class MemberInfoView extends StatefulWidget {
 }
 
 class _MemberInfoViewState extends State<MemberInfoView> {
+  
   @override
   Widget build(BuildContext context) {
+    _MemberInfoState? parent = context.findAncestorStateOfType<_MemberInfoState>();
     // selectedGoals 값 반영하여 FilterChips 동적 생성
     var goalChips = [];
     goalChips = makeChips(
@@ -942,6 +944,12 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                         TicketManage.getUserInfo(userInfo)),
                               ).then((value) {
                                 print("수강권 추가 result");
+                                setState(() {
+                                  print("memberInfo then setState called!");
+                                });
+                                parent?.setState(() {
+                                  print("memberInfo then parent setState called!");
+                                });
                               });
                             },
                             child: Row(

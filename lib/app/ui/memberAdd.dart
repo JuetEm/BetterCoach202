@@ -13,7 +13,7 @@ import '../../globalFunction.dart';
 import '../../globalWidget.dart';
 import 'memberInfo.dart';
 import 'memberList.dart';
-import '../../member_service.dart';
+import '../binding/member_service.dart';
 import '../../membershipList.dart';
 
 String memberAddMode = "추가";

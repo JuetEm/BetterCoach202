@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:web_project/member_service.dart';
+import 'package:web_project/app/binding/member_service.dart';
 
 import 'action_service.dart';
 import 'baseTableCalendar.dart';

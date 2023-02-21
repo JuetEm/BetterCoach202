@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'auth_service.dart';
 import 'globalWidget.dart';
 import 'main.dart';
-import 'member_service.dart';
+import 'app/binding/member_service.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});

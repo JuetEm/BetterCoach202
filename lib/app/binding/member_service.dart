@@ -19,6 +19,7 @@ class MemberService extends ChangeNotifier {
   Future<List> readMemberListAtFirstTime(String uid) async {
     var result = await memberCollection
         .where('uid', isEqualTo: uid)
+        .orderBy('isFavorite',descending: true)
         .orderBy('name', descending: false)
         .get();
 
@@ -52,7 +53,7 @@ class MemberService extends ChangeNotifier {
     await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
       print('[MS] readisActive 실행 - readisActive : ${data['isFavorite']}');
-      result = data['isFavorite'];
+      result = data['isFavorite'] ?? false;
     });
 
     return result;
