@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/main.dart';
@@ -126,12 +127,16 @@ class _TicketMakeState extends State<TicketMake> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("수강권 추가",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      Text(
+                        "수강권 추가",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                       TextButton(
                         onPressed: () {
                           print("수강권 추가 완료 버튼 클릭!!");
                         },
-                        child: Text("완료",style: TextStyle(fontSize: 16)),
+                        child: Text("완료", style: TextStyle(fontSize: 16)),
                       ),
                     ],
                   ),
@@ -142,7 +147,9 @@ class _TicketMakeState extends State<TicketMake> {
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: Row(
                       children: [
-                        Text("수강권 명",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                        Text("수강권 명",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -208,7 +215,7 @@ class _TicketMakeState extends State<TicketMake> {
                     },
                   ),
 
-                  /// 직접 입력 선택 시 
+                  /// 직접 입력 선택 시
                   Offstage(
                     offstage: isOffStaged,
                     child: Padding(
@@ -255,7 +262,9 @@ class _TicketMakeState extends State<TicketMake> {
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: Row(
                       children: [
-                        Text("수강 횟수",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                        Text("수강 횟수",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -266,9 +275,7 @@ class _TicketMakeState extends State<TicketMake> {
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       onChanged: (value) {
                         ticketCountAll = int.parse(value);
-                        setState(() {
-                          
-                        });
+                        setState(() {});
                       },
                       controller: ticketCountAllController,
                       decoration: InputDecoration(
@@ -304,7 +311,10 @@ class _TicketMakeState extends State<TicketMake> {
                               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                               child: Row(
                                 children: [
-                                  Text("수강 시작일",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                  Text("수강 시작일",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
@@ -358,7 +368,10 @@ class _TicketMakeState extends State<TicketMake> {
                               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                               child: Row(
                                 children: [
-                                  Text("수강 종료일",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                  Text("수강 종료일",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
@@ -405,12 +418,20 @@ class _TicketMakeState extends State<TicketMake> {
                     ],
                   ),
 
+                 /*  BaseTableCalendar(
+                    selectedDate: getTodayDate(),
+                    pageName: "수강 시작일",
+                    eventList: [],
+                  ), */
+
                   /// 수강권 설명
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: Row(
                       children: [
-                        Text("수강권 설명",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                        Text("수강권 설명",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -444,14 +465,15 @@ class _TicketMakeState extends State<TicketMake> {
                     ),
                   ),
                   TicketWidget(
-                      customFunctionOnTap: () {},
-                      ticketCountLeft: ticketCountLeft,
-                      ticketCountAll: ticketCountAll,
-                      ticketTitle: ticketTitle,
-                      ticketDescription: ticketDescription,
-                      ticketStartDate: ticketStartDate,
-                      ticketEndDate: ticketEndDate,
-                      ticketDateLeft: ticketDateLeft,)
+                    customFunctionOnTap: () {},
+                    ticketCountLeft: ticketCountLeft,
+                    ticketCountAll: ticketCountAll,
+                    ticketTitle: ticketTitle,
+                    ticketDescription: ticketDescription,
+                    ticketStartDate: ticketStartDate,
+                    ticketEndDate: ticketEndDate,
+                    ticketDateLeft: ticketDateLeft,
+                  )
                 ],
               ),
             ),
