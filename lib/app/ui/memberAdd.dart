@@ -370,7 +370,10 @@ class _MemberAddState extends State<MemberAdd> {
                           /// 수강권 추가
                           Container(
                             alignment: Alignment.center,
-                            child: true
+
+                            /// bool 수강권 유무 체크하는 변수 필요
+                            /// is수강권있니? = false로 선언 되어야 함.
+                            child: false
                                 ? TicketWidget(
                                     ticketTitle: "재등록 수강권",
                                     ticketDescription:
@@ -380,10 +383,30 @@ class _MemberAddState extends State<MemberAdd> {
                                     ticketDateLeft: 7,
                                     ticketCountAll: 20,
                                     ticketCountLeft: 13,
-                                    customFunctionOnHover: () {
-                                      print("수강권 추가 onHover!!");
-                                    },
+                                    customFunctionOnHover: () {},
+                                    // function OnTap 기능을 붙여주세요
                                     customFunctionOnTap: () {},
+                                    // customFunctionOnTap: () async {
+                                    //   print("수강권 추가 onTap!!");
+                                    //   var result = await // 저장하기 성공시 Home로 이동
+                                    //       Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             TicketManage.getUserInfo(
+                                    //                 userInfo)),
+                                    //   ).then((value) {
+                                    //     print("수강권 추가 result");
+                                    //     setState(() {
+                                    //       print(
+                                    //           "memberInfo then setState called!");
+                                    //     });
+                                    //     parent?.setState(() {
+                                    //       print(
+                                    //           "memberInfo then parent setState called!");
+                                    //     });
+                                    //   });
+                                    // },
                                   )
                                 : Container(
                                     alignment: Alignment.center,
@@ -397,7 +420,31 @@ class _MemberAddState extends State<MemberAdd> {
                                         onHover: (value) {
                                           print("수강권 추가 onHover!!");
                                         },
-                                        onTap: () {},
+                                        onTap: () {
+                                          /// 비워둔 온탭입니다. 기능을 붙여주세요
+                                        },
+                                        // onTap: () async {
+                                        //   print("수강권 추가 onTap!!");
+                                        //   var result =
+                                        //       await // 저장하기 성공시 Home로 이동
+                                        //       Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             TicketManage.getUserInfo(
+                                        //                 userInfo)),
+                                        //   ).then((value) {
+                                        //     print("수강권 추가 result");
+                                        //     setState(() {
+                                        //       print(
+                                        //           "memberInfo then setState called!");
+                                        //     });
+                                        //     parent?.setState(() {
+                                        //       print(
+                                        //           "memberInfo then parent setState called!");
+                                        //     });
+                                        //   });
+                                        // },
                                         child: Container(
                                           width: 280,
                                           height: 140,
@@ -430,6 +477,8 @@ class _MemberAddState extends State<MemberAdd> {
                     ),
                   ),
                   SizedBox(height: 10),
+
+                  /// ### 이전 수강정보 부분은 나중에 삭제하는걸루 ###
 
                   /// 입력창_수강정보
                   Container(
