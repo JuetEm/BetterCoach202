@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/globalVariables.dart';
 
 class MemberService extends ChangeNotifier {
   final memberCollection = FirebaseFirestore.instance.collection('member');
@@ -19,7 +20,7 @@ class MemberService extends ChangeNotifier {
   Future<List> readMemberListAtFirstTime(String uid) async {
     var result = await memberCollection
         .where('uid', isEqualTo: uid)
-        .orderBy('isFavorite',descending: true)
+        // .orderBy('isFavorite',descending: true)
         .orderBy('name', descending: false)
         .get();
 
@@ -32,6 +33,7 @@ class MemberService extends ChangeNotifier {
       rstObj['id'] = result.docs[i].id;
       resultList.add(rstObj);
     }
+
     return resultList;
   }
 

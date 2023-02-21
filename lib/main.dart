@@ -218,7 +218,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
+  
   @override
   Widget build(BuildContext context) {
     // print("resultList : ${resultList}\r\nactionList : ${actionList}");
@@ -277,6 +277,8 @@ class _LoginPageState extends State<LoginPage> {
         screenName, "로그인_이벤트_init", "init 테스트 스트링", "init 테스트 파라미터");
 
     super.initState();
+
+    
   }
 
   @override
@@ -290,6 +292,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // globalVariables.sortList();
     userEmail = prefs.getString("userEmail");
     userPassword = prefs.getString("userPassword");
     print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
