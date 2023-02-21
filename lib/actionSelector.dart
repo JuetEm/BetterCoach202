@@ -911,7 +911,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                     customController: searchController,
                     customFocusNode: searchFocusNode,
                     hint: "동작을 검색하세요.",
-                    label: "동작을 검색하세요.",
                     showArrow: true,
                     customFunction: () {
                       setState(() {
@@ -1141,7 +1140,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                         return*/
                           Stack(children: [
                     resultActionList.isEmpty
-                        ? Center(child: Text("운동 목록을 준비 중입니다."))
+                        ? Center(child: CircularProgressIndicator())
                         : Container(
                             decoration: BoxDecoration(
                               color: Palette.mainBackground,

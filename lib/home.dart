@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/color.dart';
 
 import 'auth_service.dart';
 import 'globalWidget.dart';
@@ -61,7 +62,10 @@ class _HomeState extends State<Home> {
                     // 로그인 페이지로 이동
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage(analytics: MyApp.analytics,)),
+                      MaterialPageRoute(
+                          builder: (context) => LoginPage(
+                                analytics: MyApp.analytics,
+                              )),
                     );
                   },
                   icon: Icon(Icons.account_circle),
@@ -93,7 +97,10 @@ class _HomeState extends State<Home> {
                           context.read<AuthService>().signOut();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (_) => LoginPage(analytics: MyApp.analytics,)),
+                            MaterialPageRoute(
+                                builder: (_) => LoginPage(
+                                      analytics: MyApp.analytics,
+                                    )),
                           );
                         },
                         child: const Text('Log Out'),
@@ -112,41 +119,46 @@ class _HomeState extends State<Home> {
                       final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
                       if (docs.isEmpty) {
                         return Center(child: Text("수업을 준비 중입니다."));
+                      } else if (docs.isNotEmpty) {
+                        return ListView.separated(
+                          itemCount: docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final doc = docs[index];
+                            String name = doc.get('name');
+                            String registerDate = doc.get('registerDate');
+                            String phoneNumber = doc.get('phoneNumber');
+                            String registerType = doc.get('registerType');
+                            String goal = doc.get('goal');
+                            String info = doc.get('info');
+                            String note = doc.get('note');
+                            bool isActive = doc.get('isActive');
+                            bool isFavorite = doc.get('isFavorite') ?? false;
+                            return InkWell(
+                              onTap: () {
+                                //memberService.update(doc.id, !isActive);
+                              },
+                              child: BaseContainer(
+                                docId: doc.id,
+                                name: name,
+                                registerDate: registerDate,
+                                goal: goal,
+                                info: info,
+                                note: note,
+                                phoneNumber: phoneNumber,
+                                isActive: isActive,
+                                isFavorite: isFavorite,
+                                memberService: memberService,
+                                resultMemberList: globalVariables.resultList,
+                              ),
+                            );
+                          },
+                          separatorBuilder: ((context, index) => Divider()),
+                        );
+                      } else {
+                        return CircularProgressIndicator(
+                          color: Palette.buttonOrange,
+                        );
                       }
-                      return ListView.separated(
-                        itemCount: docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final doc = docs[index];
-                          String name = doc.get('name');
-                          String registerDate = doc.get('registerDate');
-                          String phoneNumber = doc.get('phoneNumber');
-                          String registerType = doc.get('registerType');
-                          String goal = doc.get('goal');
-                          String info = doc.get('info');
-                          String note = doc.get('note');
-                          bool isActive = doc.get('isActive');
-                          bool isFavorite = doc.get('isFavorite') ?? false;
-                          return InkWell(
-                            onTap: () {
-                              //memberService.update(doc.id, !isActive);
-                            },
-                            child: BaseContainer(
-                              docId: doc.id,
-                              name: name,
-                              registerDate: registerDate,
-                              goal: goal,
-                              info: info,
-                              note: note,
-                              phoneNumber: phoneNumber,
-                              isActive: isActive,
-                              isFavorite: isFavorite,
-                              memberService: memberService,
-                              resultMemberList: globalVariables.resultList,
-                            ),
-                          );
-                        },
-                        separatorBuilder: ((context, index) => Divider()),
-                      );
                     }),
               ),
             ),

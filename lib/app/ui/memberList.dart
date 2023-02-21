@@ -274,7 +274,7 @@ class _MemberListState extends State<MemberList> {
                     MaterialPageRoute(builder: (context) => Report()),
                   ).then((value) {
                     print("Navigator.push value : ${value}");
-                    
+
                     setState(() {
                       reportIcon = Icons.report_problem_outlined;
                     });
@@ -335,7 +335,6 @@ class _MemberListState extends State<MemberList> {
                     customController: searchController,
                     customFocusNode: searchFocusNode,
                     hint: "이름을 검색하세요.",
-                    label: "이름을 검색하세요.",
                     showArrow: true,
                     customFunction: () {
                       searchString = searchController.text.toLowerCase();
@@ -354,7 +353,7 @@ class _MemberListState extends State<MemberList> {
                   Row(
                     children: [
                       Text(
-                        /* searchString == "" ?  */'총 ${globalVariables.resultList.length} 명'/*  : '검색 결과 ${searchResultCnt} 명' */,
+                        /* searchString == "" ?  */ '총 ${globalVariables.resultList.length} 명' /*  : '검색 결과 ${searchResultCnt} 명' */,
                         style: TextStyle(color: Palette.gray7B),
                       ),
                       Spacer(),
@@ -389,12 +388,12 @@ class _MemberListState extends State<MemberList> {
                                   mainSearchedList.add(element);
                                 }
                               });
-                              print("mainSearchedList.length : ${mainSearchedList.length}");
+                              print(
+                                  "mainSearchedList.length : ${mainSearchedList.length}");
                               docs = mainSearchedList; // 문서들 가져오기
                             } else {
                               globalVariables.sortList();
-                              docs =
-                                  globalVariables.resultList; // 문서들 가져오기
+                              docs = globalVariables.resultList; // 문서들 가져오기
                             }
                             /* 멤버 리트스 최초 1번 받아오기 리뉴얼 작업위해 주석 - 정규호 2022/11/23 
                             FutureBuilder<QuerySnapshot>(

@@ -196,6 +196,7 @@ class _ReportState extends State<Report> {
                 constraints:
                     BoxConstraints(minHeight: 300, minWidth: double.infinity),
                 child: TextFormField(
+                  enabled: false,
                   maxLines: null,
                   controller: errorContents,
                   autofocus: true,

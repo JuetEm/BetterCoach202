@@ -80,6 +80,8 @@ String todayNoteView = "";
 
 List resultActionList = [];
 
+bool isSequenceSaveChecked = false;
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -416,7 +418,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     // ),
                                   ],
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: 0),
 
                                 /// 일별 메모 입력창
                                 Row(
@@ -521,7 +523,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                           return Container(
                                             constraints:
-                                                BoxConstraints(minHeight: 160),
+                                                BoxConstraints(minHeight: 120),
                                             child: Container(
                                               child: TextFormField(
                                                 maxLines: null,
@@ -738,13 +740,142 @@ class _LessonAddState extends State<LessonAdd> {
                                   ],
                                 ),
                                 const SizedBox(height: 20),
+
+                                /// 동작별 메모 (New)
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 0,
+                                        ),
+                                        Icon(
+                                          Icons.accessibility_new_rounded,
+                                          color: Palette.gray99,
+                                        ),
+                                      ],
+                                    ),
+
+                                    /// 동작별 메모 한 묶음.
+                                    /// 묶음 단위로 불러와져야 함.
+                                    false // is동작메모하나라도있니? 변수 필요
+                                        /// 동작 있을 경우
+                                        ? Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 20),
+                                                  child: Chip(
+                                                    label:
+                                                        Text('MA Abs Series'),
+                                                    deleteIcon: Icon(
+                                                      Icons.close_sharp,
+                                                      size: 16,
+                                                    ),
+                                                    onDeleted: () {},
+                                                  ),
+                                                ),
+                                                TextFormField(
+                                                  maxLines: null,
+                                                  autofocus: true,
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    /* content padding을 20이상 잡아두지 않으면,
+                                                        한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
+                                                    contentPadding:
+                                                        EdgeInsets.all(20),
+                                                    hintText:
+                                                        '동작 수행 시 특이사항을 남겨보세요.',
+                                                    hintStyle: TextStyle(
+                                                        color: Palette.gray99,
+                                                        fontSize: 14),
+                                                    border: InputBorder.none,
+                                                  ),
+                                                  style: TextStyle(
+                                                      color: Palette.gray00,
+                                                      fontSize: 14),
+                                                  /* validator:
+                                                            _model.textControllerValidator.asValidator(context), */
+                                                )
+                                              ],
+                                            ),
+                                          )
+
+                                        /// 동작 하나도 없을 경우
+                                        : Padding(
+                                            padding: EdgeInsets.only(left: 20),
+                                            child: Text(
+                                              '아래에서 동작을 선택하여 추가해보세요.',
+                                              style: TextStyle(
+                                                  color: Palette.gray99),
+                                            ),
+                                          )
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
                               ],
                             ),
                           ),
                         ),
 
+                        /// 시퀀스 영역 시작
                         SizedBox(height: 20),
 
+                        /// 시퀀스의 헤딩 영역
+                        Container(
+                            padding: EdgeInsets.fromLTRB(9, 0, 20, 0),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: isSequenceSaveChecked,
+                                  onChanged: (value) {
+                                    isSequenceSaveChecked =
+                                        !isSequenceSaveChecked;
+                                    setState(() {});
+                                  },
+                                ),
+                                Text('나의 시퀀스 저장'),
+                                Spacer(),
+                                TextButton(
+                                    onPressed: () {
+                                      /// 저장된 시퀀스들이 있는 화면으로 이동하는 함수
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.folder_outlined,
+                                          color: Palette.gray99,
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          '불러오기',
+                                          style:
+                                              TextStyle(color: Palette.gray00),
+                                        )
+                                      ],
+                                    ))
+                              ],
+                            )),
+
+                        /// 시퀀스 제목 영역
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: TextFormField(
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                            initialValue:
+                                '커스텀시퀀스${1}', // 중복된 값 없도록 만들어주는 숫자 변수 필요
+                            decoration:
+                                InputDecoration(border: InputBorder.none),
+                          ),
+                        ),
+
+                        /// 시퀀스 동작 리스트가 시작되는 부분
                         Container(
                           padding: EdgeInsets.all(15),
                           child: Column(children: [
@@ -753,9 +884,9 @@ class _LessonAddState extends State<LessonAdd> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Palette.buttonOrange, width: 1),
+                                    color: Palette.buttonOrange, width: 2),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
+                                  Radius.circular(10),
                                 ),
                                 color: Palette.secondaryBackground,
                               ),
@@ -874,9 +1005,9 @@ class _LessonAddState extends State<LessonAdd> {
                                               color: Palette.buttonOrange),
                                         ),
                                         Icon(
-                                          Icons.add,
+                                          Icons.add_circle_outline,
                                           color: Palette.buttonOrange,
-                                          size: 12.0,
+                                          size: 16,
                                         ),
                                       ],
                                     ),
@@ -920,10 +1051,15 @@ class _LessonAddState extends State<LessonAdd> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 40),
                                       child: Center(
-                                          child: Text(
-                                        "동작을 추가해 주세요.",
-                                        style: TextStyle(color: Palette.gray99),
-                                      )),
+                                        child: Text(
+                                          "동작을 추가해 주세요.",
+                                          style:
+                                              TextStyle(color: Palette.gray99),
+                                        ),
+                                        // child: CircularProgressIndicator(
+                                        //   color: Palette.buttonOrange,
+                                        // ),
+                                      ),
                                     );
                                   } else {
                                     actionNullCheck = false;
@@ -1243,10 +1379,17 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         (BuildContext
                                                                             context) {
                                                                       return AlertDialog(
-                                                                        title: Text(
-                                                                            '삭제'),
-                                                                        content:
-                                                                            Text('동작노트를 삭제하시겠습니까?'),
+                                                                        title:
+                                                                            Text(
+                                                                          '삭제',
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 16),
+                                                                        ),
+                                                                        content: Text(
+                                                                            '동작을 삭제하시겠습니까?',
+                                                                            style:
+                                                                                TextStyle(fontSize: 14)),
                                                                         actions: <
                                                                             Widget>[
                                                                           TextButton(
@@ -1282,7 +1425,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             child:
                                                                                 Text(
                                                                               '취소',
-                                                                              style: TextStyle(fontSize: 16),
+                                                                              style: TextStyle(fontSize: 16, color: Palette.textRed),
                                                                             ),
                                                                           ),
                                                                         ],
@@ -1487,64 +1630,6 @@ class _LessonAddState extends State<LessonAdd> {
                                                         ),
                                                       ),
                                                     ),
-                                                    // 이전 텍스트 필드
-                                                    // Container(
-                                                    //   //color: Colors.red.withOpacity(0),
-                                                    //   margin:
-                                                    //       const EdgeInsets.only(
-                                                    //     bottom: 5,
-                                                    //   ),
-                                                    //   decoration: BoxDecoration(
-                                                    //     borderRadius:
-                                                    //         BorderRadius.all(
-                                                    //       Radius.circular(10.0),
-                                                    //     ),
-                                                    //     color: Colors.transparent,
-                                                    //     //color: Colors.red.withOpacity(0),
-                                                    //   ),
-                                                    //   child: Padding(
-                                                    //     padding: EdgeInsets.zero,
-                                                    //     child: SizedBox(
-                                                    //       height: 60,
-                                                    //       child: Row(
-                                                    //         mainAxisAlignment:
-                                                    //             MainAxisAlignment
-                                                    //                 .start,
-                                                    //         children: [
-                                                    //           // Expanded(
-                                                    //           //   child: TextField(
-                                                    //           //     controller:
-                                                    //           //         totalNoteControllers[
-                                                    //           //             index],
-                                                    //           //   ),
-                                                    //           // ),
-
-                                                    //           /// 메모 입력창
-                                                    //           flagIndexErr
-                                                    //               ? Expanded(
-                                                    //                   child:
-                                                    //                       DynamicSaveTextField(
-                                                    //                     customController:
-                                                    //                         totalNoteControllers[
-                                                    //                             index],
-                                                    //                     hint:
-                                                    //                         "동작별 메모를 남겨보세요.",
-                                                    //                     showArrow:
-                                                    //                         false,
-                                                    //                     customFunction:
-                                                    //                         () {
-                                                    //                       FocusScope.of(context)
-                                                    //                           .unfocus();
-                                                    //                     },
-                                                    //                   ),
-                                                    //                 )
-                                                    //               : Text("")
-                                                    //           //Spacer(flex: 1),
-                                                    //         ],
-                                                    //       ),
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
                                                   ],
                                                 ),
                                               ],

@@ -218,7 +218,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  
+
   @override
   Widget build(BuildContext context) {
     // print("resultList : ${resultList}\r\nactionList : ${actionList}");
@@ -277,8 +277,6 @@ class _LoginPageState extends State<LoginPage> {
         screenName, "로그인_이벤트_init", "init 테스트 스트링", "init 테스트 파라미터");
 
     super.initState();
-
-    
   }
 
   @override
@@ -439,25 +437,9 @@ class _LoginPageState extends State<LoginPage> {
 
                 // 카카오톡으로 로그인 버튼
                 ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              child: Image.asset("assets/images/kakao.png")),
-                          SizedBox(width: 5),
-                          Text("카카오로 로그인하기",
-                              style: TextStyle(
-                                  fontSize: 16, color: Palette.gray00)),
-                        ],
-                      ),
-                    ),
-                  ),
                   style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     padding: EdgeInsets.all(0),
                     elevation: 0,
@@ -486,6 +468,22 @@ class _LoginPageState extends State<LoginPage> {
                       print('카카오톡으로 로그인 실패 - error : ${error}');
                     }
                   },
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: SizedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              child: Image.asset("assets/images/kakao.png")),
+                          SizedBox(width: 5),
+                          Text("카카오로 로그인하기",
+                              style: TextStyle(
+                                  fontSize: 16, color: Palette.gray00)),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10),
 

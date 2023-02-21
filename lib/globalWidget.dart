@@ -631,7 +631,7 @@ class BaseSearchTextField extends StatefulWidget {
     required this.customController,
     required this.customFocusNode,
     required this.hint,
-    required this.label,
+    this.label,
     required this.showArrow,
     required this.customFunction,
     required this.clearfunction,
@@ -640,7 +640,7 @@ class BaseSearchTextField extends StatefulWidget {
   final TextEditingController customController;
   final FocusNode customFocusNode;
   final String hint;
-  final label;
+  final String? label;
   final showArrow;
   final Function customFunction;
   final Function clearfunction;
