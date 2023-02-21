@@ -67,8 +67,6 @@ TextEditingController switchController =
 String? userEmail;
 String? userPassword;
 
-
-
 ActionService actionService = ActionService();
 
 enum LoginPlatform {
@@ -79,6 +77,8 @@ enum LoginPlatform {
 LoginPlatform loginPlatform = LoginPlatform.none;
 
 bool isKakaoInstalled = false;
+
+bool isEmailLoginDeactivated = true;
 
 AnalyticLog analyticLog = AnalyticLog();
 
@@ -326,14 +326,6 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         child: Column(
                           children: [
-                            // Text(
-                            //   user == null
-                            //       ? "당신의 레슨이 더욱 의미있게"
-                            //       // : "${user.email}님 안녕하세요 👋",
-                            //       : "",
-                            //   style: TextStyle(
-                            //       fontSize: 20, color: Palette.textOrange),
-                            // ),
                             Text(
                               "필라테스 강사를 위한 레슨 기록 솔루션",
                               style: TextStyle(
@@ -349,102 +341,98 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 SizedBox(height: 80),
+                Offstage(
+                  offstage: isEmailLoginDeactivated,
+                  child: Column(children: [
+                    /// 이메일
+                    LoginTextField(
+                      customController: emailController,
+                      hint: "이메일",
+                      width: 100,
+                      height: 100,
+                      customFunction: () {},
+                      isSecure: false,
+                    ),
+                    SizedBox(height: 10),
 
-                /// 이메일
-                LoginTextField(
-                  customController: emailController,
-                  hint: "이메일",
-                  width: 100,
-                  height: 100,
-                  customFunction: () {},
-                  isSecure: false,
-                ),
-                SizedBox(height: 10),
+                    /// 비밀번호
+                    LoginTextField(
+                      customController: passwordController,
+                      hint: "비밀번호",
+                      width: 100,
+                      height: 100,
+                      customFunction: () {},
+                      isSecure: true,
+                    ),
+                    SizedBox(height: 10),
 
-                /// 비밀번호
-                LoginTextField(
-                  customController: passwordController,
-                  hint: "비밀번호",
-                  width: 100,
-                  height: 100,
-                  customFunction: () {},
-                  isSecure: true,
-                ),
-
-                SizedBox(height: 10),
-
-                Center(
-                  child: SizedBox(
-                    height: 40,
-                    width: 200,
-                    child: TextField(
-                      readOnly: true,
-                      controller: switchController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        suffixIcon: Switch(
-                          value: isLogInActiveChecked,
-                          onChanged: (value) {
-                            setState(() {
-                              isLogInActiveChecked = !isLogInActiveChecked;
-                              // if (isLogInActiveChecked) {
-                              prefs.setString(
-                                  "userEmail", emailController.text);
-                              prefs.setString(
-                                  "userPassword", passwordController.text);
-                              // }
-
-                              print(
-                                  "isLogInActiveChecked : ${isLogInActiveChecked}");
-                            });
-                          },
+                    Center(
+                      child: SizedBox(
+                        height: 40,
+                        width: 200,
+                        child: TextField(
+                          readOnly: true,
+                          controller: switchController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            suffixIcon: Switch(
+                              value: isLogInActiveChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isLogInActiveChecked = !isLogInActiveChecked;
+                                  // if (isLogInActiveChecked) {
+                                  prefs.setString(
+                                      "userEmail", emailController.text);
+                                  prefs.setString(
+                                      "userPassword", passwordController.text);
+                                  // }
+                                  print(
+                                      "isLogInActiveChecked : ${isLogInActiveChecked}");
+                                });
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-                SizedBox(height: 26),
+                    SizedBox(height: 26),
 
-                /// 로그인 버튼
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text("로그인", style: TextStyle(fontSize: 16)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30),
+                    /// 이메일 가입 지원 종료
+                    Text(
+                      "*이메일 회원가입은 더이상 지원되지 않습니다.",
+                      style: TextStyle(color: Palette.gray99),
                     ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.buttonOrange,
-                  ),
-                  onPressed: () {
-                    loginMethod(context, authService);
-                  },
-                ),
-                SizedBox(height: 10),
+                    SizedBox(height: 20),
 
-                /// 기능 없는 텍스트 _ 잠시 주석처리 해두겠습니다.
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       '회원가입',
-                //       style: TextStyle(fontSize: 14, color: Palette.gray33),
-                //     ),
-                //     Text(' | ',
-                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                //     Text('로그인',
-                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                //     Text(' | ',
-                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                //     Text('이메일/비밀번호 찾기',
-                //         style: TextStyle(fontSize: 14, color: Palette.gray33)),
-                //   ],
-                // ),
-                // SizedBox(height: 32),
+                    /// 이메일 로그인 버튼
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.all(0),
+                        elevation: 0,
+                        backgroundColor: Palette.buttonOrange,
+                      ),
+                      onPressed: () {
+                        loginMethod(context, authService);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(14.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.mail),
+                            SizedBox(width: 4),
+                            Text("이메일로 로그인하기", style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ]),
+                ),
 
                 // 카카오톡으로 로그인 버튼
                 ElevatedButton(
@@ -617,6 +605,31 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("로그인 없이 체험하기",
+                              style: TextStyle(
+                                  fontSize: 14, color: Palette.gray66)),
+                          Icon(
+                            size: 14,
+                            Icons.arrow_forward,
+                            color: Palette.gray66,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                TextButton(
+                  onPressed: () {
+                    isEmailLoginDeactivated = !isEmailLoginDeactivated;
+                    setState(() {});
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(14.0),
+                    child: SizedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("이메일 로그인",
                               style: TextStyle(
                                   fontSize: 14, color: Palette.gray66)),
                           Icon(
@@ -859,7 +872,10 @@ class _LoginPageState extends State<LoginPage> {
               MaterialPageRoute(builder: (_) => MemberList()),
               //MaterialPageRoute(builder: (_) => Mainpage()),
             ); */
-              List<dynamic> args = [globalVariables.resultList, globalVariables.actionList];
+              List<dynamic> args = [
+                globalVariables.resultList,
+                globalVariables.actionList
+              ];
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -971,7 +987,10 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (_) => MemberList()),
         //MaterialPageRoute(builder: (_) => Mainpage()),
       ); */
-        List<dynamic> args = [globalVariables.resultList, globalVariables.actionList];
+        List<dynamic> args = [
+          globalVariables.resultList,
+          globalVariables.actionList
+        ];
         Navigator.push(
           context,
           MaterialPageRoute(
