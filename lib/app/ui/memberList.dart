@@ -354,7 +354,7 @@ class _MemberListState extends State<MemberList> {
                   Row(
                     children: [
                       Text(
-                        searchString == "" ? '총 ${globalVariables.resultList.length} 명' : '검색 결과 ${searchResultCnt} 명',
+                        /* searchString == "" ?  */'총 ${globalVariables.resultList.length} 명'/*  : '검색 결과 ${searchResultCnt} 명' */,
                         style: TextStyle(color: Palette.gray7B),
                       ),
                       Spacer(),
