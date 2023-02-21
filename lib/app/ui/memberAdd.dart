@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/ui/ticketManage.dart';
+import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 import 'package:web_project/userInfo.dart';
@@ -323,6 +325,106 @@ class _MemberAddState extends State<MemberAdd> {
                             showArrow: false,
                             customFunction: () {},
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  /// 입력창_수강정보
+                  Container(
+                    color: Palette.mainBackground,
+                    padding: const EdgeInsets.all(20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /// Title
+
+                          Row(
+                            children: [
+                              Text(
+                                '수강정보',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Palette.gray00,
+                                ),
+                              ),
+                              Spacer(),
+                              // Text(
+                              //   '추가',
+                              //   style: TextStyle(
+                              //     fontSize: 14,
+                              //     color: Palette.gray00,
+                              //   ),
+                              // ),
+                              // SizedBox(width: 10)
+                            ],
+                          ),
+
+                          SizedBox(height: 10),
+                          Divider(height: 1),
+                          SizedBox(height: 10),
+
+                          /// 수강권 추가
+                          Container(
+                            alignment: Alignment.center,
+                            child: true
+                                ? TicketWidget(
+                                    ticketTitle: "재등록 수강권",
+                                    ticketDescription:
+                                        "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
+                                    ticketStartDate: "2023.01.14",
+                                    ticketEndDate: "2023.02.13",
+                                    ticketDateLeft: 7,
+                                    ticketCountAll: 20,
+                                    ticketCountLeft: 13,
+                                    customFunctionOnHover: () {
+                                      print("수강권 추가 onHover!!");
+                                    },
+                                    customFunctionOnTap: () {},
+                                  )
+                                : Container(
+                                    alignment: Alignment.center,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: BorderSide(
+                                              width: 2, color: Palette.grayEE)),
+                                      child: InkWell(
+                                        onHover: (value) {
+                                          print("수강권 추가 onHover!!");
+                                        },
+                                        onTap: () {},
+                                        child: Container(
+                                          width: 280,
+                                          height: 140,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "수강권 추가하기",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Palette.gray99),
+                                              ),
+                                              Icon(
+                                                Icons.add_circle_outline,
+                                                color: Palette.gray99,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          )
                         ],
                       ),
                     ),
