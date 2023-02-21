@@ -916,8 +916,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                     ticketStartDate: "2023.01.14",
                     ticketEndDate: "2023.02.13",
                     ticketDateLeft: 7,
-                    ticketCountAll: 20,
-                    ticketCountLeft: 13,
+                    ticketCountAll: 999,
+                    ticketCountLeft: 999,
                     customFunctionOnHover: () {
                       print("수강권 추가 onHover!!");
                     },

@@ -74,19 +74,23 @@ class _TicketWidgetState extends State<TicketWidget> {
                             style: TextStyle(
                                 color: Palette.textOrange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 28),
+                                fontSize:
+                                    widget.ticketCountAll >= 100 ? 20 : 28),
                           ),
                           Text(
                             "/",
                             style: TextStyle(
                                 color: Palette.textOrange,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 28),
+                                fontSize:
+                                    widget.ticketCountAll >= 100 ? 20 : 28),
                           ),
                           Text(
                             "${widget.ticketCountAll}",
-                            style:
-                                TextStyle(color: Palette.gray99, fontSize: 28),
+                            style: TextStyle(
+                                color: Palette.gray99,
+                                fontSize:
+                                    widget.ticketCountAll >= 100 ? 20 : 28),
                           )
                         ],
                       ),
