@@ -158,6 +158,8 @@ class _MemberListState extends State<MemberList> {
     // TODO: implement initState
     super.initState();
 
+    globalVariables.sortList();
+
     reportIcon = Icons.report_problem_outlined;
 
     analyticLog.sendAnalyticsEvent(screenName, "init", "init 스트링", "init파라미터");
@@ -267,6 +269,7 @@ class _MemberListState extends State<MemberList> {
                     MaterialPageRoute(builder: (context) => Report()),
                   ).then((value) {
                     print("Navigator.push value : ${value}");
+                    
                     setState(() {
                       reportIcon = Icons.report_problem_outlined;
                     });
@@ -506,6 +509,7 @@ class _MemberListState extends State<MemberList> {
                                             ), */
                                           ),
                                         ).then((result) {
+                                          globalVariables.sortList();
                                           print(
                                               "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
                                           UserInfo tmpUserInfo = result;
@@ -713,6 +717,7 @@ class _MemberListState extends State<MemberList> {
                     ),
                   ),
                 ).then((value) {
+                  globalVariables.sortList();
                   List tmpResultList = value as List;
                   // print("어디지?");
                   setState(() {
