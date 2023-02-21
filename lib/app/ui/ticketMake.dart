@@ -118,363 +118,369 @@ class _TicketMakeState extends State<TicketMake> {
               Navigator.pop(context, widget.userInfo);
             },
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Center(
-              child: Column(
-                children: [
-                  /// 제목과 완료 버튼
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "수강권 추가",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          print("수강권 추가 완료 버튼 클릭!!");
-                        },
-                        child: Text("완료", style: TextStyle(fontSize: 16)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-
-                  /// 수강권 명 입력
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: Row(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: Column(
+                  children: [
+                    /// 제목과 완료 버튼
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("수강권 명",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          "수강권 추가",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            print("수강권 추가 완료 버튼 클릭!!");
+                          },
+                          child: Text("완료", style: TextStyle(fontSize: 16)),
+                        ),
                       ],
                     ),
-                  ),
-                  DropDownTextField(
-                    controller: ticketMakeController,
-                    isEnabled: true,
-                    clearOption: false,
-                    enableSearch: true,
-                    textFieldFocusNode: textFieldFocusNode,
-                    // searchFocusNode: searchFocusNode,
-                    clearIconProperty:
-                        IconProperty(color: Palette.buttonOrange),
-                    textFieldDecoration: InputDecoration(
-                      hintText: "수강권을 선택하세요.",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
+                    SizedBox(height: 10),
+          
+                    /// 수강권 명 입력
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: Row(
+                        children: [
+                          Text("수강권 명",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    DropDownTextField(
+                      controller: ticketMakeController,
+                      isEnabled: true,
+                      clearOption: false,
+                      enableSearch: true,
+                      textFieldFocusNode: textFieldFocusNode,
+                      // searchFocusNode: searchFocusNode,
+                      clearIconProperty:
+                          IconProperty(color: Palette.buttonOrange),
+                      textFieldDecoration: InputDecoration(
+                        hintText: "수강권을 선택하세요.",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.all(20),
+                        fillColor: Colors.white,
+                      ),
+                      searchDecoration: InputDecoration(
+                        hintText: "검색하고 싶은 수강권을 입력하세요",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.all(16),
+                        fillColor: Colors.white,
+                      ),
+                      validator: (value) {
+                        print("position validator value : ${value}");
+                        if (value == null) {
+                          return "required field";
+                        } else {
+                          return null;
+                        }
+                      },
+                      dropDownItemCount: tickets.length,
+                      dropDownList: tickets,
+                      onChanged: (val) {
+                        print("position onChange val : ${val}");
+                        print(
+                            "ticketMakeController.dropDownValue : ${ticketMakeController.dropDownValue!.value}");
+                        selectedticketName =
+                            ticketMakeController.dropDownValue!.value;
+                        if (selectedticketName == "직접입력") {
+                          isOffStaged = false;
+                          ticketTitle = ticketTitleController.text;
+                        } else {
+                          isOffStaged = true;
+                          ticketTitle = selectedticketName;
+                        }
+                        setState(() {});
+                      },
+                    ),
+          
+                    /// 직접 입력 선택 시
+                    Offstage(
+                      offstage: isOffStaged,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                        child: TextField(
+                          maxLength: 12,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          onChanged: (value) {
+                            ticketTitle = value;
+                            setState(() {});
+                          },
+                          controller: ticketTitleController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Palette.grayFF,
+                            // labelText: '수강권 이름',
+                            hintText: '수강권 이름을 입력하세요',
+                            labelStyle: TextStyle(color: Palette.gray00),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.transparent),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.transparent),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                          ),
+                          // keyboardType: TextInputType.emailAddress,
                         ),
                       ),
-                      filled: true,
-                      contentPadding: EdgeInsets.all(20),
-                      fillColor: Colors.white,
                     ),
-                    searchDecoration: InputDecoration(
-                      hintText: "검색하고 싶은 수강권을 입력하세요",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
+                    SizedBox(height: 10),
+          
+                    /// 수강 횟수 입력
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: Row(
+                        children: [
+                          Text("수강 횟수",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ],
                       ),
-                      filled: true,
-                      contentPadding: EdgeInsets.all(16),
-                      fillColor: Colors.white,
                     ),
-                    validator: (value) {
-                      print("position validator value : ${value}");
-                      if (value == null) {
-                        return "required field";
-                      } else {
-                        return null;
-                      }
-                    },
-                    dropDownItemCount: tickets.length,
-                    dropDownList: tickets,
-                    onChanged: (val) {
-                      print("position onChange val : ${val}");
-                      print(
-                          "ticketMakeController.dropDownValue : ${ticketMakeController.dropDownValue!.value}");
-                      selectedticketName =
-                          ticketMakeController.dropDownValue!.value;
-                      if (selectedticketName == "직접입력") {
-                        isOffStaged = false;
-                        ticketTitle = ticketTitleController.text;
-                      } else {
-                        isOffStaged = true;
-                        ticketTitle = selectedticketName;
-                      }
-                      setState(() {});
-                    },
-                  ),
-
-                  /// 직접 입력 선택 시
-                  Offstage(
-                    offstage: isOffStaged,
-                    child: Padding(
+                    Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: TextField(
-                        maxLength: 12,
+                        maxLength: 3,
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         onChanged: (value) {
-                          ticketTitle = value;
+                          if(value.isNotEmpty){
+                            ticketCountAll = int.parse(value);
+                          }
+                          
                           setState(() {});
                         },
-                        controller: ticketTitleController,
+                        controller: ticketCountAllController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Palette.grayFF,
-                          // labelText: '수강권 이름',
-                          hintText: '수강권 이름을 입력하세요',
+                          // labelText: '수강 횟수',
+                          hintText: '수강 횟수를 입력하세요',
                           labelStyle: TextStyle(color: Palette.gray00),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
                             borderSide:
                                 BorderSide(width: 1, color: Colors.transparent),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
                             borderSide:
                                 BorderSide(width: 1, color: Colors.transparent),
                           ),
                           border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                child: Row(
+                                  children: [
+                                    Text("수강 시작일",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 8, 4, 8),
+                                child: TextField(
+                                  onTap: () {},
+                                  readOnly: true,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Palette.grayFF,
+                                    // labelText: '수강 시작일',
+                                    hintText: '수강권 시작일을 입력하세요',
+                                    labelStyle: TextStyle(color: Palette.gray00),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.transparent),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.transparent),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.transparent),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                    ),
+                                  ),
+                                  // keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+          
+                        /// 수강 종료일 선택
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                child: Row(
+                                  children: [
+                                    Text("수강 종료일",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
+                                child: TextField(
+                                  readOnly: true,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Palette.grayFF,
+                                    // labelText: '수강 종료일',
+                                    hintText: '수강권 종료일을 입력하세요',
+                                    labelStyle: TextStyle(color: Palette.gray00),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.transparent),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.transparent),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.transparent),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8.0)),
+                                    ),
+                                  ),
+                                  // keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+          
+                   /* BaseTableCalendar(
+                      selectedDate: getTodayDate(),
+                      pageName: "수강 시작일",
+                      eventList: [],
+                    ), */
+          
+                    /// 수강권 설명
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: Row(
+                        children: [
+                          Text("수강권 설명",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: TextField(
+                        minLines: 3,
+                        maxLines: 20,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(20),
+                          filled: true,
+                          fillColor: Palette.grayFF,
+                          // labelText: '수강권 설명',
+                          hintText: '예) 신규 20회 + 이벤트로 서비스 3회 드림',
+                          labelStyle: TextStyle(color: Palette.gray00),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderSide:
+                                BorderSide(width: 1, color: Colors.transparent),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderSide:
+                                BorderSide(width: 1, color: Colors.transparent),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           ),
                         ),
                         // keyboardType: TextInputType.emailAddress,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-
-                  /// 수강 횟수 입력
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: Row(
-                      children: [
-                        Text("수강 횟수",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: TextField(
-                      maxLength: 3,
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      onChanged: (value) {
-                        ticketCountAll = int.parse(value);
-                        setState(() {});
-                      },
-                      controller: ticketCountAllController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Palette.grayFF,
-                        // labelText: '수강 횟수',
-                        hintText: '수강 횟수를 입력하세요',
-                        labelStyle: TextStyle(color: Palette.gray00),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          borderSide:
-                              BorderSide(width: 1, color: Colors.transparent),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          borderSide:
-                              BorderSide(width: 1, color: Colors.transparent),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                              child: Row(
-                                children: [
-                                  Text("수강 시작일",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 8, 4, 8),
-                              child: TextField(
-                                onTap: () {},
-                                readOnly: true,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Palette.grayFF,
-                                  // labelText: '수강 시작일',
-                                  hintText: '수강권 시작일을 입력하세요',
-                                  labelStyle: TextStyle(color: Palette.gray00),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.transparent),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.transparent),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.transparent),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                  ),
-                                ),
-                                // keyboardType: TextInputType.emailAddress,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      /// 수강 종료일 선택
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                              child: Row(
-                                children: [
-                                  Text("수강 종료일",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
-                              child: TextField(
-                                readOnly: true,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Palette.grayFF,
-                                  // labelText: '수강 종료일',
-                                  hintText: '수강권 종료일을 입력하세요',
-                                  labelStyle: TextStyle(color: Palette.gray00),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.transparent),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.transparent),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.transparent),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                  ),
-                                ),
-                                // keyboardType: TextInputType.emailAddress,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-
-                 /*  BaseTableCalendar(
-                    selectedDate: getTodayDate(),
-                    pageName: "수강 시작일",
-                    eventList: [],
-                  ), */
-
-                  /// 수강권 설명
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: Row(
-                      children: [
-                        Text("수강권 설명",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: TextField(
-                      minLines: 3,
-                      maxLines: 20,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(20),
-                        filled: true,
-                        fillColor: Palette.grayFF,
-                        // labelText: '수강권 설명',
-                        hintText: '예) 신규 20회 + 이벤트로 서비스 3회 드림',
-                        labelStyle: TextStyle(color: Palette.gray00),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          borderSide:
-                              BorderSide(width: 1, color: Colors.transparent),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          borderSide:
-                              BorderSide(width: 1, color: Colors.transparent),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                      ),
-                      // keyboardType: TextInputType.emailAddress,
-                    ),
-                  ),
-                  TicketWidget(
-                    customFunctionOnTap: () {},
-                    ticketCountLeft: ticketCountLeft,
-                    ticketCountAll: ticketCountAll,
-                    ticketTitle: ticketTitle,
-                    ticketDescription: ticketDescription,
-                    ticketStartDate: ticketStartDate,
-                    ticketEndDate: ticketEndDate,
-                    ticketDateLeft: ticketDateLeft,
-                  )
-                ],
+                    TicketWidget(
+                      customFunctionOnTap: () {},
+                      // customFunctionOnHover: (){},
+                      ticketCountLeft: ticketCountAll,
+                      ticketCountAll: ticketCountAll,
+                      ticketTitle: ticketTitle,
+                      ticketDescription: ticketDescription,
+                      ticketStartDate: ticketStartDate,
+                      ticketEndDate: ticketEndDate,
+                      ticketDateLeft: ticketDateLeft,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

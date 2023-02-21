@@ -44,7 +44,7 @@ class _TicketWidgetState extends State<TicketWidget> {
             side: BorderSide(width: 1, color: Palette.buttonOrange)),
         child: InkWell(
           onHover: (value) {
-            widget.customFunctionOnHover!();
+            widget.customFunctionOnHover ?? (){};
           },
           onTap: () {
             widget.customFunctionOnTap();

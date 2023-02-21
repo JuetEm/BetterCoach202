@@ -26,6 +26,7 @@ class TicketService extends ChangeNotifier {
 
   Future<String> create(
     final String uid,
+    final int ticketUsingCount,
     final int ticketCountLeft,
     final int ticketCountAll,
     final String ticketTitle,
@@ -39,7 +40,8 @@ class TicketService extends ChangeNotifier {
     String id = "";
     await ticketCollection.add({
       'uid': uid, // 작성자 uid
-      'ticketCountLeft': ticketCountLeft, // 작성자 displayName
+      'ticketCountLeft': ticketCountLeft,
+      'ticketUsingCount': ticketUsingCount, // 작성자 displayName
       'ticketCountAll': ticketCountAll, // 전화번호
       'ticketTitle': ticketTitle, // 이메일
       'ticketDescription': ticketDescription, // 페이지 명
