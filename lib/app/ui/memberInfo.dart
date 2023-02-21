@@ -857,10 +857,10 @@ class MemberInfoView extends StatefulWidget {
 }
 
 class _MemberInfoViewState extends State<MemberInfoView> {
-  
   @override
   Widget build(BuildContext context) {
-    _MemberInfoState? parent = context.findAncestorStateOfType<_MemberInfoState>();
+    _MemberInfoState? parent =
+        context.findAncestorStateOfType<_MemberInfoState>();
     // selectedGoals 값 반영하여 FilterChips 동적 생성
     var goalChips = [];
     goalChips = makeChips(
@@ -893,352 +893,233 @@ class _MemberInfoViewState extends State<MemberInfoView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 5.0),
-          // Row(
-          //   children: [
-          //     Text(
-          //       '회원정보',
-          //       style: TextStyle(
-          //         fontSize: 20,
-          //         fontWeight: FontWeight.bold,
-          //         color: Palette.gray33,
-          //       ),
-          //     ),
-          //     Spacer(),
-          //   ],
-          // ),
-          //const SizedBox(height: 20),
 
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '수강정보',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Palette.gray66,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                true
-                    ? Container(
-                        constraints: BoxConstraints(
-                            maxWidth: 280, minHeight: 100, maxHeight: 120),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
-                                  width: 2, color: Palette.buttonOrange)),
-                          child: InkWell(
-                            onHover: (value) {
-                              print("수강권 추가 onHover!!");
-                            },
-                            onTap: () async {
-                              print("수강권 추가 onTap!!");
-                              var result = await // 저장하기 성공시 Home로 이동
-                                  Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TicketManage.getUserInfo(userInfo)),
-                              ).then((value) {
-                                print("수강권 추가 result");
-                                setState(() {
-                                  print("memberInfo then setState called!");
-                                });
-                                parent?.setState(() {
-                                  print("memberInfo then parent setState called!");
-                                });
+          Text(
+            '수강정보',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Palette.gray66,
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          /// 티켓모양 수강권
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              true
+                  ? Container(
+                      alignment: Alignment.center,
+                      constraints: BoxConstraints(
+                          maxWidth: 280, minHeight: 100, maxHeight: 120),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(
+                                width: 2, color: Palette.buttonOrange)),
+                        child: InkWell(
+                          onHover: (value) {
+                            print("수강권 추가 onHover!!");
+                          },
+                          onTap: () async {
+                            print("수강권 추가 onTap!!");
+                            var result = await // 저장하기 성공시 Home로 이동
+                                Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TicketManage.getUserInfo(userInfo)),
+                            ).then((value) {
+                              print("수강권 추가 result");
+                              setState(() {
+                                print("memberInfo then setState called!");
                               });
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 100,
-                                  width: 80,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("남은 횟수",
-                                          style: TextStyle(
-                                              color: Palette.gray66,
-                                              fontSize: 12)),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "13",
-                                            style: TextStyle(
-                                                color: Palette.textOrange,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24),
-                                          ),
-                                          Text(
-                                            "/20",
-                                            style: TextStyle(
-                                                color: Palette.grayB4,
-                                                fontSize: 24),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                    width: 1,
-                                    color: Palette.grayEE,
-                                    height: double.infinity),
-                                Container(
-                                    constraints: BoxConstraints(minWidth: 140),
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Column(
+                              parent?.setState(() {
+                                print(
+                                    "memberInfo then parent setState called!");
+                              });
+                            });
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 80,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("남은 횟수",
+                                        style: TextStyle(
+                                            color: Palette.gray66,
+                                            fontSize: 12)),
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text("재등록 수강권",
-                                            style: TextStyle(
-                                                color: Palette.gray00,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18)),
-                                        SizedBox(height: 5),
                                         Text(
-                                          "신규등록 20회 + 1회 서비스",
+                                          "13",
                                           style: TextStyle(
-                                              fontSize: 12,
-                                              color: Palette.gray66),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Text("시작일: 2023.01.14",
-                                            style: TextStyle(
+                                              color: Palette.textOrange,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                            )),
-                                        Row(
-                                          children: [
-                                            Text("종료일: 2023.02.13",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12,
-                                                )),
-                                            Text(
-                                              " (D-7)",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12,
-                                                  color: true
-                                                      ? Palette.textRed
-                                                      : Palette.gray66),
-                                            ),
-                                          ],
+                                              fontSize: 24),
                                         ),
+                                        Text(
+                                          "/20",
+                                          style: TextStyle(
+                                              color: Palette.grayB4,
+                                              fontSize: 24),
+                                        )
                                       ],
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        constraints: BoxConstraints(maxWidth: 280),
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        height: 100,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side:
-                                  BorderSide(width: 2, color: Palette.grayEE)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "수강권 추가하기",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Palette.gray99),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Icon(
-                                Icons.add_circle_outline,
-                                color: Palette.gray99,
-                              )
+                              Container(
+                                  width: 1,
+                                  color: Palette.grayEE,
+                                  height: double.infinity),
+                              Container(
+                                  constraints: BoxConstraints(minWidth: 140),
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("재등록 수강권",
+                                          style: TextStyle(
+                                              color: Palette.gray00,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18)),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "신규등록 20회 + 1회 서비스",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Palette.gray66),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text("시작일: 2023.01.14",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          )),
+                                      Row(
+                                        children: [
+                                          Text("종료일: 2023.02.13",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              )),
+                                          Text(
+                                            " (D-7)",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                                color: true
+                                                    ? Palette.textRed
+                                                    : Palette.gray66),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )),
                             ],
                           ),
                         ),
                       ),
-                SizedBox(
-                  height: 20,
-                ),
-                Divider(),
-                Text(
-                  '수강정보',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Palette.gray66,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  '등록횟수 : ${widget.userInfo.registerType}',
-                  style: TextStyle(
-                      fontSize: 14.0,
-                      //fontWeight: FontWeight.bold,
-                      color: Palette.gray99),
-                  textAlign: TextAlign.right,
-                ),
-                const SizedBox(height: 30),
-                Divider(),
-                Text(
-                  '운동목표',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Palette.gray66,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Offstage(
-                  offstage: widget.userInfo.selectedGoals.isEmpty,
-                  child: Wrap(
-                    direction: Axis.horizontal, // 나열 방향
-                    alignment: WrapAlignment.start, // 정렬 방식
-                    spacing: 5, // 좌우 간격
-                    runSpacing: 5,
-                    children: [
-                      for (final chip in goalChips)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                          child: chip,
-                        ),
-                    ],
-                  ),
-                ),
-                Offstage(
-                  offstage: widget.userInfo.goal.isEmpty,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.userInfo.goal,
-                        style: TextStyle(
-                          fontSize: 14,
-                          //fontWeight: FontWeight.bold,
-                          color: Palette.gray99,
+                    )
+                  : Container(
+                      constraints: BoxConstraints(maxWidth: 280),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: 100,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(width: 2, color: Palette.grayEE)),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "수강권 추가하기",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Palette.gray99),
+                            ),
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: Palette.gray99,
+                            )
+                          ],
                         ),
                       ),
-                    ],
+                    ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Divider(),
+          Text(
+            '수강정보',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Palette.gray66,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '등록횟수 : ${widget.userInfo.registerType}',
+            style: TextStyle(
+                fontSize: 14.0,
+                //fontWeight: FontWeight.bold,
+                color: Palette.gray99),
+            textAlign: TextAlign.right,
+          ),
+          const SizedBox(height: 30),
+          Divider(),
+          Text(
+            '운동목표',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Palette.gray66,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Offstage(
+            offstage: widget.userInfo.selectedGoals.isEmpty,
+            child: Wrap(
+              direction: Axis.horizontal, // 나열 방향
+              alignment: WrapAlignment.start, // 정렬 방식
+              spacing: 5, // 좌우 간격
+              runSpacing: 5,
+              children: [
+                for (final chip in goalChips)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                    child: chip,
                   ),
-                ),
-                const SizedBox(height: 30),
-                Divider(),
-                Text(
-                  '체형분석',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Palette.gray66,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Offstage(
-                  offstage: widget.userInfo.selectedBodyAnalyzed.isEmpty,
-                  child: Wrap(
-                    direction: Axis.horizontal, // 나열 방향
-                    alignment: WrapAlignment.start, // 정렬 방식
-                    spacing: 5, // 좌우 간격
-                    runSpacing: 5,
-                    children: [
-                      for (final chip in bodyAnalyzedChips)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                          child: chip,
-                        ),
-                    ],
-                  ),
-                ),
-                Offstage(
-                  offstage: widget.userInfo.bodyAnalyzed.isEmpty,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.userInfo.bodyAnalyzed,
-                        style: TextStyle(
-                          fontSize: 14,
-                          //fontWeight: FontWeight.bold,
-                          color: Palette.gray99,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Divider(),
-                Text(
-                  '통증/상해/병력',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Palette.gray66),
-                ),
-                const SizedBox(height: 10),
-                Offstage(
-                  offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
-                  child: Wrap(
-                    direction: Axis.horizontal, // 나열 방향
-                    alignment: WrapAlignment.start, // 정렬 방식
-                    spacing: 5, // 좌우 간격
-                    runSpacing: 5,
-                    children: [
-                      for (final chip in medicalHistoriesChips)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                          child: chip,
-                        ),
-                    ],
-                  ),
-                ),
-                Offstage(
-                  offstage: widget.userInfo.medicalHistories.isEmpty,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.userInfo.medicalHistories,
-                        style: TextStyle(
-                          fontSize: 14,
-                          //fontWeight: FontWeight.bold,
-                          color: Palette.gray99,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Divider(),
-                Text(
-                  '특이사항',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Palette.gray66,
-                  ),
-                ),
+              ],
+            ),
+          ),
+          Offstage(
+            offstage: widget.userInfo.goal.isEmpty,
+            child: Column(
+              children: [
                 const SizedBox(height: 10),
                 Text(
-                  widget.userInfo.comment,
+                  widget.userInfo.goal,
                   style: TextStyle(
                     fontSize: 14,
                     //fontWeight: FontWeight.bold,
@@ -1248,6 +1129,111 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               ],
             ),
           ),
+          const SizedBox(height: 30),
+          Divider(),
+          Text(
+            '체형분석',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Palette.gray66,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Offstage(
+            offstage: widget.userInfo.selectedBodyAnalyzed.isEmpty,
+            child: Wrap(
+              direction: Axis.horizontal, // 나열 방향
+              alignment: WrapAlignment.start, // 정렬 방식
+              spacing: 5, // 좌우 간격
+              runSpacing: 5,
+              children: [
+                for (final chip in bodyAnalyzedChips)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                    child: chip,
+                  ),
+              ],
+            ),
+          ),
+          Offstage(
+            offstage: widget.userInfo.bodyAnalyzed.isEmpty,
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Text(
+                  widget.userInfo.bodyAnalyzed,
+                  style: TextStyle(
+                    fontSize: 14,
+                    //fontWeight: FontWeight.bold,
+                    color: Palette.gray99,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          Divider(),
+          Text(
+            '통증/상해/병력',
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Palette.gray66),
+          ),
+          const SizedBox(height: 10),
+          Offstage(
+            offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
+            child: Wrap(
+              direction: Axis.horizontal, // 나열 방향
+              alignment: WrapAlignment.start, // 정렬 방식
+              spacing: 5, // 좌우 간격
+              runSpacing: 5,
+              children: [
+                for (final chip in medicalHistoriesChips)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                    child: chip,
+                  ),
+              ],
+            ),
+          ),
+          Offstage(
+            offstage: widget.userInfo.medicalHistories.isEmpty,
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Text(
+                  widget.userInfo.medicalHistories,
+                  style: TextStyle(
+                    fontSize: 14,
+                    //fontWeight: FontWeight.bold,
+                    color: Palette.gray99,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          Divider(),
+          Text(
+            '특이사항',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Palette.gray66,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            widget.userInfo.comment,
+            style: TextStyle(
+              fontSize: 14,
+              //fontWeight: FontWeight.bold,
+              color: Palette.gray99,
+            ),
+          ),
+
           SizedBox(height: 30),
           /* Center(
             child: ElevatedButton(
