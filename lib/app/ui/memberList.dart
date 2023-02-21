@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/testShowDialog.dart';
 
@@ -17,6 +18,10 @@ import 'memberAdd.dart';
 import 'memberInfo.dart';
 import '../binding/member_service.dart';
 import '../../userInfo.dart';
+
+int searchResultCnt = 0;
+
+List mainSearchedList = [];
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -333,8 +338,9 @@ class _MemberListState extends State<MemberList> {
                     label: "이름을 검색하세요.",
                     showArrow: true,
                     customFunction: () {
+                      searchString = searchController.text.toLowerCase();
                       setState(() {
-                        searchString = searchController.text.toLowerCase();
+                        print("search custom function setState called!");
                       });
                     },
                     clearfunction: () {
@@ -348,7 +354,7 @@ class _MemberListState extends State<MemberList> {
                   Row(
                     children: [
                       Text(
-                        '총 ${globalVariables.resultList.length} 명',
+                        searchString == "" ? '총 ${globalVariables.resultList.length} 명' : '검색 결과 ${searchResultCnt} 명',
                         style: TextStyle(color: Palette.gray7B),
                       ),
                       Spacer(),
@@ -372,7 +378,7 @@ class _MemberListState extends State<MemberList> {
                             if (searchString.isNotEmpty) {
                               print(
                                   "searchString.isNotEmpty : ${searchString}");
-                              List searchedList = [];
+                              mainSearchedList = [];
                               String varName = "";
 
                               globalVariables.resultList.forEach((element) {
@@ -380,14 +386,15 @@ class _MemberListState extends State<MemberList> {
                                 // 검색 기능 함수 convert
                                 if (globalFunction.searchString(
                                     varName, searchString, "member")) {
-                                  searchedList.add(element);
+                                  mainSearchedList.add(element);
                                 }
                               });
-                              docs = searchedList ?? []; // 문서들 가져오기
+                              print("mainSearchedList.length : ${mainSearchedList.length}");
+                              docs = mainSearchedList; // 문서들 가져오기
                             } else {
                               globalVariables.sortList();
                               docs =
-                                  globalVariables.resultList ?? []; // 문서들 가져오기
+                                  globalVariables.resultList; // 문서들 가져오기
                             }
                             /* 멤버 리트스 최초 1번 받아오기 리뉴얼 작업위해 주석 - 정규호 2022/11/23 
                             FutureBuilder<QuerySnapshot>(
