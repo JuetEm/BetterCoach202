@@ -43,6 +43,7 @@ class _TicketManageState extends State<TicketManage> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 22, 22, 10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -197,14 +198,16 @@ class _TicketManageState extends State<TicketManage> {
                           ],
                         ),
                       ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("사용가능한 수강권()"),
-                            Icon(Icons.expand_less)
-                          ],
+                      Center(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("사용가능한 수강권()"),
+                              Icon(Icons.expand_less)
+                            ],
+                          ),
                         ),
                       ),
                       
