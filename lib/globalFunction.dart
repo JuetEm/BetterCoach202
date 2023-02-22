@@ -448,6 +448,8 @@ class GlobalFunction {
         context,
         MaterialPageRoute(
           builder: (_) => BaseTableCalendar(
+            (){},
+            true,
             selectedDate: selectedDate,
             pageName: pageName,
             eventList: [],

@@ -2,21 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:web_project/app/ui/ticketMake.dart';
 import 'package:web_project/lessonAdd.dart';
 
 import 'calendar_service.dart';
 import 'color.dart';
 import 'globalWidget.dart';
 import 'app/ui/memberAdd.dart';
+import 'app/ui/ticketMake.dart';
+
+TicketMake ticketMake = TicketMake();
 
 class BaseTableCalendar extends StatefulWidget {
-  const BaseTableCalendar({
+  const BaseTableCalendar(
+    this.customFunction,
+    this.isHideAppbar, {
     super.key,
     required this.selectedDate,
     required this.pageName,
     required this.eventList,
   });
 
+  final customFunction;
+  final bool isHideAppbar;
   final String selectedDate;
   final String pageName;
   final List<dynamic> eventList;
@@ -40,7 +48,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
   @override
   void initState() {
     if (widget.selectedDate == "") {
-      DateTime selectedDateIn = DateTime(
+      selectedDateIn = DateTime(
         DateTime.now().year,
         DateTime.now().month,
         DateTime.now().day,
@@ -66,7 +74,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
     return Consumer<CalendarService>(
       builder: (context, calendarService, child) {
         return Scaffold(
-          appBar: widget.pageName == "수업일 선택"
+          appBar: widget.isHideAppbar
               ? null
               : BaseAppBarMethod(context, "${widget.pageName} 선택", () {
                   Navigator.pop(context);
@@ -76,7 +84,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                   //   MaterialPageRoute(builder: (_) => MemberAdd()),
                   // );
                 }),
-          body: widget.pageName == "노트편집"
+          body: widget.pageName == "노트보기"
               ? Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Column(
@@ -109,33 +117,44 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
 
                       /// 추가 버튼
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: EdgeInsets.all(0),
-                          elevation: 0,
-                          backgroundColor: Palette.buttonOrange,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 100),
-                          child: Text("${widget.pageName} 선택",
-                              style: TextStyle(fontSize: 16)),
-                        ),
-                        onPressed: () {
-                          calendarService.setDate(
-                            DateTime(
-                              focusedDate.year,
-                              focusedDate.month,
-                              focusedDate.day,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                          );
-                          // 저장하기 성공시 MemberAdd로 이동
-                          Navigator.pop(
-                              context, calendarService.currentSelectedDate());
-                        },
-                      )
+                            padding: EdgeInsets.all(0),
+                            elevation: 0,
+                            backgroundColor: Palette.buttonOrange,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 100),
+                            child: Text("${widget.pageName} 선택",
+                                style: TextStyle(fontSize: 16)),
+                          ),
+                          onPressed: () {
+                            if (widget.pageName == "수강 시작일") {
+                              ticketStartDate =
+                                  "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
+                              calendarIsOffStaged = true;
+                              widget.customFunction();
+                            } else if (widget.pageName == "수강 종료일") {
+                              ticketStartDate =
+                                  "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
+                              calendarIsOffStaged = true;
+                              widget.customFunction();
+                            } else {
+                              calendarService.setDate(
+                                DateTime(
+                                  focusedDate.year,
+                                  focusedDate.month,
+                                  focusedDate.day,
+                                ),
+                              );
+                              // 저장하기 성공시 MemberAdd로 이동
+                              Navigator.pop(context,
+                                  calendarService.currentSelectedDate());
+                            }
+                          })
                     ],
                   ),
                 ),

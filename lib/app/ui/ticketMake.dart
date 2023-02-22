@@ -8,13 +8,17 @@ import 'package:web_project/app/binding/ticket_service.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/locationAdd.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart';
 
 String screenName = "수강권 추가";
 
+String calendarName = "";
+
 bool isOffStaged = true;
+bool calendarIsOffStaged = true;
 String selectedticketName = "";
 
 final List<DropDownValueModel> tickets = [
@@ -44,12 +48,9 @@ int ticketDateLeft = 0;
 String getTodayDate() {
   String today = "";
 
-  DateTime dateTime = DateTime.now();
-  today = DateFormat('yyyy.MM.dd')
-      .format(DateTime.parse(dateTime.toString()))
-      .toString();
+  today = DateFormat("yyyy-MM-dd").format(DateTime.now());
   print("today : ${today}");
-  return today;
+  return today.substring(0, 10);
 }
 
 class TicketMake extends StatefulWidget {
@@ -142,7 +143,7 @@ class _TicketMakeState extends State<TicketMake> {
                       ],
                     ),
                     SizedBox(height: 10),
-          
+
                     /// 수강권 명 입력
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -215,7 +216,7 @@ class _TicketMakeState extends State<TicketMake> {
                         setState(() {});
                       },
                     ),
-          
+
                     /// 직접 입력 선택 시
                     Offstage(
                       offstage: isOffStaged,
@@ -238,14 +239,14 @@ class _TicketMakeState extends State<TicketMake> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8.0)),
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.transparent),
+                              borderSide: BorderSide(
+                                  width: 1, color: Colors.transparent),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8.0)),
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.transparent),
+                              borderSide: BorderSide(
+                                  width: 1, color: Colors.transparent),
                             ),
                             border: OutlineInputBorder(
                               borderRadius:
@@ -257,7 +258,7 @@ class _TicketMakeState extends State<TicketMake> {
                       ),
                     ),
                     SizedBox(height: 10),
-          
+
                     /// 수강 횟수 입력
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -275,10 +276,10 @@ class _TicketMakeState extends State<TicketMake> {
                         maxLength: 3,
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         onChanged: (value) {
-                          if(value.isNotEmpty){
+                          if (value.isNotEmpty) {
                             ticketCountAll = int.parse(value);
                           }
-                          
+
                           setState(() {});
                         },
                         controller: ticketCountAllController,
@@ -289,21 +290,26 @@ class _TicketMakeState extends State<TicketMake> {
                           hintText: '수강 횟수를 입력하세요',
                           labelStyle: TextStyle(color: Palette.gray00),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             borderSide:
                                 BorderSide(width: 1, color: Colors.transparent),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             borderSide:
                                 BorderSide(width: 1, color: Colors.transparent),
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                           ),
                         ),
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       ),
                     ),
                     Row(
@@ -324,46 +330,60 @@ class _TicketMakeState extends State<TicketMake> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 8, 4, 8),
-                                child: TextField(
-                                  onTap: () {},
-                                  readOnly: true,
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Palette.grayFF,
-                                    // labelText: '수강 시작일',
-                                    hintText: '수강권 시작일을 입력하세요',
-                                    labelStyle: TextStyle(color: Palette.gray00),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.transparent),
+                                child: InkWell(
+                                  onTap: () {
+                                    print("수강 시작일 inkWell onTap called!");
+                                    calendarIsOffStaged = !calendarIsOffStaged;
+                                    calendarName = "수강 시작일";
+                                    setState(() {});
+                                  },
+                                  child: TextField(
+                                    onTap: () {
+                                      print("수강 시작일 Textfiled onTap called!");
+                                    },
+                                    readOnly: true,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Palette.grayFF,
+                                      // labelText: '수강 시작일',
+                                      hintText: '수강권 시작일을 입력하세요',
+                                      labelStyle:
+                                          TextStyle(color: Palette.gray00),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.transparent),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.transparent),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.transparent),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                      ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.transparent),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.transparent),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                    ),
+                                    // keyboardType: TextInputType.emailAddress,
                                   ),
-                                  // keyboardType: TextInputType.emailAddress,
                                 ),
                               ),
                             ],
                           ),
                         ),
-          
+
                         /// 수강 종료일 선택
                         Expanded(
                           child: Column(
@@ -381,39 +401,55 @@ class _TicketMakeState extends State<TicketMake> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
-                                child: TextField(
-                                  readOnly: true,
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Palette.grayFF,
-                                    // labelText: '수강 종료일',
-                                    hintText: '수강권 종료일을 입력하세요',
-                                    labelStyle: TextStyle(color: Palette.gray00),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.transparent),
+                                child: InkWell(
+                                  onTap: () {
+                                    print("수강 종료일 inkWell onTap called!");
+                                    calendarIsOffStaged = !calendarIsOffStaged;
+                                    calendarName = "수강 종료일";
+
+                                    setState(() {});
+                                  },
+                                  child: TextField(
+                                    onTap: () {
+                                      print("수강 종료일 TextField onTap called!");
+                                    },
+                                    readOnly: true,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Palette.grayFF,
+                                      // labelText: '수강 종료일',
+                                      hintText: '수강권 종료일을 입력하세요',
+                                      labelStyle:
+                                          TextStyle(color: Palette.gray00),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.transparent),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.transparent),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.transparent),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                      ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.transparent),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.transparent),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8.0)),
-                                    ),
+                                    // keyboardType: TextInputType.emailAddress,
                                   ),
-                                  // keyboardType: TextInputType.emailAddress,
                                 ),
                               ),
                             ],
@@ -421,13 +457,28 @@ class _TicketMakeState extends State<TicketMake> {
                         )
                       ],
                     ),
-          
-                   /* BaseTableCalendar(
-                      selectedDate: getTodayDate(),
-                      pageName: "수강 시작일",
-                      eventList: [],
-                    ), */
-          
+
+                    Offstage(
+                      offstage: calendarIsOffStaged,
+                      child: Container(
+                        constraints: BoxConstraints.tight(Size.fromHeight(530)),
+                        child: BaseTableCalendar(
+                          () {
+                            if (calendarName == "수강 종료일") {
+                              ticketStartDateController.text = ticketStartDate;
+                            } else if (calendarName == "수강 종료일") {
+                              ticketEndDateController.text = ticketEndDate;
+                            }
+                            setState(() {});
+                          },
+                          true,
+                          selectedDate: "",
+                          pageName: "수강 시작일",
+                          eventList: [],
+                        ),
+                      ),
+                    ),
+
                     /// 수강권 설명
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -452,17 +503,20 @@ class _TicketMakeState extends State<TicketMake> {
                           hintText: '예) 신규 20회 + 이벤트로 서비스 3회 드림',
                           labelStyle: TextStyle(color: Palette.gray00),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             borderSide:
                                 BorderSide(width: 1, color: Colors.transparent),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             borderSide:
                                 BorderSide(width: 1, color: Colors.transparent),
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                           ),
                         ),
                         // keyboardType: TextInputType.emailAddress,
