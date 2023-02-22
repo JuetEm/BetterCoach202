@@ -869,6 +869,12 @@ class _LessonAddState extends State<LessonAdd> {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                             initialValue:
+
+                                /*
+                                  if (저장된 시퀀스 중에 커스텀시퀀스${변수명} 있니?) {
+                                    변수명 = 변수명++;
+                                  } 
+                                 */
                                 '커스텀시퀀스${1}', // 중복된 값 없도록 만들어주는 숫자 변수 필요
                             decoration:
                                 InputDecoration(border: InputBorder.none),

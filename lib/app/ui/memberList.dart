@@ -335,6 +335,7 @@ class _MemberListState extends State<MemberList> {
                     customController: searchController,
                     customFocusNode: searchFocusNode,
                     hint: "이름을 검색하세요.",
+                    label: "이름을 검색하세요.",
                     showArrow: true,
                     customFunction: () {
                       searchString = searchController.text.toLowerCase();
