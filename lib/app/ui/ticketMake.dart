@@ -372,7 +372,7 @@ class _TicketMakeState extends State<TicketMake> {
                                       filled: true,
                                       fillColor: Palette.grayFF,
                                       // labelText: '수강 시작일',
-                                      hintText: '수강권 시작일을 입력하세요',
+                                      hintText: '시작일 입력',
                                       labelStyle:
                                           TextStyle(color: Palette.gray00),
                                       focusedBorder: OutlineInputBorder(
@@ -444,7 +444,7 @@ class _TicketMakeState extends State<TicketMake> {
                                       filled: true,
                                       fillColor: Palette.grayFF,
                                       // labelText: '수강 종료일',
-                                      hintText: '수강권 종료일을 입력하세요',
+                                      hintText: '종료일 입력',
                                       labelStyle:
                                           TextStyle(color: Palette.gray00),
                                       focusedBorder: OutlineInputBorder(
