@@ -33,7 +33,7 @@ class _ReportState extends State<Report> {
   TextEditingController pageName = TextEditingController();
   TextEditingController errorContents = TextEditingController();
 
-  /* 회원목록/회원관리/노트보기/회원정보 수정/
+  /* 회원목록/회원관리/노트편집/회원정보 수정/
 회원등록/노트추가/동작선택/동작추가 */
   final pages = [
     DropDownValueModel(

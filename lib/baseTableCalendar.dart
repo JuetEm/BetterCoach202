@@ -84,7 +84,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                   //   MaterialPageRoute(builder: (_) => MemberAdd()),
                   // );
                 }),
-          body: widget.pageName == "노트보기"
+          body: widget.pageName == "노트편집"
               ? Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Column(
