@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/app/ui/ticketManage.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
@@ -55,6 +57,25 @@ String getTodayDate() {
   return today.substring(0, 10);
 }
 
+String getMonthLateDate() {
+  String today = "";
+
+  DateTime now = DateTime.now();
+
+  today = DateFormat("yyyy-MM-dd")
+      .format(DateTime(now.year, now.month + 1, now.day - 1));
+  print("month today : ${today}");
+  return today.substring(0, 10);
+}
+
+String getDateFromTimeStamp(var timestamp) {
+  String date = "";
+
+  date = DateFormat("yyyy-MM-dd").format(timestamp.toDate());
+
+  return date;
+}
+
 class TicketMake extends StatefulWidget {
   UserInfo? userInfo;
   TicketMake({super.key});
@@ -83,6 +104,11 @@ class _TicketMakeState extends State<TicketMake> {
     ticketStartDateController = TextEditingController();
     ticketEndDateController = TextEditingController();
     ticketDateLeftController = TextEditingController();
+
+    ticketStartDateController.text = getTodayDate();
+    ticketStartDate = getTodayDate();
+    ticketEndDateController.text = getMonthLateDate();
+    ticketEndDate = getMonthLateDate();
   }
 
   @override
@@ -114,9 +140,11 @@ class _TicketMakeState extends State<TicketMake> {
   @override
   Widget build(BuildContext context) {
     tickets = [
-      DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력')
+      DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력'),
+      DropDownValueModel(name: '[편집하기]', value: '편집하기', toolTipMsg: '편집하기')
     ];
     for (var ticketVal in globalVariables.ticketList) {
+      // print("ticketVal : $ticketVal");
       var model = DropDownValueModel(
           name: ticketVal['ticketTitle'],
           value: ticketVal['ticketTitle'],
@@ -151,17 +179,41 @@ class _TicketMakeState extends State<TicketMake> {
                         TextButton(
                           onPressed: () {
                             print("수강권 추가 완료 버튼 클릭!!");
-                            ticketService.create(
-                                widget.userInfo!.uid,
-                                ticketUsingCount,
-                                ticketCountLeft,
-                                ticketCountAll,
-                                ticketTitle,
-                                ticketDescription,
-                                DateTime.parse(ticketStartDate),
-                                DateTime.parse(ticketEndDate),
-                                ticketDateLeft,
-                                DateTime.now());
+                            ticketService
+                                .create(
+                                    widget.userInfo!.uid,
+                                    ticketUsingCount,
+                                    ticketCountLeft,
+                                    ticketCountAll,
+                                    ticketTitle,
+                                    ticketDescription,
+                                    DateTime.parse(ticketStartDate),
+                                    DateTime.parse(ticketEndDate),
+                                    ticketDateLeft,
+                                    DateTime.now())
+                                .then((value) {
+                              print("ticketStartDate : $ticketStartDate");
+                              print("ticketEndDate : $ticketEndDate");
+                              var model = {
+                                "ticketCountAll": ticketCountAll,
+                                "ticketUsingCount": 0,
+                                "ticketDateLeft": 0,
+                                "ticketEndDate": Timestamp.fromDate(
+                                    DateTime.parse(ticketEndDate)),
+                                "uid": userInfo!.uid,
+                                "ticketCountLeft": 0,
+                                "createDate": DateTime.now(),
+                                "ticketDescription": ticketDescription,
+                                "ticketStartDate": Timestamp.fromDate(
+                                    DateTime.parse(ticketStartDate)),
+                                "ticketTitle": ticketTitle,
+                                "id": value
+                              };
+                              print("model : $model");
+                              globalVariables.ticketList.add(model);
+                              globalVariables.ticketList.sort((a, b) =>
+                                  a['ticketTitle'].compareTo(b['ticketTitle']));
+                            });
                             Navigator.pop(context);
                           },
                           child: Text("완료", style: TextStyle(fontSize: 16)),
@@ -188,8 +240,8 @@ class _TicketMakeState extends State<TicketMake> {
                       enableSearch: true,
                       textFieldFocusNode: textFieldFocusNode,
                       // searchFocusNode: searchFocusNode,
-                      clearIconProperty:
-                          IconProperty(color: Palette.buttonOrange),
+                      clearIconProperty: IconProperty(
+                          icon: Icons.close, color: Palette.gray66),
                       textFieldDecoration: InputDecoration(
                         hintText: "수강권을 선택하세요.",
                         border: OutlineInputBorder(
@@ -235,9 +287,44 @@ class _TicketMakeState extends State<TicketMake> {
                         if (selectedticketName == "직접입력") {
                           isTicketTitleOffStaged = false;
                           ticketTitle = ticketTitleController.text;
+
+                          ticketCountAll = 0;
+                          ticketCountAllController.text = "";
+
+                          ticketStartDate = getTodayDate();
+                          ticketStartDateController.text = getTodayDate();
+
+                          ticketEndDate = getMonthLateDate();
+                          ticketEndDateController.text = getMonthLateDate();
+
+                          ticketDescription = "";
+                          ticketDescriptionController.text = "";
                         } else {
                           isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
+
+                          for (var ticketVal in globalVariables.ticketList) {
+                            if (ticketVal['ticketTitle'] == ticketTitle) {
+                              ticketCountAll = ticketVal['ticketCountAll'];
+                              ticketCountAllController.text =
+                                  ticketCountAll.toString();
+
+                              ticketStartDate = getDateFromTimeStamp(
+                                  ticketVal['ticketStartDate']);
+                              ticketStartDateController.text = ticketStartDate;
+
+                              ticketEndDate = getDateFromTimeStamp(
+                                  ticketVal['ticketEndDate']);
+                              ticketEndDateController.text = ticketEndDate;
+
+                              ticketDescription =
+                                  ticketVal['ticketDescription'];
+                              ticketDescriptionController.text =
+                                  ticketDescription;
+
+                              break;
+                            }
+                          }
                         }
                         setState(() {});
                       },
@@ -551,6 +638,18 @@ class _TicketMakeState extends State<TicketMake> {
                           ),
                         ),
                         // keyboardType: TextInputType.emailAddress,
+                      ),
+                    ),
+
+                    /// 수강권 미리보기
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: Row(
+                        children: [
+                          Text("미리보기",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ],
                       ),
                     ),
                     TicketWidget(
