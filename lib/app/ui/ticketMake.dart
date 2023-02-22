@@ -116,13 +116,15 @@ class _TicketMakeState extends State<TicketMake> {
     tickets = [
       DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력')
     ];
-    for(var ticketVal in globalVariables.ticketList){
-          var model = DropDownValueModel(name: ticketVal['ticketTitle'], value: ticketVal['ticketTitle'], toolTipMsg: ticketVal['ticketDescription']);
-          tickets.add(model);
-        }
+    for (var ticketVal in globalVariables.ticketList) {
+      var model = DropDownValueModel(
+          name: ticketVal['ticketTitle'],
+          value: ticketVal['ticketTitle'],
+          toolTipMsg: ticketVal['ticketDescription']);
+      tickets.add(model);
+    }
     return Consumer<TicketService>(
       builder: (context, ticketService, child) {
-        
         return Scaffold(
           appBar: BaseAppBarMethod(
             context,
@@ -372,7 +374,7 @@ class _TicketMakeState extends State<TicketMake> {
                                       filled: true,
                                       fillColor: Palette.grayFF,
                                       // labelText: '수강 시작일',
-                                      hintText: '시작일 입력',
+                                      hintText: '수강권 시작일을 입력하세요',
                                       labelStyle:
                                           TextStyle(color: Palette.gray00),
                                       focusedBorder: OutlineInputBorder(
@@ -444,7 +446,7 @@ class _TicketMakeState extends State<TicketMake> {
                                       filled: true,
                                       fillColor: Palette.grayFF,
                                       // labelText: '수강 종료일',
-                                      hintText: '종료일 입력',
+                                      hintText: '수강권 종료일을 입력하세요',
                                       labelStyle:
                                           TextStyle(color: Palette.gray00),
                                       focusedBorder: OutlineInputBorder(

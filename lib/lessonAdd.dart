@@ -26,6 +26,16 @@ TextEditingController lessonDateController = TextEditingController(text: now);
 //TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController todayNoteController = TextEditingController();
 
+/// 시퀀스 이름 컨트롤러
+TextEditingController sequenceNameController = TextEditingController();
+
+/// 시퀀스 hint 이름 디폴트
+int customSequenceNumber = 1;
+String customSequenceName = '커스텀 시퀀스 ${customSequenceNumber}';
+
+/// 시퀀스 이름 포커스 노드
+FocusNode sequenceNameFocusNode = FocusNode();
+
 FocusNode lessonDateFocusNode = FocusNode();
 
 // 가변적으로 TextFields
@@ -81,6 +91,7 @@ String todayNoteView = "";
 List resultActionList = [];
 
 bool isSequenceSaveChecked = false;
+bool isTicketCountChecked = true;
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
@@ -235,37 +246,85 @@ class _LessonAddState extends State<LessonAdd> {
                             padding: const EdgeInsets.all(15),
                             child: Row(
                               children: [
-                                Text(
-                                  "###님",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userInfo.name,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      '등록일: ${userInfo.registerDate}',
+                                      style: TextStyle(
+                                          color: Palette.gray99, fontSize: 14),
+                                    ),
+                                  ],
                                 ),
                                 Spacer(),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Row(
                                       children: [
                                         Icon(
-                                          Icons.confirmation_num_outlined,
+                                          isTicketCountChecked
+                                              ? Icons.confirmation_num
+                                              : Icons.confirmation_num_outlined,
+                                          color: isTicketCountChecked
+                                              ? Palette.buttonOrange
+                                              : Palette.gray99,
                                         ),
                                         SizedBox(width: 4),
                                         Text(
-                                          "7/10",
+                                          isTicketCountChecked ? "7" : "8",
                                           style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        )
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: isTicketCountChecked
+                                                ? Palette.gray00
+                                                : Palette.gray99,
+                                          ),
+                                        ),
+                                        Text(
+                                          "/",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: isTicketCountChecked
+                                                ? Palette.gray00
+                                                : Palette.gray99,
+                                          ),
+                                        ),
+                                        Text(
+                                          "10",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: isTicketCountChecked
+                                                ? Palette.gray00
+                                                : Palette.gray99,
+                                          ),
+                                        ),
+                                        SizedBox(width: 6),
                                       ],
                                     ),
                                     SizedBox(height: 4),
                                     Row(
                                       children: [
                                         Text("수강권 차감 여부"),
-                                        SizedBox(width: 4),
-                                        Icon(
-                                          Icons.check,
-                                          size: 16,
+                                        Checkbox(
+                                          value: isTicketCountChecked,
+                                          onChanged: (value) {
+                                            /// 체크 토글
+                                            isTicketCountChecked =
+                                                !isTicketCountChecked;
+
+                                            /// 화면 재빌드
+                                            setState(() {});
+                                          },
                                         )
                                       ],
                                     )
@@ -518,9 +577,14 @@ class _LessonAddState extends State<LessonAdd> {
                                           //     FocusScope.of(context).unfocus();
                                           //   },
                                           // );
+
+                                          /// 저장된 텍스트 있다면 부여해줌
                                           todayNoteController.text =
                                               todayNoteView;
 
+                                          /// 시퀀스명
+
+                                          /// 리턴 시작
                                           return Container(
                                             constraints:
                                                 BoxConstraints(minHeight: 120),
@@ -547,193 +611,6 @@ class _LessonAddState extends State<LessonAdd> {
                                               ),
                                             ),
                                           );
-
-                                          // return InkWell(
-                                          //   onTap: () {
-                                          //     showDialog(
-                                          //       context: context,
-                                          //       barrierDismissible: true,
-                                          //       // ignore: unnecessary_new
-                                          //       builder:
-                                          //           (BuildContext context) {
-                                          //         return AlertDialog(
-                                          //           shape: RoundedRectangleBorder(
-                                          //               borderRadius:
-                                          //                   BorderRadius.all(
-                                          //                       Radius.circular(
-                                          //                           10.0))),
-                                          //           //title: Text('일별 메모 작성'),
-                                          //           content: Builder(
-                                          //             builder: (context) {
-                                          //               // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                          //               var height =
-                                          //                   MediaQuery.of(
-                                          //                           context)
-                                          //                       .size
-                                          //                       .height;
-                                          //               var width =
-                                          //                   MediaQuery.of(
-                                          //                           context)
-                                          //                       .size
-                                          //                       .width;
-                                          //               todayNoteController
-                                          //                       .text =
-                                          //                   todayNoteView;
-
-                                          //               return Container(
-                                          //                 //height: 40,
-                                          //                 width: width - 100,
-                                          //                 child: PopupTextField(
-                                          //                   customController:
-                                          //                       todayNoteController,
-                                          //                   hint: "일별 메모",
-                                          //                   showArrow: false,
-                                          //                   customFunction:
-                                          //                       () async {
-                                          //                     print(
-                                          //                         "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
-                                          //                     //일별 노트 저장
-                                          //                     await todayNoteSave(
-                                          //                         lessonService,
-                                          //                         customUserInfo,
-                                          //                         context);
-                                          //                   },
-                                          //                 ),
-                                          //               );
-                                          //             },
-                                          //           ),
-                                          //           actions: <Widget>[
-                                          //             TextButton(
-                                          //               onPressed: () {
-                                          //                 Navigator.of(context)
-                                          //                     .pop();
-                                          //               },
-                                          //               child: Text(
-                                          //                 '취소',
-                                          //                 style: TextStyle(
-                                          //                     fontSize: 16),
-                                          //                 selectionColor:
-                                          //                     Palette.textRed,
-                                          //               ),
-                                          //             ),
-                                          //             TextButton(
-                                          //               onPressed: () async {
-                                          //                 print(
-                                          //                     "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
-                                          //                 //일별 노트 저장
-                                          //                 await todayNoteSave(
-                                          //                     lessonService,
-                                          //                     customUserInfo,
-                                          //                     context);
-                                          //               },
-                                          //               child: Text(
-                                          //                 '저장',
-                                          //                 style: TextStyle(
-                                          //                     fontSize: 16),
-                                          //                 selectionColor:
-                                          //                     Palette.textBlue,
-                                          //               ),
-                                          //             ),
-                                          //           ],
-                                          //         );
-                                          //       },
-                                          //     );
-                                          //     //   showDialog(
-                                          //     //     context: context,
-                                          //     //     barrierDismissible: true,
-                                          //     //     builder: (BuildContext context) {
-                                          //     //       return AlertDialog(
-                                          //     //         title: Text('일별 메모 작성'),
-                                          //     //         content: DynamicSaveTextField(
-                                          //     //           customController:
-                                          //     //               todayNoteController,
-                                          //     //           hint: "일별 메모",
-                                          //     //           showArrow: false,
-                                          //     //           customFunction: () {
-                                          //     //             FocusScope.of(context)
-                                          //     //                 .unfocus();
-                                          //     //           },
-                                          //     //         ),
-                                          //     //         actions: <Widget>[
-                                          //     //           TextButton(
-                                          //     //             onPressed: () {
-                                          //     //               Navigator.of(context)
-                                          //     //                   .pop();
-                                          //     //             },
-                                          //     //             child: Text('저장'),
-                                          //     //           ),
-                                          //     //           TextButton(
-                                          //     //             onPressed: () {
-                                          //     //               Navigator.of(context)
-                                          //     //                   .pop();
-                                          //     //             },
-                                          //     //             child: Text('취소'),
-                                          //     //           ),
-                                          //     //         ],
-                                          //     //       );
-                                          //     //     },
-                                          //     //  );
-                                          //   },
-                                          //   child: Container(
-                                          //     constraints: BoxConstraints(
-                                          //         minHeight: 140),
-                                          //     child: Padding(
-                                          //       padding:
-                                          //           const EdgeInsets.fromLTRB(
-                                          //               15, 0, 15, 0),
-                                          //       child: Row(
-                                          //         mainAxisAlignment:
-                                          //             MainAxisAlignment.start,
-                                          //         crossAxisAlignment:
-                                          //             CrossAxisAlignment.start,
-                                          //         children: [
-                                          //           (todayNoteView == "")
-                                          //               ? Text(
-                                          //                   "오늘의 수업 내용을 기록해보세요.",
-                                          //                   style: TextStyle(
-                                          //                     fontSize: 14.0,
-                                          //                     //fontWeight:
-                                          //                     //FontWeight.bold,
-                                          //                     color: Palette
-                                          //                         .gray99,
-                                          //                   ))
-                                          //               : Text(""),
-                                          //           Expanded(
-                                          //             child: Text(
-                                          //               todayNoteView,
-                                          //               // overflow:
-                                          //               //     TextOverflow
-                                          //               //         .fade,
-                                          //               maxLines: 10,
-
-                                          //               softWrap: true,
-                                          //               style: Theme.of(context)
-                                          //                   .textTheme
-                                          //                   .bodyText1!
-                                          //                   .copyWith(
-                                          //                     fontSize: 14.0,
-                                          //                     height: 1.6, //줄간격
-                                          //                   ),
-                                          //             ),
-                                          //           ),
-                                          //           // Text(
-                                          //           //   todayNoteView,
-                                          //           //   style: TextStyle(
-                                          //           //     fontSize: 14.0,
-                                          //           //     //fontWeight: FontWeight.bold,
-                                          //           //   ),
-                                          //           // ),
-                                          //           //SizedBox(width: 20),
-                                          //           //Spacer(flex: 1),
-                                          //           Icon(
-                                          //             Icons.mode_edit,
-                                          //             color: Palette.gray66,
-                                          //           ),
-                                          //         ],
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // );
                                         },
                                       ),
                                     ),
@@ -833,8 +710,16 @@ class _LessonAddState extends State<LessonAdd> {
                                 Checkbox(
                                   value: isSequenceSaveChecked,
                                   onChanged: (value) {
+                                    /// 체크 토글
                                     isSequenceSaveChecked =
                                         !isSequenceSaveChecked;
+
+                                    /// 체크박스 클릭하면 포커스가 이동하는 함수
+                                    if (isSequenceSaveChecked == true) {
+                                      sequenceNameFocusNode.requestFocus();
+                                    }
+
+                                    /// 화면 재빌드
                                     setState(() {});
                                   },
                                 ),
@@ -866,22 +751,36 @@ class _LessonAddState extends State<LessonAdd> {
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: TextFormField(
+                            focusNode: sequenceNameFocusNode,
+                            controller: sequenceNameController,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
-                            initialValue:
+                            decoration: InputDecoration(
 
-                                /*
-                                  if (저장된 시퀀스 중에 커스텀시퀀스${변수명} 있니?) {
-                                    변수명 = 변수명++;
-                                  } 
-                                 */
-                                '커스텀시퀀스${1}', // 중복된 값 없도록 만들어주는 숫자 변수 필요
-                            decoration:
-                                InputDecoration(border: InputBorder.none),
+                                /// customSequenceName:'커스텀 시퀀스 ${customSequenceNumber}'
+                                /// 중복된 값 없도록 만들어주는 숫자 변수: customSequenceNumber
+                                hintText: customSequenceName,
+                                /* 앞에 있어야 하는 함수
+                                if (저장된 시퀀스 중에 ${변수명} 있니?) {
+                                  customSequenceNumber = customSequenceNumber++;
+                                } 
+                                */
+
+                                /* 뒤에 있어야 하는 함수
+                                if (인풋 없다면) {
+                                  sequenceNameController.text = customSqeunceName;
+                                }
+                                */
+
+                                hintStyle: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Palette.gray00),
+                                border: InputBorder.none),
                           ),
                         ),
 
-                        /// 시퀀스 동작 리스트가 시작되는 부분
+                        /// 시퀀스 영역 시작
                         Container(
                           padding: EdgeInsets.all(15),
                           child: Column(children: [
@@ -947,56 +846,11 @@ class _LessonAddState extends State<LessonAdd> {
                                     // 동작추가시에 textcontroller 추가 생성
                                     createControllers(additionalActionlength);
 
-                                    // for (var i = 0;
-                                    //     i < additionalActionlength;
-                                    //     i++) {
-                                    //   totalNoteTextFieldDocId.add("");
-                                    //   //totalNotes.add("");
-                                    // }
                                     print("동작추가시컨트롤러:${totalNoteControllers}");
                                     print(
                                         "동작추가시노트아이디:${totalNoteTextFieldDocId}");
 
                                     lessonService.notifyListeners();
-
-                                    // if (!(result == null)) {
-                                    //   print(
-                                    //       "result.apparatus-result.position-result.actionName : ${result.apparatus}-${result.position}-${result.actionName}");
-
-                                    //   setState(() {
-                                    //     actionNameController.text =
-                                    //         result.actionName;
-                                    //     switch (result.apparatus) {
-                                    //       case "RE":
-                                    //         apratusNameController.text = "REFORMER";
-                                    //         break;
-                                    //       case "CA":
-                                    //         apratusNameController.text = "CADILLAC";
-                                    //         break;
-                                    //       case "CH":
-                                    //         apratusNameController.text = "CHAIR";
-                                    //         break;
-                                    //       case "LA":
-                                    //         apratusNameController.text =
-                                    //             "LADDER BARREL";
-                                    //         break;
-                                    //       case "SB":
-                                    //         apratusNameController.text =
-                                    //             "SPRING BOARD";
-                                    //         break;
-                                    //       case "SC":
-                                    //         apratusNameController.text =
-                                    //             "SPINE CORRECTOR";
-                                    //         break;
-                                    //       case "MAT":
-                                    //         apratusNameController.text = "MAT";
-                                    //         break;
-                                    //       case "OT":
-                                    //         apratusNameController.text = "OTHERS";
-                                    //         break;
-                                    //     }
-                                    //   });
-                                    // }
                                   },
                                   child: SizedBox(
                                     height: 36,
