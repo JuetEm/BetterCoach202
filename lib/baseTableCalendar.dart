@@ -135,11 +135,13 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                             if (widget.pageName == "수강 시작일") {
                               ticketStartDate =
                                   "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
+                                  ticketStartDateController.text = ticketStartDate;
                               calendarIsOffStaged = true;
                               widget.customFunction();
                             } else if (widget.pageName == "수강 종료일") {
-                              ticketStartDate =
+                              ticketEndDate =
                                   "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
+                                  ticketEndDateController.text = ticketEndDate;
                               calendarIsOffStaged = true;
                               widget.customFunction();
                             } else {

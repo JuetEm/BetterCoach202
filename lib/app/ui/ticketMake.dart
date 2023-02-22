@@ -464,11 +464,7 @@ class _TicketMakeState extends State<TicketMake> {
                         constraints: BoxConstraints.tight(Size.fromHeight(530)),
                         child: BaseTableCalendar(
                           () {
-                            if (calendarName == "수강 시작일") {
-                              ticketStartDateController.text = ticketStartDate;
-                            } else if (calendarName == "수강 종료일") {
-                              ticketEndDateController.text = ticketEndDate;
-                            }
+                            // git test
                             setState(() {});
                           },
                           true,
