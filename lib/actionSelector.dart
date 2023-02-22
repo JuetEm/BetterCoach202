@@ -275,9 +275,9 @@ class _ActionSelectorState extends State<ActionSelector> {
           searchedList.add(element);
         }
       });
-      docs = searchedList ?? []; // 문서들 가져오기
+      docs = searchedList; // 문서들 가져오기
     } else {
-      docs = resultActionList ?? []; // 문서들 가져오기
+      docs = resultActionList; // 문서들 가져오기
     }
 
     print("[AS] 시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");

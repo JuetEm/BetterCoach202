@@ -34,7 +34,7 @@ class _searchState extends State<Search> {
           child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text("노트보기"),
+              title: Text("노트편집"),
               centerTitle: true,
               leading: IconButton(
                 onPressed: () {},
@@ -47,7 +47,9 @@ class _searchState extends State<Search> {
                     // 로그인 페이지로 이동
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage(analytics:MyApp.analytics)),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              LoginPage(analytics: MyApp.analytics)),
                     );
                   },
                   icon: Icon(Icons.account_circle),
@@ -79,7 +81,10 @@ class _searchState extends State<Search> {
                           context.read<AuthService>().signOut();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (_) => LoginPage(analytics: MyApp.analytics,)),
+                            MaterialPageRoute(
+                                builder: (_) => LoginPage(
+                                      analytics: MyApp.analytics,
+                                    )),
                           );
                         },
                         child: const Text('Log Out'),

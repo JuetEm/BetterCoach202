@@ -60,7 +60,7 @@ class MemberList extends StatefulWidget {
 }
 
 class _MemberListState extends State<MemberList> {
-  IconData reportIcon = Icons.report_problem_outlined;
+  IconData reportIcon = Icons.report_outlined;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // 알파벳 자모음 생성
   final alphabets =
@@ -165,7 +165,7 @@ class _MemberListState extends State<MemberList> {
 
     globalVariables.sortList();
 
-    reportIcon = Icons.report_problem_outlined;
+    reportIcon = Icons.report_outlined;
 
     analyticLog.sendAnalyticsEvent(screenName, "init", "init 스트링", "init파라미터");
 
@@ -260,13 +260,58 @@ class _MemberListState extends State<MemberList> {
             //   icon: Icon(Icons.calendar_month),
             // ),
             actions: [
+              /// 회원 추가 버튼
+              /// 기능을 옮겨주세요ㅕ
               InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                onTap: () {
+                  print("회원추가");
+                  memberAddMode = "추가";
+
+                  List<dynamic> args = [
+                    memberAddMode,
+                    globalVariables.resultList,
+                    globalVariables.actionList,
+                  ];
+
+                  // 저장하기 성공시 Home로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      // 로그아웃 용 야매버튼
+                      // builder: (context) =>
+                      //     LoginPage(analytics: MyApp.analytics),
+                      // 이게 진짜 버튼
+                      builder: (context) => MemberAdd(),
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(
+                        arguments: args,
+                      ),
+                    ),
+                  ).then((value) {
+                    globalVariables.sortList();
+                    List tmpResultList = value as List;
+                    // print("어디지?");
+                    setState(() {
+                      globalVariables.resultList = tmpResultList[0];
+                      globalVariables.actionList = tmpResultList[1];
+                    });
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Icon(
+                    Icons.person_add,
+                    color: Palette.gray66,
+                  ),
+                ),
+              ),
+              InkWell(
                 onTapDown: (details) async {
                   print("IconButton onTapDown!! details : ${details}");
 
                   setState(() {
-                    reportIcon = Icons.report_problem;
+                    reportIcon = Icons.report;
                   });
 
                   await Navigator.push(
@@ -276,24 +321,25 @@ class _MemberListState extends State<MemberList> {
                     print("Navigator.push value : ${value}");
 
                     setState(() {
-                      reportIcon = Icons.report_problem_outlined;
+                      reportIcon = Icons.report_outlined;
                     });
                   });
                 },
                 onTapUp: (details) {
                   print("IconButton onTapUp!! details : ${details}");
                   setState(() {
-                    reportIcon = Icons.report_problem_outlined;
+                    reportIcon = Icons.report_outlined;
                   });
                 },
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Icon(
                     reportIcon,
                     color: Palette.gray66,
                   ),
                 ),
               ),
+              SizedBox(width: 10)
             ],
           ),
           /* endDrawer: Container(
@@ -327,7 +373,7 @@ class _MemberListState extends State<MemberList> {
           ), */
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -624,122 +670,8 @@ class _MemberListState extends State<MemberList> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 14,
-                  ),
-
-                  // //추가버튼 FloatingActionbutton으로 변경
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     FloatingActionButton(
-                  //       onPressed: () {
-                  //         print("회원추가");
-                  //         // 저장하기 성공시 Home로 이동
-                  //         Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(builder: (_) => MemberAdd()),
-                  //         );
-                  //       },
-                  //       child: Icon(Icons.person_add),
-                  //       backgroundColor: Palette.buttonOrange,
-                  //     ),
-                  //   ],
-                  // ),
-
-                  /// 추가 버튼
-                  // ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //     padding: EdgeInsets.all(0),
-                  //     elevation: 0,
-                  //     backgroundColor: Colors.transparent,
-                  //     shadowColor: Colors.transparent,
-                  //   ),
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.all(
-                  //         Radius.circular(10.0),
-                  //       ),
-                  //       color: Palette.buttonOrange,
-                  //     ),
-                  //     height: 60,
-                  //     width: double.infinity,
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       children: [
-                  //         Text(
-                  //           "회원추가",
-                  //           style: TextStyle(fontSize: 18),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  //   onPressed: () {
-                  //     print("회원추가");
-                  //     // 저장하기 성공시 Home로 이동
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (_) => MemberAdd()),
-                  //     );
-                  //   },
-                  // ),
                 ],
               ),
-            ),
-          ),
-          //bottomNavigationBar: BaseBottomAppBar(),
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: () {
-          //     print('floating button');
-          //   },
-          //   backgroundColor: Colors.blue,
-          //   child: const Icon(Icons.add),
-          // ),
-
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                print("회원추가");
-                memberAddMode = "추가";
-
-                List<dynamic> args = [
-                  memberAddMode,
-                  globalVariables.resultList,
-                  globalVariables.actionList,
-                ];
-
-                // 저장하기 성공시 Home로 이동
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    // 로그아웃 용 야매버튼
-                    // builder: (context) =>
-                    //     LoginPage(analytics: MyApp.analytics),
-                    // 이게 진짜 버튼
-                    builder: (context) => MemberAdd(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(
-                      arguments: args,
-                    ),
-                  ),
-                ).then((value) {
-                  globalVariables.sortList();
-                  List tmpResultList = value as List;
-                  // print("어디지?");
-                  setState(() {
-                    globalVariables.resultList = tmpResultList[0];
-                    globalVariables.actionList = tmpResultList[1];
-                  });
-                });
-              },
-              label: Text(
-                '회원 추가',
-                style: TextStyle(fontSize: 16, letterSpacing: -0.2),
-              ),
-              icon: Icon(Icons.person_add),
-              backgroundColor: Palette.buttonOrange,
             ),
           ),
         );

@@ -223,76 +223,10 @@ class _MemberListState extends State<MemberList> {
                     SizedBox(
                       height: 14,
                     ),
-
-                    // //추가버튼 FloatingActionbutton으로 변경
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [
-                    //     FloatingActionButton(
-                    //       onPressed: () {
-                    //         print("회원추가");
-                    //         // 저장하기 성공시 Home로 이동
-                    //         Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(builder: (_) => MemberAdd()),
-                    //         );
-                    //       },
-                    //       child: Icon(Icons.person_add),
-                    //       backgroundColor: Palette.buttonOrange,
-                    //     ),
-                    //   ],
-                    // ),
-
-                    /// 추가 버튼
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //     padding: EdgeInsets.all(0),
-                    //     elevation: 0,
-                    //     backgroundColor: Colors.transparent,
-                    //     shadowColor: Colors.transparent,
-                    //   ),
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.all(
-                    //         Radius.circular(10.0),
-                    //       ),
-                    //       color: Palette.buttonOrange,
-                    //     ),
-                    //     height: 60,
-                    //     width: double.infinity,
-                    //     child: Column(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       crossAxisAlignment: CrossAxisAlignment.center,
-                    //       children: [
-                    //         Text(
-                    //           "회원추가",
-                    //           style: TextStyle(fontSize: 18),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    //   onPressed: () {
-                    //     print("회원추가");
-                    //     // 저장하기 성공시 Home로 이동
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (_) => MemberAdd()),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
               ),
             ),
-            //bottomNavigationBar: BaseBottomAppBar(),
-            // floatingActionButton: FloatingActionButton(
-            //   onPressed: () {
-            //     print('floating button');
-            //   },
-            //   backgroundColor: Colors.blue,
-            //   child: const Icon(Icons.add),
-            // ),
-
             floatingActionButton: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               child: FloatingActionButton.extended(

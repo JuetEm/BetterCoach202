@@ -676,7 +676,8 @@ class _MemberInfoState extends State<MemberInfo> {
                 viewMode == "기본정보" ? '정보 수정' : '노트 작성',
                 style: TextStyle(fontSize: 16, letterSpacing: -0.2),
               ),
-              icon: Icon(Icons.edit),
+              icon:
+                  viewMode == "기본정보" ? Icon(Icons.edit) : Icon(Icons.post_add),
               backgroundColor: Palette.buttonOrange,
             ),
           ),
@@ -1428,7 +1429,7 @@ class LessonCard extends StatelessWidget {
               onTap: () {
                 List<TmpLessonInfo> tmpLessonInfoList = [];
                 eventList = [];
-                lessonAddMode = "노트보기";
+                lessonAddMode = "노트편집";
                 List<dynamic> args = [
                   userInfo,
                   lessonDate,

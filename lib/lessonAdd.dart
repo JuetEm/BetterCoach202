@@ -1701,7 +1701,7 @@ class _LessonAddState extends State<LessonAdd> {
                             }),
 
                         const SizedBox(height: 10),
-                        lessonAddMode == "노트보기"
+                        lessonAddMode == "노트편집"
                             ? DeleteButton(
                                 actionNullCheck: actionNullCheck,
                                 todayNotedocId: todayNotedocId,
