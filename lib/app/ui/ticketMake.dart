@@ -55,6 +55,17 @@ String getTodayDate() {
   return today.substring(0, 10);
 }
 
+String getMonthLateDate() {
+  String today = "";
+
+  DateTime now = DateTime.now();
+
+  today = DateFormat("yyyy-MM-dd")
+      .format(DateTime(now.year, now.month + 1, now.day));
+  print("month today : ${today}");
+  return today.substring(0, 10);
+}
+
 class TicketMake extends StatefulWidget {
   UserInfo? userInfo;
   TicketMake({super.key});
@@ -83,6 +94,9 @@ class _TicketMakeState extends State<TicketMake> {
     ticketStartDateController = TextEditingController();
     ticketEndDateController = TextEditingController();
     ticketDateLeftController = TextEditingController();
+
+    ticketStartDateController.text = getTodayDate();
+    ticketEndDateController.text = getMonthLateDate();
   }
 
   @override
@@ -116,13 +130,15 @@ class _TicketMakeState extends State<TicketMake> {
     tickets = [
       DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력')
     ];
-    for(var ticketVal in globalVariables.ticketList){
-          var model = DropDownValueModel(name: ticketVal['ticketTitle'], value: ticketVal['ticketTitle'], toolTipMsg: ticketVal['ticketDescription']);
-          tickets.add(model);
-        }
+    for (var ticketVal in globalVariables.ticketList) {
+      var model = DropDownValueModel(
+          name: ticketVal['ticketTitle'],
+          value: ticketVal['ticketTitle'],
+          toolTipMsg: ticketVal['ticketDescription']);
+      tickets.add(model);
+    }
     return Consumer<TicketService>(
       builder: (context, ticketService, child) {
-        
         return Scaffold(
           appBar: BaseAppBarMethod(
             context,
@@ -233,9 +249,42 @@ class _TicketMakeState extends State<TicketMake> {
                         if (selectedticketName == "직접입력") {
                           isTicketTitleOffStaged = false;
                           ticketTitle = ticketTitleController.text;
+
+                          ticketCountAll = 0;
+                          ticketCountAllController.text = "";
+
+                          ticketStartDate = "";
+                          ticketStartDateController.text = "";
+
+                          ticketEndDate = "";
+                          ticketEndDateController.text = "";
+
+                          ticketDescription = "";
+                          ticketDescriptionController.text = "";
                         } else {
                           isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
+
+                          for (var ticketVal in globalVariables.ticketList) {
+                            if (ticketVal['ticketTitle'] == ticketTitle) {
+                              ticketCountAll = ticketVal['ticketTitle'];
+                              ticketCountAllController.text =
+                                  ticketCountAll.toString();
+
+                              ticketStartDate = ticketVal['ticketStartDate'];
+                              ticketStartDateController.text = ticketStartDate;
+
+                              ticketEndDate = ticketVal['ticketEndDate'];
+                              ticketEndDateController.text = ticketEndDate;
+
+                              ticketDescription =
+                                  ticketVal['ticketDescription'];
+                              ticketDescriptionController.text =
+                                  ticketDescription;
+
+                              break;
+                            }
+                          }
                         }
                         setState(() {});
                       },
