@@ -17,11 +17,11 @@ String screenName = "수강권 추가";
 
 String calendarName = "";
 
-bool isOffStaged = true;
+bool isTicketTitleOffStaged = true;
 bool calendarIsOffStaged = true;
 String selectedticketName = "";
 
-final List<DropDownValueModel> tickets = [
+List<DropDownValueModel> tickets = [
   DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력')
 ];
 
@@ -36,6 +36,8 @@ late TextEditingController ticketDescriptionController;
 late TextEditingController ticketStartDateController;
 late TextEditingController ticketEndDateController;
 late TextEditingController ticketDateLeftController;
+
+int ticketUsingCount = 0;
 
 int ticketCountLeft = 0;
 int ticketCountAll = 0;
@@ -97,20 +99,30 @@ class _TicketMakeState extends State<TicketMake> {
     ticketDescriptionController.dispose();
     ticketStartDateController.dispose();
     ticketEndDateController.dispose();
+
+    ticketCountLeft = 0;
+    ticketCountAll = 0;
+    ticketTitle = "";
+    ticketDescription = "";
+    ticketStartDate = "";
+    ticketEndDate = "";
+    ticketDateLeft = 0;
+
+    isTicketTitleOffStaged = true;
   }
 
   @override
   Widget build(BuildContext context) {
+    tickets = [
+      DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력')
+    ];
+    for(var ticketVal in globalVariables.ticketList){
+          var model = DropDownValueModel(name: ticketVal['ticketTitle'], value: ticketVal['ticketTitle'], toolTipMsg: ticketVal['ticketDescription']);
+          tickets.add(model);
+        }
     return Consumer<TicketService>(
       builder: (context, ticketService, child) {
-        ticketService.read(widget.userInfo!.uid).then((value) {
-          for (int i = 0; i < value.length; i++) {
-            tickets.add(DropDownValueModel(
-                name: value[i]['ticketTitle'],
-                value: value[i]['ticketTitle'],
-                toolTipMsg: value[i]['ticketDescription']));
-          }
-        });
+        
         return Scaffold(
           appBar: BaseAppBarMethod(
             context,
@@ -137,6 +149,18 @@ class _TicketMakeState extends State<TicketMake> {
                         TextButton(
                           onPressed: () {
                             print("수강권 추가 완료 버튼 클릭!!");
+                            ticketService.create(
+                                widget.userInfo!.uid,
+                                ticketUsingCount,
+                                ticketCountLeft,
+                                ticketCountAll,
+                                ticketTitle,
+                                ticketDescription,
+                                DateTime.parse(ticketStartDate),
+                                DateTime.parse(ticketEndDate),
+                                ticketDateLeft,
+                                DateTime.now());
+                            Navigator.pop(context);
                           },
                           child: Text("완료", style: TextStyle(fontSize: 16)),
                         ),
@@ -207,10 +231,10 @@ class _TicketMakeState extends State<TicketMake> {
                         selectedticketName =
                             ticketMakeController.dropDownValue!.value;
                         if (selectedticketName == "직접입력") {
-                          isOffStaged = false;
+                          isTicketTitleOffStaged = false;
                           ticketTitle = ticketTitleController.text;
                         } else {
-                          isOffStaged = true;
+                          isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
                         }
                         setState(() {});
@@ -219,7 +243,7 @@ class _TicketMakeState extends State<TicketMake> {
 
                     /// 직접 입력 선택 시
                     Offstage(
-                      offstage: isOffStaged,
+                      offstage: isTicketTitleOffStaged,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                         child: TextField(
@@ -338,6 +362,7 @@ class _TicketMakeState extends State<TicketMake> {
                                     setState(() {});
                                   },
                                   child: TextField(
+                                    controller: ticketStartDateController,
                                     onTap: () {
                                       print("수강 시작일 Textfiled onTap called!");
                                     },
@@ -406,10 +431,10 @@ class _TicketMakeState extends State<TicketMake> {
                                     print("수강 종료일 inkWell onTap called!");
                                     calendarIsOffStaged = !calendarIsOffStaged;
                                     calendarName = "수강 종료일";
-
                                     setState(() {});
                                   },
                                   child: TextField(
+                                    controller: ticketEndDateController,
                                     onTap: () {
                                       print("수강 종료일 TextField onTap called!");
                                     },
@@ -465,11 +490,12 @@ class _TicketMakeState extends State<TicketMake> {
                         child: BaseTableCalendar(
                           () {
                             // git test
+                            print("ticketStartDate : ${ticketStartDate}");
                             setState(() {});
                           },
                           true,
                           selectedDate: "",
-                          pageName: "수강 시작일",
+                          pageName: calendarName,
                           eventList: [],
                         ),
                       ),
@@ -489,6 +515,13 @@ class _TicketMakeState extends State<TicketMake> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: TextField(
+                        maxLength: 30,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                        onChanged: (value) {
+                          ticketDescription = value;
+                          setState(() {});
+                        },
+                        controller: ticketDescriptionController,
                         minLines: 3,
                         maxLines: 20,
                         decoration: InputDecoration(
