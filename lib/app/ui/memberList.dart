@@ -8,6 +8,8 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/ui/report.dart';
+import 'package:web_project/app/ui/sequenceLibrary.dart';
+import 'package:web_project/app/ui/ticketLibrary.dart';
 import 'package:web_project/testShowDialog.dart';
 
 import '../../auth_service.dart';
@@ -275,8 +277,18 @@ class _MemberListState extends State<MemberList> {
                       color: Palette.gray66,
                     ),
                     title: Text('수강권 라이브러리'),
-                    onTap: () {
+                    onTap: () async {
                       print('수강권 라이브러리 is clicked');
+                      var result = await // 저장하기 성공시 Home로 이동
+                          Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TicketLibrary(userInfo)),
+                      ).then((value) {
+                        print("수강권 추가 result");
+                      });
+                      
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
