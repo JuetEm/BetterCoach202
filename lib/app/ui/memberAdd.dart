@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -294,36 +296,102 @@ class _MemberAddState extends State<MemberAdd> {
                           SizedBox(height: 10),
 
                           /// 이름 입력창
-                          BaseTextField(
-                            customController: nameController,
-                            customFocusNode: nameFocusNode,
-                            hint: "이름(9자 미만)",
-                            showArrow: false,
-                            customFunction: () {},
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Palette.gray99,
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: BaseTextField(
+                                  customController: nameController,
+                                  customFocusNode: nameFocusNode,
+                                  hint: "회원명(9자 이하)",
+                                  showArrow: false,
+                                  customFunction: () {},
+                                ),
+                              ),
+                            ],
                           ),
 
                           /// 등록일 입력창
-                          BaseTextField(
-                            customController: registerDateController,
-                            customFocusNode: registerDateFocusNode,
-                            hint: "등록일",
-                            showArrow: true,
-                            customFunction: () {
-                              globalFunction.getDateFromCalendar(
-                                  context,
-                                  registerDateController,
-                                  "등록일",
-                                  registerDateController.text);
-                            },
+                          Container(
+                            child: Material(
+                              color: Palette.mainBackground,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {
+                                  globalFunction.getDateFromCalendar(
+                                      context,
+                                      registerDateController,
+                                      "등록일",
+                                      registerDateController.text);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_today,
+                                        color: Palette.gray99,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: TextFormField(
+                                          textAlign: TextAlign.start,
+                                          enabled: false,
+                                          maxLines: null,
+                                          controller: registerDateController,
+                                          focusNode: registerDateFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: '등록일을 선택하세요.',
+                                            hintStyle: TextStyle(
+                                                color: Palette.gray99,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          style: TextStyle(
+                                            color: Palette.gray00,
+                                          ),
+                                        ),
+                                      ),
+                                      Text('등록일 선택하기',
+                                          style:
+                                              TextStyle(color: Palette.gray99)),
+                                      SizedBox(width: 10),
+                                      Icon(
+                                        Icons.arrow_forward_ios_outlined,
+                                        color: Palette.gray99,
+                                        size: 16,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
 
                           /// 전화번호 입력창
-                          BaseTextField(
-                            customController: phoneNumberController,
-                            customFocusNode: phoneNumberFocusNode,
-                            hint: "전화번호",
-                            showArrow: false,
-                            customFunction: () {},
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.call,
+                                color: Palette.gray99,
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: BaseTextField(
+                                  customController: phoneNumberController,
+                                  customFocusNode: phoneNumberFocusNode,
+                                  hint: "전화번호",
+                                  showArrow: false,
+                                  customFunction: () {},
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -480,6 +548,7 @@ class _MemberAddState extends State<MemberAdd> {
 
                   /// ### 이전 수강정보 부분은 나중에 삭제하는걸루 ###
 
+                  /*
                   /// 입력창_수강정보
                   Container(
                     color: Palette.mainBackground,
@@ -623,6 +692,7 @@ class _MemberAddState extends State<MemberAdd> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  */
 
                   /// 입력창_운동목표
                   Container(
@@ -646,26 +716,6 @@ class _MemberAddState extends State<MemberAdd> {
 
                           Divider(height: 1),
                           SizedBox(height: 10),
-
-                          Offstage(
-                            offstage: false,
-                            //offstage: selectedGoals.isNotEmpty,
-                            child: SizedBox(
-                              //height: 30,
-                              //width: 100,
-                              child: Center(
-                                child: customGoalAction(
-                                    context,
-                                    goalController,
-                                    "운동목표",
-                                    "목표를 선택해주세요.",
-                                    goalList,
-                                    selectedGoals,
-                                    goalTileColorList,
-                                    goalTextColorList),
-                              ),
-                            ),
-                          ),
 
                           Offstage(
                             offstage: selectedGoals.isEmpty,
@@ -725,27 +775,8 @@ class _MemberAddState extends State<MemberAdd> {
 
                           Divider(height: 1),
                           SizedBox(height: 10),
-                          Offstage(
-                            offstage: false,
-                            //offstage: selelctedAnalyzedList.isNotEmpty,
-                            child: SizedBox(
-                              //height: 30,
-                              //width: 100,
-                              child: Center(
-                                child: customBodyAction(
-                                  context,
-                                  bodyAnalyzeController,
-                                  "체형분석",
-                                  "체형 특이사항을 선택해주세요.",
-                                  bodyAnalyzedList,
-                                  selelctedAnalyzedList,
-                                  bodyTileColorList,
-                                  bodyTextColorList,
-                                ),
-                              ),
-                            ),
-                          ),
 
+                          /// 칩들
                           Offstage(
                             //offstage: false,
                             offstage: selelctedAnalyzedList.isEmpty,
@@ -780,7 +811,6 @@ class _MemberAddState extends State<MemberAdd> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 10),
 
                   /// 통증/상해/병력
@@ -804,25 +834,6 @@ class _MemberAddState extends State<MemberAdd> {
 
                           Divider(height: 1),
                           SizedBox(height: 10),
-                          Offstage(
-                            offstage: false,
-                            //offstage: selectedHistoryList.isNotEmpty,
-                            child: SizedBox(
-                              //height: 30,
-                              //width: 100,
-                              child: Center(
-                                child: customMedicalHistoryAction(
-                                    context,
-                                    medicalHistoryController,
-                                    "통증/상해/병력",
-                                    "통증/상해 부위를 선택해주세요.",
-                                    medicalHistoryList,
-                                    selectedHistoryList,
-                                    historyTileColorList,
-                                    historyTextColorList),
-                              ),
-                            ),
-                          ),
 
                           Offstage(
                             offstage: selectedHistoryList.isEmpty,
@@ -1290,160 +1301,163 @@ class _MemberAddState extends State<MemberAdd> {
           ),
         ),
         Spacer(),
-        SizedBox(height: 40),
-        // IconButton(
-        //     onPressed: () {
-        //       // Bottom Sheet 함수 작성
-        //       showModalBottomSheet(
-        //           shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(10.0),
-        //           ),
-        //           backgroundColor: Palette.secondaryBackground,
-        //           context: context,
-        //           builder: ((context) {
-        //             return StatefulBuilder(
-        //                 builder: (context, StateSetter stateSetter) {
-        //               return Padding(
-        //                 padding: const EdgeInsets.all(20),
-        //                 child: Column(
-        //                   mainAxisSize: MainAxisSize.min,
-        //                   children: <Widget>[
-        //                     Padding(
-        //                       padding: const EdgeInsets.all(10.0),
-        //                       child: Row(
-        //                         children: [
-        //                           Expanded(
-        //                             child: Container(
-        //                               width: double.infinity,
-        //                               alignment: Alignment.topLeft,
-        //                               child: Text(
-        //                                 bottomSheetTitle,
-        //                                 style: TextStyle(
-        //                                     fontSize: 14,
-        //                                     color: Palette.gray00,
-        //                                     fontWeight: FontWeight.bold),
-        //                               ),
-        //                             ),
-        //                           ),
-        //                           TextButton(
-        //                             onPressed: () {
-        //                               print(
-        //                                   "resultObjectList : ${resultObjectList}");
-        //                               // String goalsSum = "";
-        //                               // for (int i = 0;
-        //                               //     i < resultObjectList.length;
-        //                               //     i++) {
-        //                               //   if (i == resultObjectList.length - 1) {
-        //                               //     goalsSum += resultObjectList[i];
-        //                               //   } else {
-        //                               //     goalsSum +=
-        //                               //         resultObjectList[i] + ", ";
-        //                               //   }
-        //                               // }
-        //                               // customController.text = goalsSum;
-        //                               customTileColorList.clear();
-        //                               customBorderColorList.clear();
-        //                               Navigator.pop(context);
-        //                             },
-        //                             child: Text(
-        //                               '선택완료',
-        //                               style: TextStyle(
-        //                                   fontSize: 14,
-        //                                   color: Palette.textBlue,
-        //                                   fontWeight: FontWeight.bold),
-        //                             ),
-        //                           )
-        //                         ],
-        //                       ),
-        //                     ),
-        //                     SizedBox(height: 10),
-        //                     Expanded(
-        //                       child: GridView.builder(
-        //                         shrinkWrap: true,
-        //                         itemCount: objectList.length,
-        //                         itemBuilder: ((context, index) {
-        //                           var value = objectList[index];
-        //                           // stateSetter((() {
-        //                           //   setState(() {
-        //                           if (resultObjectList.contains(value)) {
-        //                             customTileColorList
-        //                                 .add(Palette.backgroundOrange);
-        //                             customBorderColorList
-        //                                 .add(Colors.transparent);
-        //                             // print("언제 울리니? 1 ");
-        //                           } else {
-        //                             customTileColorList.add(Colors.transparent);
-        //                             customBorderColorList.add(Palette.grayEE);
-        //                             // print("언제 울리니? 2 ");
-        //                           }
-        //                           //   });
-        //                           // }));
+        IconButton(
+            onPressed: () async {
+              print("신규 동작 추가");
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Palette.secondaryBackground,
+                  context: context,
+                  builder: ((context) {
+                    return StatefulBuilder(
+                        builder: (context, StateSetter stateSetter) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        bottomSheetTitle,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Palette.gray00,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(
+                                          "resultObjectList : ${resultObjectList}");
+                                      // String goalsSum = "";
+                                      // for (int i = 0;
+                                      //     i < resultObjectList.length;
+                                      //     i++) {
+                                      //   if (i == resultObjectList.length - 1) {
+                                      //     goalsSum += resultObjectList[i];
+                                      //   } else {
+                                      //     goalsSum +=
+                                      //         resultObjectList[i] + ", ";
+                                      //   }
+                                      // }
+                                      // customController.text = goalsSum;
+                                      customTileColorList.clear();
+                                      customBorderColorList.clear();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '선택완료',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Palette.textBlue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: objectList.length,
+                                itemBuilder: ((context, index) {
+                                  var value = objectList[index];
+                                  // stateSetter((() {
+                                  //   setState(() {
+                                  if (resultObjectList.contains(value)) {
+                                    customTileColorList
+                                        .add(Palette.backgroundOrange);
+                                    customBorderColorList
+                                        .add(Colors.transparent);
+                                    // print("언제 울리니? 1 ");
+                                  } else {
+                                    customTileColorList.add(Colors.transparent);
+                                    customBorderColorList.add(Palette.grayEE);
+                                    // print("언제 울리니? 2 ");
+                                  }
+                                  //   });
+                                  // }));
 
-        //                           // return Text(widget.optionList[index]);
-        //                           return InkWell(
-        //                             onTap: () {
-        //                               stateSetter(
-        //                                 () {
-        //                                   setState(() {
-        //                                     if (resultObjectList
-        //                                         .contains(value)) {
-        //                                       customTileColorList[index] =
-        //                                           Colors.transparent;
-        //                                       customBorderColorList[index] =
-        //                                           Palette.grayEE;
-        //                                       resultObjectList.remove(value);
-        //                                     } else {
-        //                                       customTileColorList[index] =
-        //                                           Palette.backgroundOrange;
-        //                                       customBorderColorList[index] =
-        //                                           Colors.transparent;
-        //                                       resultObjectList.add(value);
-        //                                     }
-        //                                   });
-        //                                 },
-        //                               );
-        //                             },
-        //                             child: Container(
-        //                                 decoration: BoxDecoration(
-        //                                     border: Border.all(
-        //                                         color: customBorderColorList[
-        //                                             index]),
-        //                                     borderRadius: BorderRadius.all(
-        //                                       Radius.circular(30),
-        //                                     ),
-        //                                     color: customTileColorList[index]),
-        //                                 child: Center(
-        //                                     child: Text(
-        //                                   value,
-        //                                   style: TextStyle(
-        //                                       fontSize: 14,
-        //                                       color: Palette.gray33),
-        //                                 ))),
-        //                           );
-        //                         }),
-        //                         gridDelegate:
-        //                             SliverGridDelegateWithFixedCrossAxisCount(
-        //                           crossAxisCount: 3,
-        //                           childAspectRatio: 3 / 1,
-        //                           mainAxisSpacing: 10,
-        //                           crossAxisSpacing: 10,
-        //                         ),
-        //                       ),
-        //                     )
-        //                   ],
-        //                 ),
-        //               );
-        //             });
-        //           }));
-        //     },
-        //     icon: Icon(
-        //       Icons.expand_more_outlined,
-        //       color: Palette.gray66,
-        //     )),
+                                  // return Text(widget.optionList[index]);
+                                  return InkWell(
+                                    onTap: () {
+                                      stateSetter(
+                                        () {
+                                          setState(() {
+                                            if (resultObjectList
+                                                .contains(value)) {
+                                              customTileColorList[index] =
+                                                  Colors.transparent;
+                                              customBorderColorList[index] =
+                                                  Palette.grayEE;
+                                              resultObjectList.remove(value);
+                                            } else {
+                                              customTileColorList[index] =
+                                                  Palette.backgroundOrange;
+                                              customBorderColorList[index] =
+                                                  Colors.transparent;
+                                              resultObjectList.add(value);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: customBorderColorList[
+                                                    index]),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(30),
+                                            ),
+                                            color: customTileColorList[index]),
+                                        child: Center(
+                                            child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Palette.gray33),
+                                        ))),
+                                  );
+                                }),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 3 / 1,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  }));
+
+              // LessonAdd로 이동
+              //
+            },
+            icon: Icon(
+              Icons.add,
+              color: Palette.textBlue,
+            ))
       ],
     );
   }
 
+// 운동목표 추가버튼(구)
   Column customGoalAction(
       BuildContext context,
       TextEditingController customController,
@@ -1641,6 +1655,7 @@ class _MemberAddState extends State<MemberAdd> {
     );
   }
 
+// 체형분석 타이틀+버튼(신)
   Row customBodyGridView(
       BuildContext context,
       TextEditingController customController,
@@ -1660,155 +1675,159 @@ class _MemberAddState extends State<MemberAdd> {
             color: Palette.gray00,
           ),
         ),
-        SizedBox(height: 40),
         Spacer(),
-        // IconButton(
-        //     onPressed: () {
-        //       // Bottom Sheet 함수 작성
-        //       showModalBottomSheet(
-        //           shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(10.0),
-        //           ),
-        //           backgroundColor: Palette.secondaryBackground,
-        //           context: context,
-        //           builder: ((context) {
-        //             return StatefulBuilder(
-        //                 builder: (context, StateSetter stateSetter) {
-        //               return Padding(
-        //                 padding: const EdgeInsets.all(20),
-        //                 child: Column(
-        //                   mainAxisSize: MainAxisSize.min,
-        //                   children: <Widget>[
-        //                     Padding(
-        //                       padding: const EdgeInsets.all(10.0),
-        //                       child: Row(
-        //                         children: [
-        //                           Expanded(
-        //                             child: Container(
-        //                               width: double.infinity,
-        //                               alignment: Alignment.topLeft,
-        //                               child: Text(
-        //                                 bottomSheetTitle,
-        //                                 style: TextStyle(
-        //                                     fontSize: 14,
-        //                                     color: Palette.gray00,
-        //                                     fontWeight: FontWeight.bold),
-        //                               ),
-        //                             ),
-        //                           ),
-        //                           TextButton(
-        //                             onPressed: () {
-        //                               print(
-        //                                   "resultObjectList : ${resultObjectList}");
-        //                               // String goalsSum = "";
-        //                               // for (int i = 0;
-        //                               //     i < resultObjectList.length;
-        //                               //     i++) {
-        //                               //   if (i == resultObjectList.length - 1) {
-        //                               //     goalsSum += resultObjectList[i];
-        //                               //   } else {
-        //                               //     goalsSum +=
-        //                               //         resultObjectList[i] + ", ";
-        //                               //   }
-        //                               // }
-        //                               // customController.text = goalsSum;
-        //                               customTileColorList.clear();
-        //                               customBorderColorList.clear();
-        //                               Navigator.pop(context);
-        //                             },
-        //                             child: Text(
-        //                               '선택완료',
-        //                               style: TextStyle(
-        //                                   fontSize: 14,
-        //                                   color: Palette.textBlue,
-        //                                   fontWeight: FontWeight.bold),
-        //                             ),
-        //                           )
-        //                         ],
-        //                       ),
-        //                     ),
-        //                     SizedBox(height: 10),
-        //                     Expanded(
-        //                       child: GridView.builder(
-        //                         shrinkWrap: true,
-        //                         itemCount: objectList.length,
-        //                         itemBuilder: ((context, index) {
-        //                           var value = objectList[index];
-        //                           if (resultObjectList.contains(value)) {
-        //                             customTileColorList.add(Palette.grayEE);
-        //                             customBorderColorList
-        //                                 .add(Colors.transparent);
-        //                             // print("언제 울리니? 1 ");
-        //                           } else {
-        //                             customTileColorList.add(Colors.transparent);
-        //                             customBorderColorList.add(Palette.grayEE);
-        //                             // print("언제 울리니? 2 ");
-        //                           }
-        //                           // return Text(widget.optionList[index]);
-        //                           return InkWell(
-        //                             onTap: () {
-        //                               stateSetter(
-        //                                 () {
-        //                                   setState(() {
-        //                                     if (resultObjectList
-        //                                         .contains(value)) {
-        //                                       customTileColorList[index] =
-        //                                           Colors.transparent;
-        //                                       customBorderColorList[index] =
-        //                                           Palette.grayEE;
-        //                                       resultObjectList.remove(value);
-        //                                     } else {
-        //                                       customTileColorList[index] =
-        //                                           Palette.grayEE;
-        //                                       customBorderColorList[index] =
-        //                                           Colors.transparent;
-        //                                       resultObjectList.add(value);
-        //                                     }
-        //                                   });
-        //                                 },
-        //                               );
-        //                             },
-        //                             child: Container(
-        //                                 decoration: BoxDecoration(
-        //                                     border: Border.all(
-        //                                         color: customBorderColorList[
-        //                                             index]),
-        //                                     borderRadius: BorderRadius.all(
-        //                                       Radius.circular(30),
-        //                                     ),
-        //                                     color: customTileColorList[index]),
-        //                                 child: Center(
-        //                                     child: Text(
-        //                                   value,
-        //                                   style: TextStyle(
-        //                                       fontSize: 14,
-        //                                       color: Palette.gray33),
-        //                                 ))),
-        //                           );
-        //                         }),
-        //                         gridDelegate:
-        //                             SliverGridDelegateWithFixedCrossAxisCount(
-        //                           crossAxisCount: 3,
-        //                           childAspectRatio: 3 / 1,
-        //                           mainAxisSpacing: 10,
-        //                           crossAxisSpacing: 10,
-        //                         ),
-        //                       ),
-        //                     )
-        //                   ],
-        //                 ),
-        //               );
-        //             });
-        //           }));
-        //     },
-        //     icon: Icon(
-        //       Icons.expand_more_outlined,
-        //       color: Palette.gray66,
-        //     )),
+        IconButton(
+            onPressed: () async {
+              print("신규 동작 추가");
+              // Bottom Sheet 함수 작성
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Palette.secondaryBackground,
+                  context: context,
+                  builder: ((context) {
+                    return StatefulBuilder(
+                        builder: (context, StateSetter stateSetter) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        bottomSheetTitle,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Palette.gray00,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(
+                                          "resultObjectList : ${resultObjectList}");
+                                      // String goalsSum = "";
+                                      // for (int i = 0;
+                                      //     i < resultObjectList.length;
+                                      //     i++) {
+                                      //   if (i == resultObjectList.length - 1) {
+                                      //     goalsSum += resultObjectList[i];
+                                      //   } else {
+                                      //     goalsSum +=
+                                      //         resultObjectList[i] + ", ";
+                                      //   }
+                                      // }
+                                      // customController.text = goalsSum;
+                                      customTileColorList.clear();
+                                      customBorderColorList.clear();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '선택완료',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Palette.textBlue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: objectList.length,
+                                itemBuilder: ((context, index) {
+                                  var value = objectList[index];
+                                  if (resultObjectList.contains(value)) {
+                                    customTileColorList.add(Palette.grayEE);
+                                    customBorderColorList
+                                        .add(Colors.transparent);
+                                    // print("언제 울리니? 1 ");
+                                  } else {
+                                    customTileColorList.add(Colors.transparent);
+                                    customBorderColorList.add(Palette.grayEE);
+                                    // print("언제 울리니? 2 ");
+                                  }
+                                  // return Text(widget.optionList[index]);
+                                  return InkWell(
+                                    onTap: () {
+                                      stateSetter(
+                                        () {
+                                          setState(() {
+                                            if (resultObjectList
+                                                .contains(value)) {
+                                              customTileColorList[index] =
+                                                  Colors.transparent;
+                                              customBorderColorList[index] =
+                                                  Palette.grayEE;
+                                              resultObjectList.remove(value);
+                                            } else {
+                                              customTileColorList[index] =
+                                                  Palette.grayEE;
+                                              customBorderColorList[index] =
+                                                  Colors.transparent;
+                                              resultObjectList.add(value);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: customBorderColorList[
+                                                    index]),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(30),
+                                            ),
+                                            color: customTileColorList[index]),
+                                        child: Center(
+                                            child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Palette.gray33),
+                                        ))),
+                                  );
+                                }),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 3 / 1,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  }));
+
+              // LessonAdd로 이동
+              //
+            },
+            icon: Icon(
+              Icons.add,
+              color: Palette.textBlue,
+            ))
       ],
     );
   }
 
+// 체형분석 추가버튼(구)
   Column customBodyAction(
       BuildContext context,
       TextEditingController customController,
@@ -2001,6 +2020,7 @@ class _MemberAddState extends State<MemberAdd> {
     );
   }
 
+// 통증상해병력 타이틀+버튼(신)
   Row customMedicalHistoryGridView(
       BuildContext context,
       TextEditingController customController,
@@ -2021,160 +2041,164 @@ class _MemberAddState extends State<MemberAdd> {
           ),
         ),
         Spacer(),
-        SizedBox(height: 40),
-        // IconButton(
-        //     onPressed: () {
-        //       // Bottom Sheet 함수 작성
-        //       showModalBottomSheet(
-        //           shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(10.0),
-        //           ),
-        //           backgroundColor: Palette.secondaryBackground,
-        //           context: context,
-        //           builder: ((context) {
-        //             return StatefulBuilder(
-        //                 builder: (context, StateSetter stateSetter) {
-        //               return Padding(
-        //                 padding: const EdgeInsets.all(20),
-        //                 child: Column(
-        //                   mainAxisSize: MainAxisSize.min,
-        //                   children: <Widget>[
-        //                     Padding(
-        //                       padding: const EdgeInsets.all(10.0),
-        //                       child: Row(
-        //                         children: [
-        //                           Expanded(
-        //                             child: Container(
-        //                               width: double.infinity,
-        //                               alignment: Alignment.topLeft,
-        //                               child: Text(
-        //                                 bottomSheetTitle,
-        //                                 style: TextStyle(
-        //                                     fontSize: 14,
-        //                                     color: Palette.gray00,
-        //                                     fontWeight: FontWeight.bold),
-        //                               ),
-        //                             ),
-        //                           ),
-        //                           TextButton(
-        //                             onPressed: () {
-        //                               print(
-        //                                   "resultObjectList : ${resultObjectList}");
-        //                               // String goalsSum = "";
-        //                               // for (int i = 0;
-        //                               //     i < resultObjectList.length;
-        //                               //     i++) {
-        //                               //   if (i == resultObjectList.length - 1) {
-        //                               //     goalsSum += resultObjectList[i];
-        //                               //   } else {
-        //                               //     goalsSum +=
-        //                               //         resultObjectList[i] + ", ";
-        //                               //   }
-        //                               // }
-        //                               // customController.text = goalsSum;
-        //                               customTileColorList.clear();
-        //                               customBorderColorList.clear();
-        //                               Navigator.pop(context);
-        //                             },
-        //                             child: Text(
-        //                               '선택완료',
-        //                               style: TextStyle(
-        //                                   fontSize: 14,
-        //                                   color: Palette.textBlue,
-        //                                   fontWeight: FontWeight.bold),
-        //                             ),
-        //                           )
-        //                         ],
-        //                       ),
-        //                     ),
-        //                     SizedBox(height: 10),
-        //                     Expanded(
-        //                       child: GridView.builder(
-        //                         shrinkWrap: true,
-        //                         itemCount: objectList.length,
-        //                         itemBuilder: ((context, index) {
-        //                           var value = objectList[index];
-        //                           // stateSetter((() {
-        //                           //   setState(() {
-        //                           if (resultObjectList.contains(value)) {
-        //                             customTileColorList
-        //                                 .add(Palette.backgroundBlue);
-        //                             customBorderColorList
-        //                                 .add(Colors.transparent);
-        //                             // print("언제 울리니? 1 ");
-        //                           } else {
-        //                             customTileColorList.add(Colors.transparent);
-        //                             customBorderColorList.add(Palette.grayEE);
-        //                             // print("언제 울리니? 2 ");
-        //                           }
-        //                           //   });
-        //                           // }));
+        IconButton(
+            onPressed: () async {
+              print("신규 동작 추가");
+              // Bottom Sheet 함수 작성
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Palette.secondaryBackground,
+                  context: context,
+                  builder: ((context) {
+                    return StatefulBuilder(
+                        builder: (context, StateSetter stateSetter) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        bottomSheetTitle,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Palette.gray00,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(
+                                          "resultObjectList : ${resultObjectList}");
+                                      // String goalsSum = "";
+                                      // for (int i = 0;
+                                      //     i < resultObjectList.length;
+                                      //     i++) {
+                                      //   if (i == resultObjectList.length - 1) {
+                                      //     goalsSum += resultObjectList[i];
+                                      //   } else {
+                                      //     goalsSum +=
+                                      //         resultObjectList[i] + ", ";
+                                      //   }
+                                      // }
+                                      // customController.text = goalsSum;
+                                      customTileColorList.clear();
+                                      customBorderColorList.clear();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      '선택완료',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Palette.textBlue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: objectList.length,
+                                itemBuilder: ((context, index) {
+                                  var value = objectList[index];
+                                  // stateSetter((() {
+                                  //   setState(() {
+                                  if (resultObjectList.contains(value)) {
+                                    customTileColorList
+                                        .add(Palette.backgroundBlue);
+                                    customBorderColorList
+                                        .add(Colors.transparent);
+                                    // print("언제 울리니? 1 ");
+                                  } else {
+                                    customTileColorList.add(Colors.transparent);
+                                    customBorderColorList.add(Palette.grayEE);
+                                    // print("언제 울리니? 2 ");
+                                  }
+                                  //   });
+                                  // }));
 
-        //                           // return Text(widget.optionList[index]);
-        //                           return InkWell(
-        //                             onTap: () {
-        //                               stateSetter(
-        //                                 () {
-        //                                   setState(() {
-        //                                     if (resultObjectList
-        //                                         .contains(value)) {
-        //                                       customTileColorList[index] =
-        //                                           Colors.transparent;
-        //                                       customBorderColorList[index] =
-        //                                           Palette.grayEE;
-        //                                       resultObjectList.remove(value);
-        //                                     } else {
-        //                                       customTileColorList[index] =
-        //                                           Palette.backgroundBlue;
-        //                                       customBorderColorList[index] =
-        //                                           Colors.transparent;
-        //                                       resultObjectList.add(value);
-        //                                     }
-        //                                   });
-        //                                 },
-        //                               );
-        //                             },
-        //                             child: Container(
-        //                                 decoration: BoxDecoration(
-        //                                     border: Border.all(
-        //                                         color: customBorderColorList[
-        //                                             index]),
-        //                                     borderRadius: BorderRadius.all(
-        //                                       Radius.circular(30),
-        //                                     ),
-        //                                     color: customTileColorList[index]),
-        //                                 child: Center(
-        //                                     child: Text(
-        //                                   value,
-        //                                   style: TextStyle(
-        //                                       fontSize: 14,
-        //                                       color: Palette.gray33),
-        //                                 ))),
-        //                           );
-        //                         }),
-        //                         gridDelegate:
-        //                             SliverGridDelegateWithFixedCrossAxisCount(
-        //                           crossAxisCount: 3,
-        //                           childAspectRatio: 3 / 1,
-        //                           mainAxisSpacing: 10,
-        //                           crossAxisSpacing: 10,
-        //                         ),
-        //                       ),
-        //                     )
-        //                   ],
-        //                 ),
-        //               );
-        //             });
-        //           }));
-        //     },
-        //     icon: Icon(
-        //       Icons.expand_more_outlined,
-        //       color: Palette.gray66,
-        //     )),
+                                  // return Text(widget.optionList[index]);
+                                  return InkWell(
+                                    onTap: () {
+                                      stateSetter(
+                                        () {
+                                          setState(() {
+                                            if (resultObjectList
+                                                .contains(value)) {
+                                              customTileColorList[index] =
+                                                  Colors.transparent;
+                                              customBorderColorList[index] =
+                                                  Palette.grayEE;
+                                              resultObjectList.remove(value);
+                                            } else {
+                                              customTileColorList[index] =
+                                                  Palette.backgroundBlue;
+                                              customBorderColorList[index] =
+                                                  Colors.transparent;
+                                              resultObjectList.add(value);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: customBorderColorList[
+                                                    index]),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(30),
+                                            ),
+                                            color: customTileColorList[index]),
+                                        child: Center(
+                                            child: Text(
+                                          value,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Palette.gray33),
+                                        ))),
+                                  );
+                                }),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 3 / 1,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  }));
+
+              // LessonAdd로 이동
+              //
+            },
+            icon: Icon(
+              Icons.add,
+              color: Palette.textBlue,
+            ))
       ],
     );
   }
 
+// 통증상해병력 추가버튼(구)
   Column customMedicalHistoryAction(
       BuildContext context,
       TextEditingController customController,

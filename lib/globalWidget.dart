@@ -441,7 +441,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
       alignment: Alignment.center,
       child: TextField(
         obscureText: widget.hint.contains("비밀번호") ? true : false, // 비밀번호 안보이게
-        style: TextStyle(fontSize: 14),
+        style: TextStyle(fontSize: 16),
         //focusNode: textFocus,
         textInputAction: TextInputAction.done,
         readOnly: widget.showArrow,
@@ -467,13 +467,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
             fontSize: 14,
             color: Palette.gray95,
           ),
-          border: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              width: 1,
-              style: BorderStyle.none,
-            ),
-          ),
+          border: InputBorder.none,
         ),
         onChanged: (text) {
           // 현재 텍스트필드의 텍스트를 출력
