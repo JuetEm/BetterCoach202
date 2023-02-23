@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/testShowDialog.dart';
@@ -223,27 +224,115 @@ class _MemberListState extends State<MemberList> {
       builder: (context, memberService, child) {
         print("몇 번 그리나요? - Consumer");
         return Scaffold(
+          drawerScrimColor: Palette.gray66,
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                // 프로젝트에 assets 폴더 생성 후 이미지 2개 넣기
+                // pubspec.yaml 파일에 assets 주석에 이미지 추가하기
+                // UserAccountsDrawerHeader(
+                //   // currentAccounticture: CircleAvatar(
+                //   //   // 현재 계정 이미지 set
+                //   //   backgroundImage: AssetImage('assets/profile.png'),
+                //   //   backgroundColor: Colors.white,
+                //   // ),
+                //   // otherAccountsPictures: <Widget>[
+                //   //   // 다른 계정 이미지[] set
+                //   //   CircleAvatar(
+                //   //     backgroundColor: Colors.white,
+                //   //     backgroundImage: AssetImage('assets/profile2.png'),
+                //   //   ),
+                //   //   // CircleAvatar(
+                //   //   //   backgroundColor: Colors.white,
+                //   //   //   backgroundImage: AssetImage('assets/profile2.png'),
+                //   //   // )
+                //   // ],
+                //   accountName: Text('GANGPRO'),
+                //   accountEmail: Text('gangpro@email.com'),
+                //   onDetailsPressed: () {
+                //     print('arrow is clicked');
+                //   },
+                //   decoration: BoxDecoration(
+                //     color: Palette.buttonOrange,
+                //   ),
+                // ),
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Palette.gray66,
+                  ),
+                  title: Text('내 프로필'),
+                  onTap: () {
+                    print('내 프로필 is clicked');
+                  },
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.confirmation_number_outlined,
+                    color: Palette.gray66,
+                  ),
+                  title: Text('수강권 라이브러리'),
+                  onTap: () {
+                    print('수강권 라이브러리 is clicked');
+                  },
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.info_outline,
+                    color: Palette.gray66,
+                  ),
+                  title: Text('개인정보처리방침'),
+                  onTap: () {
+                    print('개인정보처리방침 is clicked');
+                    launchUrl(Uri.parse(
+                        'https://huslxl.notion.site/9eec26cf46b941c4960209b419d41fbc'));
+                  },
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.info_outline,
+                    color: Palette.gray66,
+                  ),
+                  title: Text('서비스 이용약관'),
+                  onTap: () {
+                    print('서비스 이용약관 is clicked');
+                    launchUrl(Uri.parse(
+                        'https://huslxl.notion.site/51d75d9fb0af4c64be5ec95f16fe6289'));
+                  },
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: Palette.gray66,
+                  ),
+                  title: Text('로그아웃'),
+                  onTap: () {
+                    print('signOut');
+                    AuthService authService = AuthService();
+                    authService.signOut();
+                    // 로그인 페이지로 이동
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPage(
+                                analytics: MyApp.analytics,
+                              )),
+                    );
+                  },
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+              ],
+            ),
+          ),
           backgroundColor: Palette.secondaryBackground,
           // key: _scaffoldKey,
           appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                print('signOut');
-                AuthService authService = AuthService();
-                authService.signOut();
-                // 로그인 페이지로 이동
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LoginPage(
-                            analytics: MyApp.analytics,
-                          )),
-                );
-              },
-              color: Palette.gray33,
-              // icon: Icon(Icons.account_circle),
-              icon: Icon(Icons.logout),
-            ),
+            iconTheme: IconThemeData(color: Palette.gray66),
             elevation: 0,
             backgroundColor: Palette.mainBackground,
             title: Text(
@@ -261,7 +350,6 @@ class _MemberListState extends State<MemberList> {
             // ),
             actions: [
               /// 회원 추가 버튼
-              /// 기능을 옮겨주세요ㅕ
               InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 onTap: () {
@@ -300,10 +388,7 @@ class _MemberListState extends State<MemberList> {
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Icon(
-                    Icons.person_add,
-                    color: Palette.gray66,
-                  ),
+                  child: Icon(Icons.person_add),
                 ),
               ),
               InkWell(
@@ -333,10 +418,7 @@ class _MemberListState extends State<MemberList> {
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Icon(
-                    reportIcon,
-                    color: Palette.gray66,
-                  ),
+                  child: Icon(reportIcon),
                 ),
               ),
               SizedBox(width: 10)
