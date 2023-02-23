@@ -38,6 +38,9 @@
 				<data android:scheme="kakaob59deaa3a0ff4912ca55fc3d71ccd6aa" android:host="oauth" />
 			</intent-filter>
 		</activity>
+		<!-- Android 12 android:exported 설정 Override -->
+		<receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" android:exported="true">.
+		</receiver>
 		<!--
 		Don't delete the meta-data below.
 		This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
