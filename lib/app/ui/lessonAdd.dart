@@ -731,7 +731,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SequenceLibarary()),
+                                                SequenceLibrary()),
                                       );
                                     },
                                     child: Row(
