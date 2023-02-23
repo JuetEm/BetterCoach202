@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/app/binding/member_service.dart';
+import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/ticketList.dart';
 import 'package:web_project/app/ui/ticketManage.dart';
 import 'package:web_project/baseTableCalendar.dart';
@@ -151,77 +152,72 @@ class _TicketMakeState extends State<TicketMake> {
           toolTipMsg: ticketVal['ticketDescription']);
       tickets.add(model);
     }
-    return Consumer<TicketService>(
-      builder: (context, ticketService, child) {
+    return Consumer<TicketLibraryService>(
+      builder: (context, TicketLibraryService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(
-            context,
-            "수강권 추가",
-            () {
-              Navigator.pop(context, widget.userInfo);
-            },
-          ),
+          appBar: BaseAppBarMethod(context, "수강권 추가", () {
+            Navigator.pop(context, widget.userInfo);
+          }, [
+            TextButton(
+              onPressed: () async {
+                print("AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
+                if (ticketMakeController.dropDownValue?.value.toString().trim() == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("수강권을 선택하세요."),
+                  ));
+                } else if (isTicketTitleOffStaged == false && ticketTitleController.text.trim() == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("수강권 명을 입력하세요."),
+                  ));
+                } else if (ticketCountAllController.text.trim() == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("수강 횟수를 입력하세요."),
+                  ));
+                } else if (ticketStartDateController.text.trim() == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("수강 시작일을 선택하세요."),
+                  ));
+                } else if (ticketEndDateController.text.trim() == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("수강 종료일을 선택하세요."),
+                  ));
+                } else if (ticketDescriptionController.text.trim() == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("수강권 설명을 입력하세요."),
+                  ));
+                } else {
+                  MemberService memberService = MemberService();
+                  await memberService.updateMemberTicket(
+                    userInfo!.docId,
+                    ticketUsingCount,
+                    ticketCountLeft,
+                    ticketCountAll,
+                    ticketTitle,
+                    ticketDescription,
+                    Timestamp.fromDate(DateTime.parse(ticketStartDate))
+                        .toDate(),
+                    Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
+                    ticketDateLeft,
+                    DateTime.now(),
+                  ).then((value){
+                    print("${screenName} - updateMemberTicket is called!");
+                    Navigator.pop(context);
+                  });
+                  
+                }
+              },
+              child: Text(
+                "완료",
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ]),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Center(
                 child: Column(
                   children: [
-                    /// 제목과 완료 버튼
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "수강권 추가",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            print("수강권 추가 완료 버튼 클릭!!");
-                            ticketService
-                                .create(
-                                    widget.userInfo!.uid,
-                                    ticketUsingCount,
-                                    ticketCountLeft,
-                                    ticketCountAll,
-                                    ticketTitle,
-                                    ticketDescription,
-                                    DateTime.parse(ticketStartDate),
-                                    DateTime.parse(ticketEndDate),
-                                    ticketDateLeft,
-                                    DateTime.now())
-                                .then((value) {
-                              print("ticketStartDate : $ticketStartDate");
-                              print("ticketEndDate : $ticketEndDate");
-                              var model = {
-                                "ticketCountAll": ticketCountAll,
-                                "ticketUsingCount": 0,
-                                "ticketDateLeft": 0,
-                                "ticketEndDate": Timestamp.fromDate(
-                                    DateTime.parse(ticketEndDate)),
-                                "uid": userInfo!.uid,
-                                "ticketCountLeft": 0,
-                                "createDate": DateTime.now(),
-                                "ticketDescription": ticketDescription,
-                                "ticketStartDate": Timestamp.fromDate(
-                                    DateTime.parse(ticketStartDate)),
-                                "ticketTitle": ticketTitle,
-                                "id": value
-                              };
-                              print("model : $model");
-                              globalVariables.ticketList.add(model);
-                              globalVariables.ticketList.sort((a, b) =>
-                                  a['ticketTitle'].compareTo(b['ticketTitle']));
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: Text("완료", style: TextStyle(fontSize: 16)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-
                     /// 수강권 명 입력
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -240,12 +236,12 @@ class _TicketMakeState extends State<TicketMake> {
                                       contentPadding: EdgeInsets.all(10),
                                       // titlePadding: EdgeInsets.all(0),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),),
-                                      content: TicketList(globalVariables.ticketList,(){
-                                        setState(() {
-                                          
-                                        });
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      content: TicketList(
+                                          globalVariables.ticketList, () {
+                                        setState(() {});
                                       }),
                                     );
                                   });

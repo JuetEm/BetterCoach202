@@ -65,7 +65,7 @@ showAlertDialog(BuildContext context, String title, String content) async {
 }
 
 AppBar BaseAppBarMethod(
-    BuildContext context, String pageName, Function? customFunction) {
+    BuildContext context, String pageName, Function? customFunction, List<Widget>? customWidget) {
   return AppBar(
     // key: appBapKey,
     elevation: 0,
@@ -90,6 +90,7 @@ AppBar BaseAppBarMethod(
       color: Palette.gray33,
       icon: pageName == "로그인" ? Icon(null) : Icon(Icons.arrow_back_ios),
     ),
+    actions: customWidget
   );
 }
 

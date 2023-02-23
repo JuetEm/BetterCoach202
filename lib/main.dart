@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
 import 'package:web_project/analyticLog.dart';
-import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/globalVariables.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/local_info.dart';
@@ -24,6 +24,7 @@ import 'package:web_project/testShowDialog.dart';
 import 'dart:io' show HttpHeaders, Platform;
 import 'package:http/http.dart' as http;
 
+import 'app/binding/memberTicket_service.dart';
 import 'app/binding/report_service.dart';
 import 'auth_service.dart';
 import 'bucket_service.dart';
@@ -70,7 +71,7 @@ String? userPassword;
 
 ActionService actionService = ActionService();
 
-TicketService ticketService = TicketService();
+TicketLibraryService ticketLibraryService = TicketLibraryService();
 
 enum LoginPlatform {
   kakao,
@@ -182,7 +183,7 @@ void main() async {
       }).whenComplete(() async {
         print("actionList await init complete!");
 
-        await ticketService.read(user.uid).then((value) {
+        await ticketLibraryService.read(user.uid).then((value) {
           globalVariables.ticketList.addAll(value);
         }).onError((error, stackTrace) {
           print("error : ${error}");
@@ -205,7 +206,8 @@ void main() async {
             ChangeNotifierProvider(create: (context) => CalendarService()),
             ChangeNotifierProvider(create: (context) => ActionService()),
             ChangeNotifierProvider(create: (context) => ReportService()),
-            ChangeNotifierProvider(create: (context) => TicketService()),
+            ChangeNotifierProvider(create: (context) => TicketLibraryService()),
+            ChangeNotifierProvider(create: (context) => MemberTicketService()),
           ],
           child: const MyApp(),
         ),
@@ -224,7 +226,8 @@ void main() async {
           ChangeNotifierProvider(create: (context) => CalendarService()),
           ChangeNotifierProvider(create: (context) => ActionService()),
           ChangeNotifierProvider(create: (context) => ReportService()),
-          ChangeNotifierProvider(create: (context) => TicketService()),
+            ChangeNotifierProvider(create: (context) => TicketLibraryService()),
+            ChangeNotifierProvider(create: (context) => MemberTicketService()),
         ],
         child: const MyApp(),
       ),
@@ -880,7 +883,7 @@ class _LoginPageState extends State<LoginPage> {
             }).whenComplete(() async {
               print("actionList await init complete!");
 
-              await ticketService.read(cUser.uid).then((value) {
+              await ticketLibraryService.read(cUser.uid).then((value) {
                 globalVariables.ticketList.addAll(value);
               }).onError((error, stackTrace) {
                 print("error : ${error}");
@@ -1004,7 +1007,7 @@ class _LoginPageState extends State<LoginPage> {
       }).whenComplete(() async {
         print("actionList await init complete!");
 
-        await ticketService.read(cUser.uid).then((value) {
+        await ticketLibraryService.read(cUser.uid).then((value) {
           globalVariables.ticketList.addAll(value);
         }).onError((error, stackTrace) {
           print("error : ${error}");

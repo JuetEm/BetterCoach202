@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class TicketService extends ChangeNotifier {
-  CollectionReference<Map<String, dynamic>> ticketCollection =
-      FirebaseFirestore.instance.collection('ticket');
+class TicketLibraryService extends ChangeNotifier {
+  CollectionReference<Map<String, dynamic>> ticketLibraryCollection =
+      FirebaseFirestore.instance.collection('ticketLibrary');
 
   Future<List> read(String uid) async {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
-    var result = await ticketCollection
+    var result = await ticketLibraryCollection
         .where('uid', isEqualTo: uid)
         .orderBy('ticketTitle', descending: false)
         .get();
@@ -38,7 +38,7 @@ class TicketService extends ChangeNotifier {
   ) async {
     // report 만들기
     String id = "";
-    await ticketCollection.add({
+    await ticketLibraryCollection.add({
       'uid': uid, // 작성자 uid
       'ticketCountLeft': ticketCountLeft,
       'ticketUsingCount': ticketUsingCount, // 작성자 displayName
@@ -66,7 +66,7 @@ class TicketService extends ChangeNotifier {
     Function? onError,
   }) async {
     // bucket 삭제
-    await ticketCollection.doc(docId).delete();
+    await ticketLibraryCollection.doc(docId).delete();
     notifyListeners();
     // 화면 갱신
     onSuccess!(); // 성공시

@@ -255,7 +255,7 @@ class _MemberAddState extends State<MemberAdd> {
               commentController,
             ]);
             registerDateController.text = now;
-          }),
+          },null),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Padding(

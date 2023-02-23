@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/memberList.dart';
 import 'package:web_project/app/ui/ticketMake.dart';
 import 'package:web_project/color.dart';
@@ -33,14 +33,14 @@ class _TicketManageState extends State<TicketManage> {
   @override
   Widget build(BuildContext context) {
     userInfo = widget.userInfo;
-    return Consumer<TicketService>(
-      builder: (context, ticketService, child) {
+    return Consumer<TicketLibraryService>(
+      builder: (context, ticketLibraryService, child) {
         final docs = globalVariables.ticketList;
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
             Navigator.pop(context, userInfo);
-          }),
+          },null),
           body: SafeArea(
             child: Column(
               children: [

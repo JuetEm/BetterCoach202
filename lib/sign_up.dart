@@ -140,7 +140,7 @@ class _SignUpState extends State<SignUp> {
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원가입", () {
             Navigator.pop(context);
-          }),
+          },null),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(

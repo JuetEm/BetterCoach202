@@ -197,7 +197,35 @@ class MemberService extends ChangeNotifier {
   ) async {
     // 업데이트
     await memberCollection.doc(docId).update({
-      'isFavorite': isFavorite, // 회원권 활성화 여부
+      'isFavorite': isFavorite, // 회원 좋아요 여부
+    });
+
+    notifyListeners();
+  }
+
+  Future<void> updateMemberTicket(
+    final String docId,
+    final int ticketUsingCount,
+    final int ticketCountLeft,
+    final int ticketCountAll,
+    final String ticketTitle,
+    final String ticketDescription,
+    final DateTime ticketStartDate,
+    final DateTime ticketEndDate,
+    final int ticketDateLeft,
+    final DateTime ticketCreatedDate,
+  ) async {
+    // 업데이트
+    await memberCollection.doc(docId).update({
+      'ticketUsingCount': ticketUsingCount, // 수강권 사용 횟수
+      'ticketCountLeft': ticketCountLeft, // 수강권 남은 횟수
+      'ticketCountAll': ticketCountAll, // 수강권 총 횟수
+      'ticketTitle': ticketTitle, // 수강권 명
+      'ticketDescription': ticketDescription, // 수강권 설명
+      'ticketStartDate': ticketStartDate, // 수강권 시작일
+      'ticketEndDate': ticketEndDate, // 수강권 종료일
+      'ticketDateLeft': ticketDateLeft, // 수강권 남을 일수
+      'ticketCreatedDate': ticketCreatedDate, // 수강권 생성일
     });
 
     notifyListeners();

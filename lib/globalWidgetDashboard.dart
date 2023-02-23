@@ -29,7 +29,7 @@ class _GlobalWidgetDashboardState extends State<GlobalWidgetDashboard> {
   Widget build(BuildContext context) {
     return Consumer<ActionService>(builder: (context, actionService, child) {
       return Scaffold(
-        appBar: BaseAppBarMethod(context, "글로벌 위젯 대쉬보드", null),
+        appBar: BaseAppBarMethod(context, "글로벌 위젯 대쉬보드", null,null),
         body: Column(
           children: [
             ElevatedButton(

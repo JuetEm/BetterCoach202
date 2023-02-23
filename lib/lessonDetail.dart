@@ -106,7 +106,7 @@ class _LessonDetailState extends State<LessonDetail> {
               gradeController,
               totalNoteController,
             ]);
-          }),
+          },null),
 
           body: SafeArea(
             child: SingleChildScrollView(

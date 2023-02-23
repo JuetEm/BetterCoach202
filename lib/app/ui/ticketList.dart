@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/globalVariables.dart';
 
 class TicketList extends StatefulWidget {
@@ -18,7 +18,7 @@ class _TicketListState extends State<TicketList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TicketService>(builder: (context, ticketService, child) {
+    return Consumer<TicketLibraryService>(builder: (context, ticketLibraryService, child) {
       return Scaffold(
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -50,7 +50,7 @@ class _TicketListState extends State<TicketList> {
                   for(int i=0; i<widget.ticketList.length; i++){
                     element = widget.ticketList[i];
                     if(element['id'] == widget.ticketList[index]['id']){
-                      ticketService.delete(docId: element['id'],onError: (){},onSuccess: (){});
+                      ticketLibraryService.delete(docId: element['id'],onError: (){},onSuccess: (){});
                       widget.ticketList.remove(element);
                       break;
                     }

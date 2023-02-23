@@ -143,7 +143,7 @@ class _MemberInfoState extends State<MemberInfo> {
             // print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
             // Navigator.pop(context,tmpUserInfo);
             Navigator.pop(context, userInfo);
-          }),
+          },null),
           body: SafeArea(
             child: Column(
               children: [

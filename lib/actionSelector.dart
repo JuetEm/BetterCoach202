@@ -884,7 +884,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
             searchString = "";
             Navigator.pop(context, tmpLessonInfoList);
-          }),
+          },null),
           floatingActionButton: tmpLessonInfoList.isEmpty
               ? null
               : FloatingActionButton.extended(

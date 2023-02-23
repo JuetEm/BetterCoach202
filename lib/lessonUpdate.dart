@@ -132,7 +132,7 @@ class _LessonUpdateState extends State<LessonUpdate> {
             // 페이지 초기화
             initInpuWidget();
             initState = !initState;
-          }),
+          },null),
           body: SafeArea(
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
