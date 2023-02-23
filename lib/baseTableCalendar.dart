@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:web_project/app/ui/ticketMake.dart';
+import 'package:web_project/app/ui/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/lessonAdd.dart';
 
 import 'calendar_service.dart';
 import 'color.dart';
 import 'globalWidget.dart';
 import 'app/ui/memberAdd.dart';
-import 'app/ui/ticketMake.dart';
+import 'app/ui/ticketLibraryMake.dart';
 
-TicketMake ticketMake = TicketMake();
+TicketLibraryMake ticketMake = TicketLibraryMake();
 
 class BaseTableCalendar extends StatefulWidget {
   const BaseTableCalendar(

@@ -78,16 +78,16 @@ String getDateFromTimeStamp(var timestamp) {
   return date;
 }
 
-class TicketMake extends StatefulWidget {
+class TicketLibraryMake extends StatefulWidget {
   UserInfo? userInfo;
-  TicketMake({super.key});
-  TicketMake.getUserInfo(this.userInfo, {super.key});
+  TicketLibraryMake({super.key});
+  TicketLibraryMake.getUserInfo(this.userInfo, {super.key});
 
   @override
-  State<TicketMake> createState() => _TicketMakeState();
+  State<TicketLibraryMake> createState() => _TicketLibraryMakeState();
 }
 
-class _TicketMakeState extends State<TicketMake> {
+class _TicketLibraryMakeState extends State<TicketLibraryMake> {
   @override
   void initState() {
     // TODO: implement initState
@@ -160,12 +160,17 @@ class _TicketMakeState extends State<TicketMake> {
           }, [
             TextButton(
               onPressed: () async {
-                print("AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
-                if (ticketMakeController.dropDownValue?.value.toString().trim() == null) {
+                print(
+                    "AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
+                if (ticketMakeController.dropDownValue?.value
+                        .toString()
+                        .trim() ==
+                    null) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권을 선택하세요."),
                   ));
-                } else if (isTicketTitleOffStaged == false && ticketTitleController.text.trim() == "") {
+                } else if (isTicketTitleOffStaged == false &&
+                    ticketTitleController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권 명을 입력하세요."),
                   ));
@@ -186,8 +191,8 @@ class _TicketMakeState extends State<TicketMake> {
                     content: Text("수강권 설명을 입력하세요."),
                   ));
                 } else {
-                  MemberService memberService = MemberService();
-                  await memberService.updateMemberTicket(
+                  await ticketLibraryService
+                      .create(
                     userInfo!.docId,
                     ticketUsingCount,
                     ticketCountLeft,
@@ -199,11 +204,11 @@ class _TicketMakeState extends State<TicketMake> {
                     Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
                     ticketDateLeft,
                     DateTime.now(),
-                  ).then((value){
+                  )
+                      .then((value) {
                     print("${screenName} - updateMemberTicket is called!");
                     Navigator.pop(context);
                   });
-                  
                 }
               },
               child: Text(
@@ -445,170 +450,6 @@ class _TicketMakeState extends State<TicketMake> {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                                child: Row(
-                                  children: [
-                                    Text("수강 시작일",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 8, 4, 8),
-                                child: InkWell(
-                                  onTap: () {
-                                    print("수강 시작일 inkWell onTap called!");
-                                    calendarIsOffStaged = !calendarIsOffStaged;
-                                    calendarName = "수강 시작일";
-                                    setState(() {});
-                                  },
-                                  child: TextField(
-                                    controller: ticketStartDateController,
-                                    onTap: () {
-                                      print("수강 시작일 Textfiled onTap called!");
-                                    },
-                                    readOnly: true,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Palette.grayFF,
-                                      // labelText: '수강 시작일',
-                                      hintText: '수강권 시작일을 입력하세요',
-                                      labelStyle:
-                                          TextStyle(color: Palette.gray00),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.transparent),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.transparent),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.transparent),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                      ),
-                                    ),
-                                    // keyboardType: TextInputType.emailAddress,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        /// 수강 종료일 선택
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                                child: Row(
-                                  children: [
-                                    Text("수강 종료일",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
-                                child: InkWell(
-                                  onTap: () {
-                                    print("수강 종료일 inkWell onTap called!");
-                                    calendarIsOffStaged = !calendarIsOffStaged;
-                                    calendarName = "수강 종료일";
-                                    setState(() {});
-                                  },
-                                  child: TextField(
-                                    controller: ticketEndDateController,
-                                    onTap: () {
-                                      print("수강 종료일 TextField onTap called!");
-                                    },
-                                    readOnly: true,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Palette.grayFF,
-                                      // labelText: '수강 종료일',
-                                      hintText: '수강권 종료일을 입력하세요',
-                                      labelStyle:
-                                          TextStyle(color: Palette.gray00),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.transparent),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.transparent),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.transparent),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                      ),
-                                    ),
-                                    // keyboardType: TextInputType.emailAddress,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-
-                    Offstage(
-                      offstage: calendarIsOffStaged,
-                      child: Container(
-                        constraints: BoxConstraints.tight(Size.fromHeight(530)),
-                        child: BaseTableCalendar(
-                          () {
-                            // git test
-                            print("ticketStartDate : ${ticketStartDate}");
-                            setState(() {});
-                          },
-                          true,
-                          selectedDate: "",
-                          pageName: calendarName,
-                          eventList: [],
-                        ),
                       ),
                     ),
 

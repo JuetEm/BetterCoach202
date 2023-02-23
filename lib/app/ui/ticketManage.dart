@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/memberList.dart';
-import 'package:web_project/app/ui/ticketMake.dart';
+import 'package:web_project/app/ui/ticketLibraryMake.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
@@ -200,7 +200,7 @@ class _TicketManageState extends State<TicketManage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                TicketMake.getUserInfo(userInfo)),
+                                TicketLibraryMake.getUserInfo(userInfo)),
                       ).then((value) {
                         print("수강권 추가 result");
                       });

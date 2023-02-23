@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
-import 'package:web_project/app/ui/ticketMake.dart';
+import 'package:web_project/app/ui/ticketLibraryMake.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/userInfo.dart';
 
 class TicketLibrary extends StatefulWidget {
-  const TicketLibrary(this.userInfo, {super.key});
+  const TicketLibrary({this.ticketLibraryList, super.key});
 
-  final UserInfo? userInfo;
+  final List? ticketLibraryList;
 
   @override
   State<TicketLibrary> createState() => _TicketLibraryState();
@@ -19,14 +19,11 @@ class TicketLibrary extends StatefulWidget {
 class _TicketLibraryState extends State<TicketLibrary> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TicketLibraryService>(builder: (context, value, child) {
+    return Consumer<TicketLibraryService>(builder: (context, TicketLibraryService, child) {
       return Scaffold(
         appBar: BaseAppBarMethod(context, "수강권 라이브러리", () {
-          print(
-              "MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${widget.userInfo!.selectedBodyAnalyzed}");
-          // print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
-          // Navigator.pop(context,tmpUserInfo);
-          Navigator.pop(context, widget.userInfo);
+          
+          Navigator.pop(context);
         }, null),
         body: Column(
           children: [
@@ -41,7 +38,7 @@ class _TicketLibraryState extends State<TicketLibrary> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            TicketMake.getUserInfo(widget.userInfo)),
+                            TicketLibraryMake()),
                   ).then((value) {
                     print("수강권 추가 result");
                   });
@@ -67,7 +64,13 @@ class _TicketLibraryState extends State<TicketLibrary> {
                 ),
               ),
             ),
-            
+            ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: widget.ticketLibraryList!.length,
+              itemBuilder: (context, index){
+                return null;
+            } , separatorBuilder: (BuildContext context, int index) { return SizedBox.shrink(); }, ),
           ],
         ),
       );
