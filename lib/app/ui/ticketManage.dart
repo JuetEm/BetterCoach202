@@ -47,7 +47,7 @@ class _TicketManageState extends State<TicketManage> {
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
             Navigator.pop(context, userInfo);
-          }, null),
+          }, null, null),
           body: SafeArea(
             child: Column(
               children: [

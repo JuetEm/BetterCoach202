@@ -81,7 +81,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
               noteController,
               commentController,
             ]);
-          },null),
+          }, null, null),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(

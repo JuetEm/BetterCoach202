@@ -211,7 +211,7 @@ class _LessonAddState extends State<LessonAdd> {
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
-          }, null),
+          }, null, null),
 
           body: SafeArea(
             child: SingleChildScrollView(

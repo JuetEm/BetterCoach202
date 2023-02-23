@@ -17,7 +17,7 @@ class _SequenceLibararyState extends State<SequenceLibarary> {
       child: Scaffold(
         appBar: BaseAppBarMethod(context, "시퀀스 관리", () {
           Navigator.pop(context);
-        }, null),
+        }, null, null),
         body: TabBarView(children: [Text('data'), Text('data'), Text('data')]),
       ),
     );

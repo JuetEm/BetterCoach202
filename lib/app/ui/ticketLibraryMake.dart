@@ -216,7 +216,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-          ]),
+          ], null),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),

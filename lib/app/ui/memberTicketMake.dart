@@ -160,12 +160,17 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
           }, [
             TextButton(
               onPressed: () async {
-                print("AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
-                if (ticketMakeController.dropDownValue?.value.toString().trim() == null) {
+                print(
+                    "AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
+                if (ticketMakeController.dropDownValue?.value
+                        .toString()
+                        .trim() ==
+                    null) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권을 선택하세요."),
                   ));
-                } else if (isTicketTitleOffStaged == false && ticketTitleController.text.trim() == "") {
+                } else if (isTicketTitleOffStaged == false &&
+                    ticketTitleController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권 명을 입력하세요."),
                   ));
@@ -187,7 +192,8 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   ));
                 } else {
                   MemberService memberService = MemberService();
-                  await memberService.updateMemberTicket(
+                  await memberService
+                      .updateMemberTicket(
                     userInfo!.docId,
                     ticketUsingCount,
                     ticketCountLeft,
@@ -199,11 +205,11 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                     Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
                     ticketDateLeft,
                     DateTime.now(),
-                  ).then((value){
+                  )
+                      .then((value) {
                     print("${screenName} - updateMemberTicket is called!");
                     Navigator.pop(context);
                   });
-                  
                 }
               },
               child: Text(
@@ -211,7 +217,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-          ]),
+          ], null),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),

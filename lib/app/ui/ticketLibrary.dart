@@ -19,12 +19,12 @@ class TicketLibrary extends StatefulWidget {
 class _TicketLibraryState extends State<TicketLibrary> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TicketLibraryService>(builder: (context, TicketLibraryService, child) {
+    return Consumer<TicketLibraryService>(
+        builder: (context, TicketLibraryService, child) {
       return Scaffold(
         appBar: BaseAppBarMethod(context, "수강권 라이브러리", () {
-          
           Navigator.pop(context);
-        }, null),
+        }, null, null),
         body: Column(
           children: [
             // 수강권 추가 버튼
@@ -37,8 +37,7 @@ class _TicketLibraryState extends State<TicketLibrary> {
                       Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            TicketLibraryMake()),
+                        builder: (context) => TicketLibraryMake()),
                   ).then((value) {
                     print("수강권 추가 result");
                   });
@@ -68,9 +67,13 @@ class _TicketLibraryState extends State<TicketLibrary> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: widget.ticketLibraryList!.length,
-              itemBuilder: (context, index){
+              itemBuilder: (context, index) {
                 return null;
-            } , separatorBuilder: (BuildContext context, int index) { return SizedBox.shrink(); }, ),
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox.shrink();
+              },
+            ),
           ],
         ),
       );

@@ -64,9 +64,14 @@ showAlertDialog(BuildContext context, String title, String content) async {
   return result;
 }
 
-AppBar BaseAppBarMethod(BuildContext context, String pageName,
-    Function? customFunction, List<Widget>? customWidget) {
+AppBar BaseAppBarMethod(
+    BuildContext context,
+    String pageName,
+    Function? customFunction,
+    List<Widget>? customWidget,
+    PreferredSizeWidget? customBottom) {
   return AppBar(
+      bottom: customBottom,
       iconTheme: IconThemeData(color: Palette.gray66),
       // key: appBapKey,
       elevation: 0,
