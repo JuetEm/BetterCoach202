@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/binding/memberTicket_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/memberList.dart';
+import 'package:web_project/app/ui/memberTicketMake.dart';
 import 'package:web_project/app/ui/ticketLibraryMake.dart';
+import 'package:web_project/auth_service.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/userInfo.dart';
+
+List memberTicketList = [];
 
 int ticketCnt = 0; // 사용가능한 수강권 개수
 int expiredTicketCnt = 0; // 만료된 수강권 개수
@@ -27,22 +32,25 @@ bool isActiveTicketListOpened = true;
 /** 만료된 수강권 리스트 열렸는지 */
 bool isExpiredTicketListOpened = true;
 
-class TicketManage extends StatefulWidget {
+class MemberTicketManage extends StatefulWidget {
   UserInfo? userInfo;
-  TicketManage({super.key});
-  TicketManage.getUserInfo(this.userInfo, {super.key});
+  MemberTicketManage({super.key});
+  MemberTicketManage.getUserInfo(this.userInfo, {super.key});
 
   @override
-  State<TicketManage> createState() => _TicketManageState();
+  State<MemberTicketManage> createState() => _MemberTicketManageState();
 }
 
-class _TicketManageState extends State<TicketManage> {
+class _MemberTicketManageState extends State<MemberTicketManage> {
+  
   @override
   Widget build(BuildContext context) {
     userInfo = widget.userInfo;
-    return Consumer<TicketLibraryService>(
-      builder: (context, ticketLibraryService, child) {
-        final docs = globalVariables.ticketList;
+    return Consumer<MemberTicketService>(
+      builder: (context, memberTicketService, child) {
+        final docs = memberTicketService.read(AuthService().currentUser()!.uid, userInfo!.docId).then((value){
+          memberTicketList = value;
+        });
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
@@ -200,7 +208,7 @@ class _TicketManageState extends State<TicketManage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                TicketLibraryMake.getUserInfo(userInfo)),
+                                MemberTicketMake.getUserInfo(userInfo)),
                       ).then((value) {
                         print("수강권 추가 result");
                       });
@@ -278,7 +286,7 @@ class _TicketManageState extends State<TicketManage> {
                                   scrollDirection: Axis.vertical,
                                   controller: scrollController,
                                   shrinkWrap: true,
-                                  itemCount: docs.length,
+                                  itemCount: memberTicketList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Text('사용 가능한 수강권 리스트');

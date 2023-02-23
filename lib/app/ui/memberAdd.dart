@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/ui/ticketManage.dart';
+import 'package:web_project/app/ui/memberTicketManage.dart';
 import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용

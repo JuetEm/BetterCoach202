@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/ticketList.dart';
-import 'package:web_project/app/ui/ticketManage.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
@@ -194,7 +193,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   MemberService memberService = MemberService();
                   await memberService
                       .updateMemberTicket(
-                    userInfo!.docId,
+                    widget.userInfo!.docId,
                     ticketUsingCount,
                     ticketCountLeft,
                     ticketCountAll,

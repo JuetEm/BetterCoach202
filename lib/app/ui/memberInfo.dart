@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/ui/ticketManage.dart';
+import 'package:web_project/app/binding/memberTicket_service.dart';
+import 'package:web_project/app/ui/memberTicketManage.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/locationAdd.dart';
@@ -847,6 +848,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
   }
 }
 
+List memberTicketList = [];
+
 class MemberInfoView extends StatefulWidget {
   const MemberInfoView({
     Key? key,
@@ -882,367 +885,375 @@ class _MemberInfoViewState extends State<MemberInfoView> {
         "[MI] 운동목표 칩셋출력 : selectedGoals비었니.? ${widget.userInfo.selectedGoals.isEmpty}");
     print("[MI] 운동목표 칩셋출력 : goalChips ${goalChips}");
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(10.0),
-          bottomRight: Radius.circular(10.0),
-        ),
-        color: Palette.mainBackground,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 5.0),
-
-          Text(
-            '수강정보',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Palette.gray66,
-            ),
+    return Consumer<MemberTicketService>(builder: (context, memberTicketService, child) {
+      memberTicketService.read(AuthService().currentUser()!.uid, userInfo.docId).then((value) {
+        memberTicketList = value;
+      },);
+     return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
           ),
-          const SizedBox(height: 10),
-
-          /// 티켓모양 수강권
-          Container(
-            alignment: Alignment.center,
-            child: true
-                ? TicketWidget(
-                    ticketTitle: "재등록 수강권",
-                    ticketDescription: "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
-                    ticketStartDate: "2023.01.14",
-                    ticketEndDate: "2023.02.13",
-                    ticketDateLeft: 7,
-                    ticketCountAll: 999,
-                    ticketCountLeft: 999,
-                    customFunctionOnHover: () {
-                      print("수강권 추가 onHover!!");
-                    },
-                    customFunctionOnTap: () async {
-                      print("수강권 추가 onTap!!");
-                      var result = await // 저장하기 성공시 Home로 이동
-                          Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                TicketManage.getUserInfo(userInfo)),
-                      ).then((value) {
-                        print("수강권 추가 result");
-                        setState(() {
-                          print("memberInfo then setState called!");
-                        });
-                        parent?.setState(() {
-                          print("memberInfo then parent setState called!");
-                        });
-                      });
-                    },
-                  )
-                : Container(
-                    alignment: Alignment.center,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(width: 2, color: Palette.grayEE)),
-                      child: InkWell(
-                        onHover: (value) {
-                          print("수강권 추가 onHover!!");
-                        },
-                        onTap: () async {
-                          print("수강권 추가 onTap!!");
-                          var result = await // 저장하기 성공시 Home로 이동
-                              Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    TicketManage.getUserInfo(userInfo)),
-                          ).then((value) {
-                            print("수강권 추가 result");
-                            setState(() {
-                              print("memberInfo then setState called!");
-                            });
-                            parent?.setState(() {
-                              print("memberInfo then parent setState called!");
-                            });
+          color: Palette.mainBackground,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 5.0),
+    
+            Text(
+              '수강정보',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Palette.gray66,
+              ),
+            ),
+            const SizedBox(height: 10),
+    
+            /// 티켓모양 수강권
+            Container(
+              alignment: Alignment.center,
+              child: memberTicketList.where((element){
+                return element['isSelected'] == true;
+              }).isNotEmpty
+                  ? TicketWidget(
+                      ticketTitle: "재등록 수강권",
+                      ticketDescription: "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
+                      ticketStartDate: "2023.01.14",
+                      ticketEndDate: "2023.02.13",
+                      ticketDateLeft: 7,
+                      ticketCountAll: 999,
+                      ticketCountLeft: 999,
+                      customFunctionOnHover: () {
+                        print("수강권 추가 onHover!!");
+                      },
+                      customFunctionOnTap: () async {
+                        print("수강권 추가 onTap!!");
+                        var result = await // 저장하기 성공시 Home로 이동
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MemberTicketManage.getUserInfo(userInfo)),
+                        ).then((value) {
+                          print("수강권 추가 result");
+                          setState(() {
+                            print("memberInfo then setState called!");
                           });
-                        },
-                        child: Container(
-                          width: 280,
-                          height: 140,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "수강권 추가하기",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Palette.gray99),
-                              ),
-                              Icon(
-                                Icons.add_circle_outline,
-                                color: Palette.gray99,
-                              )
-                            ],
+                          parent?.setState(() {
+                            print("memberInfo then parent setState called!");
+                          });
+                        });
+                      },
+                    )
+                  : Container(
+                      alignment: Alignment.center,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(width: 2, color: Palette.grayEE)),
+                        child: InkWell(
+                          onHover: (value) {
+                            print("수강권 추가 onHover!!");
+                          },
+                          onTap: () async {
+                            print("수강권 추가 onTap!!");
+                            var result = await // 저장하기 성공시 Home로 이동
+                                Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MemberTicketManage.getUserInfo(userInfo)),
+                            ).then((value) {
+                              print("수강권 추가 result");
+                              setState(() {
+                                print("memberInfo then setState called!");
+                              });
+                              parent?.setState(() {
+                                print("memberInfo then parent setState called!");
+                              });
+                            });
+                          },
+                          child: Container(
+                            width: 280,
+                            height: 140,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "수강권 추가하기",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.gray99),
+                                ),
+                                Icon(
+                                  Icons.add_circle_outline,
+                                  color: Palette.gray99,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Divider(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            '수강정보',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Palette.gray66,
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '등록횟수 : ${widget.userInfo.registerType}',
-            style: TextStyle(
-                fontSize: 14.0,
-                //fontWeight: FontWeight.bold,
-                color: Palette.gray99),
-            textAlign: TextAlign.right,
-          ),
-          const SizedBox(height: 20),
-          Divider(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            '운동목표',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Palette.gray66,
+            SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(height: 10),
-          Offstage(
-            offstage: widget.userInfo.selectedGoals.isEmpty,
-            child: Wrap(
-              direction: Axis.horizontal, // 나열 방향
-              alignment: WrapAlignment.start, // 정렬 방식
-              spacing: 5, // 좌우 간격
-              runSpacing: 5,
-              children: [
-                for (final chip in goalChips)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                    child: chip,
-                  ),
-              ],
+            Divider(),
+            SizedBox(
+              height: 20,
             ),
-          ),
-          Offstage(
-            offstage: widget.userInfo.goal.isEmpty,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                Text(
-                  widget.userInfo.goal,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Divider(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            '체형분석',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Palette.gray66,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Offstage(
-            offstage: widget.userInfo.selectedBodyAnalyzed.isEmpty,
-            child: Wrap(
-              direction: Axis.horizontal, // 나열 방향
-              alignment: WrapAlignment.start, // 정렬 방식
-              spacing: 5, // 좌우 간격
-              runSpacing: 5,
-              children: [
-                for (final chip in bodyAnalyzedChips)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                    child: chip,
-                  ),
-              ],
-            ),
-          ),
-          Offstage(
-            offstage: widget.userInfo.bodyAnalyzed.isEmpty,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                Text(
-                  widget.userInfo.bodyAnalyzed,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Divider(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            '통증/상해/병력',
-            style: TextStyle(
+            Text(
+              '수강정보',
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Palette.gray66),
-          ),
-          const SizedBox(height: 10),
-          Offstage(
-            offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
-            child: Wrap(
-              direction: Axis.horizontal, // 나열 방향
-              alignment: WrapAlignment.start, // 정렬 방식
-              spacing: 5, // 좌우 간격
-              runSpacing: 5,
-              children: [
-                for (final chip in medicalHistoriesChips)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
-                    child: chip,
-                  ),
-              ],
-            ),
-          ),
-          Offstage(
-            offstage: widget.userInfo.medicalHistories.isEmpty,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                Text(
-                  widget.userInfo.medicalHistories,
-                  style: TextStyle(
-                    fontSize: 14,
-                    //fontWeight: FontWeight.bold,
-                    color: Palette.gray99,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Divider(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            '특이사항',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Palette.gray66,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            widget.userInfo.comment,
-            style: TextStyle(
-              fontSize: 14,
-              //fontWeight: FontWeight.bold,
-              color: Palette.gray99,
-            ),
-          ),
-
-          SizedBox(height: 20),
-          /* Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  elevation: 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(36.0),
-                  ),
-                  color: Palette.grayB4,
-                ),
-                height: 40,
-                width: 160,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "정보 수정",
-                      style: TextStyle(fontSize: 14, color: Palette.grayFF),
-                    ),
-                  ],
-                ),
+                color: Palette.gray66,
               ),
-              onPressed: () async {
-                print("회원수정");
-                String memberAddMode = "수정";
-
-                List<dynamic> args = [
-                  memberAddMode,
-                  widget.userInfo,
-                ];
-
-                await // 저장하기 성공시 Home로 이동
-                    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberAdd(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(
-                      arguments: args,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '등록횟수 : ${widget.userInfo.registerType}',
+              style: TextStyle(
+                  fontSize: 14.0,
+                  //fontWeight: FontWeight.bold,
+                  color: Palette.gray99),
+              textAlign: TextAlign.right,
+            ),
+            const SizedBox(height: 20),
+            Divider(),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '운동목표',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Palette.gray66,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Offstage(
+              offstage: widget.userInfo.selectedGoals.isEmpty,
+              child: Wrap(
+                direction: Axis.horizontal, // 나열 방향
+                alignment: WrapAlignment.start, // 정렬 방식
+                spacing: 5, // 좌우 간격
+                runSpacing: 5,
+                children: [
+                  for (final chip in goalChips)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                      child: chip,
+                    ),
+                ],
+              ),
+            ),
+            Offstage(
+              offstage: widget.userInfo.goal.isEmpty,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.userInfo.goal,
+                    style: TextStyle(
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray99,
                     ),
                   ),
-                ).then(
-                  (result) {
-                    if (result != null) {
-                      userInfo = result;
-                    } else {
-                      print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
-                      Navigator.pop(context);
-                    }
-                  },
-                );
-
-                //userInfo = result;
-                print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
-              },
+                ],
+              ),
             ),
-          ), */
-          SizedBox(height: 80),
-        ],
-      ),
+            const SizedBox(height: 20),
+            Divider(),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '체형분석',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Palette.gray66,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Offstage(
+              offstage: widget.userInfo.selectedBodyAnalyzed.isEmpty,
+              child: Wrap(
+                direction: Axis.horizontal, // 나열 방향
+                alignment: WrapAlignment.start, // 정렬 방식
+                spacing: 5, // 좌우 간격
+                runSpacing: 5,
+                children: [
+                  for (final chip in bodyAnalyzedChips)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                      child: chip,
+                    ),
+                ],
+              ),
+            ),
+            Offstage(
+              offstage: widget.userInfo.bodyAnalyzed.isEmpty,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.userInfo.bodyAnalyzed,
+                    style: TextStyle(
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray99,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Divider(),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '통증/상해/병력',
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Palette.gray66),
+            ),
+            const SizedBox(height: 10),
+            Offstage(
+              offstage: widget.userInfo.selectedMedicalHistories.isEmpty,
+              child: Wrap(
+                direction: Axis.horizontal, // 나열 방향
+                alignment: WrapAlignment.start, // 정렬 방식
+                spacing: 5, // 좌우 간격
+                runSpacing: 5,
+                children: [
+                  for (final chip in medicalHistoriesChips)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4.0, 0, 4, 0),
+                      child: chip,
+                    ),
+                ],
+              ),
+            ),
+            Offstage(
+              offstage: widget.userInfo.medicalHistories.isEmpty,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.userInfo.medicalHistories,
+                    style: TextStyle(
+                      fontSize: 14,
+                      //fontWeight: FontWeight.bold,
+                      color: Palette.gray99,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Divider(),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '특이사항',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Palette.gray66,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              widget.userInfo.comment,
+              style: TextStyle(
+                fontSize: 14,
+                //fontWeight: FontWeight.bold,
+                color: Palette.gray99,
+              ),
+            ),
+    
+            SizedBox(height: 20),
+            /* Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    elevation: 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(36.0),
+                    ),
+                    color: Palette.grayB4,
+                  ),
+                  height: 40,
+                  width: 160,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "정보 수정",
+                        style: TextStyle(fontSize: 14, color: Palette.grayFF),
+                      ),
+                    ],
+                  ),
+                ),
+                onPressed: () async {
+                  print("회원수정");
+                  String memberAddMode = "수정";
+    
+                  List<dynamic> args = [
+                    memberAddMode,
+                    widget.userInfo,
+                  ];
+    
+                  await // 저장하기 성공시 Home로 이동
+                      Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MemberAdd(),
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(
+                        arguments: args,
+                      ),
+                    ),
+                  ).then(
+                    (result) {
+                      if (result != null) {
+                        userInfo = result;
+                      } else {
+                        print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
+                        Navigator.pop(context);
+                      }
+                    },
+                  );
+    
+                  //userInfo = result;
+                  print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
+                },
+              ),
+            ), */
+            SizedBox(height: 80),
+          ],
+        ),
+      );
+    }
     );
   }
 

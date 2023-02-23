@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/ticketList.dart';
-import 'package:web_project/app/ui/ticketManage.dart';
+import 'package:web_project/app/ui/memberTicketManage.dart';
 import 'package:web_project/auth_service.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
@@ -181,6 +181,8 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
               globalVariables.ticketList[i]['ticketDescription'];
           ticketDescription =
               globalVariables.ticketList[i]['ticketDescription'];
+              // 변수 초기화
+              widget.ticketTitle = null;
           break;
         }
       }
