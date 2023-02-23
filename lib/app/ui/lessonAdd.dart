@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/actionSelector.dart';
+import 'package:web_project/app/ui/sequenceLibrary.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
@@ -726,6 +727,12 @@ class _LessonAddState extends State<LessonAdd> {
                                 TextButton(
                                     onPressed: () {
                                       /// 저장된 시퀀스들이 있는 화면으로 이동하는 함수
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SequenceLibarary()),
+                                      );
                                     },
                                     child: Row(
                                       children: [
