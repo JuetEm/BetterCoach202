@@ -14,7 +14,7 @@ class TicketWidget extends StatefulWidget {
   final String ticketEndDate;
   final int ticketDateLeft;
 
-  TicketWidget(
+  const TicketWidget(
       {Key? key,
       required this.customFunctionOnTap,
       this.customFunctionOnHover,
@@ -55,7 +55,7 @@ class _TicketWidgetState extends State<TicketWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   height: 100,
                   width: 100,
                   child: Column(
@@ -116,7 +116,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                           "${widget.ticketDescription}",
                           style: TextStyle(fontSize: 12, color: Palette.gray66),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 10),
                         Text("시작일: ${widget.ticketStartDate}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

@@ -64,34 +64,34 @@ showAlertDialog(BuildContext context, String title, String content) async {
   return result;
 }
 
-AppBar BaseAppBarMethod(
-    BuildContext context, String pageName, Function? customFunction, List<Widget>? customWidget) {
+AppBar BaseAppBarMethod(BuildContext context, String pageName,
+    Function? customFunction, List<Widget>? customWidget) {
   return AppBar(
-    // key: appBapKey,
-    elevation: 0,
-    backgroundColor: Palette.mainBackground,
-    title: Text(
-      pageName,
-      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            color: Palette.gray00,
-          ),
-    ),
-    centerTitle: true,
-    leading: IconButton(
-      onPressed: () {
-        if (!(customFunction == null)) {
-          customFunction();
-        } else {
-          Navigator.pop(context);
-        }
-      },
-      color: Palette.gray33,
-      icon: pageName == "로그인" ? Icon(null) : Icon(Icons.arrow_back_ios),
-    ),
-    actions: customWidget
-  );
+      iconTheme: IconThemeData(color: Palette.gray66),
+      // key: appBapKey,
+      elevation: 0,
+      backgroundColor: Palette.mainBackground,
+      title: Text(
+        pageName,
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              color: Palette.gray00,
+            ),
+      ),
+      centerTitle: true,
+      leading: IconButton(
+        onPressed: () {
+          if (!(customFunction == null)) {
+            customFunction();
+          } else {
+            Navigator.pop(context);
+          }
+        },
+        color: Palette.gray33,
+        icon: pageName == "로그인" ? Icon(null) : Icon(Icons.arrow_back_ios),
+      ),
+      actions: customWidget);
 }
 
 AppBar MainAppBarMethod(BuildContext context, String pageName) {
