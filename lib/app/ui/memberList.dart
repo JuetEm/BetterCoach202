@@ -283,7 +283,7 @@ class _MemberListState extends State<MemberList> {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TicketLibrary(userInfo)),
+                            builder: (context) => TicketLibrary(ticketLibraryList: globalVariables.ticketList,)),
                       ).then((value) {
                         print("수강권 추가 result");
                       });
