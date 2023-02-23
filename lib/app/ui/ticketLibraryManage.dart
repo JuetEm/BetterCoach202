@@ -9,16 +9,16 @@ import 'package:web_project/main.dart';
 import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart';
 
-class TicketLibrary extends StatefulWidget {
-  const TicketLibrary({this.ticketLibraryList, super.key});
+class TicketLibraryManage extends StatefulWidget {
+  const TicketLibraryManage({this.TicketLibraryManageList, super.key});
 
-  final List? ticketLibraryList;
+  final List? TicketLibraryManageList;
 
   @override
-  State<TicketLibrary> createState() => _TicketLibraryState();
+  State<TicketLibraryManage> createState() => _TicketLibraryManageState();
 }
 
-class _TicketLibraryState extends State<TicketLibrary> {
+class _TicketLibraryManageState extends State<TicketLibraryManage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TicketLibraryService>(
@@ -39,7 +39,7 @@ class _TicketLibraryState extends State<TicketLibrary> {
                       Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TicketLibraryMake(() {}, null)),
+                        builder: (context) => TicketLibraryMake(() {},null)),
                   ).then((value) {
                     print("수강권 추가 result");
                     setState(() {});
@@ -66,13 +66,11 @@ class _TicketLibraryState extends State<TicketLibrary> {
                 ),
               ),
             ),
-
-            /// 수강권 영역
             Expanded(
               child: ListView.separated(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: widget.ticketLibraryList!.length,
+                itemCount: widget.TicketLibraryManageList!.length,
                 itemBuilder: (context, index) {
                   return TicketWidget(
                     customFunctionOnTap: () async {
@@ -80,10 +78,7 @@ class _TicketLibraryState extends State<TicketLibrary> {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TicketLibraryMake(
-                                () {},
-                                widget.ticketLibraryList![index]
-                                    ['ticketTitle'])),
+                            builder: (context) => TicketLibraryMake(() {},widget.TicketLibraryManageList![index]['ticketTitle'])),
                       ).then((value) {
                         print("수강권 추가 result");
                         setState(() {});

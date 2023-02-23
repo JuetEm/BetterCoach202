@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/app/ui/sequenceLibrary.dart';
-import 'package:web_project/app/ui/ticketLibrary.dart';
+import 'package:web_project/app/ui/ticketLibraryManage.dart';
 import 'package:web_project/testShowDialog.dart';
 
 import '../../auth_service.dart';
@@ -283,7 +283,7 @@ class _MemberListState extends State<MemberList> {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TicketLibrary(ticketLibraryList: globalVariables.ticketList,)),
+                            builder: (context) => TicketLibraryManage(TicketLibraryManageList: globalVariables.ticketList,)),
                       ).then((value) {
                         print("수강권 추가 result");
                       });
