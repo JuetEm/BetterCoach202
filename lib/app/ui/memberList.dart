@@ -283,12 +283,10 @@ class _MemberListState extends State<MemberList> {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TicketLibrary(userInfo)),
+                            builder: (context) => TicketLibrary(userInfo)),
                       ).then((value) {
                         print("수강권 추가 result");
                       });
-                      
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
@@ -477,7 +475,6 @@ class _MemberListState extends State<MemberList> {
                     customController: searchController,
                     customFocusNode: searchFocusNode,
                     hint: "이름을 검색하세요.",
-                    label: "이름을 검색하세요.",
                     showArrow: true,
                     customFunction: () {
                       searchString = searchController.text.toLowerCase();
