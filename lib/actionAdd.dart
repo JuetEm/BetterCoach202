@@ -332,131 +332,115 @@ class _ActionAddState extends State<ActionAdd> {
                 ),
 
                 SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(48.0),
-                          ),
-                          color: Palette.buttonOrange,
-                        ),
-                        height: 48,
-                        width: 238,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "동작생성",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () async {
-                        print("추가 버튼");
-                        // create action
-                        if (apparatusOffstage) {
-                          if (globalFunction.selectNullCheck(
-                              context, apparatusController, "기구 선택")) {
-                            selectedApparatus =
-                                apparatusController.dropDownValue!.value;
-                            otherApparatusName =
-                                apparatusController.dropDownValue!.name;
-                          }
-                        } else {
-                          if (globalFunction.textNullCheck(
-                              context, otherApparatusController, "새로운 기구 이름")) {
-                            selectedApparatus =
-                                apparatusController.dropDownValue!.value;
-                            otherApparatusName = otherApparatusController.text;
-                          }
-                        }
-                        if (positionOffstage) {
-                          if (globalFunction.selectNullCheck(
-                              context, positionController, "자세 선택")) {
-                            selectecPosition =
-                                positionController.dropDownValue!.value;
-                            otherPositionName =
-                                positionController.dropDownValue!.name;
-                          }
-                        } else {
-                          if (globalFunction.textNullCheck(
-                              context, otherPositionController, "새로운 자세 이름")) {
-                            selectecPosition =
-                                positionController.dropDownValue!.value;
-                            otherPositionName = otherPositionController.text;
-                          }
-                        }
-                        if (globalFunction.textNullCheck(
-                            context, nameController, "새로운 동작 이름")) {
-                          actionName = nameController.text;
-                        }
-                        if (selectedApparatus.isNotEmpty &&
-                            selectecPosition.isNotEmpty &&
-                            actionName.isNotEmpty) {
-                          String id = await actionService.create(
-                            selectedApparatus,
-                            otherApparatusName,
-                            selectecPosition,
-                            otherPositionName,
-                            actionName,
-                            user.uid,
-                            actionName.toUpperCase(),
-                            actionName.toLowerCase(),
-                          );
 
-                          List tmpResultList = [];
-                          //tmpActionClass.Action tmpAction = tmpActionClass.Action(selectedApparatus, otherApparatusName, selectecPosition, otherPositionName, actionName, id, actionName.toUpperCase(), actionName.toLowerCase(), actionName.toLowerCase().split(" "), user.uid);
-                          // {name: 핸드 스트랩을 이용하여 Hugging, upperCaseName: 핸드 스트랩을 이용하여 HUGGING, otherApparatusName: SPRING BOARD, nGramizedLowerCaseName: [핸드, 스트랩을, 이용하여, hugging], position: standing, otherPositionName: STANDING, apparatus: SB, author: p0gKIY1vArckS6JTZQdYG4RymEk2, lowerCaseName: 핸드 스트랩을 이용하여 hugging, id: 2RqZOEQK09sRx7bcqQ6n}
-                          resultActionList.add({});
-                          resultActionList[resultActionList.length - 1]
-                              ['name'] = actionName;
-                          resultActionList[resultActionList.length - 1]
-                              ['upperCaseName'] = actionName.toUpperCase();
-                          resultActionList[resultActionList.length - 1]
-                              ['otherApparatusName'] = otherApparatusName;
-                          resultActionList[resultActionList.length - 1]
-                                  ['nGramizedLowerCaseName'] =
-                              actionName.toLowerCase().split(" ");
-                          resultActionList[resultActionList.length - 1]
-                              ['position'] = selectecPosition;
-                          resultActionList[resultActionList.length - 1]
-                              ['otherPositionName'] = otherPositionName;
-                          resultActionList[resultActionList.length - 1]
-                              ['apparatus'] = selectedApparatus;
-                          resultActionList[resultActionList.length - 1]
-                              ['author'] = user.uid;
-                          resultActionList[resultActionList.length - 1]
-                              ['lowerCaseName'] = actionName.toLowerCase();
-                          resultActionList[resultActionList.length - 1]['id'] =
-                              id;
-                          // resultActionList.add(tmpAction);
-                          print(resultActionList);
-                          resultActionList
-                              .sort(((a, b) => a['name'].compareTo(b['name'])));
+                //// 새로가져온 버튼
+                ElevatedButton(
+                  onPressed: () async {
+                    print("추가 버튼");
+                    // create action
+                    if (apparatusOffstage) {
+                      if (globalFunction.selectNullCheck(
+                          context, apparatusController, "기구 선택")) {
+                        selectedApparatus =
+                            apparatusController.dropDownValue!.value;
+                        otherApparatusName =
+                            apparatusController.dropDownValue!.name;
+                      }
+                    } else {
+                      if (globalFunction.textNullCheck(
+                          context, otherApparatusController, "새로운 기구 이름")) {
+                        selectedApparatus =
+                            apparatusController.dropDownValue!.value;
+                        otherApparatusName = otherApparatusController.text;
+                      }
+                    }
+                    if (positionOffstage) {
+                      if (globalFunction.selectNullCheck(
+                          context, positionController, "자세 선택")) {
+                        selectecPosition =
+                            positionController.dropDownValue!.value;
+                        otherPositionName =
+                            positionController.dropDownValue!.name;
+                      }
+                    } else {
+                      if (globalFunction.textNullCheck(
+                          context, otherPositionController, "새로운 자세 이름")) {
+                        selectecPosition =
+                            positionController.dropDownValue!.value;
+                        otherPositionName = otherPositionController.text;
+                      }
+                    }
+                    if (globalFunction.textNullCheck(
+                        context, nameController, "새로운 동작 이름")) {
+                      actionName = nameController.text;
+                    }
+                    if (selectedApparatus.isNotEmpty &&
+                        selectecPosition.isNotEmpty &&
+                        actionName.isNotEmpty) {
+                      String id = await actionService.create(
+                        selectedApparatus,
+                        otherApparatusName,
+                        selectecPosition,
+                        otherPositionName,
+                        actionName,
+                        user.uid,
+                        actionName.toUpperCase(),
+                        actionName.toLowerCase(),
+                      );
 
-                          tmpResultList.add(actionName);
-                          tmpResultList.add(resultActionList);
-                          // 신규 동작 추가 성공시 actionSelector로 이동
-                          Navigator.pop(context, tmpResultList);
-                        } else {
-                          // 빈 값 있을 때
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("모든 항목을 입력 해주세요."),
-                          ));
-                        }
-                      }),
-                )
+                      List tmpResultList = [];
+                      //tmpActionClass.Action tmpAction = tmpActionClass.Action(selectedApparatus, otherApparatusName, selectecPosition, otherPositionName, actionName, id, actionName.toUpperCase(), actionName.toLowerCase(), actionName.toLowerCase().split(" "), user.uid);
+                      // {name: 핸드 스트랩을 이용하여 Hugging, upperCaseName: 핸드 스트랩을 이용하여 HUGGING, otherApparatusName: SPRING BOARD, nGramizedLowerCaseName: [핸드, 스트랩을, 이용하여, hugging], position: standing, otherPositionName: STANDING, apparatus: SB, author: p0gKIY1vArckS6JTZQdYG4RymEk2, lowerCaseName: 핸드 스트랩을 이용하여 hugging, id: 2RqZOEQK09sRx7bcqQ6n}
+                      resultActionList.add({});
+                      resultActionList[resultActionList.length - 1]['name'] =
+                          actionName;
+                      resultActionList[resultActionList.length - 1]
+                          ['upperCaseName'] = actionName.toUpperCase();
+                      resultActionList[resultActionList.length - 1]
+                          ['otherApparatusName'] = otherApparatusName;
+                      resultActionList[resultActionList.length - 1]
+                              ['nGramizedLowerCaseName'] =
+                          actionName.toLowerCase().split(" ");
+                      resultActionList[resultActionList.length - 1]
+                          ['position'] = selectecPosition;
+                      resultActionList[resultActionList.length - 1]
+                          ['otherPositionName'] = otherPositionName;
+                      resultActionList[resultActionList.length - 1]
+                          ['apparatus'] = selectedApparatus;
+                      resultActionList[resultActionList.length - 1]['author'] =
+                          user.uid;
+                      resultActionList[resultActionList.length - 1]
+                          ['lowerCaseName'] = actionName.toLowerCase();
+                      resultActionList[resultActionList.length - 1]['id'] = id;
+                      // resultActionList.add(tmpAction);
+                      print(resultActionList);
+                      resultActionList
+                          .sort(((a, b) => a['name'].compareTo(b['name'])));
 
-                /// 추가 버튼
+                      tmpResultList.add(actionName);
+                      tmpResultList.add(resultActionList);
+                      // 신규 동작 추가 성공시 actionSelector로 이동
+                      Navigator.pop(context, tmpResultList);
+                    } else {
+                      // 빈 값 있을 때
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("모든 항목을 입력 해주세요."),
+                      ));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 90),
+                    child: Text("동작추가", style: TextStyle(fontSize: 16)),
+                  ),
+                ),
               ],
             ),
           ),

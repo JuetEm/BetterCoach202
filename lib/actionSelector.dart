@@ -848,7 +848,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     return MediaQuery.removePadding(
       context: context,
-      removeTop: true,
+      removeTop: false,
       removeBottom: true,
       child: Consumer<ActionService>(builder: (context, actionService, child) {
         // if (tmpLessonInfoList.isNotEmpty) {
@@ -885,20 +885,6 @@ class _ActionSelectorState extends State<ActionSelector> {
             searchString = "";
             Navigator.pop(context, tmpLessonInfoList);
           }, null, null),
-          floatingActionButton: tmpLessonInfoList.isEmpty
-              ? null
-              : FloatingActionButton.extended(
-                  isExtended: isFloating,
-                  onPressed: () {
-                    print(
-                        "Floating Button onPressed Clicked! +${selectedActionCount}");
-                  },
-                  label: Text(
-                    "+${selectedActionCount}",
-                    style: TextStyle(color: Palette.buttonOrange),
-                  ),
-                  backgroundColor: Palette.grayFA,
-                ),
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -1057,7 +1043,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "동작을 선택하세요",
+                            "동작을 선택하세요(${tmpLessonInfoList.isEmpty ? 0 : selectedActionCount})",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -1422,156 +1408,77 @@ class _ActionSelectorState extends State<ActionSelector> {
                           ),
                         ),
 
-                        /// 추가 버튼
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(0),
-                              backgroundColor: Colors.transparent,
-                              shadowColor: Colors.transparent,
+                        /// 동작 추가 버튼
+                        ElevatedButton(
+                          onPressed: () {
+                            print("동작추가");
+
+                            // lessonAdd
+                            if (tmpLessonInfoList.isNotEmpty) {
+                              print("userInfo.docId : ${customUserInfo.docId}");
+
+                              List<DateTime> tmpEventList = [];
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("동작추가 성공"),
+                              ));
+                              // 저장하기 성공시 MemberInfo로 이동
+                              Navigator.pop(context, tmpLessonInfoList);
+
+                              initStateVar = !initStateVar;
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("동작을 선택해주세요."),
+                              ));
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
                             ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(48.0),
-                                ),
-                                color: Palette.buttonOrange,
-                              ),
-                              height: 48,
-                              width: 238,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "동작추가",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            onPressed: () {
-                              print("동작추가");
-                              // LessonAdd로 이동
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ActionAdd(),
-                              //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                              //     settings: RouteSettings(
-                              //       arguments: customUserInfo,
-                              //     ),
-                              //   ),
-                              // );
-
-                              // lessonAdd
-                              if (tmpLessonInfoList.isNotEmpty) {
-                                print(
-                                    "userInfo.docId : ${customUserInfo.docId}");
-
-                                // for (int i = 0; i < tmpLessonInfoList.length; i++) {
-                                //   lessonService.create(
-                                //     docId: customUserInfo.docId,
-                                //     uid: user.uid,
-                                //     name: customUserInfo.name,
-                                //     phoneNumber: customUserInfo.phoneNumber,
-                                //     apratusName: tmpLessonInfoList[i].apparatusName,
-                                //     actionName: tmpLessonInfoList[i].actionName,
-                                //     lessonDate: lessonDate,
-                                //     grade: "50",
-                                //     totalNote: totalNote,
-                                //     pos: i,
-                                //     onSuccess: () {
-                                //       print(
-                                //           "동작추가 성공 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                                //     },
-                                //     onError: () {
-                                //       print(
-                                //           "동작추가 에러 : tmpLessonInfoList[${i}].apparatusName : ${tmpLessonInfoList[i].apparatusName}, tmpLessonInfoList[${i}].actionName : ${tmpLessonInfoList[i].actionName}");
-                                //     },
-                                //   );
-                                // }
-
-                                List<DateTime> tmpEventList = [];
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("동작추가 성공"),
-                                ));
-                                // 저장하기 성공시 MemberInfo로 이동
-                                Navigator.pop(context, tmpLessonInfoList);
-                                //initStateVar = !initStateVar;
-                                //Navigator.pop(context);
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => LessonAdd(),
-                                //     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                //     settings: RouteSettings(
-                                //       arguments: [
-                                //         customUserInfo,
-                                //         lessonDate,
-                                //         tmpEventList,
-                                //         "",
-                                //         "",
-                                //         tmpLessonInfoList
-                                //       ],
-                                //     ),
-                                //   ),
-                                // );
-                                initStateVar = !initStateVar;
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("동작을 선택해주세요."),
-                                ));
-                              }
-                            },
+                            elevation: 0,
+                            backgroundColor: Palette.buttonOrange,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 90),
+                            child: Text("동작추가", style: TextStyle(fontSize: 16)),
                           ),
                         ),
                       ],
                     ),
                   ),
+
+                  /// 확인버튼
                   Offstage(
                     offstage: searchString.isEmpty,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 11, 0, 22),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(0),
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(48.0),
-                            ),
-                            color: Palette.buttonOrange,
-                          ),
-                          height: 48,
-                          width: 238,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "확인",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ),
                         onPressed: () {
-                          print("동작추가");
+                          print("신규 동작추가 확인");
                           setState(() {
                             searchString = "";
                             searchController.clear();
                             searchFocusNode.unfocus();
                             /* scrollController.jumpTo(
-                                scrollController.position.minScrollExtent); */
+                                  scrollController.position.minScrollExtent); */
                           });
                         },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          elevation: 0,
+                          backgroundColor: Palette.buttonOrange,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 90),
+                          child: Text("확인", style: TextStyle(fontSize: 16)),
+                        ),
                       ),
                     ),
                   )
