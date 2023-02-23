@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/ui/ticketMake.dart';
-import 'package:web_project/lessonAdd.dart';
+import 'package:web_project/app/ui/lessonAdd.dart';
 
 import 'calendar_service.dart';
 import 'color.dart';

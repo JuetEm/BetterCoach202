@@ -15,7 +15,7 @@ import 'package:web_project/ticketWidget.dart';
 import '../../actionSelector.dart';
 import '../../auth_service.dart';
 import '../../color.dart';
-import '../../lessonAdd.dart';
+import 'lessonAdd.dart';
 
 import '../../lessonUpdate.dart';
 import '../../lesson_service.dart';

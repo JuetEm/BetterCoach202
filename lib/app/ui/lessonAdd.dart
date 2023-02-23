@@ -7,15 +7,12 @@ import 'package:web_project/actionSelector.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
-import 'actionInfo.dart';
-import 'auth_service.dart';
-import 'baseTableCalendar.dart';
-import 'color.dart';
-import 'globalFunction.dart';
-import 'globalWidget.dart';
-import 'app/ui/memberInfo.dart';
-import 'lessonInfo.dart';
-import 'lesson_service.dart';
+import '../../auth_service.dart';
+import '../../color.dart';
+import '../../globalFunction.dart';
+import '../../globalWidget.dart';
+import 'memberInfo.dart';
+import '../../lesson_service.dart';
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -213,7 +210,7 @@ class _LessonAddState extends State<LessonAdd> {
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
-          },null),
+          }, null),
 
           body: SafeArea(
             child: SingleChildScrollView(

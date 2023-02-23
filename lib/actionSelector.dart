@@ -6,7 +6,7 @@ import 'package:web_project/color.dart';
 import 'actionAdd.dart';
 import 'actionInfo.dart';
 import 'action_service.dart';
-import 'lessonAdd.dart';
+import 'app/ui/lessonAdd.dart';
 import 'lessonInfo.dart';
 import 'lesson_service.dart';
 import 'auth_service.dart';
