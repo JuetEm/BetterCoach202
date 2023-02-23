@@ -225,108 +225,110 @@ class _MemberListState extends State<MemberList> {
         print("몇 번 그리나요? - Consumer");
         return Scaffold(
           drawerScrimColor: Palette.gray66,
-          drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                // 프로젝트에 assets 폴더 생성 후 이미지 2개 넣기
-                // pubspec.yaml 파일에 assets 주석에 이미지 추가하기
-                // UserAccountsDrawerHeader(
-                //   // currentAccounticture: CircleAvatar(
-                //   //   // 현재 계정 이미지 set
-                //   //   backgroundImage: AssetImage('assets/profile.png'),
-                //   //   backgroundColor: Colors.white,
-                //   // ),
-                //   // otherAccountsPictures: <Widget>[
-                //   //   // 다른 계정 이미지[] set
-                //   //   CircleAvatar(
-                //   //     backgroundColor: Colors.white,
-                //   //     backgroundImage: AssetImage('assets/profile2.png'),
-                //   //   ),
-                //   //   // CircleAvatar(
-                //   //   //   backgroundColor: Colors.white,
-                //   //   //   backgroundImage: AssetImage('assets/profile2.png'),
-                //   //   // )
-                //   // ],
-                //   accountName: Text('GANGPRO'),
-                //   accountEmail: Text('gangpro@email.com'),
-                //   onDetailsPressed: () {
-                //     print('arrow is clicked');
-                //   },
-                //   decoration: BoxDecoration(
-                //     color: Palette.buttonOrange,
-                //   ),
-                // ),
-                ListTile(
-                  leading: Icon(
-                    Icons.person,
-                    color: Palette.gray66,
+          drawer: SafeArea(
+            child: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  // 프로젝트에 assets 폴더 생성 후 이미지 2개 넣기
+                  // pubspec.yaml 파일에 assets 주석에 이미지 추가하기
+                  // UserAccountsDrawerHeader(
+                  //   // currentAccounticture: CircleAvatar(
+                  //   //   // 현재 계정 이미지 set
+                  //   //   backgroundImage: AssetImage('assets/profile.png'),
+                  //   //   backgroundColor: Colors.white,
+                  //   // ),
+                  //   // otherAccountsPictures: <Widget>[
+                  //   //   // 다른 계정 이미지[] set
+                  //   //   CircleAvatar(
+                  //   //     backgroundColor: Colors.white,
+                  //   //     backgroundImage: AssetImage('assets/profile2.png'),
+                  //   //   ),
+                  //   //   // CircleAvatar(
+                  //   //   //   backgroundColor: Colors.white,
+                  //   //   //   backgroundImage: AssetImage('assets/profile2.png'),
+                  //   //   // )
+                  //   // ],
+                  //   accountName: Text('GANGPRO'),
+                  //   accountEmail: Text('gangpro@email.com'),
+                  //   onDetailsPressed: () {
+                  //     print('arrow is clicked');
+                  //   },
+                  //   decoration: BoxDecoration(
+                  //     color: Palette.buttonOrange,
+                  //   ),
+                  // ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.person,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('내 프로필'),
+                    onTap: () {
+                      print('내 프로필 is clicked');
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
-                  title: Text('내 프로필'),
-                  onTap: () {
-                    print('내 프로필 is clicked');
-                  },
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.confirmation_number_outlined,
-                    color: Palette.gray66,
+                  ListTile(
+                    leading: Icon(
+                      Icons.confirmation_number_outlined,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('수강권 라이브러리'),
+                    onTap: () {
+                      print('수강권 라이브러리 is clicked');
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
-                  title: Text('수강권 라이브러리'),
-                  onTap: () {
-                    print('수강권 라이브러리 is clicked');
-                  },
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.info_outline,
-                    color: Palette.gray66,
+                  ListTile(
+                    leading: Icon(
+                      Icons.info_outline,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('개인정보처리방침'),
+                    onTap: () {
+                      print('개인정보처리방침 is clicked');
+                      launchUrl(Uri.parse(
+                          'https://huslxl.notion.site/9eec26cf46b941c4960209b419d41fbc'));
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
-                  title: Text('개인정보처리방침'),
-                  onTap: () {
-                    print('개인정보처리방침 is clicked');
-                    launchUrl(Uri.parse(
-                        'https://huslxl.notion.site/9eec26cf46b941c4960209b419d41fbc'));
-                  },
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.info_outline,
-                    color: Palette.gray66,
+                  ListTile(
+                    leading: Icon(
+                      Icons.info_outline,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('서비스 이용약관'),
+                    onTap: () {
+                      print('서비스 이용약관 is clicked');
+                      launchUrl(Uri.parse(
+                          'https://huslxl.notion.site/51d75d9fb0af4c64be5ec95f16fe6289'));
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
-                  title: Text('서비스 이용약관'),
-                  onTap: () {
-                    print('서비스 이용약관 is clicked');
-                    launchUrl(Uri.parse(
-                        'https://huslxl.notion.site/51d75d9fb0af4c64be5ec95f16fe6289'));
-                  },
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: Palette.gray66,
+                  ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('로그아웃'),
+                    onTap: () {
+                      print('signOut');
+                      AuthService authService = AuthService();
+                      authService.signOut();
+                      // 로그인 페이지로 이동
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginPage(
+                                  analytics: MyApp.analytics,
+                                )),
+                      );
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
-                  title: Text('로그아웃'),
-                  onTap: () {
-                    print('signOut');
-                    AuthService authService = AuthService();
-                    authService.signOut();
-                    // 로그인 페이지로 이동
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginPage(
-                                analytics: MyApp.analytics,
-                              )),
-                    );
-                  },
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           backgroundColor: Palette.secondaryBackground,
