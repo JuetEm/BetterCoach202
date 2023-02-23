@@ -9,6 +9,7 @@ import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/ticketList.dart';
 import 'package:web_project/app/ui/ticketManage.dart';
+import 'package:web_project/auth_service.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
@@ -142,13 +143,17 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
   @override
   Widget build(BuildContext context) {
     tickets = [
-      DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력'),
+      DropDownValueModel(
+        name: '직접입력',
+        value: '직접입력',
+        toolTipMsg: '직접입력',
+      ),
     ];
     for (var ticketVal in globalVariables.ticketList) {
       // print("ticketVal : $ticketVal");
       var model = DropDownValueModel(
           name: ticketVal['ticketTitle'],
-          value: ticketVal['ticketTitle'],
+          value: ticketVal['id'],
           toolTipMsg: ticketVal['ticketDescription']);
       tickets.add(model);
     }
@@ -162,7 +167,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
               onPressed: () async {
                 print(
                     "AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
-                if (ticketMakeController.dropDownValue?.value
+                if (ticketMakeController.dropDownValue?.name
                         .toString()
                         .trim() ==
                     null) {
@@ -191,7 +196,99 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                     content: Text("수강권 설명을 입력하세요."),
                   ));
                 } else {
-                  
+                  if (isTicketTitleOffStaged) {
+                    ticketLibraryService
+                        .update(
+                      AuthService().currentUser()!.uid,
+                      ticketMakeController.dropDownValue?.value,
+                      ticketUsingCount,
+                      ticketCountLeft,
+                      ticketCountAll,
+                      ticketTitle,
+                      ticketDescription,
+                      null,
+                      null,
+                      ticketDateLeft,
+                      Timestamp.fromDate(DateTime.now()).toDate(),
+                    )
+                        .then((value) {
+                          print(
+                              "${screenName} - 티켓 라이브러리 생성 update is called!");
+                      for (int i = 0;
+                          i < globalVariables.ticketList.length;
+                          i++) {
+                        if (ticketTitle ==
+                            globalVariables.ticketList[i]['ticketTitle']) {
+                          globalVariables.ticketList[i]['ticketCountAll'] =
+                              ticketCountAll;
+                          globalVariables.ticketList[i]['ticketUsingCount'] = 0;
+                          globalVariables.ticketList[i]['ticketDateLeft'] = 0;
+                          globalVariables.ticketList[i]['ticketEndDate'] =
+                              null;
+                          globalVariables.ticketList[i]['uid'] =
+                              AuthService().currentUser()!.uid;
+                          globalVariables.ticketList[i]['ticketCountLeft'] = 0;
+                          globalVariables.ticketList[i]['createDate'] =
+                              Timestamp.fromDate(DateTime.now()).toDate();
+                          globalVariables.ticketList[i]['ticketDescription'] =
+                              ticketDescription;
+                          globalVariables.ticketList[i]['ticketStartDate'] =
+                              null;
+                                   print("update globalVariables.ticketList : ${globalVariables.ticketList}");
+                                  break;
+                        }
+                      }
+                      Navigator.pop(context);
+                    });
+                  } else {
+                    for (int i = 0; i < tickets.length; i++) {
+                      if (ticketTitle == tickets[i].name) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
+                        ));
+                        break;
+                      } else {
+                        await ticketLibraryService
+                            .create(
+                          AuthService().currentUser()!.uid,
+                          ticketUsingCount,
+                          ticketCountLeft,
+                          ticketCountAll,
+                          ticketTitle,
+                          ticketDescription,
+                          null,
+                          null,
+                          ticketDateLeft,
+                          Timestamp.fromDate(DateTime.now()).toDate(),
+                        )
+                            .then((value) {
+                          print(
+                              "${screenName} - 티켓 라이브러리 생성 create is called!");
+                          
+                            globalVariables.ticketList.add({
+                              "ticketCountAll": ticketCountAll,
+                              "ticketUsingCount": 0,
+                              "ticketDateLeft": 0,
+                              "ticketEndDate": null,
+                              "uid": AuthService().currentUser()!.uid,
+                              "ticketCountLeft": 0,
+                              "createDate":
+                                  Timestamp.fromDate(DateTime.now()).toDate(),
+                              "ticketDescription": ticketDescription,
+                              "ticketStartDate": null,
+                              "ticketTitle": ticketTitle,
+                              "id": value,
+                            });
+                            globalVariables.ticketList.sort((a, b) =>
+                                (a['ticketTitle']).compareTo(b['ticketTitle']));
+                                print("create globalVariables.ticketList : ${globalVariables.ticketList}");
+                                
+                          
+                          Navigator.pop(context);
+                        });
+                      }
+                    }
+                  }
                 }
               },
               child: Text(
@@ -291,9 +388,9 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                       onChanged: (val) {
                         print("position onChange val : ${val}");
                         print(
-                            "ticketMakeController.dropDownValue : ${ticketMakeController.dropDownValue!.value}");
+                            "ticketMakeController.dropDownValue : ${ticketMakeController.dropDownValue!.name}");
                         selectedticketName =
-                            ticketMakeController.dropDownValue!.value;
+                            ticketMakeController.dropDownValue!.name;
                         if (selectedticketName == "직접입력") {
                           isTicketTitleOffStaged = false;
                           ticketTitle = ticketTitleController.text;

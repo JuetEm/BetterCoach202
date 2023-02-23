@@ -190,9 +190,9 @@ void main() async {
           print("stackTrace : \r\n${stackTrace}");
         }).whenComplete(() {
           print("ticketList await init complete!");
-          for(var i in globalVariables.ticketList){
+          /* for(var i in globalVariables.ticketList){
             print("i : ${i}");
-          }
+          } */
         });
       });
       runApp(

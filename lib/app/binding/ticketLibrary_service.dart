@@ -16,7 +16,7 @@ class TicketLibraryService extends ChangeNotifier {
     var docsLength = result.docs.length;
     var rstObj = {};
     for (int i = 0; i < docsLength; i++) {
-      print("result.docs[i].data() : ${result.docs[i].data()}");
+      // print("result.docs[i].data() : ${result.docs[i].data()}");
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
       resultList.add(rstObj);
@@ -31,8 +31,8 @@ class TicketLibraryService extends ChangeNotifier {
     final int ticketCountAll,
     final String ticketTitle,
     final String ticketDescription,
-    final DateTime ticketStartDate,
-    final DateTime ticketEndDate,
+    final DateTime? ticketStartDate,
+    final DateTime? ticketEndDate,
     final int ticketDateLeft,
     final DateTime createDate,
   ) async {
@@ -58,6 +58,44 @@ class TicketLibraryService extends ChangeNotifier {
     notifyListeners(); // 화면 갱신
 
     return id;
+  }
+
+  Future<String> update(
+    final String uid,
+    final String docID,
+    final int ticketUsingCount,
+    final int ticketCountLeft,
+    final int ticketCountAll,
+    final String ticketTitle,
+    final String ticketDescription,
+    final DateTime? ticketStartDate,
+    final DateTime? ticketEndDate,
+    final int ticketDateLeft,
+    final DateTime createDate,
+  ) async {
+    // report 만들기
+    String id = "";
+    await ticketLibraryCollection.doc(docID).update({
+      'uid': uid, // 작성자 uid
+      'ticketCountLeft': ticketCountLeft,
+      'ticketUsingCount': ticketUsingCount, // 작성자 displayName
+      'ticketCountAll': ticketCountAll, // 전화번호
+      'ticketTitle': ticketTitle, // 이메일
+      'ticketDescription': ticketDescription, // 페이지 명
+      'ticketStartDate': ticketStartDate, // 오류/개선 보고 내용
+      'ticketEndDate': ticketEndDate, // 등록 일시
+      'ticketDateLeft': ticketDateLeft, // 해결 상태
+      'createDate': createDate, // 해결 일시
+    }).then((value) {
+      // id = value
+      // id = docID;
+      print("Successfully completed");
+    }, onError: (e) {
+      print("Error completing: ${e}");
+    });
+    notifyListeners(); // 화면 갱신
+
+    return docID;
   }
 
   void delete({

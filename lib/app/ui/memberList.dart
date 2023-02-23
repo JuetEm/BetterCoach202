@@ -575,7 +575,7 @@ class _MemberListState extends State<MemberList> {
                                 shrinkWrap: true,
                                 itemCount: docs.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  print("몇 번 그리나요? - ListView.separated");
+                                  //  print("몇 번 그리나요? - ListView.separated");
                                   final doc = docs[index];
                                   String docId = doc['id'];
                                   String name = doc['name'] ?? "";
@@ -611,8 +611,7 @@ class _MemberListState extends State<MemberList> {
                                   bool isActive = doc['isActive'];
                                   bool isFavorite = doc['isFavorite'] ?? false;
 
-                                  print(
-                                      "${screenName} name : ${name}, isFavorite : ${isFavorite}");
+                                  // print("${screenName} name : ${name}, isFavorite : ${isFavorite}");
 
                                   UserInfo userInfo = UserInfo(
                                     doc['id'],
