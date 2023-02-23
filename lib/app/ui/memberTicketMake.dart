@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
-import 'package:web_project/app/ui/ticketList.dart';
+import 'package:web_project/app/ui/ticketLibraryList.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
@@ -244,7 +244,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20)),
                                       ),
-                                      content: TicketList(
+                                      content: TicketLibraryList(
                                           globalVariables.ticketList, () {
                                         setState(() {});
                                       }),

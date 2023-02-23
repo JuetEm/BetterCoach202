@@ -4,17 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/globalVariables.dart';
 
-class TicketList extends StatefulWidget {
-  const TicketList(this.ticketList,this.customFunction,{super.key});
+class TicketLibraryList extends StatefulWidget {
+  const TicketLibraryList(this.ticketList,this.customFunction,{super.key});
 
   final List ticketList;
   final Function customFunction;
 
   @override
-  State<TicketList> createState() => _TicketListState();
+  State<TicketLibraryList> createState() => _TicketLibraryListState();
 }
 
-class _TicketListState extends State<TicketList> {
+class _TicketLibraryListState extends State<TicketLibraryList> {
 
   @override
   Widget build(BuildContext context) {
