@@ -39,7 +39,7 @@ class _TicketLibraryState extends State<TicketLibrary> {
                       Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TicketLibraryMake(() {},null)),
+                        builder: (context) => TicketLibraryMake(() {}, null)),
                   ).then((value) {
                     print("수강권 추가 result");
                     setState(() {});
@@ -66,6 +66,8 @@ class _TicketLibraryState extends State<TicketLibrary> {
                 ),
               ),
             ),
+
+            /// 수강권 영역
             Expanded(
               child: ListView.separated(
                 scrollDirection: Axis.vertical,
@@ -78,7 +80,10 @@ class _TicketLibraryState extends State<TicketLibrary> {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TicketLibraryMake(() {},widget.ticketLibraryList![index]['ticketTitle'])),
+                            builder: (context) => TicketLibraryMake(
+                                () {},
+                                widget.ticketLibraryList![index]
+                                    ['ticketTitle'])),
                       ).then((value) {
                         print("수강권 추가 result");
                         setState(() {});

@@ -892,7 +892,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // SizedBox(height: 10),
+                  /// 동작 검색 창
                   BaseSearchTextField(
                     customController: searchController,
                     customFocusNode: searchFocusNode,
@@ -910,33 +910,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                       });
                     },
                   ),
-                  // SizedBox(height: 10),
-                  // SizedBox(
-                  //   height: 30,
-                  //   width: double.infinity,
-                  //   child: Text(
-                  //     "기구별",
-                  //     style: TextStyle(
-                  //       fontSize: 18,
-                  //       fontWeight: FontWeight.bold,
-                  //     ),
-                  //     textAlign: TextAlign.left,
-                  //   ),
-                  // ),
-
-                  // SizedBox(height: 5),
-                  // SizedBox(
-                  //   height: 30,
-                  //   width: double.infinity,
-                  //   child: Text(
-                  //     "자세별",
-                  //     style: TextStyle(
-                  //       fontSize: 18,
-                  //       fontWeight: FontWeight.bold,
-                  //     ),
-                  //     textAlign: TextAlign.left,
-                  //   ),
-                  // ),
 
                   SizedBox(height: 5),
                   // SizedBox(
