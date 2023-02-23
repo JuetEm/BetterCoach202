@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/globalVariables.dart';
+
+class TicketList extends StatefulWidget {
+  const TicketList(this.ticketList,this.customFunction,{super.key});
+
+  final List ticketList;
+  final Function customFunction;
+
+  @override
+  State<TicketList> createState() => _TicketListState();
+}
+
+class _TicketListState extends State<TicketList> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TicketService>(builder: (context, ticketService, child) {
+      return Scaffold(
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                child: Text("수강권 명",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+                          TextButton(child: Text("완료"), onPressed: (){
+
+                            Navigator.pop(context);
+                          },),
+            ],),
+            ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: widget.ticketList.length, itemBuilder:(context, index) {
+              
+              return ListTile(
+                
+                title: Text(widget.ticketList[index]['ticketTitle']),
+                trailing: IconButton(onPressed: (){
+                  var element;
+                  for(int i=0; i<widget.ticketList.length; i++){
+                    element = widget.ticketList[i];
+                    if(element['id'] == widget.ticketList[index]['id']){
+                      ticketService.delete(docId: element['id'],onError: (){},onSuccess: (){});
+                      widget.ticketList.remove(element);
+                      break;
+                    }
+                  }
+                  widget.customFunction();
+                }, icon: Icon(Icons.clear)),
+              );
+            }, separatorBuilder: (BuildContext context, int index) { return SizedBox.shrink(); },),
+          ],
+        ),
+      );
+    },
+    );
+  }
+}

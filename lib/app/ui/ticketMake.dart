@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticket_service.dart';
+import 'package:web_project/app/ui/ticketList.dart';
 import 'package:web_project/app/ui/ticketManage.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
@@ -141,7 +142,6 @@ class _TicketMakeState extends State<TicketMake> {
   Widget build(BuildContext context) {
     tickets = [
       DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력'),
-      DropDownValueModel(name: '[편집하기]', value: '편집하기', toolTipMsg: '편집하기')
     ];
     for (var ticketVal in globalVariables.ticketList) {
       // print("ticketVal : $ticketVal");
@@ -226,10 +226,36 @@ class _TicketMakeState extends State<TicketMake> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("수강권 명",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
+                          TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      contentPadding: EdgeInsets.all(10),
+                                      // titlePadding: EdgeInsets.all(0),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),),
+                                      content: TicketList(globalVariables.ticketList,(){
+                                        setState(() {
+                                          
+                                        });
+                                      }),
+                                    );
+                                  });
+                            },
+                            child: Text(
+                              "편집",
+                              style: TextStyle(
+                                  fontSize: 16, color: Palette.statusRed),
+                            ),
+                          ),
                         ],
                       ),
                     ),

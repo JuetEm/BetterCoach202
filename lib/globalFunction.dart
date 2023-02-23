@@ -449,12 +449,13 @@ class GlobalFunction {
         MaterialPageRoute(
           builder: (_) => BaseTableCalendar(
             (){},
-            true,
+            false,
             selectedDate: selectedDate,
             pageName: pageName,
             eventList: [],
           ),
           fullscreenDialog: true,
+          
         ));
 
     if (!(result == null)) {
