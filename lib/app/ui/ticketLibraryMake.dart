@@ -48,8 +48,8 @@ int ticketCountLeft = 0;
 int ticketCountAll = 0;
 String ticketTitle = "";
 String ticketDescription = "";
-String? ticketStartDate = "";
-String? ticketEndDate = "";
+String? ticketStartDate = "0000-00-00";
+String? ticketEndDate = "0000-00-00";
 int ticketDateLeft = 0;
 
 String getTodayDate() {
@@ -81,7 +81,9 @@ String getDateFromTimeStamp(var timestamp) {
 
 class TicketLibraryMake extends StatefulWidget {
   UserInfo? userInfo;
-  TicketLibraryMake({super.key});
+  Function? customFunction;
+  String? ticketTitle;
+  TicketLibraryMake(this.customFunction, this.ticketTitle, {super.key});
   TicketLibraryMake.getUserInfo(this.userInfo, {super.key});
 
   @override
@@ -108,10 +110,10 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
     ticketEndDateController = TextEditingController();
     ticketDateLeftController = TextEditingController();
 
-    ticketStartDateController.text = getTodayDate();
+    /* ticketStartDateController.text = getTodayDate();
     ticketStartDate = getTodayDate();
     ticketEndDateController.text = getMonthLateDate();
-    ticketEndDate = getMonthLateDate();
+    ticketEndDate = getMonthLateDate(); */
   }
 
   @override
@@ -149,6 +151,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
         toolTipMsg: '직접입력',
       ),
     ];
+    // DropDownValueModel DropDown 메뉴 목록 만들기
     for (var ticketVal in globalVariables.ticketList) {
       // print("ticketVal : $ticketVal");
       var model = DropDownValueModel(
@@ -156,6 +159,31 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
           value: ticketVal['id'],
           toolTipMsg: ticketVal['ticketDescription']);
       tickets.add(model);
+    }
+
+    // 수강권 선택해서 들어오는 경우 값 매치 해주기
+    if (widget.ticketTitle != null) {
+      for (int i = 0; i < globalVariables.ticketList.length; i++) {
+        if (widget.ticketTitle ==
+            globalVariables.ticketList[i]['ticketTitle']) {
+          var model = DropDownValueModel(
+              name: globalVariables.ticketList[i]['ticketTitle'],
+              value: globalVariables.ticketList[i]['id'],
+              toolTipMsg: globalVariables.ticketList[i]['ticketDescription']);
+          ticketMakeController.setDropDown(model);
+          ticketCountAllController.text =
+              globalVariables.ticketList[i]['ticketCountAll'].toString();
+          ticketCountAll = globalVariables.ticketList[i]['ticketCountAll'];
+          ticketTitleController.text =
+              globalVariables.ticketList[i]['ticketTitle'];
+          ticketTitle = globalVariables.ticketList[i]['ticketTitle'];
+          ticketDescriptionController.text =
+              globalVariables.ticketList[i]['ticketDescription'];
+          ticketDescription =
+              globalVariables.ticketList[i]['ticketDescription'];
+          break;
+        }
+      }
     }
     return Consumer<TicketLibraryService>(
       builder: (context, TicketLibraryService, child) {
@@ -167,6 +195,10 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
               onPressed: () async {
                 print(
                     "AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
+                List tmpNameList = [];
+                globalVariables.ticketList.forEach((element) {
+                  tmpNameList.add(element['ticketTitle']);
+                });
                 if (ticketMakeController.dropDownValue?.name
                         .toString()
                         .trim() ==
@@ -179,11 +211,16 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권 명을 입력하세요."),
                   ));
+                } else if (isTicketTitleOffStaged == false &&
+                    tmpNameList.contains(ticketTitleController.text.trim())) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
+                  ));
                 } else if (ticketCountAllController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강 횟수를 입력하세요."),
                   ));
-                } else if (ticketStartDateController.text.trim() == "") {
+                } /* else if (ticketStartDateController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강 시작일을 선택하세요."),
                   ));
@@ -191,7 +228,8 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강 종료일을 선택하세요."),
                   ));
-                } else if (ticketDescriptionController.text.trim() == "") {
+                }  */
+                else if (ticketDescriptionController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권 설명을 입력하세요."),
                   ));
@@ -212,8 +250,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                       Timestamp.fromDate(DateTime.now()).toDate(),
                     )
                         .then((value) {
-                          print(
-                              "${screenName} - 티켓 라이브러리 생성 update is called!");
+                      print("${screenName} - 티켓 라이브러리 생성 update is called!");
                       for (int i = 0;
                           i < globalVariables.ticketList.length;
                           i++) {
@@ -223,8 +260,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                               ticketCountAll;
                           globalVariables.ticketList[i]['ticketUsingCount'] = 0;
                           globalVariables.ticketList[i]['ticketDateLeft'] = 0;
-                          globalVariables.ticketList[i]['ticketEndDate'] =
-                              null;
+                          globalVariables.ticketList[i]['ticketEndDate'] = null;
                           globalVariables.ticketList[i]['uid'] =
                               AuthService().currentUser()!.uid;
                           globalVariables.ticketList[i]['ticketCountLeft'] = 0;
@@ -234,60 +270,51 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                               ticketDescription;
                           globalVariables.ticketList[i]['ticketStartDate'] =
                               null;
-                                   print("update globalVariables.ticketList : ${globalVariables.ticketList}");
-                                  break;
+                          print(
+                              "update globalVariables.ticketList : ${globalVariables.ticketList}");
+                          break;
                         }
                       }
                       Navigator.pop(context);
                     });
                   } else {
-                    for (int i = 0; i < tickets.length; i++) {
-                      if (ticketTitle == tickets[i].name) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
-                        ));
-                        break;
-                      } else {
-                        await ticketLibraryService
-                            .create(
-                          AuthService().currentUser()!.uid,
-                          ticketUsingCount,
-                          ticketCountLeft,
-                          ticketCountAll,
-                          ticketTitle,
-                          ticketDescription,
-                          null,
-                          null,
-                          ticketDateLeft,
-                          Timestamp.fromDate(DateTime.now()).toDate(),
-                        )
-                            .then((value) {
-                          print(
-                              "${screenName} - 티켓 라이브러리 생성 create is called!");
-                          
-                            globalVariables.ticketList.add({
-                              "ticketCountAll": ticketCountAll,
-                              "ticketUsingCount": 0,
-                              "ticketDateLeft": 0,
-                              "ticketEndDate": null,
-                              "uid": AuthService().currentUser()!.uid,
-                              "ticketCountLeft": 0,
-                              "createDate":
-                                  Timestamp.fromDate(DateTime.now()).toDate(),
-                              "ticketDescription": ticketDescription,
-                              "ticketStartDate": null,
-                              "ticketTitle": ticketTitle,
-                              "id": value,
-                            });
-                            globalVariables.ticketList.sort((a, b) =>
-                                (a['ticketTitle']).compareTo(b['ticketTitle']));
-                                print("create globalVariables.ticketList : ${globalVariables.ticketList}");
-                                
-                          
-                          Navigator.pop(context);
-                        });
-                      }
-                    }
+                    await ticketLibraryService
+                        .create(
+                      AuthService().currentUser()!.uid,
+                      ticketUsingCount,
+                      ticketCountLeft,
+                      ticketCountAll,
+                      ticketTitle,
+                      ticketDescription,
+                      null,
+                      null,
+                      ticketDateLeft,
+                      Timestamp.fromDate(DateTime.now()).toDate(),
+                    )
+                        .then((value) {
+                      print("${screenName} - 티켓 라이브러리 생성 create is called!");
+
+                      globalVariables.ticketList.add({
+                        "ticketCountAll": ticketCountAll,
+                        "ticketUsingCount": 0,
+                        "ticketDateLeft": 0,
+                        "ticketEndDate": null,
+                        "uid": AuthService().currentUser()!.uid,
+                        "ticketCountLeft": 0,
+                        "createDate":
+                            Timestamp.fromDate(DateTime.now()).toDate(),
+                        "ticketDescription": ticketDescription,
+                        "ticketStartDate": null,
+                        "ticketTitle": ticketTitle,
+                        "id": value,
+                      });
+                      globalVariables.ticketList.sort((a, b) =>
+                          (a['ticketTitle']).compareTo(b['ticketTitle']));
+                      print(
+                          "create globalVariables.ticketList : ${globalVariables.ticketList}");
+
+                      Navigator.pop(context);
+                    });
                   }
                 }
               },
@@ -398,11 +425,11 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                           ticketCountAll = 0;
                           ticketCountAllController.text = "";
 
-                          ticketStartDate = getTodayDate();
-                          ticketStartDateController.text = getTodayDate();
+                          ticketStartDate = "0000-00-00";
+                          // ticketStartDateController.text = getTodayDate();
 
-                          ticketEndDate = getMonthLateDate();
-                          ticketEndDateController.text = getMonthLateDate();
+                          ticketEndDate = "0000-00-00";
+                          // ticketEndDateController.text = getMonthLateDate();
 
                           ticketDescription = "";
                           ticketDescriptionController.text = "";
@@ -416,13 +443,11 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                               ticketCountAllController.text =
                                   ticketCountAll.toString();
 
-                              ticketStartDate = 
-                                  ticketVal['ticketStartDate'];
-                              ticketStartDateController.text = ticketStartDate!;
+                              ticketStartDate = "0000-00-00";
+                              // ticketStartDateController.text = ticketStartDate!;
 
-                              ticketEndDate = 
-                                  ticketVal['ticketEndDate'];
-                              ticketEndDateController.text = ticketEndDate!;
+                              ticketEndDate = "0000-00-00";
+                              // ticketEndDateController.text = ticketEndDate!;
 
                               ticketDescription =
                                   ticketVal['ticketDescription'];

@@ -5,6 +5,8 @@ import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/ticketLibraryMake.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
+import 'package:web_project/main.dart';
+import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart';
 
 class TicketLibrary extends StatefulWidget {
@@ -37,9 +39,10 @@ class _TicketLibraryState extends State<TicketLibrary> {
                       Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TicketLibraryMake()),
+                        builder: (context) => TicketLibraryMake(() {},null)),
                   ).then((value) {
                     print("수강권 추가 result");
+                    setState(() {});
                   });
                 },
                 child: Container(
@@ -63,16 +66,46 @@ class _TicketLibraryState extends State<TicketLibrary> {
                 ),
               ),
             ),
-            ListView.separated(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: widget.ticketLibraryList!.length,
-              itemBuilder: (context, index) {
-                return null;
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox.shrink();
-              },
+            Expanded(
+              child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: widget.ticketLibraryList!.length,
+                itemBuilder: (context, index) {
+                  return TicketWidget(
+                    customFunctionOnTap: () async {
+                      var result = await // 저장하기 성공시 Home로 이동
+                          Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TicketLibraryMake(() {},widget.ticketLibraryList![index]['ticketTitle'])),
+                      ).then((value) {
+                        print("수강권 추가 result");
+                        setState(() {});
+                      });
+                    },
+                    ticketCountLeft: globalVariables.ticketList[index]
+                        ['ticketCountAll'],
+                    ticketCountAll: globalVariables.ticketList[index]
+                        ['ticketCountAll'],
+                    ticketTitle: globalVariables.ticketList[index]
+                        ['ticketTitle'],
+                    ticketDescription: globalVariables.ticketList[index]
+                        ['ticketDescription'],
+                    ticketStartDate: globalVariables.ticketList[index]
+                            ['ticketStartDate'] ??
+                        "0000-00-00",
+                    ticketEndDate: globalVariables.ticketList[index]
+                            ['ticketEndDate'] ??
+                        "0000-00-00",
+                    ticketDateLeft: globalVariables.ticketList[index]
+                        ['ticketDateLeft'],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox.shrink();
+                },
+              ),
             ),
           ],
         ),

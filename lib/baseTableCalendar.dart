@@ -11,7 +11,7 @@ import 'globalWidget.dart';
 import 'app/ui/memberAdd.dart';
 import 'app/ui/ticketLibraryMake.dart';
 
-TicketLibraryMake ticketMake = TicketLibraryMake();
+TicketLibraryMake ticketMake = TicketLibraryMake((){},null);
 
 class BaseTableCalendar extends StatefulWidget {
   const BaseTableCalendar(
