@@ -138,7 +138,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                                   "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
                               ticketStartDate =
                                   DateFormat("yyyy-MM-dd").format(focusedDate);
-                              ticketStartDateController.text = ticketStartDate;
+                              ticketStartDateController.text = ticketStartDate!;
                               calendarIsOffStaged = true;
                               widget.customFunction();
                             } else if (widget.pageName == "수강 종료일") {
@@ -147,7 +147,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                                   "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
                               ticketEndDate =
                                   DateFormat("yyyy-MM-dd").format(focusedDate);
-                              ticketEndDateController.text = ticketEndDate;
+                              ticketEndDateController.text = ticketEndDate!;
                               calendarIsOffStaged = true;
                               widget.customFunction();
                             } else {

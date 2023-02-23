@@ -48,8 +48,8 @@ int ticketCountLeft = 0;
 int ticketCountAll = 0;
 String ticketTitle = "";
 String ticketDescription = "";
-String ticketStartDate = "";
-String ticketEndDate = "";
+String? ticketStartDate = "";
+String? ticketEndDate = "";
 int ticketDateLeft = 0;
 
 String getTodayDate() {
@@ -416,13 +416,13 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                               ticketCountAllController.text =
                                   ticketCountAll.toString();
 
-                              ticketStartDate = getDateFromTimeStamp(
-                                  ticketVal['ticketStartDate']);
-                              ticketStartDateController.text = ticketStartDate;
+                              ticketStartDate = 
+                                  ticketVal['ticketStartDate'];
+                              ticketStartDateController.text = ticketStartDate!;
 
-                              ticketEndDate = getDateFromTimeStamp(
-                                  ticketVal['ticketEndDate']);
-                              ticketEndDateController.text = ticketEndDate;
+                              ticketEndDate = 
+                                  ticketVal['ticketEndDate'];
+                              ticketEndDateController.text = ticketEndDate!;
 
                               ticketDescription =
                                   ticketVal['ticketDescription'];
@@ -602,8 +602,8 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                       ticketCountAll: ticketCountAll,
                       ticketTitle: ticketTitle,
                       ticketDescription: ticketDescription,
-                      ticketStartDate: ticketStartDate,
-                      ticketEndDate: ticketEndDate,
+                      ticketStartDate: ticketStartDate!,
+                      ticketEndDate: ticketEndDate!,
                       ticketDateLeft: ticketDateLeft,
                     )
                   ],
