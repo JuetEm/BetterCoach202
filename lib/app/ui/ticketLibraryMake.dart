@@ -191,24 +191,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                     content: Text("수강권 설명을 입력하세요."),
                   ));
                 } else {
-                  await ticketLibraryService
-                      .create(
-                    userInfo!.docId,
-                    ticketUsingCount,
-                    ticketCountLeft,
-                    ticketCountAll,
-                    ticketTitle,
-                    ticketDescription,
-                    Timestamp.fromDate(DateTime.parse(ticketStartDate))
-                        .toDate(),
-                    Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
-                    ticketDateLeft,
-                    DateTime.now(),
-                  )
-                      .then((value) {
-                    print("${screenName} - updateMemberTicket is called!");
-                    Navigator.pop(context);
-                  });
+                  
                 }
               },
               child: Text(
