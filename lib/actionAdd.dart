@@ -18,11 +18,10 @@ late FocusNode apparatusFocusNode;
 late FocusNode positionFocusNode;
 late FocusNode actionNameFocusNode;
 
-
 class ActionAdd extends StatefulWidget {
   List tmpActionList = [];
   ActionAdd({super.key});
-  ActionAdd.manageList(this.tmpActionList,{super.key});
+  ActionAdd.manageList(this.tmpActionList, {super.key});
 
   @override
   State<ActionAdd> createState() => _ActionAddState();
@@ -118,7 +117,7 @@ class _ActionAddState extends State<ActionAdd> {
   Widget build(BuildContext context) {
     // final actionService = context.read<ActionService>();
     final authService = context.read<AuthService>();
-    final user = authService.currentUser()!; 
+    final user = authService.currentUser()!;
     return Consumer<ActionService>(builder: (context, actionService, child) {
       return Dialog(
         shape: RoundedRectangleBorder(
@@ -126,363 +125,341 @@ class _ActionAddState extends State<ActionAdd> {
         ),
         elevation: 0,
         backgroundColor: Palette.secondaryBackground,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                      child: DropDownTextField(
-                        controller: apparatusController,
-                        isEnabled: true,
-                        clearOption: false,
-                        enableSearch: true,
-                        // textFieldFocusNode: textFieldFocusNode,
-                        // searchFocusNode: searchFocusNode,
-                        clearIconProperty:
-                            IconProperty(color: Palette.buttonOrange),
-                        textFieldDecoration: InputDecoration(
-                          labelStyle: TextStyle(fontSize: 14),
-                          labelText: "기구를 선택해주세요.",
-                          hintText: "기구를 선택하세요.",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          contentPadding: EdgeInsets.all(16),
-                          fillColor: Colors.white,
-                        ),
-                        searchDecoration: InputDecoration(
-                          labelText: "기구 검색",
-                          hintText: "검색하고 싶은 기구를 입력하세요",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          contentPadding: EdgeInsets.all(16),
-                          fillColor: Colors.white,
-                        ),
-                        validator: (value) {
-                          print("apparatus validator value : ${value}");
-                          if (value == null) {
-                            return "required field";
-                          } else {
-                            return null;
-                          }
-                        },
-                        dropDownItemCount: apparatuses.length,
-                        dropDownList: apparatuses,
-                        onChanged: (val) {
-                          print("apparatus onChange val : ${val}");
-                          print(
-                              "apparatusController.dropDownValue : ${apparatusController.dropDownValue!.value}");
-                          setState(() {
-                            if (apparatusController.dropDownValue!.name ==
-                                "OTHERS") {
-                              apparatusOffstage = false;
-                              apparatusFocusNode.requestFocus();
-                            } else {
-                              apparatusOffstage = true;
-                            }
-                          });
-                        },
+        child: Container(
+          padding: EdgeInsets.all(15),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox(height: 10),
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    '신규 동작 생성',
+                    style: TextStyle(
+                        color: Palette.gray00,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+
+                /// 기구 선택
+                DropDownTextField(
+                  listTextStyle: TextStyle(fontSize: 14),
+                  controller: apparatusController,
+                  isEnabled: true,
+                  clearOption: false,
+                  enableSearch: true,
+                  // textFieldFocusNode: textFieldFocusNode,
+                  // searchFocusNode: searchFocusNode,
+                  clearIconProperty: IconProperty(color: Palette.buttonOrange),
+                  textFieldDecoration: InputDecoration(
+                    hintText: "기구를 선택하세요.",
+                    hintStyle: TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
                       ),
                     ),
-
-                    /// 기구 OTHERS 입력창
-                    Offstage(
-                      offstage: apparatusOffstage,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                        child: BaseTextField(
-                          customController: otherApparatusController,
-                          customFocusNode: apparatusFocusNode,
-                          hint: "새로운 기구를 입력해주세요.",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
+                    filled: true,
+                    contentPadding: EdgeInsets.all(16),
+                    fillColor: Colors.white,
+                  ),
+                  searchDecoration: InputDecoration(
+                    hintText: "검색하고 싶은 기구를 입력하세요",
+                    hintStyle: TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
                       ),
                     ),
+                    filled: true,
+                    contentPadding: EdgeInsets.all(16),
+                    fillColor: Colors.white,
+                  ),
+                  validator: (value) {
+                    print("apparatus validator value : ${value}");
+                    if (value == null) {
+                      return "required field";
+                    } else {
+                      return null;
+                    }
+                  },
+                  dropDownItemCount: apparatuses.length,
+                  dropDownList: apparatuses,
+                  onChanged: (val) {
+                    print("apparatus onChange val : ${val}");
+                    print(
+                        "apparatusController.dropDownValue : ${apparatusController.dropDownValue!.value}");
+                    setState(() {
+                      if (apparatusController.dropDownValue!.name == "OTHERS") {
+                        apparatusOffstage = false;
+                        apparatusFocusNode.requestFocus();
+                      } else {
+                        apparatusOffstage = true;
+                      }
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                      child: DropDownTextField(
-                        controller: positionController,
-                        isEnabled: true,
-                        clearOption: false,
-                        enableSearch: true,
-                        // textFieldFocusNode: textFieldFocusNode,
-                        // searchFocusNode: searchFocusNode,
-                        clearIconProperty:
-                            IconProperty(color: Palette.buttonOrange),
-                        textFieldDecoration: InputDecoration(
-                          labelStyle: TextStyle(fontSize: 14),
-                          labelText: "자세를 선택해주세요.",
-                          hintText: "자세를 선택하세요.",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          contentPadding: EdgeInsets.all(16),
-                          fillColor: Colors.white,
-                        ),
-                        searchDecoration: InputDecoration(
-                          labelText: "자세 검색",
-                          hintText: "검색하고 싶은 자세를 입력하세요",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          contentPadding: EdgeInsets.all(16),
-                          fillColor: Colors.white,
-                        ),
-                        validator: (value) {
-                          print("position validator value : ${value}");
-                          if (value == null) {
-                            return "required field";
-                          } else {
-                            return null;
-                          }
-                        },
-                        dropDownItemCount: positions.length,
-                        dropDownList: positions,
-                        onChanged: (val) {
-                          print("position onChange val : ${val}");
-                          print(
-                              "positionController.dropDownValue : ${positionController.dropDownValue!.value}");
-                          setState(() {
-                            if (positionController.dropDownValue!.name ==
-                                "OTHERS") {
-                              positionOffstage = false;
-                              positionFocusNode.requestFocus();
-                            } else {
-                              positionOffstage = true;
-                            }
-                          });
-                        },
-                      ),
+                /// 기구 OTHERS 입력창
+                Offstage(
+                  offstage: apparatusOffstage,
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Palette.grayFF,
                     ),
-
-                    /// 자세 OTHERS 입력창
-                    Offstage(
-                      offstage: positionOffstage,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                        child: BaseTextField(
-                          customController: otherPositionController,
-                          customFocusNode: positionFocusNode,
-                          hint: "새로운 자세를 입력해주세요.",
-                          showArrow: false,
-                          customFunction: () {},
-                        ),
-                      ),
-                    ),
-
-                    /// 동작 이름 입력창
-                    BaseTextField(
-                      customController: nameController,
-                      customFocusNode: actionNameFocusNode,
-                      hint: "새로운 동작명을 입력해주세요.",
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: BaseTextField(
+                      customController: otherApparatusController,
+                      customFocusNode: apparatusFocusNode,
+                      hint: "새로운 기구를 입력해주세요.",
                       showArrow: false,
                       customFunction: () {},
                     ),
-                    Divider(height: 1),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 6, 0, 22),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(0),
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(48.0),
-                              ),
-                              color: Palette.buttonOrange,
-                            ),
-                            height: 48,
-                            width: 238,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "동작생성",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onPressed: () async {
-                            print("추가 버튼");
-                            // create action
-                            if (apparatusOffstage) {
-                              if (globalFunction.selectNullCheck(
-                                  context, apparatusController, "기구 선택")) {
-                                selectedApparatus =
-                                    apparatusController.dropDownValue!.value;
-                                otherApparatusName =
-                                    apparatusController.dropDownValue!.name;
-                              }
-                            } else {
-                              if (globalFunction.textNullCheck(context,
-                                  otherApparatusController, "새로운 기구 이름")) {
-                                    
-                                selectedApparatus =
-                                    apparatusController.dropDownValue!.value;
-                                otherApparatusName =
-                                    otherApparatusController.text;
-                              }
-                            }
-                            if (positionOffstage) {
-                              if (globalFunction.selectNullCheck(
-                                  context, positionController, "자세 선택")) {
-                                selectecPosition =
-                                    positionController.dropDownValue!.value;
-                                otherPositionName =
-                                    positionController.dropDownValue!.name;
-                              }
-                            } else {
-                              if (globalFunction.textNullCheck(context,
-                                  otherPositionController, "새로운 자세 이름")) {
-                                selectecPosition =
-                                    positionController.dropDownValue!.value;
-                                otherPositionName =
-                                    otherPositionController.text;
-                              }
-                            }
-                            if (globalFunction.textNullCheck(
-                                context, nameController, "새로운 동작 이름")) {
-                              actionName = nameController.text;
-                            }
-                            if (selectedApparatus.isNotEmpty &&
-                                selectecPosition.isNotEmpty &&
-                                actionName.isNotEmpty) {
-                              String id = await actionService.create(
-                                selectedApparatus,
-                                otherApparatusName,
-                                selectecPosition,
-                                otherPositionName,
-                                actionName,
-                                user.uid,
-                                actionName.toUpperCase(),
-                                actionName.toLowerCase(),
-                              );
-
-                              List tmpResultList = [];
-                              //tmpActionClass.Action tmpAction = tmpActionClass.Action(selectedApparatus, otherApparatusName, selectecPosition, otherPositionName, actionName, id, actionName.toUpperCase(), actionName.toLowerCase(), actionName.toLowerCase().split(" "), user.uid);
-                              // {name: 핸드 스트랩을 이용하여 Hugging, upperCaseName: 핸드 스트랩을 이용하여 HUGGING, otherApparatusName: SPRING BOARD, nGramizedLowerCaseName: [핸드, 스트랩을, 이용하여, hugging], position: standing, otherPositionName: STANDING, apparatus: SB, author: p0gKIY1vArckS6JTZQdYG4RymEk2, lowerCaseName: 핸드 스트랩을 이용하여 hugging, id: 2RqZOEQK09sRx7bcqQ6n}
-                              resultActionList.add({});
-                              resultActionList[resultActionList.length-1]['name']=actionName;
-                              resultActionList[resultActionList.length-1]['upperCaseName']=actionName.toUpperCase();
-                              resultActionList[resultActionList.length-1]['otherApparatusName']=otherApparatusName;
-                              resultActionList[resultActionList.length-1]['nGramizedLowerCaseName']=actionName.toLowerCase().split(" ");
-                              resultActionList[resultActionList.length-1]['position']=selectecPosition;
-                              resultActionList[resultActionList.length-1]['otherPositionName']=otherPositionName;
-                              resultActionList[resultActionList.length-1]['apparatus']=selectedApparatus;
-                              resultActionList[resultActionList.length-1]['author']=user.uid;
-                              resultActionList[resultActionList.length-1]['lowerCaseName']=actionName.toLowerCase();
-                              resultActionList[resultActionList.length-1]['id']=id;
-                              // resultActionList.add(tmpAction);
-                              print(resultActionList);
-                              resultActionList.sort(((a, b) => a['name'].compareTo(b['name'])));
-
-                              tmpResultList.add(actionName);
-                              tmpResultList.add(resultActionList);
-                              // 신규 동작 추가 성공시 actionSelector로 이동
-                              Navigator.pop(context, tmpResultList);
-                            } else {
-                              // 빈 값 있을 때
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("모든 항목을 입력 해주세요."),
-                              ));
-                            }
-                          }),
-                    )
-
-                    /// 추가 버튼
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            // FormField<String>(
-            //   builder: (FormFieldState<String> state) {
-            //     return InputDecorator(
-            //       decoration: InputDecoration(
-            //         labelText: "자세를 입력하세요.",
-            //         hintText: "자세를 입력하세요.",
-            //         errorStyle: TextStyle(
-            //           color: Colors.redAccent,
-            //           fontSize: 16,
-            //         ),
-            //         border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.circular(8),
-            //           borderSide: BorderSide(
-            //             width: 0,
-            //             style: BorderStyle.none,
-            //           ),
-            //         ),
-            //         filled: true,
-            //         contentPadding: EdgeInsets.all(16),
-            //         fillColor: Colors.white,
-            //       ),
-            //       isEmpty: currentSeletecValue == '',
-            //       child: DropdownButtonHideUnderline(
-            //         child: DropdownButton<String>(
-            //           value: currentSeletecValue,
-            //           isDense: true,
-            //           items: positions.map(
-            //             (String value) {
-            //               return DropdownMenuItem<String>(
-            //                 value: value,
-            //                 child: Text(value),
-            //               );
-            //             },
-            //           ).toList(),
-            //           onChanged: (newValue) {
-            //             currentSeletecValue = newValue!;
-            //             print("value : ${newValue}");
-            //             setState(() {
-            //               state.didChange(newValue);
-            //             });
-            //           },
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
-          ],
+                /// 자세 선택
+                DropDownTextField(
+                  listTextStyle: TextStyle(fontSize: 14),
+                  controller: positionController,
+                  isEnabled: true,
+                  clearOption: false,
+                  enableSearch: true,
+                  // textFieldFocusNode: textFieldFocusNode,
+                  // searchFocusNode: searchFocusNode,
+                  clearIconProperty: IconProperty(color: Palette.buttonOrange),
+                  textFieldDecoration: InputDecoration(
+                    hintText: "자세를 선택하세요.",
+                    hintStyle: TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    filled: true,
+                    contentPadding: EdgeInsets.all(16),
+                    fillColor: Colors.white,
+                  ),
+                  searchDecoration: InputDecoration(
+                    hintText: "검색하고 싶은 자세를 입력하세요",
+                    hintStyle: TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    filled: true,
+                    contentPadding: EdgeInsets.all(16),
+                    fillColor: Colors.white,
+                  ),
+                  validator: (value) {
+                    print("position validator value : ${value}");
+                    if (value == null) {
+                      return "required field";
+                    } else {
+                      return null;
+                    }
+                  },
+                  dropDownItemCount: positions.length,
+                  dropDownList: positions,
+                  onChanged: (val) {
+                    print("position onChange val : ${val}");
+                    print(
+                        "positionController.dropDownValue : ${positionController.dropDownValue!.value}");
+                    setState(() {
+                      if (positionController.dropDownValue!.name == "OTHERS") {
+                        positionOffstage = false;
+                        positionFocusNode.requestFocus();
+                      } else {
+                        positionOffstage = true;
+                      }
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+
+                /// 자세 OTHERS 입력창
+                Offstage(
+                  offstage: positionOffstage,
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Palette.grayFF,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: BaseTextField(
+                      customController: otherPositionController,
+                      customFocusNode: positionFocusNode,
+                      hint: "새로운 자세를 입력해주세요.",
+                      showArrow: false,
+                      customFunction: () {},
+                    ),
+                  ),
+                ),
+
+                /// 동작 이름 입력창
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Palette.grayFF,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: BaseTextField(
+                    customController: nameController,
+                    customFocusNode: actionNameFocusNode,
+                    hint: "새로운 동작명을 입력해주세요.",
+                    showArrow: false,
+                    customFunction: () {},
+                  ),
+                ),
+
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(48.0),
+                          ),
+                          color: Palette.buttonOrange,
+                        ),
+                        height: 48,
+                        width: 238,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "동작생성",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onPressed: () async {
+                        print("추가 버튼");
+                        // create action
+                        if (apparatusOffstage) {
+                          if (globalFunction.selectNullCheck(
+                              context, apparatusController, "기구 선택")) {
+                            selectedApparatus =
+                                apparatusController.dropDownValue!.value;
+                            otherApparatusName =
+                                apparatusController.dropDownValue!.name;
+                          }
+                        } else {
+                          if (globalFunction.textNullCheck(
+                              context, otherApparatusController, "새로운 기구 이름")) {
+                            selectedApparatus =
+                                apparatusController.dropDownValue!.value;
+                            otherApparatusName = otherApparatusController.text;
+                          }
+                        }
+                        if (positionOffstage) {
+                          if (globalFunction.selectNullCheck(
+                              context, positionController, "자세 선택")) {
+                            selectecPosition =
+                                positionController.dropDownValue!.value;
+                            otherPositionName =
+                                positionController.dropDownValue!.name;
+                          }
+                        } else {
+                          if (globalFunction.textNullCheck(
+                              context, otherPositionController, "새로운 자세 이름")) {
+                            selectecPosition =
+                                positionController.dropDownValue!.value;
+                            otherPositionName = otherPositionController.text;
+                          }
+                        }
+                        if (globalFunction.textNullCheck(
+                            context, nameController, "새로운 동작 이름")) {
+                          actionName = nameController.text;
+                        }
+                        if (selectedApparatus.isNotEmpty &&
+                            selectecPosition.isNotEmpty &&
+                            actionName.isNotEmpty) {
+                          String id = await actionService.create(
+                            selectedApparatus,
+                            otherApparatusName,
+                            selectecPosition,
+                            otherPositionName,
+                            actionName,
+                            user.uid,
+                            actionName.toUpperCase(),
+                            actionName.toLowerCase(),
+                          );
+
+                          List tmpResultList = [];
+                          //tmpActionClass.Action tmpAction = tmpActionClass.Action(selectedApparatus, otherApparatusName, selectecPosition, otherPositionName, actionName, id, actionName.toUpperCase(), actionName.toLowerCase(), actionName.toLowerCase().split(" "), user.uid);
+                          // {name: 핸드 스트랩을 이용하여 Hugging, upperCaseName: 핸드 스트랩을 이용하여 HUGGING, otherApparatusName: SPRING BOARD, nGramizedLowerCaseName: [핸드, 스트랩을, 이용하여, hugging], position: standing, otherPositionName: STANDING, apparatus: SB, author: p0gKIY1vArckS6JTZQdYG4RymEk2, lowerCaseName: 핸드 스트랩을 이용하여 hugging, id: 2RqZOEQK09sRx7bcqQ6n}
+                          resultActionList.add({});
+                          resultActionList[resultActionList.length - 1]
+                              ['name'] = actionName;
+                          resultActionList[resultActionList.length - 1]
+                              ['upperCaseName'] = actionName.toUpperCase();
+                          resultActionList[resultActionList.length - 1]
+                              ['otherApparatusName'] = otherApparatusName;
+                          resultActionList[resultActionList.length - 1]
+                                  ['nGramizedLowerCaseName'] =
+                              actionName.toLowerCase().split(" ");
+                          resultActionList[resultActionList.length - 1]
+                              ['position'] = selectecPosition;
+                          resultActionList[resultActionList.length - 1]
+                              ['otherPositionName'] = otherPositionName;
+                          resultActionList[resultActionList.length - 1]
+                              ['apparatus'] = selectedApparatus;
+                          resultActionList[resultActionList.length - 1]
+                              ['author'] = user.uid;
+                          resultActionList[resultActionList.length - 1]
+                              ['lowerCaseName'] = actionName.toLowerCase();
+                          resultActionList[resultActionList.length - 1]['id'] =
+                              id;
+                          // resultActionList.add(tmpAction);
+                          print(resultActionList);
+                          resultActionList
+                              .sort(((a, b) => a['name'].compareTo(b['name'])));
+
+                          tmpResultList.add(actionName);
+                          tmpResultList.add(resultActionList);
+                          // 신규 동작 추가 성공시 actionSelector로 이동
+                          Navigator.pop(context, tmpResultList);
+                        } else {
+                          // 빈 값 있을 때
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("모든 항목을 입력 해주세요."),
+                          ));
+                        }
+                      }),
+                )
+
+                /// 추가 버튼
+              ],
+            ),
+          ),
         ),
       );
     });

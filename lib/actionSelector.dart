@@ -991,41 +991,17 @@ class _ActionSelectorState extends State<ActionSelector> {
                         SizedBox(height: 5),
                         SizedBox(
                           height: 40,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.all(0),
-                                  backgroundColor: Colors.transparent,
-                                  shadowColor: Colors.transparent,
-                                  elevation: 0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Palette.buttonOrange,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  color: Colors.transparent,
-                                ),
-                                height: 60,
-                                width: double.infinity,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "신규 동작 생성 +",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Palette.buttonOrange,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          width: double.infinity,
+                          child: Material(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                            color: Palette.grayEE,
+                            child: InkWell(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
                               ),
-                              onPressed: () async {
+                              onTap: () async {
                                 print("신규 동작 추가");
                                 // LessonAdd로 이동
                                 final result = await showDialog(
@@ -1055,13 +1031,31 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   }
                                 });
                               },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "신규 동작 생성",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Palette.gray66,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Icon(
+                                    Icons.add_circle_outline,
+                                    color: Palette.gray66,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                         SizedBox(height: 20),
-                        SizedBox(
-                          height: 30,
-                          width: double.infinity,
+                        Container(
+                          alignment: Alignment.topLeft,
                           child: Text(
                             "동작을 선택하세요",
                             style: TextStyle(
@@ -1071,6 +1065,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                             textAlign: TextAlign.left,
                           ),
                         ),
+                        Divider(),
 
                         /// 기구 필터
                         SizedBox(
@@ -1140,7 +1135,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                         return*/
                           Stack(children: [
                     resultActionList.isEmpty
-                        ? Center(child: CircularProgressIndicator())
+                        ? Center(
+                            child: CircularProgressIndicator(
+                            color: Palette.buttonOrange,
+                          ))
                         : Container(
                             decoration: BoxDecoration(
                               color: Palette.mainBackground,

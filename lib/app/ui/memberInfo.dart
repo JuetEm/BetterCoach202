@@ -998,6 +998,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             height: 20,
           ),
           Divider(),
+          SizedBox(
+            height: 20,
+          ),
           Text(
             '수강정보',
             style: TextStyle(
@@ -1015,8 +1018,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 color: Palette.gray99),
             textAlign: TextAlign.right,
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Divider(),
+          SizedBox(
+            height: 20,
+          ),
           Text(
             '운동목표',
             style: TextStyle(
@@ -1058,8 +1064,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               ],
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Divider(),
+          SizedBox(
+            height: 20,
+          ),
           Text(
             '체형분석',
             style: TextStyle(
@@ -1101,8 +1110,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               ],
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Divider(),
+          SizedBox(
+            height: 20,
+          ),
           Text(
             '통증/상해/병력',
             style: TextStyle(
@@ -1143,8 +1155,11 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               ],
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Divider(),
+          SizedBox(
+            height: 20,
+          ),
           Text(
             '특이사항',
             style: TextStyle(
@@ -1163,7 +1178,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             ),
           ),
 
-          SizedBox(height: 30),
+          SizedBox(height: 20),
           /* Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -1666,7 +1681,7 @@ class LessonCard extends StatelessWidget {
               ),
               child: const SizedBox(
                 width: double.infinity,
-                height: 30,
+                height: 20,
               ),
             )
           ],

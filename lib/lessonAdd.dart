@@ -243,7 +243,8 @@ class _LessonAddState extends State<LessonAdd> {
                         /// 이름 및 수강권
                         Container(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
                             child: Row(
                               children: [
                                 Column(
@@ -511,7 +512,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                   []; // 문서들 가져오기
                                           //print("문서가져오기끝");
 
-                                          // 기존 저장된 값이 없으면 초기화, 동작선택모드 일경우
+                                          // 기존 저장된 값이 없으면 초기화, 동작 선택모드 일경우
                                           // if (docsTodayNote.isEmpty) {
                                           //   if (ActionSelectMode) {
                                           //   } else {
@@ -782,25 +783,16 @@ class _LessonAddState extends State<LessonAdd> {
 
                         /// 시퀀스 영역 시작
                         Container(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.symmetric(horizontal: 15),
                           child: Column(children: [
                             // 동작입력 버튼
-                            Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Palette.buttonOrange, width: 2),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                color: Palette.secondaryBackground,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 4,
-                                  bottom: 4,
-                                ),
+                            SizedBox(
+                              height: 40,
+                              child: Material(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Palette.grayEE,
                                 child: InkWell(
+                                  borderRadius: BorderRadius.circular(10),
                                   onTap: () async {
                                     //String currentAppratus =
                                     //    apratusNameController.text;
@@ -852,31 +844,26 @@ class _LessonAddState extends State<LessonAdd> {
 
                                     lessonService.notifyListeners();
                                   },
-                                  child: SizedBox(
-                                    height: 36,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '동작 추가',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Palette.buttonOrange),
-                                        ),
-                                        Icon(
-                                          Icons.add_circle_outline,
-                                          color: Palette.buttonOrange,
-                                          size: 16,
-                                        ),
-                                      ],
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '동작 추가',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Palette.gray66),
+                                      ),
+                                      SizedBox(width: 4),
+                                      Icon(
+                                        Icons.add_circle_outline,
+                                        color: Palette.gray66,
+                                        size: 16,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
-
-                            const SizedBox(height: 10),
 
                             // 재정렬 가능한 리스트 시작
                             FutureBuilder<QuerySnapshot>(
