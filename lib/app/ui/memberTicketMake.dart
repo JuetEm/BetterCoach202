@@ -84,7 +84,7 @@ String getDateFromTimeStamp(var timestamp) {
 class MemberTicketMake extends StatefulWidget {
   UserInfo? userInfo;
   String? ticketTitle;
-  MemberTicketMake(this.ticketTitle, {super.key});
+  MemberTicketMake(this.userInfo, this.ticketTitle, {super.key});
   MemberTicketMake.getUserInfo(this.userInfo, {super.key});
 
   @override
@@ -155,14 +155,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
       DropDownValueModel(
           name: '직접입력', value: userInfo.docId, toolTipMsg: '직접입력'),
     ];
-    for (var ticketVal in globalVariables.memberTicketList) {
-      // print("ticketVal : $ticketVal");
-      var model = DropDownValueModel(
-          name: ticketVal['ticketTitle'],
-          value: userInfo.docId,
-          toolTipMsg: ticketVal['id']);
-      tickets.add(model);
-    }
+
     // 수강권 선택해서 들어오는 경우 값 매치 해주기
     if (widget.ticketTitle != null) {
       for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
@@ -170,9 +163,8 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
             globalVariables.memberTicketList[i]['ticketTitle']) {
           var model = DropDownValueModel(
               name: globalVariables.memberTicketList[i]['ticketTitle'],
-              value: globalVariables.memberTicketList[i]['id'],
-              toolTipMsg: globalVariables.memberTicketList[i]
-                  ['ticketDescription']);
+              value: userInfo.docId,
+              toolTipMsg: globalVariables.memberTicketList[i]['id']);
           ticketMakeController.setDropDown(model);
           ticketCountAllController.text =
               globalVariables.memberTicketList[i]['ticketCountAll'].toString();
@@ -189,6 +181,24 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
           widget.ticketTitle = null;
           break;
         }
+      }
+
+      for (var ticketVal in globalVariables.memberTicketList) {
+        // print("ticketVal : $ticketVal");
+        var model = DropDownValueModel(
+            name: ticketVal['ticketTitle'],
+            value: userInfo.docId,
+            toolTipMsg: ticketVal['id']);
+        tickets.add(model);
+      }
+    } else {
+      for (var ticketVal in globalVariables.ticketLibraryList) {
+        // print("ticketVal : $ticketVal");
+        var model = DropDownValueModel(
+            name: ticketVal['ticketTitle'],
+            value: userInfo.docId,
+            toolTipMsg: ticketVal['id']);
+        tickets.add(model);
       }
     }
     return Consumer<MemberTicketService>(
@@ -276,24 +286,22 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                           globalVariables.memberTicketList[i]
                               ['ticketDateLeft'] = 0;
                           globalVariables.memberTicketList[i]['ticketEndDate'] =
-                              Timestamp.fromDate(DateTime.parse(ticketEndDate))
-                                  ;
+                              Timestamp.fromDate(DateTime.parse(ticketEndDate));
                           globalVariables.memberTicketList[i]['uid'] =
                               AuthService().currentUser()!.uid;
                           globalVariables.memberTicketList[i]
-                              ['ticketCountLeft'] = 0;
+                              ['ticketCountLeft'] = ticketCountLeft;
                           globalVariables.memberTicketList[i]['createDate'] =
                               Timestamp.fromDate(DateTime.now()).toDate();
                           globalVariables.memberTicketList[i]
                               ['ticketDescription'] = ticketDescription;
                           globalVariables.memberTicketList[i]
-                              ['ticketStartDate'] = Timestamp.fromDate(
-                                  DateTime.parse(ticketStartDate))
-                              ;
+                                  ['ticketStartDate'] =
+                              Timestamp.fromDate(
+                                  DateTime.parse(ticketStartDate));
                           globalVariables.memberTicketList[i]['isSelected'] =
                               false;
-                          globalVariables.memberTicketList[i]['isAlive'] =
-                              true;
+                          globalVariables.memberTicketList[i]['isAlive'] = true;
                           print(
                               "update globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                           break;
@@ -329,16 +337,14 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                         "ticketUsingCount": 0,
                         "ticketDateLeft": 0,
                         "ticketEndDate":
-                            Timestamp.fromDate(DateTime.parse(ticketStartDate))
-                                ,
+                            Timestamp.fromDate(DateTime.parse(ticketStartDate)),
                         "uid": AuthService().currentUser()!.uid,
-                        "ticketCountLeft": 0,
+                        "ticketCountLeft": ticketCountLeft,
                         "createDate":
                             Timestamp.fromDate(DateTime.now()).toDate(),
                         "ticketDescription": ticketDescription,
                         "ticketStartDate":
-                            Timestamp.fromDate(DateTime.parse(ticketEndDate))
-                                ,
+                            Timestamp.fromDate(DateTime.parse(ticketEndDate)),
                         "ticketTitle": ticketTitle,
                         "memberId": ticketMakeController.dropDownValue!.value,
                         "id": value,
@@ -479,6 +485,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                             "ticketMakeController.dropDownValue : ${ticketMakeController.dropDownValue!.name}");
                         selectedticketName =
                             ticketMakeController.dropDownValue!.name;
+
                         if (selectedticketName == "직접입력") {
                           isTicketTitleOffStaged = false;
                           ticketTitle = "";
@@ -499,27 +506,53 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                           isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
 
-                          for (var ticketVal
-                              in globalVariables.memberTicketList) {
-                            if (ticketVal['ticketTitle'] == ticketTitle) {
-                              ticketCountAll = ticketVal['ticketCountAll'];
-                              ticketCountAllController.text =
-                                  ticketCountAll.toString();
+                          if (widget.ticketTitle == null) {
+                            for (var ticketVal
+                                in globalVariables.ticketLibraryList) {
+                              if (ticketVal['ticketTitle'] == ticketTitle) {
+                                ticketCountAll = ticketVal['ticketCountAll'];
+                                ticketCountAllController.text =
+                                    ticketCountAll.toString();
 
-                              ticketStartDate = getDateFromTimeStamp(
-                                  ticketVal['ticketStartDate']);
-                              ticketStartDateController.text = ticketStartDate;
+                                ticketStartDate = getTodayDate();
+                                ticketStartDateController.text =
+                                    ticketStartDate;
 
-                              ticketEndDate = getDateFromTimeStamp(
-                                  ticketVal['ticketEndDate']);
-                              ticketEndDateController.text = ticketEndDate;
+                                ticketEndDate = getMonthLateDate();
+                                ticketEndDateController.text = ticketEndDate;
 
-                              ticketDescription =
-                                  ticketVal['ticketDescription'];
-                              ticketDescriptionController.text =
-                                  ticketDescription;
+                                ticketDescription =
+                                    ticketVal['ticketDescription'];
+                                ticketDescriptionController.text =
+                                    ticketDescription;
 
-                              break;
+                                break;
+                              }
+                            }
+                          } else {
+                            for (var ticketVal
+                                in globalVariables.memberTicketList) {
+                              if (ticketVal['ticketTitle'] == ticketTitle) {
+                                ticketCountAll = ticketVal['ticketCountAll'];
+                                ticketCountAllController.text =
+                                    ticketCountAll.toString();
+
+                                ticketStartDate = getDateFromTimeStamp(
+                                    ticketVal['ticketStartDate']);
+                                ticketStartDateController.text =
+                                    ticketStartDate;
+
+                                ticketEndDate = getDateFromTimeStamp(
+                                    ticketVal['ticketEndDate']);
+                                ticketEndDateController.text = ticketEndDate;
+
+                                ticketDescription =
+                                    ticketVal['ticketDescription'];
+                                ticketDescriptionController.text =
+                                    ticketDescription;
+
+                                break;
+                              }
                             }
                           }
                         }

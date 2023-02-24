@@ -102,6 +102,7 @@ class MemberTicketService extends ChangeNotifier {
     final bool isSelected,
     final bool isAlive,
   ) async {
+    print("docId : ${docId}");
     // report 만들기
     String id = "";
     await memberTicketCollection.doc(docId).update({
