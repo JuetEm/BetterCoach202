@@ -58,6 +58,20 @@ String ticketStartDate = "";
 String ticketEndDate = "";
 int ticketDateLeft = 0;
 
+bool isContainedCheck(List checkList, String memberId, String tickeTitle){
+  bool isContained = false;
+
+  for(int i = 0; i< checkList.length; i++){
+    if(checkList[i]['memberId'] == memberId){
+      if(checkList[i]['ticketTitle'] == tickeTitle){
+        isContained = true;
+        break;
+      }
+    }
+  }
+  return isContained;
+}
+
 String getTodayDate() {
   String today = "";
 
@@ -217,10 +231,10 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
               onPressed: () async {
                 print(
                     "MemberTicketMake AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
-                List tmpNameList = [];
+                /* List tmpNameList = [];
                 globalVariables.memberTicketList.forEach((element) {
                   tmpNameList.add(element['ticketTitle']);
-                });
+                }); */
                 if (ticketMakeController.dropDownValue?.name
                         .toString()
                         .trim() ==
@@ -234,7 +248,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                     content: Text("수강권 명을 입력하세요."),
                   ));
                 } else if (isTicketTitleOffStaged == false &&
-                    tmpNameList.contains(ticketTitleController.text.trim())) {
+                    isContainedCheck(globalVariables.memberTicketList,ticketMakeController.dropDownValue!.value,ticketTitleController.text.trim())) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
                   ));
@@ -257,8 +271,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   ));
                 } else {
                   if (widget.ticketTitle == null) {
-                    if (tmpNameList
-                        .contains(ticketMakeController.dropDownValue!.name)) {
+                    if (isContainedCheck(globalVariables.memberTicketList,ticketMakeController.dropDownValue!.value,ticketTitleController.text.trim())) {
                       ticketCountLeft = ticketCountAll;
                       memberTicketService
                           .update(

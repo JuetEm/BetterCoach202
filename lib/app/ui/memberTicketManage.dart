@@ -76,9 +76,11 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
               if (element['isSelected'] == true) {
                 Navigator.pop(context, i);
                 break;
+              } else if(globalVariables.memberTicketList.length -1 == i){
+                Navigator.pop(context, -1);
               }
             }
-            Navigator.pop(context, -1);
+            
           }, [
             TextButton(
                 onPressed: () {

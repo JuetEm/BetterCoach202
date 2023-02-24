@@ -675,11 +675,9 @@ class _MemberListState extends State<MemberList> {
                                           ),
                                         ).then((result) {
                                           globalVariables.sortList();
-                                          print(
-                                              "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-                                          UserInfo tmpUserInfo = result;
-                                          print(
-                                              "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                          // print("MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                          // UserInfo tmpUserInfo = result;
+                                          // print("MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
                                           setState(() {
                                             print(
                                                 "memberList - memberinfo pop setState!!");
