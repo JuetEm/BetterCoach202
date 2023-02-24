@@ -964,7 +964,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  MemberTicketManage.getUserInfo(userInfo)),
+                                  MemberTicketManage.getUserInfo(globalVariables.memberTicketList,widget.userInfo)),
                         ).then((value) {
                           print("수강권 추가 result");
                           setState(() {
@@ -980,13 +980,14 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       label: '수강권 선택하기',
                       addIcon: true,
                       customFunctionOnTap: () async {
-                        print("수강권 추가 onTap!!");
+                        // print("push globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                        // print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
                             Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  MemberTicketManage.getUserInfo(userInfo)),
+                                  MemberTicketManage.getUserInfo(globalVariables.memberTicketList, widget.userInfo)),
                         ).then((value) {
                           print("수강권 추가 result");
                           setState(() {
