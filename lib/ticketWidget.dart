@@ -44,7 +44,7 @@ class _TicketWidgetState extends State<TicketWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Card(
-        elevation: 5,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
@@ -214,7 +214,7 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
     return Container(
       alignment: Alignment.center,
       child: Card(
-        elevation: 4,
+        elevation: 2,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: BorderSide(width: 2, color: Palette.grayEE)),

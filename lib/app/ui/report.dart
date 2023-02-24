@@ -114,6 +114,7 @@ class _ReportState extends State<Report> {
       body: CenterConstrainedBody(
         child: SafeArea(
           child: Container(
+            alignment: Alignment.topCenter,
             padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
             color: Palette.secondaryBackground,
             child: ListView(
