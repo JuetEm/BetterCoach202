@@ -7,7 +7,7 @@ class CenterConstrainedBody extends StatelessWidget {
     Key? key,
     this.controller,
     this.constraints = const BoxConstraints(maxWidth: 480),
-    this.padding = const EdgeInsets.symmetric(horizontal: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 0),
     required this.child,
   }) : super(key: key);
 
