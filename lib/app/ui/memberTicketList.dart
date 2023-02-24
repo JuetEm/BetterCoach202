@@ -8,8 +8,9 @@ import 'package:web_project/color.dart';
 import 'package:web_project/globalVariables.dart';
 
 class MemberTicketList extends StatefulWidget {
-  const MemberTicketList(this.ticketList, this.customFunction, {super.key});
+  const MemberTicketList(this.memberId ,this.ticketList, this.customFunction, {super.key});
 
+  final String memberId;
   final List ticketList;
   final Function customFunction;
 
@@ -18,8 +19,17 @@ class MemberTicketList extends StatefulWidget {
 }
 
 class _MemberTicketListState extends State<MemberTicketList> {
+
+  @override
+  void initState() {
+    super.initState();
+    print("widget.memberId : ${widget.memberId}");
+    print("widget.ticketList : ${widget.ticketList}");
+  }
+  
   @override
   Widget build(BuildContext context) {
+    widget.ticketList.forEach((element){print(element);},);
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
         return Scaffold(
@@ -38,6 +48,8 @@ class _MemberTicketListState extends State<MemberTicketList> {
                     shrinkWrap: true,
                     itemCount: widget.ticketList.length,
                     itemBuilder: (context, index) {
+                      print("widget.ticketList[index] : ${widget.ticketList[index]}");
+                    if(widget.ticketList[index]['memberId'] == widget.memberId){
                       return ListTile(
                         title: Text(widget.ticketList[index]['ticketTitle']),
                         trailing: IconButton(
@@ -61,6 +73,9 @@ class _MemberTicketListState extends State<MemberTicketList> {
                             },
                             icon: Icon(Icons.clear)),
                       );
+                    }else{
+                      return SizedBox.shrink();
+                    }
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return SizedBox.shrink();

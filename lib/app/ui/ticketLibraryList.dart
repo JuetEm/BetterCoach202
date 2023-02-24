@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
+import 'package:web_project/auth_service.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/globalVariables.dart';
 
@@ -47,27 +48,34 @@ class _TicketLibraryListState extends State<TicketLibraryList> {
                   shrinkWrap: true,
                   itemCount: widget.ticketList.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(widget.ticketList[index]['ticketTitle']),
-                      trailing: IconButton(
-                          onPressed: () {
-                            var element;
-                            for (int i = 0; i < widget.ticketList.length; i++) {
-                              element = widget.ticketList[i];
-                              if (element['id'] ==
-                                  widget.ticketList[index]['id']) {
-                                ticketLibraryService.delete(
-                                    docId: element['id'],
-                                    onError: () {},
-                                    onSuccess: () {});
-                                widget.ticketList.remove(element);
-                                break;
+                    if (widget.ticketList[index]['uid'] ==
+                        AuthService().currentUser()!.uid) {
+                      return ListTile(
+                        title: Text(widget.ticketList[index]['ticketTitle']),
+                        trailing: IconButton(
+                            onPressed: () {
+                              var element;
+                              for (int i = 0;
+                                  i < widget.ticketList.length;
+                                  i++) {
+                                element = widget.ticketList[i];
+                                if (element['id'] ==
+                                    widget.ticketList[index]['id']) {
+                                  ticketLibraryService.delete(
+                                      docId: element['id'],
+                                      onError: () {},
+                                      onSuccess: () {});
+                                  widget.ticketList.remove(element);
+                                  break;
+                                }
                               }
-                            }
-                            widget.customFunction();
-                          },
-                          icon: Icon(Icons.clear)),
-                    );
+                              widget.customFunction();
+                            },
+                            icon: Icon(Icons.clear)),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox.shrink();
