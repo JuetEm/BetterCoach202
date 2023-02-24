@@ -92,6 +92,8 @@ List resultActionList = [];
 bool isSequenceSaveChecked = false;
 bool isTicketCountChecked = true;
 
+bool isFirst = true;
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -116,6 +118,7 @@ class _LessonAddState extends State<LessonAdd> {
   @override
   void dispose() {
     // TODO: implement dispose
+    isFirst = true;
     lessonDateController.clear();
     todayNoteController.clear();
     clearTotalNoteControllers();
@@ -204,8 +207,11 @@ class _LessonAddState extends State<LessonAdd> {
     // } else {
     //   keyboardOpenBefore = true;
     // }
+
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
+        /// 저장된 텍스트 있다면 부여해줌
+
         return Scaffold(
           //resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
@@ -537,10 +543,14 @@ class _LessonAddState extends State<LessonAdd> {
                                             print(
                                                 "뿌릴 일별 노트 없음 : ${todayNoteController.text}");
                                           } else {
-                                            todayNoteView = docsTodayNote[0]
-                                                .get('todayNote');
+                                            if (isFirst) {
+                                              todayNoteView = docsTodayNote[0]
+                                                  .get('todayNote');
+                                              isFirst = false;
+                                            }
                                             todayNotedocId =
                                                 docsTodayNote[0].id;
+
                                             // WidgetsBinding.instance.addPostFrameCallback(
                                             //     (_) => todayNoteController.text =
                                             //         docsTodayNote[0].get('todayNote'));
@@ -577,12 +587,9 @@ class _LessonAddState extends State<LessonAdd> {
                                           //     FocusScope.of(context).unfocus();
                                           //   },
                                           // );
-
-                                          /// 저장된 텍스트 있다면 부여해줌
+                                          // 새로 불러오기
                                           todayNoteController.text =
                                               todayNoteView;
-
-                                          /// 시퀀스명
 
                                           /// 리턴 시작
                                           return Container(
@@ -590,6 +597,9 @@ class _LessonAddState extends State<LessonAdd> {
                                                 BoxConstraints(minHeight: 120),
                                             child: Container(
                                               child: TextFormField(
+                                                onChanged: (value) {
+                                                  todayNoteView = value;
+                                                },
                                                 maxLines: null,
                                                 controller: todayNoteController,
                                                 autofocus: true,

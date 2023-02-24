@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/ui/memberInfo.dart';
 import 'package:web_project/color.dart';
+import 'package:web_project/userInfo.dart';
 
 import 'auth_service.dart';
 import 'globalWidget.dart';
@@ -138,18 +140,47 @@ class _HomeState extends State<Home> {
                                 //memberService.update(doc.id, !isActive);
                               },
                               child: BaseContainer(
-                                docId: doc.id,
-                                name: name,
-                                registerDate: registerDate,
-                                goal: goal,
-                                info: info,
-                                note: note,
-                                phoneNumber: phoneNumber,
-                                isActive: isActive,
-                                isFavorite: isFavorite,
-                                memberService: memberService,
-                                resultMemberList: globalVariables.resultList,
-                              ),
+                                  docId: doc.id,
+                                  name: name,
+                                  registerDate: registerDate,
+                                  goal: goal,
+                                  info: info,
+                                  note: note,
+                                  phoneNumber: phoneNumber,
+                                  isActive: isActive,
+                                  isFavorite: isFavorite,
+                                  memberService: memberService,
+                                  resultMemberList: globalVariables.resultList,
+                                  customFunctionOnTap: () async {
+                                    // 회원 카드 선택시 MemberInfo로 이동
+
+                                    // resultList.add(resultActionList);
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            MemberInfo.getUserInfoAndActionList(
+                                                userInfo,
+                                                globalVariables.resultList,
+                                                globalVariables.actionList),
+                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                        /* settings: RouteSettings(
+                                          arguments: userInfo
+                                        ), */
+                                      ),
+                                    ).then((result) {
+                                      globalVariables.sortList();
+                                      print(
+                                          "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                      UserInfo tmpUserInfo = result;
+                                      print(
+                                          "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                      setState(() {
+                                        print(
+                                            "memberList - memberinfo pop setState!!");
+                                      });
+                                    });
+                                  }),
                             );
                           },
                           separatorBuilder: ((context, index) => Divider()),

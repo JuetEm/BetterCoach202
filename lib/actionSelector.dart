@@ -942,13 +942,13 @@ class _ActionSelectorState extends State<ActionSelector> {
                       position,
                     );
 
-                    Function customFunctionOnTap = () {
+                    customFunctionOnTap() {
                       doc['selected'] = !doc['selected'];
 
                       print(
                           'docs[index][selected]: ${docs[index]['selected']}');
                       setState(() {});
-                    };
+                    }
 
                     if (searchString.isEmpty) {
                       if (positionArray.isEmpty) {

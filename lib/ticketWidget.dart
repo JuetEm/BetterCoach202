@@ -7,8 +7,6 @@ import 'color.dart';
 
 /// 티켓 위젯
 class TicketWidget extends StatefulWidget {
-  final Function customFunctionOnTap;
-  final Function? customFunctionOnHover;
   final int ticketCountLeft;
   final int ticketCountAll;
   final String ticketTitle;
@@ -16,19 +14,23 @@ class TicketWidget extends StatefulWidget {
   final String ticketStartDate;
   final String ticketEndDate;
   final int ticketDateLeft;
+  final Function? customFunctionOnHover;
+  final Function customFunctionOnTap;
+  final Function customFunctionOnLongPress;
 
-  const TicketWidget(
-      {Key? key,
-      required this.customFunctionOnTap,
-      this.customFunctionOnHover,
-      required this.ticketCountLeft,
-      required this.ticketCountAll,
-      required this.ticketTitle,
-      required this.ticketDescription,
-      required this.ticketStartDate,
-      required this.ticketEndDate,
-      required this.ticketDateLeft})
-      : super(key: key);
+  const TicketWidget({
+    Key? key,
+    required this.ticketCountLeft,
+    required this.ticketCountAll,
+    required this.ticketTitle,
+    required this.ticketDescription,
+    required this.ticketStartDate,
+    required this.ticketEndDate,
+    required this.ticketDateLeft,
+    this.customFunctionOnHover,
+    required this.customFunctionOnTap,
+    required this.customFunctionOnLongPress,
+  }) : super(key: key);
 
   @override
   State<TicketWidget> createState() => _TicketWidgetState();
@@ -49,6 +51,9 @@ class _TicketWidgetState extends State<TicketWidget> {
                     ? Palette.grayEE
                     : Palette.backgroundOrange)),
         child: InkWell(
+          onLongPress: () {
+            widget.customFunctionOnLongPress();
+          },
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTapDown: (details) {

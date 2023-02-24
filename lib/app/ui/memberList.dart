@@ -283,7 +283,10 @@ class _MemberListState extends State<MemberList> {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TicketLibraryManage(TicketLibraryManageList: globalVariables.ticketLibraryList,)),
+                            builder: (context) => TicketLibraryManage(
+                                  TicketLibraryManageList:
+                                      globalVariables.ticketLibraryList,
+                                )),
                       ).then((value) {
                         print("수강권 추가 result");
                       });
@@ -634,55 +637,49 @@ class _MemberListState extends State<MemberList> {
                                     isFavorite,
                                   );
 
-                                  return Material(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Palette.mainBackground,
-                                    child: InkWell(
-                                      onTap: () async {
-                                        // 회원 카드 선택시 MemberInfo로 이동
+                                  return BaseContainer(
+                                    docId: docId,
+                                    name: name,
+                                    registerDate: registerDate,
+                                    goal: goal,
+                                    info: info,
+                                    note: note,
+                                    phoneNumber: phoneNumber,
+                                    isActive: isActive,
+                                    isFavorite: isFavorite,
+                                    memberService: memberService,
+                                    resultMemberList:
+                                        globalVariables.resultList,
+                                    customFunctionOnTap: () async {
+                                      // 회원 카드 선택시 MemberInfo로 이동
 
-                                        // resultList.add(resultActionList);
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => MemberInfo
-                                                .getUserInfoAndActionList(
-                                                    userInfo,
-                                                    globalVariables.resultList,
-                                                    globalVariables.actionList),
-                                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                            /* settings: RouteSettings(
-                                              arguments: userInfo
-                                            ), */
-                                          ),
-                                        ).then((result) {
-                                          globalVariables.sortList();
+                                      // resultList.add(resultActionList);
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MemberInfo
+                                              .getUserInfoAndActionList(
+                                                  userInfo,
+                                                  globalVariables.resultList,
+                                                  globalVariables.actionList),
+                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                          /* settings: RouteSettings(
+                                          arguments: userInfo
+                                        ), */
+                                        ),
+                                      ).then((result) {
+                                        globalVariables.sortList();
+                                        print(
+                                            "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                        UserInfo tmpUserInfo = result;
+                                        print(
+                                            "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                        setState(() {
                                           print(
-                                              "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-                                          UserInfo tmpUserInfo = result;
-                                          print(
-                                              "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
-                                          setState(() {
-                                            print(
-                                                "memberList - memberinfo pop setState!!");
-                                          });
+                                              "memberList - memberinfo pop setState!!");
                                         });
-                                      },
-                                      child: BaseContainer(
-                                        docId: docId,
-                                        name: name,
-                                        registerDate: registerDate,
-                                        goal: goal,
-                                        info: info,
-                                        note: note,
-                                        phoneNumber: phoneNumber,
-                                        isActive: isActive,
-                                        isFavorite: isFavorite,
-                                        memberService: memberService,
-                                        resultMemberList:
-                                            globalVariables.resultList,
-                                      ),
-                                    ),
+                                      });
+                                    },
                                   );
                                 },
                                 separatorBuilder: ((context, index) =>

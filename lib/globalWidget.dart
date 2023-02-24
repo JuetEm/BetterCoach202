@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -823,6 +824,7 @@ class BaseContainer extends StatefulWidget {
     required this.phoneNumber,
     required this.memberService,
     required this.resultMemberList,
+    required this.customFunctionOnTap,
   }) : super(key: key);
   final String docId;
   final String name;
@@ -835,6 +837,7 @@ class BaseContainer extends StatefulWidget {
   final bool isFavorite;
   final MemberService memberService;
   final List resultMemberList;
+  final Function customFunctionOnTap;
 
   @override
   State<BaseContainer> createState() => _BaseContainerState();
@@ -843,6 +846,7 @@ class BaseContainer extends StatefulWidget {
 class _BaseContainerState extends State<BaseContainer> {
   bool favoriteMember = false;
   String isFavIconPath = "";
+  bool _toggle = false;
 
   @override
   Widget build(BuildContext context) {
@@ -852,154 +856,184 @@ class _BaseContainerState extends State<BaseContainer> {
     }
 
     return Container(
-      padding: EdgeInsets.fromLTRB(5, 15, 20, 15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Column(
-                children: [
-                  /// 별모양
-
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            right:
-                                BorderSide(width: 1, color: Palette.grayF5))),
-                    height: 50,
-                    width: 60,
-                    child: IconButton(
-                      icon: SvgPicture.asset(
-                        widget.isFavorite //svg파일이 firebase에서 안보이는 경우
-                            //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
-                            ? "assets/icons/favoriteSelected.svg"
-                            : "assets/icons/favoriteUnselected.svg",
-                      ),
-                      iconSize: 40,
-                      onPressed: () async {
-                        // favoriteMember = !widget.isFavorite;
-
-                        //                   for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
-                        //   await lessonService.updateTotalNote(
-                        //     totalNoteTextFieldDocId[idx],
-                        //     totalNoteControllers[idx].text,
-                        //   );
-                        // }
-
-                        int rstLnth = widget.resultMemberList.length;
-                        for (int i = 0; i < rstLnth; i++) {
-                          if (widget.docId ==
-                              widget.resultMemberList[i]['id']) {
-                            print(
-                                "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
-                            if (widget.resultMemberList[i]['isFavorite'] ==
-                                null) {
-                              widget.resultMemberList[i]['isFavorite'] = true;
-                              print(
-                                  "widget.resultMemberList[i]['isFavorite'] is null!!");
-                            } else {
-                              widget.resultMemberList[i]['isFavorite'] =
-                                  !widget.resultMemberList[i]['isFavorite'];
-                              print(
-                                  "widget.resultMemberList[i]['isFavorite'] is not null!!");
-                            }
-
-                            break;
-                          }
-                        }
-
-                        print("favoriteMember : ${favoriteMember}");
-
-                        await widget.memberService
-                            .updateIsFavorite(widget.docId, !widget.isFavorite);
-                        // setState(() {
-                        //   widget.isActive
-                        //       ? favoriteMember = false
-                        //       : favoriteMember = true;
-                        // });
-
-                        // setState(() {});
-
-                        globalVariables.sortList();
-                        setState(() {});
-                      },
-                    ),
-                    // child: Image.asset(
-                    //     true
-                    //         ? "assets/icons/favorite_selected.svg"
-                    //         : "assets/icons/favorite_unselected.svg",
-                    //     width: 130),
-                  )
-                  // CircleAvatar(
-                  //   backgroundColor: Palette.grayEE,
-                  //   // backgroundImage: NetworkImage(
-                  //   //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
-                  //   child: Text(
-                  //     nameFirst,
-                  //     //name == null ? "N" : name.substring(0, 1),
-                  //     style: TextStyle(
-                  //         fontSize: 20.0,
-                  //         fontWeight: FontWeight.bold,
-                  //         color: Palette.gray33),
-                  //   ),
-                  // ),
-                ],
-              ),
-              SizedBox(width: 15),
-              Container(
-                constraints: BoxConstraints(maxWidth: 150),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+      alignment: Alignment.center,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 2,
+        child: InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          onTapDown: (details) {
+            setState(() {
+              _toggle = true;
+            });
+          },
+          onTapUp: (details) {
+            setState(() {
+              _toggle = false;
+            });
+          },
+          onTap: () {
+            widget.customFunctionOnTap;
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(5, 15, 20, 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
                   children: [
-                    Text(
-                      '${widget.name}',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Palette.gray00,
+                    Column(
+                      children: [
+                        /// 별모양
+
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  right: BorderSide(
+                                      width: 1, color: Palette.grayF5))),
+                          height: 50,
+                          width: 60,
+                          child: IconButton(
+                            icon: SvgPicture.asset(
+                              widget.isFavorite //svg파일이 firebase에서 안보이는 경우
+                                  //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
+                                  ? "assets/icons/favoriteSelected.svg"
+                                  : "assets/icons/favoriteUnselected.svg",
+                            ),
+                            iconSize: 40,
+                            onPressed: () async {
+                              // favoriteMember = !widget.isFavorite;
+
+                              //                   for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+                              //   await lessonService.updateTotalNote(
+                              //     totalNoteTextFieldDocId[idx],
+                              //     totalNoteControllers[idx].text,
+                              //   );
+                              // }
+
+                              int rstLnth = widget.resultMemberList.length;
+                              for (int i = 0; i < rstLnth; i++) {
+                                if (widget.docId ==
+                                    widget.resultMemberList[i]['id']) {
+                                  print(
+                                      "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
+                                  if (widget.resultMemberList[i]
+                                          ['isFavorite'] ==
+                                      null) {
+                                    widget.resultMemberList[i]['isFavorite'] =
+                                        true;
+                                    print(
+                                        "widget.resultMemberList[i]['isFavorite'] is null!!");
+                                  } else {
+                                    widget.resultMemberList[i]['isFavorite'] =
+                                        !widget.resultMemberList[i]
+                                            ['isFavorite'];
+                                    print(
+                                        "widget.resultMemberList[i]['isFavorite'] is not null!!");
+                                  }
+
+                                  break;
+                                }
+                              }
+
+                              print("favoriteMember : ${favoriteMember}");
+
+                              await widget.memberService.updateIsFavorite(
+                                  widget.docId, !widget.isFavorite);
+                              // setState(() {
+                              //   widget.isActive
+                              //       ? favoriteMember = false
+                              //       : favoriteMember = true;
+                              // });
+
+                              // setState(() {});
+
+                              globalVariables.sortList();
+                              setState(() {});
+                            },
+                          ),
+                          // child: Image.asset(
+                          //     true
+                          //         ? "assets/icons/favorite_selected.svg"
+                          //         : "assets/icons/favorite_unselected.svg",
+                          //     width: 130),
+                        )
+                        // CircleAvatar(
+                        //   backgroundColor: Palette.grayEE,
+                        //   // backgroundImage: NetworkImage(
+                        //   //     'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80'),
+                        //   child: Text(
+                        //     nameFirst,
+                        //     //name == null ? "N" : name.substring(0, 1),
+                        //     style: TextStyle(
+                        //         fontSize: 20.0,
+                        //         fontWeight: FontWeight.bold,
+                        //         color: Palette.gray33),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                    SizedBox(width: 15),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 150),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${widget.name}',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.gray00,
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            '등록일 : ${widget.registerDate}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              //fontWeight: FontWeight.bold,
+                              color: Palette.grayB4,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 5.0),
-                    Text(
-                      '등록일 : ${widget.registerDate}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        //fontWeight: FontWeight.bold,
-                        color: Palette.grayB4,
-                      ),
+                    Spacer(flex: 1),
+                    // 노트 개수 UI
+                    Column(
+                      children: [
+                        Icon(
+                          Icons.text_snippet_outlined,
+                          color: Palette.gray99,
+                        ),
+                        SizedBox(width: 3),
+                        Text(
+                          "999",
+                          style: TextStyle(
+                              color: Palette.gray66,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
+                        ),
+                      ],
                     ),
+                    /* Icon(
+                      Icons.arrow_forward_ios,
+                      color: Palette.gray95,
+                      size: 22.0,
+                    ), */
                   ],
                 ),
-              ),
-              Spacer(flex: 1),
-              // 노트 개수 UI
-              Column(
-                children: [
-                  Icon(
-                    Icons.text_snippet_outlined,
-                    color: Palette.gray99,
-                  ),
-                  SizedBox(width: 3),
-                  Text(
-                    "999",
-                    style: TextStyle(
-                        color: Palette.gray66,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12),
-                  ),
-                ],
-              ),
-              /* Icon(
-                Icons.arrow_forward_ios,
-                color: Palette.gray95,
-                size: 22.0,
-              ), */
-            ],
+              ],
+            ),
           ),
-        ],
-      ),
+        ),
+      ).animate(target: _toggle ? 0.5 : 0).scaleXY(end: 0.9),
     );
   }
 }
