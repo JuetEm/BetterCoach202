@@ -232,35 +232,38 @@ class _MemberListState extends State<MemberList> {
                 ),
               ),
             ),
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-              child: FloatingActionButton.extended(
-                onPressed: () {
-                  print("회원추가");
-                  memberAddMode = "추가";
+            floatingActionButton: CenterConstrainedBody(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                child: FloatingActionButton.extended(
+                  onPressed: () {
+                    print("회원추가");
+                    memberAddMode = "추가";
 
-                  List<dynamic> args = [
-                    memberAddMode,
-                  ];
+                    List<dynamic> args = [
+                      memberAddMode,
+                    ];
 
-                  // 저장하기 성공시 Home로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MemberAdd(),
-                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                      settings: RouteSettings(
-                        arguments: args,
+                    // 저장하기 성공시 Home로 이동
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MemberAdd(),
+                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                        settings: RouteSettings(
+                          arguments: args,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                label: Text(
-                  '회원 추가',
-                  style: TextStyle(fontSize: 16, letterSpacing: -0.2),
+                    );
+                  },
+                  label: Text(
+                    '회원 추가',
+                    style: TextStyle(fontSize: 16, letterSpacing: -0.2),
+                  ),
+                  icon: Icon(Icons.person_add),
+                  backgroundColor: Palette.buttonOrange,
                 ),
-                icon: Icon(Icons.person_add),
-                backgroundColor: Palette.buttonOrange,
               ),
             ),
           ),

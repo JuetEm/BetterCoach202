@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:web_project/actionListTileWidget.dart';
+import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/actionInfo.dart';
@@ -123,133 +124,135 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBarMethod(context, "시퀀스 불러오기", null, null, null),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Column(
-            children: [
-              /// 헤더
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Row(children: [
-                  Text(
-                    '시퀀스 제목',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Palette.gray00,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  Text('편집',
+      body: CenterConstrainedBody(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Column(
+              children: [
+                /// 헤더
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Row(children: [
+                    Text(
+                      '시퀀스 제목',
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Palette.textBlue,
-                      ))
-                ]),
-              ),
-
-              /// 리스트들이 뿌려지는 영역
-              Expanded(
-                child: ReorderableListView.builder(
-                  padding: EdgeInsets.only(bottom: 100),
-                  onReorder: (oldIndex, newIndex) {
-                    if (newIndex > oldIndex) {
-                      newIndex -= 1;
-                    }
-                    final movedActionList = actionList.removeAt(oldIndex);
-                    actionList.insert(newIndex, movedActionList);
-
-                    setState(() {});
-                  },
-                  physics: BouncingScrollPhysics(),
-                  itemCount: actionList.length,
-                  itemBuilder: (context, index) {
-                    Key? valueKey;
-                    actionList[index]['index'] = index;
-                    valueKey = ValueKey(actionList[index]['index']);
-
-                    return ActionListTile(
-                      key: valueKey,
-                      isSelectable: true,
-                      isSelected: actionList[index]['selected'],
-                      actionList: actionList,
-                      isDraggable: true,
-                      actionName: actionList[index]['actionName'],
-                      apparatus: actionList[index]['apparatus'],
-                      position: actionList[index]['position'],
-                      name: "",
-                      phoneNumber: "",
-                      lessonDate: "",
-                      grade: "",
-                      totalNote: "",
-                      docId: "",
-                      memberdocId: "",
-                      uid: "",
-                      pos: index,
-                      customFunctionOnTap: () {
-                        actionList[index]['selected'] =
-                            !actionList[index]['selected'];
-
-                        if (actionList[index]['selected']) {
-                          selectedCnt++;
-                        } else {
-                          selectedCnt--;
-                        }
-
-                        print('####여기부터 봐라####');
-                        print('seletedCnt: $selectedCnt');
-                        print('index: $index');
-                        print('actionList[index]: ${actionList[index]}');
-                        print('actionList: $actionList');
-                        print('selectedActionList: $selectedActionList');
-                        print('####여기까지 봐라####');
-
-                        setState(() {});
-                      },
-                    );
-                  },
+                          fontSize: 20,
+                          color: Palette.gray00,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(),
+                    Text('편집',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Palette.textBlue,
+                        ))
+                  ]),
                 ),
-              )
-            ],
-          ),
 
-          /// 불러오기 버튼을 아래쪽에 Stack
-          Offstage(
-            // offstage: selectedCnt == 0,
-            offstage: false,
-            child: Container(
-              alignment: Alignment.center,
-              height: 100,
-              // color: Palette.gray00.withOpacity(0.3), -> ActionSelector에서 쓰려고 만든거임
+                /// 리스트들이 뿌려지는 영역
+                Expanded(
+                  child: ReorderableListView.builder(
+                    padding: EdgeInsets.only(bottom: 100),
+                    onReorder: (oldIndex, newIndex) {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final movedActionList = actionList.removeAt(oldIndex);
+                      actionList.insert(newIndex, movedActionList);
 
-              /// 불러오기 버튼
-              child: ElevatedButton(
-                onPressed: () {
-                  selectedActionList
-                      .addAll(actionList.where((item) => item['selected']));
-                  // selectedActionList.add(actionList.where((item) => item['selected']));
-                  print(actionList.where((item) => item['selected']));
-                  print('selectedActionList: $selectedActionList');
-                  print('@@@@@ 전송! @@@@@');
+                      setState(() {});
+                    },
+                    physics: BouncingScrollPhysics(),
+                    itemCount: actionList.length,
+                    itemBuilder: (context, index) {
+                      Key? valueKey;
+                      actionList[index]['index'] = index;
+                      valueKey = ValueKey(actionList[index]['index']);
 
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                      return ActionListTile(
+                        key: valueKey,
+                        isSelectable: true,
+                        isSelected: actionList[index]['selected'],
+                        actionList: actionList,
+                        isDraggable: true,
+                        actionName: actionList[index]['actionName'],
+                        apparatus: actionList[index]['apparatus'],
+                        position: actionList[index]['position'],
+                        name: "",
+                        phoneNumber: "",
+                        lessonDate: "",
+                        grade: "",
+                        totalNote: "",
+                        docId: "",
+                        memberdocId: "",
+                        uid: "",
+                        pos: index,
+                        customFunctionOnTap: () {
+                          actionList[index]['selected'] =
+                              !actionList[index]['selected'];
+
+                          if (actionList[index]['selected']) {
+                            selectedCnt++;
+                          } else {
+                            selectedCnt--;
+                          }
+
+                          print('####여기부터 봐라####');
+                          print('seletedCnt: $selectedCnt');
+                          print('index: $index');
+                          print('actionList[index]: ${actionList[index]}');
+                          print('actionList: $actionList');
+                          print('selectedActionList: $selectedActionList');
+                          print('####여기까지 봐라####');
+
+                          setState(() {});
+                        },
+                      );
+                    },
                   ),
-                  elevation: 5,
-                  backgroundColor: Palette.buttonOrange,
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 90),
-                  child: Text("불러오기", style: TextStyle(fontSize: 16)),
+                )
+              ],
+            ),
+
+            /// 불러오기 버튼을 아래쪽에 Stack
+            Offstage(
+              // offstage: selectedCnt == 0,
+              offstage: false,
+              child: Container(
+                alignment: Alignment.center,
+                height: 100,
+                // color: Palette.gray00.withOpacity(0.3), -> ActionSelector에서 쓰려고 만든거임
+
+                /// 불러오기 버튼
+                child: ElevatedButton(
+                  onPressed: () {
+                    selectedActionList
+                        .addAll(actionList.where((item) => item['selected']));
+                    // selectedActionList.add(actionList.where((item) => item['selected']));
+                    print(actionList.where((item) => item['selected']));
+                    print('selectedActionList: $selectedActionList');
+                    print('@@@@@ 전송! @@@@@');
+
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    elevation: 5,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 90),
+                    child: Text("불러오기", style: TextStyle(fontSize: 16)),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
