@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:web_project/app/ui/ticketLibraryMake.dart';
 
 import 'color.dart';
 
@@ -42,8 +43,14 @@ class _TicketWidgetState extends State<TicketWidget> {
         elevation: 5,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: BorderSide(width: 2, color: Palette.backgroundOrange)),
+            side: BorderSide(
+                width: 2,
+                color: ticketCountLeft == 0
+                    ? Palette.grayEE
+                    : Palette.backgroundOrange)),
         child: InkWell(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
           onTapDown: (details) {
             setState(() {
               _toggle = true;
@@ -85,7 +92,9 @@ class _TicketWidgetState extends State<TicketWidget> {
                           Text(
                             "${widget.ticketCountLeft}",
                             style: TextStyle(
-                                color: Palette.textOrange,
+                                color: ticketCountLeft == 0
+                                    ? Palette.gray99
+                                    : Palette.textOrange,
                                 fontWeight: FontWeight.bold,
                                 fontSize:
                                     widget.ticketCountAll >= 100 ? 20 : 28),
@@ -93,7 +102,9 @@ class _TicketWidgetState extends State<TicketWidget> {
                           Text(
                             "/",
                             style: TextStyle(
-                                color: Palette.textOrange,
+                                color: ticketCountLeft == 0
+                                    ? Palette.gray99
+                                    : Palette.textOrange,
                                 fontWeight: FontWeight.bold,
                                 fontSize:
                                     widget.ticketCountAll >= 100 ? 20 : 28),
