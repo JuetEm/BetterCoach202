@@ -292,7 +292,9 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                   itemCount:
                                       globalVariables.memberTicketList.length,
                                   itemBuilder:
-                                      (BuildContext context, int index) {
+                                      (BuildContext context, int index) { 
+                                    print(
+                                        "Active - globalVariables.memberTicketList[index]['ticketTitle'] : ${globalVariables.memberTicketList[index]['ticketTitle']}");
                                     print(
                                         "Active - globalVariables.memberTicketList[index]['memberId'] : ${globalVariables.memberTicketList[index]['memberId']}");
                                     print(
