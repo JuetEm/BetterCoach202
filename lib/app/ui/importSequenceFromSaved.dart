@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:web_project/actionListTileWidget.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/actionInfo.dart';
@@ -172,6 +173,19 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                       isSelectable: true,
                       isSelected: actionList[index]['selected'],
                       actionList: actionList,
+                      isDraggable: true,
+                      actionName: actionList[index]['actionName'],
+                      apparatus: actionList[index]['apparatus'],
+                      position: actionList[index]['position'],
+                      name: "",
+                      phoneNumber: "",
+                      lessonDate: "",
+                      grade: "",
+                      totalNote: "",
+                      docId: "",
+                      memberdocId: "",
+                      uid: "",
+                      pos: index,
                       customFunctionOnTap: () {
                         actionList[index]['selected'] =
                             !actionList[index]['selected'];
@@ -192,8 +206,6 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
 
                         setState(() {});
                       },
-                      isDraggable: true,
-                      index: index,
                     );
                   },
                 ),
@@ -239,68 +251,6 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ActionListTile extends StatefulWidget {
-  ActionListTile({
-    super.key,
-    required this.isSelected,
-    required this.isSelectable,
-    required this.actionList,
-    required this.customFunctionOnTap,
-    required this.isDraggable,
-    required this.index,
-  });
-
-  final bool isSelectable;
-  final List<Map> actionList;
-  final Function customFunctionOnTap;
-
-  final bool isDraggable;
-  final int index;
-  bool isSelected;
-
-  @override
-  State<ActionListTile> createState() => _ActionListTileState();
-}
-
-class _ActionListTileState extends State<ActionListTile> {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      selected: widget.isSelectable ? widget.isSelected : false,
-      onTap: () {
-        widget.customFunctionOnTap();
-        // print(widget.actionList);
-      },
-      selectedColor: Palette.gray66,
-      selectedTileColor: Palette.titleOrange,
-      shape: RoundedRectangleBorder(
-          // side: BorderSide(color: Palette.grayEE, width: 1),
-          ),
-      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-      tileColor: Palette.mainBackground,
-      visualDensity: VisualDensity(vertical: -4),
-      title: Text(
-        '${widget.actionList[widget.index]['actionName']}',
-        style: TextStyle(fontSize: 14, color: Palette.gray00),
-      ),
-      subtitle: Row(
-        children: [
-          Text(
-            '${widget.actionList[widget.index]['apparatus']}',
-            style: TextStyle(fontSize: 12, color: Palette.gray99),
-          ),
-          SizedBox(width: 6),
-          Text(
-            '${widget.actionList[widget.index]['position']}',
-            style: TextStyle(fontSize: 12, color: Palette.gray99),
-          )
-        ],
-      ),
-      trailing: widget.isDraggable ? Icon(Icons.drag_handle) : null,
     );
   }
 }
