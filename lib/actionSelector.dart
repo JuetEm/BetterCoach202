@@ -903,6 +903,8 @@ class _ActionSelectorState extends State<ActionSelector> {
               children: [
                 /// 동작 리스트
                 ListView.builder(
+                  padding: EdgeInsets.only(top: 190),
+                  itemCount: docs.length,
                   itemBuilder: (context, index) {
                     final doc = docs[index];
                     // print("doc : ${doc}");
@@ -1483,7 +1485,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                       Container(
                         padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                         color: Palette.secondaryBackground,
-                        height: 190,
+                        height: searchString.isEmpty ? 190 : 60,
                         child: Column(
                           children: [
                             BaseSearchTextField(
