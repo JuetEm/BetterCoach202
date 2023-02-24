@@ -368,6 +368,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
                     manageListContaining(
                         tmpLessonInfoList, tmpLessonInfo, true);
+
                     print(
                         "YES contain!! remove item => ${e.uid}/${e.memberdocId}/${e.lessonDate}/widget.apparatus : ${e.apparatusName}, widget.actionName : ${e.actionName}");
                     lessonService.deleteFromActionSelect(e.uid, e.memberdocId,
