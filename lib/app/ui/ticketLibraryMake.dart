@@ -155,18 +155,20 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
     // DropDownValueModel DropDown 메뉴 목록 만들기
     for (var ticketVal in globalVariables.ticketLibraryList) {
       // print("ticketVal : $ticketVal");
-      var model = DropDownValueModel(
-          name: ticketVal['ticketTitle'],
-          value: ticketVal['id'],
-          toolTipMsg: ticketVal['ticketDescription']);
-      tickets.add(model);
+      if (ticketVal['uid'] == AuthService().currentUser()!.uid) {
+        var model = DropDownValueModel(
+            name: ticketVal['ticketTitle'],
+            value: ticketVal['id'],
+            toolTipMsg: ticketVal['ticketDescription']);
+        tickets.add(model);
+      }
     }
 
     // 수강권 선택해서 들어오는 경우 값 매치 해주기
     if (widget.ticketTitle != null) {
       for (int i = 0; i < globalVariables.ticketLibraryList.length; i++) {
         if (widget.ticketTitle ==
-            globalVariables.ticketLibraryList[i]['ticketTitle']) {
+            globalVariables.ticketLibraryList[i]['ticketTitle'] && globalVariables.ticketLibraryList[i]['uid'] == AuthService().currentUser()!.uid) {
           var model = DropDownValueModel(
               name: globalVariables.ticketLibraryList[i]['ticketTitle'],
               value: globalVariables.ticketLibraryList[i]['id'],
@@ -191,7 +193,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
       }
     }
     return Consumer<TicketLibraryService>(
-      builder: (context, TicketLibraryService, child) {
+      builder: (context, ticketLibraryService, child) {
         return Scaffold(
           appBar: BaseAppBarMethod(context, "수강권 추가", () {
             Navigator.pop(context, widget.userInfo);

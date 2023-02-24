@@ -142,6 +142,8 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
 
     isTicketTitleOffStaged = true;
 
+    isFirst = true;
+
     // widget.ticketTitle = null;
     // print("widget.ticketTitle : ${widget.ticketTitle}");
   }
@@ -172,6 +174,8 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
     calendarName = "";
 
     isTicketTitleOffStaged = true;
+
+    isFirst = true;
 
     // widget.ticketTitle = null;
   }
