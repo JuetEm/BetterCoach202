@@ -159,7 +159,7 @@ class _TicketWidgetState extends State<TicketWidget> {
             ),
           ),
         ),
-      ).animate(target: _toggle ? 0.2 : 0).scaleXY(end: 0.8),
+      ).animate(target: _toggle ? 0.5 : 0).scaleXY(end: 0.9),
     );
   }
 }
@@ -178,6 +178,8 @@ class AddTicketWidget extends StatefulWidget {
 }
 
 class _AddTicketWidgetState extends State<AddTicketWidget> {
+  bool _toggle = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -188,6 +190,16 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
             borderRadius: BorderRadius.circular(10),
             side: BorderSide(width: 2, color: Palette.grayEE)),
         child: InkWell(
+          onTapDown: (details) {
+            setState(() {
+              _toggle = true;
+            });
+          },
+          onTapUp: (details) {
+            setState(() {
+              _toggle = false;
+            });
+          },
           onHover: (value) {
             print("수강권 추가 onHover!!");
           },
@@ -216,7 +228,7 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
             ),
           ),
         ),
-      ),
+      ).animate(target: _toggle ? 0.5 : 0).scaleXY(end: 0.9),
     );
   }
 }

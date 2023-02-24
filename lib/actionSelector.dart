@@ -280,6 +280,8 @@ class _ActionSelectorState extends State<ActionSelector> {
       docs = resultActionList; // 문서들 가져오기
     }
 
+    print(resultActionList);
+
     print("[AS] 시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
 
     if (initStateVar) {
@@ -1467,6 +1469,19 @@ class _ActionSelectorState extends State<ActionSelector> {
 }
 
 class ActionTile extends StatefulWidget {
+  final String apparatus;
+  final String actionName;
+  final String name;
+  final String phoneNumber;
+  final String lessonDate;
+  final String grade;
+  final String totalNote;
+  final String docId;
+  final String memberdocId;
+
+  final String uid;
+  int pos;
+
   ActionTile({
     Key? key,
     required this.apparatus,
@@ -1481,19 +1496,6 @@ class ActionTile extends StatefulWidget {
     required this.uid,
     required this.pos,
   }) : super(key: key);
-
-  final String apparatus;
-  final String actionName;
-  final String name;
-  final String phoneNumber;
-  final String lessonDate;
-  final String grade;
-  final String totalNote;
-  final String docId;
-  final String memberdocId;
-
-  final String uid;
-  int pos;
 
   @override
   State<ActionTile> createState() => _ActionTileState();
