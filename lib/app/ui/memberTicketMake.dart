@@ -551,73 +551,75 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                                   context: context,
                                   builder: (context) {
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 200),
-                                      child: AlertDialog(
-                                        title: Row(
-                                          children: [
-                                            Text('수강권명'),
-                                            Spacer(),
-                                            TextButton(
-                                              child: Text("완료"),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        // titlePadding: EdgeInsets.all(0),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        content: widget.ticketTitle != null
-                                            ? MemberTicketList(widget.userInfo!.docId,
-                                                globalVariables.memberTicketList,
-                                                () {
-                                                  if (globalVariables
-                                                      .memberTicketList
-                                                      .isEmpty) {
-                                                    ticketMakeController
-                                                        .setDropDown(
-                                                      DropDownValueModel(
-                                                          name: '직접입력',
-                                                          value: userInfo.docId,
-                                                          toolTipMsg: '직접입력'),
-                                                    );
-                                                    ticketTitle = "";
-                                                    ticketTitleController.text =
-                                                        "";
-                                                    ticketCountAll = 0;
-                                                    ticketCountAllController
-                                                            .text =
-                                                        ticketCountAll
-                                                            .toString();
-                                                    ticketStartDate = "";
-                                                    ticketStartDateController
-                                                        .text = "";
-                                                    ticketEndDate = "";
-                                                    ticketEndDateController
-                                                        .text = "";
-                                                    ticketDescription = "";
-                                                    ticketDescriptionController
-                                                        .text = "";
-                                                    ticketCountLeft = 0;
-                                                    ticketCountLeftController
-                                                            .text =
-                                                        ticketCountLeft
-                                                            .toString();
-                                                  }
-
-                                                  setState(() {});
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 200),
+                                        child: AlertDialog(
+                                          title: Row(
+                                            children: [
+                                              Text('수강권명'),
+                                              Spacer(),
+                                              TextButton(
+                                                child: Text("완료"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
                                                 },
-                                              )
-                                            : TicketLibraryList(
-                                                globalVariables
-                                                    .ticketLibraryList,
-                                                () {}),
-                                      
-                                    ));
+                                              ),
+                                            ],
+                                          ),
+                                          // titlePadding: EdgeInsets.all(0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          content: widget.ticketTitle != null
+                                              ? MemberTicketList(
+                                                  widget.userInfo!.docId,
+                                                  globalVariables
+                                                      .memberTicketList,
+                                                  () {
+                                                    if (globalVariables
+                                                        .memberTicketList
+                                                        .isEmpty) {
+                                                      ticketMakeController
+                                                          .setDropDown(
+                                                        DropDownValueModel(
+                                                            name: '직접입력',
+                                                            value:
+                                                                userInfo.docId,
+                                                            toolTipMsg: '직접입력'),
+                                                      );
+                                                      ticketTitle = "";
+                                                      ticketTitleController
+                                                          .text = "";
+                                                      ticketCountAll = 0;
+                                                      ticketCountAllController
+                                                              .text =
+                                                          ticketCountAll
+                                                              .toString();
+                                                      ticketStartDate = "";
+                                                      ticketStartDateController
+                                                          .text = "";
+                                                      ticketEndDate = "";
+                                                      ticketEndDateController
+                                                          .text = "";
+                                                      ticketDescription = "";
+                                                      ticketDescriptionController
+                                                          .text = "";
+                                                      ticketCountLeft = 0;
+                                                      ticketCountLeftController
+                                                              .text =
+                                                          ticketCountLeft
+                                                              .toString();
+                                                    }
+
+                                                    setState(() {});
+                                                  },
+                                                )
+                                              : TicketLibraryList(
+                                                  globalVariables
+                                                      .ticketLibraryList,
+                                                  () {}),
+                                        ));
                                   });
                             },
                             child: Text(
@@ -701,13 +703,15 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                           isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
 
-                            if (widget.ticketTitle == null) {
-                              for (var ticketVal
-                                  in globalVariables.ticketLibraryList) {
-                                if (ticketVal['ticketTitle'] == ticketTitle && ticketVal['uid'] == AuthService().currentUser()!.uid) {
-                                  ticketCountAll = ticketVal['ticketCountAll'];
-                                  ticketCountAllController.text =
-                                      ticketCountAll.toString();
+                          if (widget.ticketTitle == null) {
+                            for (var ticketVal
+                                in globalVariables.ticketLibraryList) {
+                              if (ticketVal['ticketTitle'] == ticketTitle &&
+                                  ticketVal['uid'] ==
+                                      AuthService().currentUser()!.uid) {
+                                ticketCountAll = ticketVal['ticketCountAll'];
+                                ticketCountAllController.text =
+                                    ticketCountAll.toString();
 
                                 ticketStartDate = getTodayDate();
                                 ticketStartDateController.text =
@@ -721,16 +725,18 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                                 ticketDescriptionController.text =
                                     ticketDescription;
 
-                                  break;
-                                }
+                                break;
                               }
-                            } else {
-                              for (var ticketVal
-                                  in globalVariables.memberTicketList) {
-                                if (ticketVal['ticketTitle'] == ticketTitle && ticketVal['memberId'] == widget.userInfo!.docId) {
-                                  ticketCountAll = ticketVal['ticketCountAll'];
-                                  ticketCountAllController.text =
-                                      ticketCountAll.toString();
+                            }
+                          } else {
+                            for (var ticketVal
+                                in globalVariables.memberTicketList) {
+                              if (ticketVal['ticketTitle'] == ticketTitle &&
+                                  ticketVal['memberId'] ==
+                                      widget.userInfo!.docId) {
+                                ticketCountAll = ticketVal['ticketCountAll'];
+                                ticketCountAllController.text =
+                                    ticketCountAll.toString();
 
                                 ticketStartDate = getDateFromTimeStamp(
                                     ticketVal['ticketStartDate']);
@@ -1104,7 +1110,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
             ),
           ),
         );
-    },
+      },
     );
   }
 }
