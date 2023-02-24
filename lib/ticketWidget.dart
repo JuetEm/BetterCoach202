@@ -243,7 +243,7 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "수강권 추가하기",
+                  "${widget.label}",
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
