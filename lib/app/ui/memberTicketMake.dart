@@ -251,6 +251,11 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   ));
                 } else {
                   if (widget.ticketTitle == null) {
+                    if(tmpNameList.contains(ticketMakeController.dropDownValue!.name)){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
+                  ));
+                    }else{
                     ticketCountLeft = ticketCountAll;
                     await memberTicketService
                         .create(
@@ -299,6 +304,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
 
                       Navigator.pop(context);
                     });
+                    }
                   } else {
                     if (isTicketTitleOffStaged) {
                       ticketCountLeft = ticketCountAll;
