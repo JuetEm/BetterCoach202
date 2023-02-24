@@ -1533,7 +1533,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                 print(
                                     "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
-                                    
+
                                 //일별 노트 저장
                                 await todayNoteSave(
                                     lessonService, customUserInfo, context);

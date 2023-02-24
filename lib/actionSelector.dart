@@ -914,37 +914,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   ),
 
                   SizedBox(height: 5),
-                  // SizedBox(
-                  //   height: 50,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(14.0),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //       children: [
-                  //         Text(
-                  //           "APPARATUS",
-                  //           style: TextStyle(
-                  //             fontSize: 14,
-                  //           ),
-                  //         ),
-                  //         Spacer(),
-                  //         Text(
-                  //           "POSITION",
-                  //           style: TextStyle(
-                  //             fontSize: 14,
-                  //           ),
-                  //         ),
-                  //         Spacer(),
-                  //         Text(
-                  //           "NAME",
-                  //           style: TextStyle(
-                  //             fontSize: 14,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+
                   Offstage(
                     offstage: searchString.isNotEmpty,
                     child: Column(
@@ -1014,18 +984,6 @@ class _ActionSelectorState extends State<ActionSelector> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "동작을 선택하세요(${tmpLessonInfoList.isEmpty ? 0 : selectedActionCount})",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
                         Divider(),
 
                         /// 기구 필터
@@ -1071,30 +1029,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                     ),
                   ),
 
-                  /// 신규동작추가 버튼
-
                   /// 동작 리스트
                   Expanded(
-                      child: /* FutureBuilder<QuerySnapshot>(
-                      future: actionService.read(
-                        isReformerSelected,
-                        isCadillacSelected,
-                        isChairSelected,
-                        isLadderBarrelSelected,
-                        isSpringBoardSelected,
-                        isSpineCorrectorSelected,
-                        isMatSelected,
-                        isOthersApparatusSelected,
-                        searchString,
-                      ),
-                      builder: (context, snapshot) { 
-                        final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                        print("docs : ${docs.length}");
-                        if (docs.isEmpty) {
-                          return Center(child: Text("운동 목록을 준비 중입니다."));
-                        }
-                        return*/
-                          Stack(children: [
+                      child: Stack(children: [
                     resultActionList.isEmpty
                         ? Center(
                             child: CircularProgressIndicator(
@@ -1418,7 +1355,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 14, horizontal: 90),
-                            child: Text("동작추가", style: TextStyle(fontSize: 16)),
+                            child: Text(
+                                "동작추가(${tmpLessonInfoList.isEmpty ? 0 : selectedActionCount})",
+                                style: TextStyle(fontSize: 16)),
                           ),
                         ),
                       ],
