@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -940,6 +942,17 @@ class _ActionSelectorState extends State<ActionSelector> {
                       String name = doc['name'];
                       String lowerCaseName = doc['lowerCaseName'];
                       bool isSelected = doc['selected'];
+                      print(
+                          '#####TempLEssonList: ${tmpLessonInfoList[1].toString()}');
+                      inspect(tmpLessonInfoList[1]);
+
+                      // if (tmpLessonInfoList.any(
+                      //     (element) => element['actionName'] == doc['name'])) {
+                      //   isSelected = true;
+                      // } else {
+                      //   isSelected = doc['selected'];
+                      // }
+
                       List<dynamic> nGramizedLowerCaseName =
                           doc['nGramizedLowerCaseName'] ?? [];
 
@@ -948,13 +961,32 @@ class _ActionSelectorState extends State<ActionSelector> {
                         apparatus,
                         position,
                       );
+                      State<ActionSelector>? actionSelector =
+                          context.findAncestorStateOfType();
+                      TmpLessonInfo tmpLessonInfo = TmpLessonInfo(
+                          customUserInfo.docId,
+                          apparatus,
+                          name,
+                          customUserInfo.name,
+                          lessonDate,
+                          "50",
+                          totalNote,
+                          '',
+                          user.uid,
+                          true);
+                      //레슨서비스 활용
+                      final lessonService = context.read<LessonService>();
+                      // onTap 방식과는 다르게 동작해야 함
 
-                      customFunctionOnTap() {
-                        doc['selected'] = !doc['selected'];
-
-                        print(
-                            'docs[index][selected]: ${docs[index]['selected']}');
-                        setState(() {});
+                      if (manageListContaining(
+                          tmpLessonInfoList, tmpLessonInfo, false)) {
+                        isSelected = true;
+                        /* print(
+            "YES contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
+                      } else {
+                        isSelected = false;
+                        /* print(
+            "NOT contain!! => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
                       }
 
                       if (searchString.isEmpty) {
@@ -969,14 +1001,20 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 lessonDate: lessonDate,
                                 grade: '50',
                                 totalNote: totalNote,
-                                docId: '',
+                                docId: customUserInfo.docId,
                                 memberdocId: customUserInfo.docId,
                                 uid: user.uid,
                                 pos: index,
                                 isSelected: isSelected,
                                 isSelectable: true,
                                 isDraggable: false,
-                                customFunctionOnTap: customFunctionOnTap);
+                                customFunctionOnTap: () {
+                                  doc['selected'] = !doc['selected'];
+
+                                  print(
+                                      'docs[index][selected]: ${docs[index]['selected']}');
+                                  setState(() {});
+                                });
 
                             // return ActionTile(
                             //     memberdocId: customUserInfo.docId,
@@ -1001,7 +1039,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   lessonDate: lessonDate,
                                   grade: '50',
                                   totalNote: totalNote,
-                                  docId: '',
+                                  docId: customUserInfo.docId,
                                   memberdocId: customUserInfo.docId,
                                   uid: user.uid,
                                   pos: index,
@@ -1044,7 +1082,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   lessonDate: lessonDate,
                                   grade: '50',
                                   totalNote: totalNote,
-                                  docId: '',
+                                  docId: customUserInfo.docId,
                                   memberdocId: customUserInfo.docId,
                                   uid: user.uid,
                                   pos: index,
@@ -1081,7 +1119,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     lessonDate: lessonDate,
                                     grade: '50',
                                     totalNote: totalNote,
-                                    docId: '',
+                                    docId: customUserInfo.docId,
                                     memberdocId: customUserInfo.docId,
                                     uid: user.uid,
                                     pos: index,
@@ -1129,14 +1167,20 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 lessonDate: lessonDate,
                                 grade: '50',
                                 totalNote: totalNote,
-                                docId: '',
+                                docId: customUserInfo.docId,
                                 memberdocId: customUserInfo.docId,
                                 uid: user.uid,
                                 pos: index,
                                 isSelected: isSelected,
                                 isSelectable: true,
                                 isDraggable: false,
-                                customFunctionOnTap: customFunctionOnTap);
+                                customFunctionOnTap: () {
+                                  doc['selected'] = !doc['selected'];
+
+                                  print(
+                                      'docs[index][selected]: ${docs[index]['selected']}');
+                                  setState(() {});
+                                });
                             // return ActionTile(
                             //     memberdocId: customUserInfo.docId,
                             //     apparatus: apparatus,
@@ -1160,7 +1204,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   lessonDate: lessonDate,
                                   grade: '50',
                                   totalNote: totalNote,
-                                  docId: '',
+                                  docId: customUserInfo.docId,
                                   memberdocId: customUserInfo.docId,
                                   uid: user.uid,
                                   pos: index,
@@ -1203,7 +1247,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   lessonDate: lessonDate,
                                   grade: '50',
                                   totalNote: totalNote,
-                                  docId: '',
+                                  docId: customUserInfo.docId,
                                   memberdocId: customUserInfo.docId,
                                   uid: user.uid,
                                   pos: index,
@@ -1240,7 +1284,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     lessonDate: lessonDate,
                                     grade: '50',
                                     totalNote: totalNote,
-                                    docId: '',
+                                    docId: customUserInfo.docId,
                                     memberdocId: customUserInfo.docId,
                                     uid: user.uid,
                                     pos: index,
