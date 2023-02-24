@@ -12,6 +12,8 @@ class GlobalVariables {
   List ticketLibraryList = [];
   // memberTicket List
   List memberTicketList = [];
+  // selected memberTicket index
+  int selectedTicketIndex = 0;
 
 
   sortList() {

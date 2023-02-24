@@ -28,8 +28,6 @@ import '../../memberUpdate.dart';
 import '../binding/member_service.dart';
 import '../../userInfo.dart';
 
-int selectedTicketIndex = 0;
-
 GlobalFunction globalFunction = GlobalFunction();
 
 Map<DateTime, dynamic> eventSource = {};
@@ -951,13 +949,13 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 return (element['isSelected'] == true) && (element['memberId'] == userInfo.docId);
               }).isNotEmpty
                   ? TicketWidget(
-                      ticketTitle: globalVariables.memberTicketList[selectedTicketIndex]['ticketTitle'],
-                      ticketDescription: globalVariables.memberTicketList[selectedTicketIndex]['ticketDescription'],
-                      ticketStartDate: getDateFromTimeStamp(globalVariables.memberTicketList[selectedTicketIndex]['ticketStartDate']) ,
-                      ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[selectedTicketIndex]['ticketEndDate']) ,
-                      ticketDateLeft: globalVariables.memberTicketList[selectedTicketIndex]['ticketDateLeft'],
-                      ticketCountAll: globalVariables.memberTicketList[selectedTicketIndex]['ticketCountAll'],
-                      ticketCountLeft: globalVariables.memberTicketList[selectedTicketIndex]['ticketCountLeft'],
+                      ticketTitle: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketTitle'],
+                      ticketDescription: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketDescription'],
+                      ticketStartDate: getDateFromTimeStamp(globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketStartDate']) ,
+                      ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketEndDate']) ,
+                      ticketDateLeft: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketDateLeft'],
+                      ticketCountAll: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketCountAll'],
+                      ticketCountLeft: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketCountLeft'],
                       customFunctionOnHover: () {
                         print("수강권 추가 onHover!!");
                       },
@@ -970,7 +968,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(globalVariables.memberTicketList,widget.userInfo)),
                         ).then((value) {
-                          selectedTicketIndex = value;
+                          globalVariables.selectedTicketIndex = value;
                           print("수강권 클릭 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
@@ -995,7 +993,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(globalVariables.memberTicketList, widget.userInfo)),
                         ).then((value) {
-                          selectedTicketIndex = value;
+                          globalVariables.selectedTicketIndex = value;
                           print("수강권 선택 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
