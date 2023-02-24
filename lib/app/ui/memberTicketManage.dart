@@ -292,99 +292,45 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
 
                             ////// 사용 가능한 수강권 리스트
 
-                            Offstage(
-                              offstage: isActiveTicketListOpened,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: globalVariables
-                                            .memberTicketList.length,
-                                        itemBuilder:
-                                            ((BuildContext context, int index) {
-                                          if (globalVariables.memberTicketList[
-                                                      index]['memberId'] ==
-                                                  widget.userInfo!.docId &&
-                                              globalVariables.memberTicketList[
-                                                      index]['isAlive'] ==
-                                                  true) {
-                                            return Container(
-                                                alignment: Alignment.center,
-                                                child: TicketWidget(
-                                                  customFunctionOnLongPress:
-                                                      () async {
-                                                    var result =
-                                                        await // 저장하기 성공시 Home로 이동
-                                                        Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              MemberTicketMake(
-                                                                  widget
-                                                                      .userInfo,
-                                                                  globalVariables
-                                                                              .memberTicketList[
-                                                                          index]
-                                                                      [
-                                                                      'ticketTitle'])),
-                                                    ).then((value) {
-                                                      print("수강권 추가 result");
-                                                    });
-                                                  },
-                                                  customFunctionOnTap:
-                                                      () async {},
-                                                  ticketCountLeft: globalVariables
-                                                          .memberTicketList[
-                                                      index]['ticketCountLeft'],
-                                                  ticketCountAll: globalVariables
-                                                          .memberTicketList[
-                                                      index]['ticketCountAll'],
-                                                  ticketTitle: globalVariables
-                                                          .memberTicketList[
-                                                      index]['ticketTitle'],
-                                                  ticketDescription: globalVariables
-                                                              .memberTicketList[
-                                                          index]
-                                                      ['ticketDescription'],
-                                                  ticketStartDate:
-                                                      getDateFromTimeStamp(
-                                                          globalVariables
-                                                                      .memberTicketList[
-                                                                  index][
-                                                              'ticketStartDate']),
-                                                  ticketEndDate:
-                                                      getDateFromTimeStamp(
-                                                          globalVariables
-                                                                      .memberTicketList[
-                                                                  index][
-                                                              'ticketEndDate']),
-                                                  ticketDateLeft: globalVariables
-                                                          .memberTicketList[
-                                                      index]['ticketDateLeft'],
-                                                ));
-                                          } else {}
-                                        })),
-                                    ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        controller: scrollController,
-                                        shrinkWrap: true,
-                                        itemCount: globalVariables
-                                            .memberTicketList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int idx) {
-                                          print(
-                                              "Active - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                                          print(
-                                              "Active - globalVariables.memberTicketList.length : ${globalVariables.memberTicketList.length}");
-                                          print(
-                                              "Active - ${idx}globalVariables.memberTicketList[index]['ticketTitle'] : ${globalVariables.memberTicketList[idx]['ticketTitle']}");
-                                          print(
-                                              "Active - globalVariables.memberTicketList[index]['memberId'] : ${globalVariables.memberTicketList[idx]['memberId']}");
-                                          print(
-                                              "Active - userInfo!.docId : ${widget.userInfo!.docId}");
-                                          print(
-                                              "Active - globalVariables.memberTicketList[index]['isAlive'] : ${globalVariables.memberTicketList[idx]['isAlive']}");
+                          Offstage(
+                            offstage: isActiveTicketListOpened,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: globalVariables.memberTicketList.length,
+                                    itemBuilder: ((BuildContext context, int index) {
+                                      if (widget.memberTList![index]
+                                                    ['memberId'] ==
+                                                widget.userInfo!.docId &&
+                                            widget.memberTList![index]
+                                                    ['isAlive'] ==
+                                                true) {
+                                    return TicketWidget(ticketCountLeft: int.parse( widget.memberTList![index]['ticketCountLeft']), ticketCountAll: widget.memberTList![index]['ticketTitle'], ticketTitle: widget.memberTList![index]['ticketTitle'], ticketDescription: widget.memberTList![index]['ticketDescription'], ticketStartDate: widget.memberTList![index]['ticketStartDate'], ticketEndDate: widget.memberTList![index]['ticketEndDate'], ticketDateLeft: widget.memberTList![index]['ticketDateLeft'], customFunctionOnTap: (){});
+                                                }else{
+                                      return SizedBox.shrink();
+                                                  
+                                                }
+                                   })),
+                                  ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      controller: scrollController,
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          globalVariables.memberTicketList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int idx) { 
+                                            print("Active - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                                            print("Active - globalVariables.memberTicketList.length : ${globalVariables.memberTicketList.length}");
+                                        print(
+                                            "Active - ${idx}globalVariables.memberTicketList[index]['ticketTitle'] : ${globalVariables.memberTicketList[idx]['ticketTitle']}");
+                                        print(
+                                            "Active - globalVariables.memberTicketList[index]['memberId'] : ${globalVariables.memberTicketList[idx]['memberId']}");
+                                        print(
+                                            "Active - userInfo!.docId : ${widget.userInfo!.docId}");
+                                        print(
+                                            "Active - globalVariables.memberTicketList[index]['isAlive'] : ${globalVariables.memberTicketList[idx]['isAlive']}");
 
                                           if (globalVariables
                                                           .memberTicketList[idx]
