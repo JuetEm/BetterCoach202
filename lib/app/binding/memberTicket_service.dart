@@ -129,4 +129,18 @@ class MemberTicketService extends ChangeNotifier {
 
     return docId;
   }
+
+  void delete({
+    String? docId,
+    Function? onSuccess,
+    Function? onError,
+  }) async {
+    // bucket 삭제
+    await memberTicketCollection.doc(docId).delete();
+    notifyListeners();
+    // 화면 갱신
+    onSuccess!(); // 성공시
+
+    onError!(); // 에러시
+  }
 }
