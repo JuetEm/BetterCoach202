@@ -48,7 +48,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
     userInfo = widget.userInfo;
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
-        final docs = memberTicketService.read(AuthService().currentUser()!.uid, userInfo!.docId).then((value){
+        final docs = memberTicketService.readByMember(AuthService().currentUser()!.uid, userInfo!.docId).then((value){
           memberTicketList = value;
         });
         return Scaffold(

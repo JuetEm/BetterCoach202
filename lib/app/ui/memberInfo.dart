@@ -894,13 +894,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
 
     return Consumer<MemberTicketService>(
         builder: (context, memberTicketService, child) {
-      memberTicketService
-          .read(AuthService().currentUser()!.uid, userInfo.docId)
-          .then(
-        (value) {
-          memberTicketList = value;
-        },
-      );
+      
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20.0),

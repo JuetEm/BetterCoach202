@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/memberTicket_service.dart';
 import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
+import 'package:web_project/app/ui/memberInfo.dart';
 import 'package:web_project/app/ui/ticketLibraryList.dart';
 import 'package:web_project/auth_service.dart';
 import 'package:web_project/baseTableCalendar.dart';
@@ -144,7 +145,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
   @override
   Widget build(BuildContext context) {
     tickets = [
-      DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력'),
+      DropDownValueModel(name: '직접입력', value: userInfo.docId, toolTipMsg: '직접입력'),
     ];
     for (var ticketVal in globalVariables.memberTicketList) {
       // print("ticketVal : $ticketVal");

@@ -73,6 +73,8 @@ ActionService actionService = ActionService();
 
 TicketLibraryService ticketLibraryService = TicketLibraryService();
 
+MemberTicketService memberTicketService = MemberTicketService();
+
 enum LoginPlatform {
   kakao,
   none, // logout
@@ -188,11 +190,19 @@ void main() async {
         }).onError((error, stackTrace) {
           print("error : ${error}");
           print("stackTrace : \r\n${stackTrace}");
-        }).whenComplete(() {
+        }).whenComplete(() async {
           print("ticketLibraryList await init complete!");
           /* for(var i in globalVariables.ticketLibraryList){
             print("i : ${i}");
           } */
+          await memberTicketService.read(user.uid).then((value) {
+            globalVariables.memberTicketList.addAll(value);
+          }).onError((error, stackTrace) {
+            print("error : ${error}");
+            print("stackTrace : \r\n${stackTrace}");
+          }).whenComplete(() {
+            print("memberTicketList await init complete!");
+          });
         });
       });
       runApp(
@@ -226,8 +236,8 @@ void main() async {
           ChangeNotifierProvider(create: (context) => CalendarService()),
           ChangeNotifierProvider(create: (context) => ActionService()),
           ChangeNotifierProvider(create: (context) => ReportService()),
-            ChangeNotifierProvider(create: (context) => TicketLibraryService()),
-            ChangeNotifierProvider(create: (context) => MemberTicketService()),
+          ChangeNotifierProvider(create: (context) => TicketLibraryService()),
+          ChangeNotifierProvider(create: (context) => MemberTicketService()),
         ],
         child: const MyApp(),
       ),
@@ -534,7 +544,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     analyticLog.sendAnalyticsEvent(screenName, "Apple로_로그인하기",
                         "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
-                    try {
+                    /* try {
                       isKakaoInstalled = await isKakaoTalkInstalled();
                       print("isKakaoInstalled : ${isKakaoInstalled}");
                       if (kIsWeb) {
@@ -559,7 +569,10 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     } catch (error) {
                       print('카카오톡으로 로그인 실패 - error : ${error}');
-                    }
+                    } */
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("애플 로그인 기능은 현재 개발 중입니다."),
+                    ));
                   },
                 ),
                 SizedBox(height: 10),
@@ -888,34 +901,42 @@ class _LoginPageState extends State<LoginPage> {
               }).onError((error, stackTrace) {
                 print("error : ${error}");
                 print("stackTrace : \r\n${stackTrace}");
-              }).whenComplete(() {
+              }).whenComplete(() async {
                 print("ticketLibraryList await init complete!");
 
-                // 로그인 성공
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("로그인 성공"),
-                ));
-                // 로그인 성공시 Home로 이동
-                /*  Navigator.pushReplacement(
+                await memberTicketService.read(cUser.uid).then((value) {
+                  globalVariables.memberTicketList.addAll(value);
+                }).onError((error, stackTrace) {
+                  print("error : ${error}");
+                  print("stackTrace : \r\n${stackTrace}");
+                }).whenComplete(() {
+                  print("memberTicketList await init complete!");
+                  // 로그인 성공
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("로그인 성공"),
+                  ));
+                  // 로그인 성공시 Home로 이동
+                  /*  Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => MemberList()),
               //MaterialPageRoute(builder: (_) => Mainpage()),
             ); */
-                List<dynamic> args = [
-                  globalVariables.resultList,
-                  globalVariables.actionList
-                ];
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberList(),
-                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                    settings: RouteSettings(arguments: args),
-                  ),
-                );
+                  List<dynamic> args = [
+                    globalVariables.resultList,
+                    globalVariables.actionList
+                  ];
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MemberList(),
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(arguments: args),
+                    ),
+                  );
 
-                emailController.clear();
-                passwordController.clear();
+                  emailController.clear();
+                  passwordController.clear();
+                });
               });
             });
           });
@@ -1012,33 +1033,42 @@ class _LoginPageState extends State<LoginPage> {
         }).onError((error, stackTrace) {
           print("error : ${error}");
           print("stackTrace : \r\n${stackTrace}");
-        }).whenComplete(() {
+        }).whenComplete(() async {
           print("ticketLibraryList await init complete!");
-          // 로그인 성공
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("로그인 성공"),
-          ));
-          // 로그인 성공시 Home로 이동
-          /*  Navigator.pushReplacement(
+
+          await memberTicketService.read(cUser.uid).then((value) {
+            globalVariables.memberTicketList.addAll(value);
+          }).onError((error, stackTrace) {
+            print("error : ${error}");
+            print("stackTrace : \r\n${stackTrace}");
+          }).whenComplete(() {
+            print("memberTicketList await init complete!");
+            // 로그인 성공
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("로그인 성공"),
+            ));
+            // 로그인 성공시 Home로 이동
+            /*  Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => MemberList()),
         //MaterialPageRoute(builder: (_) => Mainpage()),
       ); */
-          List<dynamic> args = [
-            globalVariables.resultList,
-            globalVariables.actionList
-          ];
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MemberList(),
-              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-              settings: RouteSettings(arguments: args),
-            ),
-          );
+            List<dynamic> args = [
+              globalVariables.resultList,
+              globalVariables.actionList
+            ];
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberList(),
+                // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                settings: RouteSettings(arguments: args),
+              ),
+            );
 
-          emailController.clear();
-          passwordController.clear();
+            emailController.clear();
+            passwordController.clear();
+          });
         });
       });
     });
