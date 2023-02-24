@@ -73,28 +73,39 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
           }, [
             TextButton(
                 onPressed: () {
+                  int tmpIndex = 0;
                   globalVariables.memberTicketList = widget.memberTList!;
-                  globalVariables.memberTicketList.forEach((element) {
+                  for (int i = 0;
+                      i < globalVariables.memberTicketList.length;
+                      i++) {
+                    var element = globalVariables.memberTicketList[i];
+
                     if (element['isSelected'] == true) {
-                      memberTicketService.update(
-                        AuthService().currentUser()!.uid,
-                        element['id'],
-                        widget.userInfo!.docId,
-                        element['ticketUsingCount'],
-                        element['ticketCountLeft'],
-                        element['ticketCountAll'],
-                        element['ticketTitle'],
-                        element['ticketDescription'],
-                        DateTime.parse(getDateFromTimeStamp(element['ticketStartDate'])),
-                        DateTime.parse(getDateFromTimeStamp( element['ticketEndDate'])),
-                        element['ticketDateLeft'],
-                        DateTime.now(),
-                        element['isSelected'],
-                        element['isAlive'],
-                      );
+                      memberTicketService
+                          .update(
+                            AuthService().currentUser()!.uid,
+                            element['id'],
+                            widget.userInfo!.docId,
+                            element['ticketUsingCount'],
+                            element['ticketCountLeft'],
+                            element['ticketCountAll'],
+                            element['ticketTitle'],
+                            element['ticketDescription'],
+                            DateTime.parse(getDateFromTimeStamp(
+                                element['ticketStartDate'])),
+                            DateTime.parse(
+                                getDateFromTimeStamp(element['ticketEndDate'])),
+                            element['ticketDateLeft'],
+                            DateTime.now(),
+                            element['isSelected'],
+                            element['isAlive'],
+                          )
+                          .then((value) {});
+                      tmpIndex = i;
+                      break;
                     }
-                  });
-                  Navigator.pop(context);
+                  }
+                  Navigator.pop(context, tmpIndex);
                 },
                 child: Text(
                   "완료",
@@ -351,6 +362,23 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                             return Container(
                                               alignment: Alignment.center,
                                               child: TicketWidget(
+                                                customFunctionOnLongPress:
+                                                    () async {
+                                                  var result =
+                                                      await // 저장하기 성공시 Home로 이동
+                                                      Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MemberTicketMake(
+                                                                widget.userInfo,
+                                                                widget.memberTList![
+                                                                        index][
+                                                                    'ticketTitle'])),
+                                                  ).then((value) {
+                                                    print("수강권 추가 result");
+                                                  });
+                                                },
                                                 selected:
                                                     widget.memberTList![index]
                                                         ['isSelected'],
@@ -488,7 +516,22 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                   setState(() {});
                                                 },
                                                 customFunctionOnLongPress:
-                                                    () {},
+                                                    () async {
+                                                  var result =
+                                                      await // 저장하기 성공시 Home로 이동
+                                                      Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MemberTicketMake(
+                                                                widget.userInfo,
+                                                                widget.memberTList![
+                                                                        index][
+                                                                    'ticketTitle'])),
+                                                  ).then((value) {
+                                                    print("수강권 추가 result");
+                                                  });
+                                                },
                                                 selected:
                                                     widget.memberTList![index]
                                                         ['isSelected'],

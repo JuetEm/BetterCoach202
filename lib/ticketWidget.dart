@@ -132,6 +132,17 @@ class _TicketWidgetState extends State<TicketWidget> {
                           )
                         ],
                       ),
+                      Text(
+                        widget.ticketDateLeft > 0
+                            ? "(D+${widget.ticketDateLeft})"
+                            : "(D-${widget.ticketDateLeft.abs()})",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: widget.ticketDateLeft <= 7
+                                ? Palette.textRed
+                                : Palette.gray66),
+                      ),
                     ],
                   ),
                 ),
@@ -167,15 +178,6 @@ class _TicketWidgetState extends State<TicketWidget> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 )),
-                            Text(
-                              " (D-${widget.ticketDateLeft})",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: widget.ticketDateLeft <= 7
-                                      ? Palette.textRed
-                                      : Palette.gray66),
-                            ),
                           ],
                         ),
                       ],

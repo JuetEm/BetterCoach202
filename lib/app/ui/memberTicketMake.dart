@@ -15,11 +15,14 @@ import 'package:web_project/auth_service.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/color.dart';
+import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/locationAdd.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart';
+
+GlobalFunction globalFunction = GlobalFunction();
 
 String screenName = "수강권 추가";
 
@@ -116,6 +119,8 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
     ticketStartDate = getTodayDate();
     ticketEndDateController.text = getMonthLateDate();
     ticketEndDate = getMonthLateDate();
+
+    ticketDateLeft = globalFunction.getDDayLeft(ticketEndDate);
 
     calendarName = "";
 
@@ -254,9 +259,68 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   if (widget.ticketTitle == null) {
                     if (tmpNameList
                         .contains(ticketMakeController.dropDownValue!.name)) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
-                      ));
+                      ticketCountLeft = ticketCountAll;
+                      memberTicketService
+                          .update(
+                        AuthService().currentUser()!.uid,
+                        ticketMakeController.dropDownValue!.toolTipMsg
+                            .toString(),
+                        ticketMakeController.dropDownValue!.value,
+                        ticketUsingCount,
+                        ticketCountLeft,
+                        ticketCountAll,
+                        ticketTitle,
+                        ticketDescription,
+                        Timestamp.fromDate(DateTime.parse(ticketStartDate))
+                            .toDate(),
+                        Timestamp.fromDate(DateTime.parse(ticketEndDate))
+                            .toDate(),
+                        ticketDateLeft,
+                        Timestamp.fromDate(DateTime.now()).toDate(),
+                        false,
+                        true,
+                      )
+                          .then((value) {
+                        print("${screenName} - 티켓 라이브러리 생성 update is called!");
+                        for (int i = 0;
+                            i < globalVariables.memberTicketList.length;
+                            i++) {
+                          if (ticketTitle ==
+                              globalVariables.memberTicketList[i]
+                                  ['ticketTitle']) {
+                            globalVariables.memberTicketList[i]
+                                ['ticketCountAll'] = ticketCountAll;
+                            globalVariables.memberTicketList[i]
+                                ['ticketUsingCount'] = 0;
+                            globalVariables.memberTicketList[i]
+                                ['ticketDateLeft'] = 0;
+                            globalVariables.memberTicketList[i]
+                                    ['ticketEndDate'] =
+                                Timestamp.fromDate(
+                                    DateTime.parse(ticketEndDate));
+                            globalVariables.memberTicketList[i]['uid'] =
+                                AuthService().currentUser()!.uid;
+                            globalVariables.memberTicketList[i]
+                                ['ticketCountLeft'] = ticketCountLeft;
+                            globalVariables.memberTicketList[i]['createDate'] =
+                                Timestamp.fromDate(DateTime.now()).toDate();
+                            globalVariables.memberTicketList[i]
+                                ['ticketDescription'] = ticketDescription;
+                            globalVariables.memberTicketList[i]
+                                    ['ticketStartDate'] =
+                                Timestamp.fromDate(
+                                    DateTime.parse(ticketStartDate));
+                            globalVariables.memberTicketList[i]['isSelected'] =
+                                false;
+                            globalVariables.memberTicketList[i]['isAlive'] =
+                                true;
+                            print(
+                                "update globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                            break;
+                          }
+                        }
+                        Navigator.pop(context);
+                      });
                     } else {
                       ticketCountLeft = ticketCountAll;
                       await memberTicketService

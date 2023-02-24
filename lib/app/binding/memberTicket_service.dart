@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/app/ui/memberTicketMake.dart';
+import 'package:web_project/globalFunction.dart';
 
 class MemberTicketService extends ChangeNotifier {
   CollectionReference<Map<String, dynamic>> memberTicketCollection =
       FirebaseFirestore.instance.collection('memberTicket');
+
+      GlobalFunction globalFunction = GlobalFunction();
 
   Future<List> read(String uid) async {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
@@ -19,6 +23,7 @@ class MemberTicketService extends ChangeNotifier {
       // print("result.docs[i].data() : ${result.docs[i].data()}");
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
+      rstObj['ticketDateLeft'] = globalFunction.getDDayLeft(getDateFromTimeStamp(result.docs[i]['ticketEndDate'])); 
       resultList.add(rstObj);
     }
     return resultList;

@@ -4,11 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/ui/memberTicketMake.dart';
+import 'package:web_project/globalFunction.dart';
 
 import 'calendar_service.dart';
 import 'centerConstraintBody.dart';
 import 'color.dart';
 import 'globalWidget.dart';
+
+GlobalFunction globalFunction = GlobalFunction();
 
 class BaseTableCalendar extends StatefulWidget {
   BaseTableCalendar(
@@ -192,7 +195,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           ticketStartDate = DateFormat("yyyy-MM-dd").format(focusedDate);
           ticketStartDateController!.text = ticketStartDate!;
           // calendarIsOffStaged = true;
-
+          
           widget.customFunction();
         } else if (widget.pageName == "수강 종료일") {
           print("수강 종료일");
@@ -201,7 +204,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           ticketEndDate = DateFormat("yyyy-MM-dd").format(focusedDate);
           ticketEndDateController!.text = ticketEndDate!;
           // calendarIsOffStaged = true;
-
+          ticketDateLeft = globalFunction.getDDayLeft(ticketEndDate);
           widget.customFunction();
         }
       },

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/memberTicket_service.dart';
 import 'package:web_project/app/ui/memberTicketManage.dart';
+import 'package:web_project/app/ui/ticketLibraryMake.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
@@ -26,6 +27,8 @@ import 'memberList.dart';
 import '../../memberUpdate.dart';
 import '../binding/member_service.dart';
 import '../../userInfo.dart';
+
+int selectedTicketIndex = 0;
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -948,13 +951,13 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 return element['isSelected'] == true;
               }).isNotEmpty
                   ? TicketWidget(
-                      ticketTitle: "재등록 수강권",
-                      ticketDescription: "20회에 서비스 2회 드림",
-                      ticketStartDate: "2023.01.14",
-                      ticketEndDate: "2023.02.13",
-                      ticketDateLeft: 7,
-                      ticketCountAll: 22,
-                      ticketCountLeft: 14,
+                      ticketTitle: globalVariables.memberTicketList[selectedTicketIndex]['ticketTitle'],
+                      ticketDescription: globalVariables.memberTicketList[selectedTicketIndex]['ticketDescription'],
+                      ticketStartDate: getDateFromTimeStamp(globalVariables.memberTicketList[selectedTicketIndex]['ticketStartDate']) ,
+                      ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[selectedTicketIndex]['ticketEndDate']) ,
+                      ticketDateLeft: globalVariables.memberTicketList[selectedTicketIndex]['ticketDateLeft'],
+                      ticketCountAll: globalVariables.memberTicketList[selectedTicketIndex]['ticketCountAll'],
+                      ticketCountLeft: globalVariables.memberTicketList[selectedTicketIndex]['ticketCountLeft'],
                       customFunctionOnHover: () {
                         print("수강권 추가 onHover!!");
                       },
@@ -967,7 +970,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(globalVariables.memberTicketList,widget.userInfo)),
                         ).then((value) {
-                          print("수강권 추가 result");
+                          selectedTicketIndex = value;
+                          print("수강권 클릭 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
                           });
@@ -976,6 +980,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           });
                         });
                       },
+                      customFunctionOnLongPress: (){},
                     )
                   : AddTicketWidget(
                       label: '수강권 선택하기',
@@ -990,7 +995,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(globalVariables.memberTicketList, widget.userInfo)),
                         ).then((value) {
-                          print("수강권 추가 result");
+                          selectedTicketIndex = value;
+                          print("수강권 선택 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
                           });
@@ -999,6 +1005,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           });
                         });
                       },
+                      
                     ),
             ),
             SizedBox(

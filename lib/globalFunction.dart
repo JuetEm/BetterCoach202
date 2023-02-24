@@ -100,8 +100,18 @@ class GlobalFunction {
         }
   } */
 
-  Future<bool> readfavoriteMember(
-      String uid, String docId) async {
+  int getDDayLeft(String date) {
+    var _toDay = DateTime.now();
+    // date = "2023-02-24";
+    int difference =
+        int.parse(_toDay.difference(DateTime.parse(date)).inDays.toString());
+
+    print("difference : ${difference}");
+
+    return difference;
+  }
+
+  Future<bool> readfavoriteMember(String uid, String docId) async {
     bool result = false;
     MemberService memberService = MemberService();
     await memberService
@@ -112,7 +122,6 @@ class GlobalFunction {
         .then((val) {
       result = val;
       print('[MI]회원정보 화면 _readfavoriteMember : 즐겨찾기 ${val}');
-
     });
     return result;
   }
@@ -448,14 +457,13 @@ class GlobalFunction {
         context,
         MaterialPageRoute(
           builder: (_) => BaseTableCalendar(
-            (){},
+            () {},
             false,
             selectedDate: selectedDate,
             pageName: pageName,
             eventList: [],
           ),
           fullscreenDialog: true,
-          
         ));
 
     if (!(result == null)) {
