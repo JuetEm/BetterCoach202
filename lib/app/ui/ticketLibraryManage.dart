@@ -32,17 +32,20 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
           child: Column(
             children: [
               // 수강권 추가 버튼
-              AddTicketWidget(customFunctionOnTap: () async {
-                var result = await // 저장하기 성공시 Home로 이동
-                    Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TicketLibraryMake(() {}, null)),
-                ).then((value) {
-                  print("수강권 추가 result");
-                  setState(() {});
-                });
-              }),
+              AddTicketWidget(
+                  label: '수강권 추가하가',
+                  addIcon: true,
+                  customFunctionOnTap: () async {
+                    var result = await // 저장하기 성공시 Home로 이동
+                        Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TicketLibraryMake(() {}, null)),
+                    ).then((value) {
+                      print("수강권 추가 result");
+                      setState(() {});
+                    });
+                  }),
 
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
@@ -74,8 +77,8 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                           ['ticketCountAll'],
                       ticketTitle: globalVariables.ticketLibraryList[index]
                           ['ticketTitle'],
-                      ticketDescription: globalVariables.ticketLibraryList[index]
-                          ['ticketDescription'],
+                      ticketDescription: globalVariables
+                          .ticketLibraryList[index]['ticketDescription'],
                       ticketStartDate: globalVariables.ticketLibraryList[index]
                               ['ticketStartDate'] ??
                           "0000-00-00",

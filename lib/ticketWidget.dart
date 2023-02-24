@@ -191,11 +191,15 @@ class _TicketWidgetState extends State<TicketWidget> {
 
 /// 티켓 추가하기 버튼 위젯
 class AddTicketWidget extends StatefulWidget {
+  final String label;
   final Function customFunctionOnTap;
+  final bool addIcon;
 
   const AddTicketWidget({
     Key? key,
     required this.customFunctionOnTap,
+    required this.label,
+    required this.addIcon,
   }) : super(key: key);
 
   @override
@@ -245,10 +249,13 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
                       fontWeight: FontWeight.bold,
                       color: Palette.gray99),
                 ),
-                Icon(
-                  Icons.add_circle_outline,
-                  color: Palette.gray99,
-                )
+                if (widget.addIcon)
+                  Icon(
+                    Icons.add_circle_outline,
+                    color: Palette.gray99,
+                  )
+                else
+                  SizedBox()
               ],
             ),
           ),

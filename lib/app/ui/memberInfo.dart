@@ -959,6 +959,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       },
                     )
                   : AddTicketWidget(
+                      label: '수강권 선택하기',
+                      addIcon: false,
                       customFunctionOnTap: () async {
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
