@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import 'color.dart';
 
+/// 티켓 위젯
 class TicketWidget extends StatefulWidget {
   final Function customFunctionOnTap;
   final Function? customFunctionOnHover;
@@ -141,6 +142,68 @@ class _TicketWidgetState extends State<TicketWidget> {
                         ),
                       ],
                     )),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 티켓 추가하기 버튼 위젯
+class AddTicketWidget extends StatefulWidget {
+  final Function customFunctionOnTap;
+
+  const AddTicketWidget({
+    Key? key,
+    required this.customFunctionOnTap,
+  }) : super(key: key);
+
+  @override
+  State<AddTicketWidget> createState() => _AddTicketWidgetState();
+}
+
+class _AddTicketWidgetState extends State<AddTicketWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.black,
+          blurRadius: 20.0,
+        )
+      ]),
+      alignment: Alignment.center,
+      child: Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(width: 2, color: Palette.grayEE)),
+        child: InkWell(
+          onHover: (value) {
+            print("수강권 추가 onHover!!");
+          },
+          onTap: () {
+            widget.customFunctionOnTap();
+          },
+          child: Container(
+            width: 280,
+            height: 140,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "수강권 추가하기",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Palette.gray99),
+                ),
+                Icon(
+                  Icons.add_circle_outline,
+                  color: Palette.gray99,
+                )
               ],
             ),
           ),

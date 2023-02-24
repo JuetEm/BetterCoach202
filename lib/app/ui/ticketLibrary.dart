@@ -30,81 +30,66 @@ class _TicketLibraryState extends State<TicketLibrary> {
         body: Column(
           children: [
             // 수강권 추가 버튼
+            AddTicketWidget(
+              customFunctionOnTap: () async {
+                var result = await // 저장하기 성공시 Home로 이동
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TicketLibraryMake(() {}, null)),
+                ).then((value) {
+                  print("수강권 추가 result");
+                  setState(() {});
+                });
+              },
+            ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              color: Palette.mainBackground,
-              child: TextButton(
-                onPressed: () async {
-                  var result = await // 저장하기 성공시 Home로 이동
-                      Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TicketLibraryMake(() {}, null)),
-                  ).then((value) {
-                    print("수강권 추가 result");
-                    setState(() {});
-                  });
-                },
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Palette.gray99, width: 2)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "수강권 추가하기",
-                        style: TextStyle(fontSize: 16, color: Palette.gray66),
-                      ),
-                      Icon(
-                        Icons.add_circle_outline,
-                        color: Palette.gray66,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              width: double.infinity,
+              height: 1,
+              color: Palette.grayEE,
             ),
 
             /// 수강권 영역
             Expanded(
               child: ListView.separated(
-                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.only(bottom: 30),
                 shrinkWrap: true,
                 itemCount: widget.ticketLibraryList!.length,
                 itemBuilder: (context, index) {
-                  return TicketWidget(
-                    customFunctionOnTap: () async {
-                      var result = await // 저장하기 성공시 Home로 이동
-                          Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TicketLibraryMake(
-                                () {},
-                                widget.ticketLibraryList![index]
-                                    ['ticketTitle'])),
-                      ).then((value) {
-                        print("수강권 추가 result");
-                        setState(() {});
-                      });
-                    },
-                    ticketCountLeft: globalVariables.ticketList[index]
-                        ['ticketCountAll'],
-                    ticketCountAll: globalVariables.ticketList[index]
-                        ['ticketCountAll'],
-                    ticketTitle: globalVariables.ticketList[index]
-                        ['ticketTitle'],
-                    ticketDescription: globalVariables.ticketList[index]
-                        ['ticketDescription'],
-                    ticketStartDate: globalVariables.ticketList[index]
-                            ['ticketStartDate'] ??
-                        "0000-00-00",
-                    ticketEndDate: globalVariables.ticketList[index]
-                            ['ticketEndDate'] ??
-                        "0000-00-00",
-                    ticketDateLeft: globalVariables.ticketList[index]
-                        ['ticketDateLeft'],
+                  return Container(
+                    alignment: Alignment.center,
+                    child: TicketWidget(
+                      customFunctionOnTap: () async {
+                        var result = await // 저장하기 성공시 Home로 이동
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TicketLibraryMake(
+                                  () {},
+                                  widget.ticketLibraryList![index]
+                                      ['ticketTitle'])),
+                        ).then((value) {
+                          print("수강권 추가 result");
+                          setState(() {});
+                        });
+                      },
+                      ticketCountLeft: globalVariables.ticketList[index]
+                          ['ticketCountAll'],
+                      ticketCountAll: globalVariables.ticketList[index]
+                          ['ticketCountAll'],
+                      ticketTitle: globalVariables.ticketList[index]
+                          ['ticketTitle'],
+                      ticketDescription: globalVariables.ticketList[index]
+                          ['ticketDescription'],
+                      ticketStartDate: globalVariables.ticketList[index]
+                              ['ticketStartDate'] ??
+                          "0000-00-00",
+                      ticketEndDate: globalVariables.ticketList[index]
+                              ['ticketEndDate'] ??
+                          "0000-00-00",
+                      ticketDateLeft: globalVariables.ticketList[index]
+                          ['ticketDateLeft'],
+                    ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

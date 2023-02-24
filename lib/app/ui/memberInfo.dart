@@ -885,11 +885,16 @@ class _MemberInfoViewState extends State<MemberInfoView> {
         "[MI] 운동목표 칩셋출력 : selectedGoals비었니.? ${widget.userInfo.selectedGoals.isEmpty}");
     print("[MI] 운동목표 칩셋출력 : goalChips ${goalChips}");
 
-    return Consumer<MemberTicketService>(builder: (context, memberTicketService, child) {
-      memberTicketService.read(AuthService().currentUser()!.uid, userInfo.docId).then((value) {
-        memberTicketList = value;
-      },);
-     return Container(
+    return Consumer<MemberTicketService>(
+        builder: (context, memberTicketService, child) {
+      memberTicketService
+          .read(AuthService().currentUser()!.uid, userInfo.docId)
+          .then(
+        (value) {
+          memberTicketList = value;
+        },
+      );
+      return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
@@ -903,7 +908,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 5.0),
-    
+
             Text(
               '수강정보',
               style: TextStyle(
@@ -913,21 +918,21 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               ),
             ),
             const SizedBox(height: 10),
-    
+
             /// 티켓모양 수강권
             Container(
               alignment: Alignment.center,
-              child: memberTicketList.where((element){
+              child: memberTicketList.where((element) {
                 return element['isSelected'] == true;
-              }).isNotEmpty
+              }).isEmpty
                   ? TicketWidget(
                       ticketTitle: "재등록 수강권",
-                      ticketDescription: "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
+                      ticketDescription: "20회에 서비스 2회 드림",
                       ticketStartDate: "2023.01.14",
                       ticketEndDate: "2023.02.13",
                       ticketDateLeft: 7,
-                      ticketCountAll: 999,
-                      ticketCountLeft: 999,
+                      ticketCountAll: 22,
+                      ticketCountLeft: 14,
                       customFunctionOnHover: () {
                         print("수강권 추가 onHover!!");
                       },
@@ -950,57 +955,25 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                         });
                       },
                     )
-                  : Container(
-                      alignment: Alignment.center,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(width: 2, color: Palette.grayEE)),
-                        child: InkWell(
-                          onHover: (value) {
-                            print("수강권 추가 onHover!!");
-                          },
-                          onTap: () async {
-                            print("수강권 추가 onTap!!");
-                            var result = await // 저장하기 성공시 Home로 이동
-                                Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MemberTicketManage.getUserInfo(userInfo)),
-                            ).then((value) {
-                              print("수강권 추가 result");
-                              setState(() {
-                                print("memberInfo then setState called!");
-                              });
-                              parent?.setState(() {
-                                print("memberInfo then parent setState called!");
-                              });
-                            });
-                          },
-                          child: Container(
-                            width: 280,
-                            height: 140,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "수강권 추가하기",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Palette.gray99),
-                                ),
-                                Icon(
-                                  Icons.add_circle_outline,
-                                  color: Palette.gray99,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                  : AddTicketWidget(
+                      customFunctionOnTap: () async {
+                        print("수강권 추가 onTap!!");
+                        var result = await // 저장하기 성공시 Home로 이동
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MemberTicketManage.getUserInfo(userInfo)),
+                        ).then((value) {
+                          print("수강권 추가 result");
+                          setState(() {
+                            print("memberInfo then setState called!");
+                          });
+                          parent?.setState(() {
+                            print("memberInfo then parent setState called!");
+                          });
+                        });
+                      },
                     ),
             ),
             SizedBox(
@@ -1186,7 +1159,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                 color: Palette.gray99,
               ),
             ),
-    
+
             SizedBox(height: 20),
             /* Center(
               child: ElevatedButton(
@@ -1253,8 +1226,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
           ],
         ),
       );
-    }
-    );
+    });
   }
 
   List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList,
