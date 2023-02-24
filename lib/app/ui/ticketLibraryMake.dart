@@ -237,6 +237,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                   ));
                 } else {
                   if (isTicketTitleOffStaged) {
+                    ticketCountLeft = ticketCountAll;
                     ticketLibraryService
                         .update(
                       AuthService().currentUser()!.uid,
@@ -265,7 +266,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                           globalVariables.ticketLibraryList[i]['ticketEndDate'] = null;
                           globalVariables.ticketLibraryList[i]['uid'] =
                               AuthService().currentUser()!.uid;
-                          globalVariables.ticketLibraryList[i]['ticketCountLeft'] = 0;
+                          globalVariables.ticketLibraryList[i]['ticketCountLeft'] = ticketCountLeft;
                           globalVariables.ticketLibraryList[i]['createDate'] =
                               Timestamp.fromDate(DateTime.now()).toDate();
                           globalVariables.ticketLibraryList[i]['ticketDescription'] =
@@ -280,6 +281,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                       Navigator.pop(context);
                     });
                   } else {
+                    ticketCountLeft = ticketCountAll;
                     await ticketLibraryService
                         .create(
                       AuthService().currentUser()!.uid,
@@ -302,7 +304,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                         "ticketDateLeft": 0,
                         "ticketEndDate": null,
                         "uid": AuthService().currentUser()!.uid,
-                        "ticketCountLeft": 0,
+                        "ticketCountLeft": ticketCountLeft,
                         "createDate":
                             Timestamp.fromDate(DateTime.now()).toDate(),
                         "ticketDescription": ticketDescription,

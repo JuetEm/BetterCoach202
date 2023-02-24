@@ -57,6 +57,7 @@ class MemberTicketService extends ChangeNotifier {
     final int ticketDateLeft,
     final DateTime createDate,
     final bool isSelected,
+    final bool isAlive,
   ) async {
     // report 만들기
     String id = "";
@@ -73,6 +74,7 @@ class MemberTicketService extends ChangeNotifier {
       'ticketDateLeft': ticketDateLeft, // 수강권 남은 일 수
       'createDate': createDate, // 수강권 생성일
       'isSelected': isSelected, // 수강권 선택 여부
+      'isAlive': isAlive, //수강권 사용 가능 여부
     }).then((value) {
       id = value.id;
       print("Successfully completed");
@@ -98,6 +100,7 @@ class MemberTicketService extends ChangeNotifier {
     final int ticketDateLeft,
     final DateTime createDate,
     final bool isSelected,
+    final bool isAlive,
   ) async {
     // report 만들기
     String id = "";
@@ -114,6 +117,7 @@ class MemberTicketService extends ChangeNotifier {
       'ticketDateLeft': ticketDateLeft, // 수강권 남을 일수
       'createDate': createDate, // 수강권 생성일
       'isSelected': isSelected, // 수강권 선택 여부
+      'isAlive': isAlive, //수강권 사용 가능 여부
     }).then((value) {
       // id = value
       // id = docID;
@@ -124,5 +128,19 @@ class MemberTicketService extends ChangeNotifier {
     notifyListeners(); // 화면 갱신
 
     return docId;
+  }
+
+  void delete({
+    String? docId,
+    Function? onSuccess,
+    Function? onError,
+  }) async {
+    // bucket 삭제
+    await memberTicketCollection.doc(docId).delete();
+    notifyListeners();
+    // 화면 갱신
+    onSuccess!(); // 성공시
+
+    onError!(); // 에러시
   }
 }

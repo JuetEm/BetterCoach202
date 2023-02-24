@@ -6,7 +6,6 @@ import 'package:web_project/app/binding/memberTicket_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/memberList.dart';
 import 'package:web_project/app/ui/memberTicketMake.dart';
-import 'package:web_project/app/ui/ticketLibraryMake.dart';
 import 'package:web_project/auth_service.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalFunction.dart';
@@ -31,6 +30,16 @@ bool isActiveTicketListOpened = true;
 /** 만료된 수강권 리스트 열렸는지 */
 bool isExpiredTicketListOpened = true;
 
+int getListCnt(List tList, bool checkVal){
+  int cnt = 0;
+  for(var i in tList){
+    if(i['isAlive'] == checkVal){
+      cnt++;
+    }
+  }
+  return cnt;
+}
+
 class MemberTicketManage extends StatefulWidget {
   UserInfo? userInfo;
   MemberTicketManage({super.key});
@@ -41,13 +50,11 @@ class MemberTicketManage extends StatefulWidget {
 }
 
 class _MemberTicketManageState extends State<MemberTicketManage> {
-  
   @override
   Widget build(BuildContext context) {
     userInfo = widget.userInfo;
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
-        
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
@@ -257,7 +264,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "사용 가능한 수강권(${expiredTicketCnt})",
+                                  "사용 가능한 수강권(${getListCnt(globalVariables.memberTicketList, true)})",
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: Palette.gray66,
@@ -281,16 +288,42 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                   scrollDirection: Axis.vertical,
                                   controller: scrollController,
                                   shrinkWrap: true,
-                                  itemCount: globalVariables.memberTicketList.length,
+                                  itemCount:
+                                      globalVariables.memberTicketList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                        print("globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                                        if(globalVariables.memberTicketList[index]['memberId'] == userInfo!.docId){
-                                          return Container(alignment: Alignment.center, child: TicketWidget(customFunctionOnTap: (){}, ticketCountLeft: globalVariables.memberTicketList[index]['ticketCountLeft'], ticketCountAll: globalVariables.memberTicketList[index]['ticketCountAll'], ticketTitle: globalVariables.memberTicketList[index]['ticketTitle'], ticketDescription: globalVariables.memberTicketList[index]['ticketDescription'], ticketStartDate: globalVariables.memberTicketList[index]['ticketStartDate'], ticketEndDate: globalVariables.memberTicketList[index]['ticketEndDate'], ticketDateLeft: globalVariables.memberTicketList[index]['ticketDateLeft']));
-                                        }else{
-                                    return null;
-
-                                        }
+                                    // print("globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                                    if (globalVariables.memberTicketList[index]
+                                                ['memberId'] ==
+                                            userInfo!.docId &&
+                                        globalVariables.memberTicketList[index]
+                                            ['isAlive'] == true) {
+                                      return Container(
+                                          alignment: Alignment.center,
+                                          child: TicketWidget(
+                                              customFunctionOnTap: () {},
+                                              ticketCountLeft:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketCountLeft'],
+                                              ticketCountAll:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketCountAll'],
+                                              ticketTitle: globalVariables.memberTicketList[index]
+                                                  ['ticketTitle'],
+                                              ticketDescription:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketDescription'],
+                                              ticketStartDate: getDateFromTimeStamp(globalVariables.memberTicketList[index]
+                                                      ['ticketStartDate'])
+                                                  ,
+                                              ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[index]
+                                                  ['ticketEndDate']),
+                                              ticketDateLeft:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketDateLeft']));
+                                    } else {
+                                      return null;
+                                    }
                                   }),
                             ),
                           ),
@@ -309,7 +342,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "만료된 수강권(${ticketCnt})",
+                                  "만료된 수강권(${getListCnt(globalVariables.memberTicketList, false)})",
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: Palette.gray66,
@@ -328,10 +361,52 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                           Offstage(
                             offstage: isExpiredTicketListOpened,
                             child: Container(
-                                width: double.infinity,
-                                height: 100,
-                                color: Palette.backgroundBlue,
-                                child: Text('만료된 수강권 리스트')),
+                              width: double.infinity,
+                              child: Container(
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  controller: scrollController,
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      globalVariables.memberTicketList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    // print("globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                                    if (globalVariables.memberTicketList[index]
+                                                ['memberId'] ==
+                                            userInfo!.docId &&
+                                        globalVariables.memberTicketList[index]
+                                            ['isAlive'] == false) {
+                                      return Container(
+                                          alignment: Alignment.center,
+                                          child: TicketWidget(
+                                              customFunctionOnTap: () {},
+                                              ticketCountLeft:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketCountLeft'],
+                                              ticketCountAll:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketCountAll'],
+                                              ticketTitle: globalVariables.memberTicketList[index]
+                                                  ['ticketTitle'],
+                                              ticketDescription:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketDescription'],
+                                              ticketStartDate:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketStartDate'],
+                                              ticketEndDate: globalVariables.memberTicketList[index]
+                                                  ['ticketEndDate'],
+                                              ticketDateLeft:
+                                                  globalVariables.memberTicketList[index]
+                                                      ['ticketDateLeft']));
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),

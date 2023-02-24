@@ -110,6 +110,7 @@ class ActionService extends ChangeNotifier {
           // print("result.docs[i].data() : ${result.docs[i].data()}");
           rstObj = result.docs[i].data();
           rstObj['id'] = result.docs[i].id;
+          rstObj['selected'] = false;
           resultList.add(rstObj);
         }
         return resultList;
