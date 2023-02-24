@@ -785,7 +785,14 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             widget.userInfo.docId,
           ),
           builder: (context, snapshot) {
-            final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
+            /* if(snapshot.connectionState == ConnectionState.waiting){
+              print("ConnectionState.waiting : ${ConnectionState.waiting}");
+              return CircularProgressIndicator();
+            }else */ 
+            // if(snapshot.connectionState == ConnectionState.done){
+              if(snapshot.data?.docs != null){
+              print("ConnectionState.done : ${ConnectionState.done}");
+              final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
 
             print(
                 "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
@@ -837,8 +844,11 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 );
               }
             }
-            ;
-          },
+            }else{
+              print("ConnectionState.else");
+              return CircularProgressIndicator();
+            }
+          }
         ),
         SizedBox(
           height: 14,
