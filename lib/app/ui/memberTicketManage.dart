@@ -296,9 +296,54 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                             globalVariables.memberTicketList[index]
                                                     ['isAlive'] ==
                                                 true) {
-                                    return Text("뭐 이래? - ${globalVariables.memberTicketList[index]['isAlive']}");
+                                    return Container(
+                                              alignment: Alignment.center,
+                                              child: TicketWidget(
+                                                customFunctionOnLongPress:
+                                                    () async {
+                                                  var result =
+                                                      await // 저장하기 성공시 Home로 이동
+                                                      Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MemberTicketMake(
+                                                                widget.userInfo,
+                                                                globalVariables
+                                                                            .memberTicketList[
+                                                                        index][
+                                                                    'ticketTitle'])),
+                                                  ).then((value) {
+                                                    print("수강권 추가 result");
+                                                  });
+                                                },
+                                                customFunctionOnTap: () async {},
+                                                ticketCountLeft: globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketCountLeft'],
+                                                ticketCountAll: globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketCountAll'],
+                                                ticketTitle: globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketTitle'],
+                                                ticketDescription: globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketDescription'],
+                                                ticketStartDate: getDateFromTimeStamp(
+                                                    globalVariables
+                                                            .memberTicketList[index]
+                                                        ['ticketStartDate']),
+                                                ticketEndDate: getDateFromTimeStamp(
+                                                    globalVariables
+                                                            .memberTicketList[index]
+                                                        ['ticketEndDate']),
+                                                ticketDateLeft: globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketDateLeft'],
+                                              ));
                                                 }else{
-                                                  return Text("이런");
+                                                  
                                                 }
                                    })),
                                   ListView.builder(
