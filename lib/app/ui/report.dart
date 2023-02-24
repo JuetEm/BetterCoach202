@@ -99,12 +99,12 @@ class _ReportState extends State<Report> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        color: Palette.secondaryBackground,
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+          color: Palette.secondaryBackground,
+          child: ListView(
+            shrinkWrap: true,
             children: [
               SizedBox(height: 10),
               Align(
