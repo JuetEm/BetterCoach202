@@ -82,83 +82,87 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                   // );
                 }, null, null),
           body: CenterConstrainedBody(
-            child: widget.pageName == "노트편집"
-                ? Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        tableCalendarMethod(widget.eventList),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        tableCalendarMethod(widget.eventList),
-                        Divider(
-                          height: 1,
-                        ),
-                        Container(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+            child: Container(
+              alignment: Alignment.topCenter,
+              constraints: BoxConstraints(maxWidth: 480),
+              child: widget.pageName == "노트편집"
+                  ? Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          tableCalendarMethod(widget.eventList),
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          tableCalendarMethod(widget.eventList),
+                          Divider(
+                            height: 1,
+                          ),
+                          Container(
+                            height: 30,
+                            child: Center(
+                              child: Text(
+                                "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 20),
+                          SizedBox(height: 20),
 
-                        /// 추가 버튼
-                        widget.pageName.contains("수강")
-                            ? Column(
-                                children: [
-                                  Divider(),
-                                  IconButton(
-                                      onPressed: () {
-                                        calendarIsOffStaged = true;
-                                        calendarName = "";
-                                        widget.customFunction();
-                                      },
-                                      icon: Icon(Icons.expand_less)),
-                                  Divider(),
-                                ],
-                              )
-                            : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  padding: EdgeInsets.all(0),
-                                  elevation: 0,
-                                  backgroundColor: Palette.buttonOrange,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 14, horizontal: 100),
-                                  child: Text("${widget.pageName} 선택",
-                                      style: TextStyle(fontSize: 16)),
-                                ),
-                                onPressed: () {
-                                  calendarService.setDate(
-                                    DateTime(
-                                      focusedDate.year,
-                                      focusedDate.month,
-                                      focusedDate.day,
+                          /// 추가 버튼
+                          widget.pageName.contains("수강")
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    IconButton(
+                                        onPressed: () {
+                                          calendarIsOffStaged = true;
+                                          calendarName = "";
+                                          widget.customFunction();
+                                        },
+                                        icon: Icon(Icons.expand_less)),
+                                    Divider(),
+                                  ],
+                                )
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                  );
-                                  // 저장하기 성공시 MemberAdd로 이동
-                                  Navigator.pop(context,
-                                      calendarService.currentSelectedDate());
-                                })
-                      ],
+                                    padding: EdgeInsets.all(0),
+                                    elevation: 0,
+                                    backgroundColor: Palette.buttonOrange,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14, horizontal: 100),
+                                    child: Text("${widget.pageName} 선택",
+                                        style: TextStyle(fontSize: 16)),
+                                  ),
+                                  onPressed: () {
+                                    calendarService.setDate(
+                                      DateTime(
+                                        focusedDate.year,
+                                        focusedDate.month,
+                                        focusedDate.day,
+                                      ),
+                                    );
+                                    // 저장하기 성공시 MemberAdd로 이동
+                                    Navigator.pop(context,
+                                        calendarService.currentSelectedDate());
+                                  })
+                        ],
+                      ),
                     ),
-                  ),
+            ),
           ),
         );
       },

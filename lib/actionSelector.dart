@@ -924,7 +924,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                 children: [
                   /// 동작 리스트
                   ListView.builder(
-                    padding: EdgeInsets.only(top: isFullScreen ? 0 : 190),
+                    padding: EdgeInsets.only(
+                        top: isFullScreen
+                            ? 0
+                            : searchString.isEmpty
+                                ? 190
+                                : 60),
                     itemCount: docs.length,
                     itemBuilder: (context, index) {
                       final doc = docs[index];
