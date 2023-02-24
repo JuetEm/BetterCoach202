@@ -54,7 +54,7 @@ List resultActionList = [];
 List resultMemberList = [];
 
 class MemberInfo extends StatefulWidget {
-  UserInfo? userInfo = null;
+  UserInfo? userInfo;
   List tmpResultActionList = [];
   List tmpResultMemeberList = [];
   MemberInfo({super.key});

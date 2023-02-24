@@ -13,9 +13,8 @@ import 'package:web_project/globalFunction.dart';
 import 'package:web_project/globalWidget.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/app/binding/member_service.dart';
+import 'package:web_project/ticketWidget.dart';
 import 'package:web_project/userInfo.dart';
-
-List memberTicketList = [];
 
 int ticketCnt = 0; // 사용가능한 수강권 개수
 int expiredTicketCnt = 0; // 만료된 수강권 개수
@@ -48,9 +47,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
     userInfo = widget.userInfo;
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
-        final docs = memberTicketService.readByMember(AuthService().currentUser()!.uid, userInfo!.docId).then((value){
-          memberTicketList = value;
-        });
+        
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
@@ -260,7 +257,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "사용가능한 수강권(${expiredTicketCnt})",
+                                  "사용 가능한 수강권(${expiredTicketCnt})",
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: Palette.gray66,
@@ -286,10 +283,16 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                   scrollDirection: Axis.vertical,
                                   controller: scrollController,
                                   shrinkWrap: true,
-                                  itemCount: memberTicketList.length,
+                                  itemCount: globalVariables.memberTicketList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return Text('사용 가능한 수강권 리스트');
+                                        print("globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                                        if(globalVariables.memberTicketList[index]['id'] == userInfo!.docId){
+                                          return TicketWidget(customFunctionOnTap: (){}, ticketCountLeft: globalVariables.memberTicketList[index]['ticketCountLeft'], ticketCountAll: globalVariables.memberTicketList[index]['ticketCountAll'], ticketTitle: globalVariables.memberTicketList[index]['ticketTitle'], ticketDescription: globalVariables.memberTicketList[index]['ticketDescription'], ticketStartDate: globalVariables.memberTicketList[index]['ticketStartDate'], ticketEndDate: globalVariables.memberTicketList[index]['ticketEndDate'], ticketDateLeft: globalVariables.memberTicketList[index]['ticketDateLeft']);
+                                        }else{
+                                    return null;
+
+                                        }
                                   }),
                             ),
                           ),

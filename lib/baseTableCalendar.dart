@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:web_project/app/ui/ticketLibraryMake.dart';
-import 'package:web_project/app/ui/lessonAdd.dart';
+import 'package:web_project/app/ui/memberTicketMake.dart';
 
 import 'calendar_service.dart';
 import 'color.dart';
 import 'globalWidget.dart';
-import 'app/ui/memberAdd.dart';
-import 'app/ui/ticketLibraryMake.dart';
-
-TicketLibraryMake ticketMake = TicketLibraryMake((){},null);
 
 class BaseTableCalendar extends StatefulWidget {
-  const BaseTableCalendar(
+  BaseTableCalendar(
     this.customFunction,
     this.isHideAppbar, {
     super.key,
@@ -23,7 +19,7 @@ class BaseTableCalendar extends StatefulWidget {
     required this.eventList,
   });
 
-  final customFunction;
+  final Function customFunction;
   final bool isHideAppbar;
   final String selectedDate;
   final String pageName;
@@ -97,6 +93,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
               : Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       tableCalendarMethod(widget.eventList),
@@ -116,7 +113,17 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                       SizedBox(height: 20),
 
                       /// 추가 버튼
-                      ElevatedButton(
+                      widget.pageName.contains("수강") ? Column(
+                        children: [
+                          Divider(),
+                          IconButton(onPressed: (){
+                            calendarIsOffStaged = true;
+                            calendarName = "";
+                            widget.customFunction();
+                          }, icon: Icon(Icons.expand_less)),
+                          Divider(),
+                        ],
+                      ) : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -128,40 +135,19 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 14, horizontal: 100),
-                            child: Text("${widget.pageName} 선택",
-                                style: TextStyle(fontSize: 16)),
+                            child: Text("${widget.pageName} 선택", style: TextStyle(fontSize: 16)),
                           ),
                           onPressed: () {
-                            if (widget.pageName == "수강 시작일") {
-                              print("수강 시작일");
-                              ticketStartDate =
-                                  "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
-                              ticketStartDate =
-                                  DateFormat("yyyy-MM-dd").format(focusedDate);
-                              ticketStartDateController.text = ticketStartDate!;
-                              calendarIsOffStaged = true;
-                              widget.customFunction();
-                            } else if (widget.pageName == "수강 종료일") {
-                              print("수강 종료일");
-                              ticketEndDate =
-                                  "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
-                              ticketEndDate =
-                                  DateFormat("yyyy-MM-dd").format(focusedDate);
-                              ticketEndDateController.text = ticketEndDate!;
-                              calendarIsOffStaged = true;
-                              widget.customFunction();
-                            } else {
-                              calendarService.setDate(
-                                DateTime(
-                                  focusedDate.year,
-                                  focusedDate.month,
-                                  focusedDate.day,
-                                ),
-                              );
-                              // 저장하기 성공시 MemberAdd로 이동
-                              Navigator.pop(context,
-                                  calendarService.currentSelectedDate());
-                            }
+                            calendarService.setDate(
+                              DateTime(
+                                focusedDate.year,
+                                focusedDate.month,
+                                focusedDate.day,
+                              ),
+                            );
+                            // 저장하기 성공시 MemberAdd로 이동
+                            Navigator.pop(
+                                context, calendarService.currentSelectedDate());
                           })
                     ],
                   ),
@@ -187,6 +173,25 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           selectedDateIn = selectedDay;
           focusedDate = focusedDay;
         });
+        if (widget.pageName == "수강 시작일") {
+          print("수강 시작일");
+          ticketStartDate =
+              "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
+          ticketStartDate = DateFormat("yyyy-MM-dd").format(focusedDate);
+          ticketStartDateController!.text = ticketStartDate!;
+          // calendarIsOffStaged = true;
+          
+          widget.customFunction();
+        } else if (widget.pageName == "수강 종료일") {
+          print("수강 종료일");
+          ticketEndDate =
+              "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
+          ticketEndDate = DateFormat("yyyy-MM-dd").format(focusedDate);
+          ticketEndDateController!.text = ticketEndDate!;
+          // calendarIsOffStaged = true;
+          
+          widget.customFunction();
+        }
       },
       selectedDayPredicate: (day) {
         return isSameDay(selectedDateIn, day);

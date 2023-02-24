@@ -577,6 +577,7 @@ class _MemberListState extends State<MemberList> {
                                 itemBuilder: (BuildContext context, int index) {
                                   //  print("몇 번 그리나요? - ListView.separated");
                                   final doc = docs[index];
+                                  // print("doc : ${doc}");
                                   String docId = doc['id'];
                                   String name = doc['name'] ?? "";
                                   String registerDate =
