@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:web_project/app/ui/ticketLibraryMake.dart';
 
 import 'color.dart';
 
@@ -14,11 +13,12 @@ class TicketWidget extends StatefulWidget {
   final String ticketStartDate;
   final String ticketEndDate;
   final int ticketDateLeft;
+  bool? selected = false;
   final Function? customFunctionOnHover;
   final Function customFunctionOnTap;
   final Function? customFunctionOnLongPress;
 
-  const TicketWidget({
+  TicketWidget({
     Key? key,
     required this.ticketCountLeft,
     required this.ticketCountAll,
@@ -27,6 +27,7 @@ class TicketWidget extends StatefulWidget {
     required this.ticketStartDate,
     required this.ticketEndDate,
     required this.ticketDateLeft,
+    this.selected,
     this.customFunctionOnHover,
     required this.customFunctionOnTap,
     this.customFunctionOnLongPress,
@@ -38,18 +39,26 @@ class TicketWidget extends StatefulWidget {
 
 class _TicketWidgetState extends State<TicketWidget> {
   bool _toggle = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: BorderSide(
-                width: 2,
-                color: ticketCountLeft == 0
-                    ? Palette.grayEE
-                    : Palette.backgroundOrange)),
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(
+              width: 2,
+              color: widget.selected == null
+                  ? widget.ticketCountLeft == 0
+                      ? Palette.grayEE
+                      : Palette.backgroundOrange
+                  : widget.selected!
+                      ? Palette.textBlue
+                      : widget.ticketCountLeft == 0
+                          ? Palette.grayEE
+                          : Palette.backgroundOrange),
+        ),
         child: InkWell(
           onLongPress: () {
             widget.customFunctionOnLongPress!();
@@ -97,7 +106,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                           Text(
                             "${widget.ticketCountLeft}",
                             style: TextStyle(
-                                color: ticketCountLeft == 0
+                                color: widget.ticketCountLeft == 0
                                     ? Palette.gray99
                                     : Palette.textOrange,
                                 fontWeight: FontWeight.bold,
@@ -107,7 +116,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                           Text(
                             "/",
                             style: TextStyle(
-                                color: ticketCountLeft == 0
+                                color: widget.ticketCountLeft == 0
                                     ? Palette.gray99
                                     : Palette.textOrange,
                                 fontWeight: FontWeight.bold,
