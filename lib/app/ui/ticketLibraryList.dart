@@ -22,66 +22,68 @@ class _TicketLibraryListState extends State<TicketLibraryList> {
     return Consumer<TicketLibraryService>(
       builder: (context, ticketLibraryService, child) {
         return Scaffold(
-          body: CenterConstrainedBody(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                      child: Text("수강권 명",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                    ),
-                    TextButton(
-                      child: Text("완료"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-                ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: widget.ticketList.length,
-                  itemBuilder: (context, index) {
-                    if (widget.ticketList[index]['uid'] ==
-                        AuthService().currentUser()!.uid) {
-                      return ListTile(
-                        title: Text(widget.ticketList[index]['ticketTitle']),
-                        trailing: IconButton(
-                            onPressed: () {
-                              var element;
-                              for (int i = 0;
-                                  i < widget.ticketList.length;
-                                  i++) {
-                                element = widget.ticketList[i];
-                                if (element['id'] ==
-                                    widget.ticketList[index]['id']) {
-                                  ticketLibraryService.delete(
-                                      docId: element['id'],
-                                      onError: () {},
-                                      onSuccess: () {});
-                                  widget.ticketList.remove(element);
-                                  break;
+          body: SingleChildScrollView(
+            child: CenterConstrainedBody(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /* Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                        child: Text("수강권 명",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                      ),
+                      TextButton(
+                        child: Text("완료"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ), */
+                  ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: widget.ticketList.length,
+                    itemBuilder: (context, index) {
+                      if (widget.ticketList[index]['uid'] ==
+                          AuthService().currentUser()!.uid) {
+                        return ListTile(
+                          title: Text(widget.ticketList[index]['ticketTitle']),
+                          trailing: IconButton(
+                              onPressed: () {
+                                var element;
+                                for (int i = 0;
+                                    i < widget.ticketList.length;
+                                    i++) {
+                                  element = widget.ticketList[i];
+                                  if (element['id'] ==
+                                      widget.ticketList[index]['id']) {
+                                    ticketLibraryService.delete(
+                                        docId: element['id'],
+                                        onError: () {},
+                                        onSuccess: () {});
+                                    widget.ticketList.remove(element);
+                                    break;
+                                  }
                                 }
-                              }
-                              widget.customFunction();
-                            },
-                            icon: Icon(Icons.clear)),
-                      );
-                    } else {
+                                widget.customFunction();
+                              },
+                              icon: Icon(Icons.clear)),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
                       return SizedBox.shrink();
-                    }
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox.shrink();
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );
