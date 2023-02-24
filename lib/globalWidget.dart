@@ -858,10 +858,11 @@ class _BaseContainerState extends State<BaseContainer> {
     return Container(
       alignment: Alignment.center,
       child: Card(
+        elevation: 0,
+        margin: EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        elevation: 2,
         child: InkWell(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
@@ -877,7 +878,7 @@ class _BaseContainerState extends State<BaseContainer> {
             });
           },
           onTap: () {
-            widget.customFunctionOnTap;
+            widget.customFunctionOnTap();
           },
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 15, 20, 15),

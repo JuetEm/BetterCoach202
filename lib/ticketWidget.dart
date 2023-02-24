@@ -52,7 +52,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                     : Palette.backgroundOrange)),
         child: InkWell(
           onLongPress: () {
-            widget.customFunctionOnLongPress ?? () {};
+            widget.customFunctionOnLongPress!();
           },
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
@@ -67,7 +67,7 @@ class _TicketWidgetState extends State<TicketWidget> {
             });
           },
           onHover: (value) {
-            widget.customFunctionOnHover ?? () {};
+            widget.customFunctionOnHover!();
           },
           onTap: () {
             widget.customFunctionOnTap();
