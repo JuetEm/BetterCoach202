@@ -8,8 +8,10 @@ class GlobalVariables {
   List resultList = [];
   // action list
   List actionList = [];
-  // ticket list
-  List ticketList = [];
+  // ticket Library list
+  List ticketLibraryList = [];
+  // memberTicket List
+  List memberTicketList = [];
 
 
   sortList() {

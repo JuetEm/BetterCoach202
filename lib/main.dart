@@ -184,13 +184,13 @@ void main() async {
         print("actionList await init complete!");
 
         await ticketLibraryService.read(user.uid).then((value) {
-          globalVariables.ticketList.addAll(value);
+          globalVariables.ticketLibraryList.addAll(value);
         }).onError((error, stackTrace) {
           print("error : ${error}");
           print("stackTrace : \r\n${stackTrace}");
         }).whenComplete(() {
-          print("ticketList await init complete!");
-          /* for(var i in globalVariables.ticketList){
+          print("ticketLibraryList await init complete!");
+          /* for(var i in globalVariables.ticketLibraryList){
             print("i : ${i}");
           } */
         });
@@ -884,12 +884,12 @@ class _LoginPageState extends State<LoginPage> {
               print("actionList await init complete!");
 
               await ticketLibraryService.read(cUser.uid).then((value) {
-                globalVariables.ticketList.addAll(value);
+                globalVariables.ticketLibraryList.addAll(value);
               }).onError((error, stackTrace) {
                 print("error : ${error}");
                 print("stackTrace : \r\n${stackTrace}");
               }).whenComplete(() {
-                print("ticketList await init complete!");
+                print("ticketLibraryList await init complete!");
 
                 // 로그인 성공
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1008,12 +1008,12 @@ class _LoginPageState extends State<LoginPage> {
         print("actionList await init complete!");
 
         await ticketLibraryService.read(cUser.uid).then((value) {
-          globalVariables.ticketList.addAll(value);
+          globalVariables.ticketLibraryList.addAll(value);
         }).onError((error, stackTrace) {
           print("error : ${error}");
           print("stackTrace : \r\n${stackTrace}");
         }).whenComplete(() {
-          print("ticketList await init complete!");
+          print("ticketLibraryList await init complete!");
           // 로그인 성공
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("로그인 성공"),

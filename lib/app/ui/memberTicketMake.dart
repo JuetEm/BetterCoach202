@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/binding/memberTicket_service.dart';
 import 'package:web_project/app/binding/member_service.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/ticketLibraryList.dart';
+import 'package:web_project/auth_service.dart';
 import 'package:web_project/baseTableCalendar.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalWidget.dart';
@@ -79,7 +81,8 @@ String getDateFromTimeStamp(var timestamp) {
 
 class MemberTicketMake extends StatefulWidget {
   UserInfo? userInfo;
-  MemberTicketMake({super.key});
+  String? ticketTitle;
+  MemberTicketMake(this.ticketTitle,{super.key});
   MemberTicketMake.getUserInfo(this.userInfo, {super.key});
 
   @override
@@ -143,16 +146,42 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
     tickets = [
       DropDownValueModel(name: '직접입력', value: '직접입력', toolTipMsg: '직접입력'),
     ];
-    for (var ticketVal in globalVariables.ticketList) {
+    for (var ticketVal in globalVariables.memberTicketList) {
       // print("ticketVal : $ticketVal");
       var model = DropDownValueModel(
           name: ticketVal['ticketTitle'],
-          value: ticketVal['ticketTitle'],
+          value: ticketVal['id'],
           toolTipMsg: ticketVal['ticketDescription']);
       tickets.add(model);
     }
-    return Consumer<TicketLibraryService>(
-      builder: (context, TicketLibraryService, child) {
+    // 수강권 선택해서 들어오는 경우 값 매치 해주기
+    if (widget.ticketTitle != null) {
+      for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
+        if (widget.ticketTitle ==
+            globalVariables.memberTicketList[i]['ticketTitle']) {
+          var model = DropDownValueModel(
+              name: globalVariables.memberTicketList[i]['ticketTitle'],
+              value: globalVariables.memberTicketList[i]['id'],
+              toolTipMsg: globalVariables.memberTicketList[i]['ticketDescription']);
+          ticketMakeController.setDropDown(model);
+          ticketCountAllController.text =
+              globalVariables.memberTicketList[i]['ticketCountAll'].toString();
+          ticketCountAll = globalVariables.memberTicketList[i]['ticketCountAll'];
+          ticketTitleController.text =
+              globalVariables.memberTicketList[i]['ticketTitle'];
+          ticketTitle = globalVariables.memberTicketList[i]['ticketTitle'];
+          ticketDescriptionController.text =
+              globalVariables.memberTicketList[i]['ticketDescription'];
+          ticketDescription =
+              globalVariables.memberTicketList[i]['ticketDescription'];
+              // 변수 초기화
+              widget.ticketTitle = null;
+          break;
+        }
+      }
+    }
+    return Consumer<MemberTicketService>(
+      builder: (context, memberTicketService, child) {
         return Scaffold(
           appBar: BaseAppBarMethod(context, "수강권 추가", () {
             Navigator.pop(context, widget.userInfo);
@@ -160,8 +189,12 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
             TextButton(
               onPressed: () async {
                 print(
-                    "AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
-                if (ticketMakeController.dropDownValue?.value
+                    "MemberTicketMake AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
+                List tmpNameList = [];
+                globalVariables.memberTicketList.forEach((element) {
+                  tmpNameList.add(element['ticketTitle']);
+                });
+                if (ticketMakeController.dropDownValue?.name
                         .toString()
                         .trim() ==
                     null) {
@@ -173,11 +206,16 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권 명을 입력하세요."),
                   ));
+                } else if (isTicketTitleOffStaged == false &&
+                    tmpNameList.contains(ticketTitleController.text.trim())) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("같은 이름의 수강권이 존재합니다. 다른 이름을 사용해주세요."),
+                  ));
                 } else if (ticketCountAllController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강 횟수를 입력하세요."),
                   ));
-                } else if (ticketStartDateController.text.trim() == "") {
+                } /* else if (ticketStartDateController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강 시작일을 선택하세요."),
                   ));
@@ -185,30 +223,95 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강 종료일을 선택하세요."),
                   ));
-                } else if (ticketDescriptionController.text.trim() == "") {
+                }  */
+                else if (ticketDescriptionController.text.trim() == "") {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("수강권 설명을 입력하세요."),
                   ));
                 } else {
-                  MemberService memberService = MemberService();
-                  await memberService
-                      .updateMemberTicket(
-                    widget.userInfo!.docId,
-                    ticketUsingCount,
-                    ticketCountLeft,
-                    ticketCountAll,
-                    ticketTitle,
-                    ticketDescription,
-                    Timestamp.fromDate(DateTime.parse(ticketStartDate))
-                        .toDate(),
-                    Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
-                    ticketDateLeft,
-                    DateTime.now(),
-                  )
-                      .then((value) {
-                    print("${screenName} - updateMemberTicket is called!");
-                    Navigator.pop(context);
-                  });
+                  if (isTicketTitleOffStaged) {
+                    memberTicketService
+                        .update(
+                      AuthService().currentUser()!.uid,
+                      ticketMakeController.dropDownValue!.value,
+                      ticketUsingCount,
+                      ticketCountLeft,
+                      ticketCountAll,
+                      ticketTitle,
+                      ticketDescription,
+                      Timestamp.fromDate(DateTime.parse(ticketStartDate)).toDate(),
+                      Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
+                      ticketDateLeft,
+                      Timestamp.fromDate(DateTime.now()).toDate(),
+                    )
+                        .then((value) {
+                      print("${screenName} - 티켓 라이브러리 생성 update is called!");
+                      for (int i = 0;
+                          i < globalVariables.memberTicketList.length;
+                          i++) {
+                        if (ticketTitle ==
+                            globalVariables.memberTicketList[i]['ticketTitle']) {
+                          globalVariables.memberTicketList[i]['ticketCountAll'] =
+                              ticketCountAll;
+                          globalVariables.memberTicketList[i]['ticketUsingCount'] = 0;
+                          globalVariables.memberTicketList[i]['ticketDateLeft'] = 0;
+                          globalVariables.memberTicketList[i]['ticketEndDate'] = null;
+                          globalVariables.memberTicketList[i]['uid'] =
+                              AuthService().currentUser()!.uid;
+                          globalVariables.memberTicketList[i]['ticketCountLeft'] = 0;
+                          globalVariables.memberTicketList[i]['createDate'] =
+                              Timestamp.fromDate(DateTime.now()).toDate();
+                          globalVariables.memberTicketList[i]['ticketDescription'] =
+                              ticketDescription;
+                          globalVariables.memberTicketList[i]['ticketStartDate'] =
+                              null;
+                          print(
+                              "update globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                          break;
+                        }
+                      }
+                      Navigator.pop(context);
+                    });
+                  } else {
+                    await memberTicketService
+                        .create(
+                      AuthService().currentUser()!.uid,
+                      ticketMakeController.dropDownValue!.value,
+                      ticketUsingCount,
+                      ticketCountLeft,
+                      ticketCountAll,
+                      ticketTitle,
+                      ticketDescription,
+                      Timestamp.fromDate(DateTime.parse(ticketStartDate)).toDate(),
+                      Timestamp.fromDate(DateTime.parse(ticketEndDate)).toDate(),
+                      ticketDateLeft,
+                      Timestamp.fromDate(DateTime.now()).toDate(),
+                    )
+                        .then((value) {
+                      print("${screenName} - 티켓 라이브러리 생성 create is called!");
+
+                      globalVariables.memberTicketList.add({
+                        "ticketCountAll": ticketCountAll,
+                        "ticketUsingCount": 0,
+                        "ticketDateLeft": 0,
+                        "ticketEndDate": null,
+                        "uid": AuthService().currentUser()!.uid,
+                        "ticketCountLeft": 0,
+                        "createDate":
+                            Timestamp.fromDate(DateTime.now()).toDate(),
+                        "ticketDescription": ticketDescription,
+                        "ticketStartDate": null,
+                        "ticketTitle": ticketTitle,
+                        "id": value,
+                      });
+                      globalVariables.memberTicketList.sort((a, b) =>
+                          (a['ticketTitle']).compareTo(b['ticketTitle']));
+                      print(
+                          "create globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+
+                      Navigator.pop(context);
+                    });
+                  }
                 }
               },
               child: Text(
@@ -245,7 +348,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                                             Radius.circular(20)),
                                       ),
                                       content: TicketLibraryList(
-                                          globalVariables.ticketList, () {
+                                          globalVariables.memberTicketList, () {
                                         setState(() {});
                                       }),
                                     );
@@ -330,7 +433,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                           isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
 
-                          for (var ticketVal in globalVariables.ticketList) {
+                          for (var ticketVal in globalVariables.memberTicketList) {
                             if (ticketVal['ticketTitle'] == ticketTitle) {
                               ticketCountAll = ticketVal['ticketCountAll'];
                               ticketCountAllController.text =

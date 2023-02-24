@@ -68,21 +68,21 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                           setState(() {});
                         });
                       },
-                      ticketCountLeft: globalVariables.ticketList[index]
+                      ticketCountLeft: globalVariables.ticketLibraryList[index]
                           ['ticketCountAll'],
-                      ticketCountAll: globalVariables.ticketList[index]
+                      ticketCountAll: globalVariables.ticketLibraryList[index]
                           ['ticketCountAll'],
-                      ticketTitle: globalVariables.ticketList[index]
+                      ticketTitle: globalVariables.ticketLibraryList[index]
                           ['ticketTitle'],
-                      ticketDescription: globalVariables.ticketList[index]
+                      ticketDescription: globalVariables.ticketLibraryList[index]
                           ['ticketDescription'],
-                      ticketStartDate: globalVariables.ticketList[index]
+                      ticketStartDate: globalVariables.ticketLibraryList[index]
                               ['ticketStartDate'] ??
                           "0000-00-00",
-                      ticketEndDate: globalVariables.ticketList[index]
+                      ticketEndDate: globalVariables.ticketLibraryList[index]
                               ['ticketEndDate'] ??
                           "0000-00-00",
-                      ticketDateLeft: globalVariables.ticketList[index]
+                      ticketDateLeft: globalVariables.ticketLibraryList[index]
                           ['ticketDateLeft'],
                     ),
                   );

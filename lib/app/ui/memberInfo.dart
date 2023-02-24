@@ -931,7 +931,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               alignment: Alignment.center,
               child: memberTicketList.where((element) {
                 return element['isSelected'] == true;
-              }).isEmpty
+              }).isNotEmpty
                   ? TicketWidget(
                       ticketTitle: "재등록 수강권",
                       ticketDescription: "20회에 서비스 2회 드림",

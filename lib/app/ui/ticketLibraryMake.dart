@@ -152,7 +152,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
       ),
     ];
     // DropDownValueModel DropDown 메뉴 목록 만들기
-    for (var ticketVal in globalVariables.ticketList) {
+    for (var ticketVal in globalVariables.ticketLibraryList) {
       // print("ticketVal : $ticketVal");
       var model = DropDownValueModel(
           name: ticketVal['ticketTitle'],
@@ -163,24 +163,24 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
 
     // 수강권 선택해서 들어오는 경우 값 매치 해주기
     if (widget.ticketTitle != null) {
-      for (int i = 0; i < globalVariables.ticketList.length; i++) {
+      for (int i = 0; i < globalVariables.ticketLibraryList.length; i++) {
         if (widget.ticketTitle ==
-            globalVariables.ticketList[i]['ticketTitle']) {
+            globalVariables.ticketLibraryList[i]['ticketTitle']) {
           var model = DropDownValueModel(
-              name: globalVariables.ticketList[i]['ticketTitle'],
-              value: globalVariables.ticketList[i]['id'],
-              toolTipMsg: globalVariables.ticketList[i]['ticketDescription']);
+              name: globalVariables.ticketLibraryList[i]['ticketTitle'],
+              value: globalVariables.ticketLibraryList[i]['id'],
+              toolTipMsg: globalVariables.ticketLibraryList[i]['ticketDescription']);
           ticketMakeController.setDropDown(model);
           ticketCountAllController.text =
-              globalVariables.ticketList[i]['ticketCountAll'].toString();
-          ticketCountAll = globalVariables.ticketList[i]['ticketCountAll'];
+              globalVariables.ticketLibraryList[i]['ticketCountAll'].toString();
+          ticketCountAll = globalVariables.ticketLibraryList[i]['ticketCountAll'];
           ticketTitleController.text =
-              globalVariables.ticketList[i]['ticketTitle'];
-          ticketTitle = globalVariables.ticketList[i]['ticketTitle'];
+              globalVariables.ticketLibraryList[i]['ticketTitle'];
+          ticketTitle = globalVariables.ticketLibraryList[i]['ticketTitle'];
           ticketDescriptionController.text =
-              globalVariables.ticketList[i]['ticketDescription'];
+              globalVariables.ticketLibraryList[i]['ticketDescription'];
           ticketDescription =
-              globalVariables.ticketList[i]['ticketDescription'];
+              globalVariables.ticketLibraryList[i]['ticketDescription'];
               // 변수 초기화
               widget.ticketTitle = null;
           break;
@@ -196,9 +196,9 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
             TextButton(
               onPressed: () async {
                 print(
-                    "AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
+                    "TicketLibraryMake AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
                 List tmpNameList = [];
-                globalVariables.ticketList.forEach((element) {
+                globalVariables.ticketLibraryList.forEach((element) {
                   tmpNameList.add(element['ticketTitle']);
                 });
                 if (ticketMakeController.dropDownValue?.name
@@ -240,7 +240,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                     ticketLibraryService
                         .update(
                       AuthService().currentUser()!.uid,
-                      ticketMakeController.dropDownValue?.value,
+                      ticketMakeController.dropDownValue!.value,
                       ticketUsingCount,
                       ticketCountLeft,
                       ticketCountAll,
@@ -254,26 +254,26 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                         .then((value) {
                       print("${screenName} - 티켓 라이브러리 생성 update is called!");
                       for (int i = 0;
-                          i < globalVariables.ticketList.length;
+                          i < globalVariables.ticketLibraryList.length;
                           i++) {
                         if (ticketTitle ==
-                            globalVariables.ticketList[i]['ticketTitle']) {
-                          globalVariables.ticketList[i]['ticketCountAll'] =
+                            globalVariables.ticketLibraryList[i]['ticketTitle']) {
+                          globalVariables.ticketLibraryList[i]['ticketCountAll'] =
                               ticketCountAll;
-                          globalVariables.ticketList[i]['ticketUsingCount'] = 0;
-                          globalVariables.ticketList[i]['ticketDateLeft'] = 0;
-                          globalVariables.ticketList[i]['ticketEndDate'] = null;
-                          globalVariables.ticketList[i]['uid'] =
+                          globalVariables.ticketLibraryList[i]['ticketUsingCount'] = 0;
+                          globalVariables.ticketLibraryList[i]['ticketDateLeft'] = 0;
+                          globalVariables.ticketLibraryList[i]['ticketEndDate'] = null;
+                          globalVariables.ticketLibraryList[i]['uid'] =
                               AuthService().currentUser()!.uid;
-                          globalVariables.ticketList[i]['ticketCountLeft'] = 0;
-                          globalVariables.ticketList[i]['createDate'] =
+                          globalVariables.ticketLibraryList[i]['ticketCountLeft'] = 0;
+                          globalVariables.ticketLibraryList[i]['createDate'] =
                               Timestamp.fromDate(DateTime.now()).toDate();
-                          globalVariables.ticketList[i]['ticketDescription'] =
+                          globalVariables.ticketLibraryList[i]['ticketDescription'] =
                               ticketDescription;
-                          globalVariables.ticketList[i]['ticketStartDate'] =
+                          globalVariables.ticketLibraryList[i]['ticketStartDate'] =
                               null;
                           print(
-                              "update globalVariables.ticketList : ${globalVariables.ticketList}");
+                              "update globalVariables.ticketLibraryList : ${globalVariables.ticketLibraryList}");
                           break;
                         }
                       }
@@ -296,7 +296,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                         .then((value) {
                       print("${screenName} - 티켓 라이브러리 생성 create is called!");
 
-                      globalVariables.ticketList.add({
+                      globalVariables.ticketLibraryList.add({
                         "ticketCountAll": ticketCountAll,
                         "ticketUsingCount": 0,
                         "ticketDateLeft": 0,
@@ -310,10 +310,10 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                         "ticketTitle": ticketTitle,
                         "id": value,
                       });
-                      globalVariables.ticketList.sort((a, b) =>
+                      globalVariables.ticketLibraryList.sort((a, b) =>
                           (a['ticketTitle']).compareTo(b['ticketTitle']));
                       print(
-                          "create globalVariables.ticketList : ${globalVariables.ticketList}");
+                          "create globalVariables.ticketLibraryList : ${globalVariables.ticketLibraryList}");
 
                       Navigator.pop(context);
                     });
@@ -354,7 +354,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                                             Radius.circular(20)),
                                       ),
                                       content: TicketLibraryList(
-                                          globalVariables.ticketList, () {
+                                          globalVariables.ticketLibraryList, () {
                                         setState(() {});
                                       }),
                                     );
@@ -439,7 +439,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                           isTicketTitleOffStaged = true;
                           ticketTitle = selectedticketName;
 
-                          for (var ticketVal in globalVariables.ticketList) {
+                          for (var ticketVal in globalVariables.ticketLibraryList) {
                             if (ticketVal['ticketTitle'] == ticketTitle) {
                               ticketCountAll = ticketVal['ticketCountAll'];
                               ticketCountAllController.text =
