@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:web_project/app/ui/importSequenceFromRecent.dart';
 import 'package:web_project/app/ui/importSequenceFromSaved.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/color.dart';
@@ -105,6 +106,13 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                   itemCount: 100,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ImportSequenceFromRecent()),
+                        ).then((value) => Navigator.pop(context));
+                      },
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 6, horizontal: 20),
                       tileColor: Palette.mainBackground,
