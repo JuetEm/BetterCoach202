@@ -948,7 +948,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               alignment: Alignment.center,
               child: globalVariables.memberTicketList.where((element) {
                 print("element : ${element}");
-                return element['isSelected'] == true;
+                return (element['isSelected'] == true) && (element['memberId'] == userInfo.docId);
               }).isNotEmpty
                   ? TicketWidget(
                       ticketTitle: globalVariables.memberTicketList[selectedTicketIndex]['ticketTitle'],

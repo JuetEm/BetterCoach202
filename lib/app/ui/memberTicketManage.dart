@@ -69,7 +69,15 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
-            Navigator.pop(context, widget.userInfo);
+            for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
+              var element = globalVariables.memberTicketList[i];
+
+              if (element['isSelected'] == true) {
+                Navigator.pop(context, i);
+                break;
+              }
+            }
+            Navigator.pop(context, -1);
           }, [
             TextButton(
                 onPressed: () {

@@ -943,9 +943,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                       String name = doc['name'];
                       String lowerCaseName = doc['lowerCaseName'];
                       bool isSelected = doc['selected'];
-                      print(
+                      /* print(
                           '#####TempLEssonList: ${tmpLessonInfoList[1].toString()}');
-                      inspect(tmpLessonInfoList[1]);
+                      inspect(tmpLessonInfoList[1]); */
 
                       // if (tmpLessonInfoList.any(
                       //     (element) => element['actionName'] == doc['name'])) {
