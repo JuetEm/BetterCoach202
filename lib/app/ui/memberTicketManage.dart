@@ -293,9 +293,12 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                       globalVariables.memberTicketList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    print("Active - globalVariables.memberTicketList[index]['memberId'] : ${globalVariables.memberTicketList[index]['memberId']}");
-                                    print("Active - userInfo!.docId : ${userInfo!.docId}");
-                                    print("Active - globalVariables.memberTicketList[index]['isAlive'] : ${globalVariables.memberTicketList[index]['isAlive']}");
+                                    print(
+                                        "Active - globalVariables.memberTicketList[index]['memberId'] : ${globalVariables.memberTicketList[index]['memberId']}");
+                                    print(
+                                        "Active - userInfo!.docId : ${userInfo!.docId}");
+                                    print(
+                                        "Active - globalVariables.memberTicketList[index]['isAlive'] : ${globalVariables.memberTicketList[index]['isAlive']}");
 
                                     if (globalVariables.memberTicketList[index]
                                                 ['memberId'] ==
@@ -306,41 +309,49 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                       return Container(
                                           alignment: Alignment.center,
                                           child: TicketWidget(
-                                              customFunctionOnLongPress: () async {
-                                                var result =
-                                                    await // 저장하기 성공시 Home로 이동
-                                                    Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MemberTicketMake
-                                                              (userInfo, globalVariables.memberTicketList[index]['ticketTitle'])),
-                                                ).then((value) {
-                                                  print("수강권 추가 result");
-                                                });
-                                              },
-                                              customFunctionOnTap: () async {
-                                                
-                                              },
-                                              ticketCountLeft: globalVariables
-                                                      .memberTicketList[index]
-                                                  ['ticketCountLeft'],
-                                              ticketCountAll: globalVariables
-                                                      .memberTicketList[index]
-                                                  ['ticketCountAll'],
-                                              ticketTitle: globalVariables
-                                                      .memberTicketList[index]
-                                                  ['ticketTitle'],
-                                              ticketDescription: globalVariables
-                                                      .memberTicketList[index]
-                                                  ['ticketDescription'],
-                                              ticketStartDate: getDateFromTimeStamp(
-                                                  globalVariables.memberTicketList[index]
-                                                      ['ticketStartDate']),
-                                              ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[index]['ticketEndDate']),
-                                              ticketDateLeft: globalVariables.memberTicketList[index]['ticketDateLeft'],
-                                              ));
-                                              
+                                            customFunctionOnLongPress:
+                                                () async {
+                                              var result =
+                                                  await // 저장하기 성공시 Home로 이동
+                                                  Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MemberTicketMake(
+                                                            userInfo,
+                                                            globalVariables
+                                                                        .memberTicketList[
+                                                                    index][
+                                                                'ticketTitle'])),
+                                              ).then((value) {
+                                                print("수강권 추가 result");
+                                              });
+                                            },
+                                            customFunctionOnTap: () async {},
+                                            ticketCountLeft: globalVariables
+                                                    .memberTicketList[index]
+                                                ['ticketCountLeft'],
+                                            ticketCountAll: globalVariables
+                                                    .memberTicketList[index]
+                                                ['ticketCountAll'],
+                                            ticketTitle: globalVariables
+                                                    .memberTicketList[index]
+                                                ['ticketTitle'],
+                                            ticketDescription: globalVariables
+                                                    .memberTicketList[index]
+                                                ['ticketDescription'],
+                                            ticketStartDate: getDateFromTimeStamp(
+                                                globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketStartDate']),
+                                            ticketEndDate: getDateFromTimeStamp(
+                                                globalVariables
+                                                        .memberTicketList[index]
+                                                    ['ticketEndDate']),
+                                            ticketDateLeft: globalVariables
+                                                    .memberTicketList[index]
+                                                ['ticketDateLeft'],
+                                          ));
                                     } else {
                                       return null;
                                     }
@@ -391,7 +402,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                       globalVariables.memberTicketList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    print("Expired - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
+                                    print(
+                                        "Expired - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                                     if (globalVariables.memberTicketList[index]
                                                 ['memberId'] ==
                                             userInfo!.docId &&
@@ -402,26 +414,22 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           alignment: Alignment.center,
                                           child: TicketWidget(
                                               customFunctionOnTap: () {},
-                                              ticketCountLeft:
-                                                  globalVariables.memberTicketList[index]
-                                                      ['ticketCountLeft'],
-                                              ticketCountAll:
-                                                  globalVariables.memberTicketList[index]
-                                                      ['ticketCountAll'],
-                                              ticketTitle: globalVariables.memberTicketList[index]
+                                              ticketCountLeft: globalVariables
+                                                      .memberTicketList[index]
+                                                  ['ticketCountLeft'],
+                                              ticketCountAll: globalVariables
+                                                      .memberTicketList[index]
+                                                  ['ticketCountAll'],
+                                              ticketTitle: globalVariables
+                                                      .memberTicketList[index]
                                                   ['ticketTitle'],
-                                              ticketDescription:
-                                                  globalVariables.memberTicketList[index]
-                                                      ['ticketDescription'] ,
-                                              ticketStartDate:
-                                              getDateFromTimeStamp(globalVariables.memberTicketList[index]
-                                                      ['ticketStartDate'])
-                                                  ,
-                                              ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[index]
-                                                  ['ticketEndDate']),
-                                              ticketDateLeft:
-                                                  globalVariables.memberTicketList[index]
-                                                      ['ticketDateLeft']));
+                                              ticketDescription: globalVariables
+                                                      .memberTicketList[index]
+                                                  ['ticketDescription'],
+                                              ticketStartDate: getDateFromTimeStamp(
+                                                  globalVariables.memberTicketList[index]['ticketStartDate']),
+                                              ticketEndDate: getDateFromTimeStamp(globalVariables.memberTicketList[index]['ticketEndDate']),
+                                              ticketDateLeft: globalVariables.memberTicketList[index]['ticketDateLeft']));
                                     } else {
                                       return null;
                                     }
