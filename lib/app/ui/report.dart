@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:web_project/app/binding/report_service.dart';
 import 'package:web_project/auth_service.dart';
+import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/memberList_admin.dart';
@@ -110,173 +111,175 @@ class _ReportState extends State<Report> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-          color: Palette.secondaryBackground,
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              SizedBox(height: 10),
-              Align(
-                alignment: AlignmentDirectional(-1, 0),
-                child: Text('문제 페이지',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: Palette.gray00,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: DropDownTextField(
-                    controller: reportPageController,
-                    isEnabled: true,
-                    clearOption: false,
-                    enableSearch: true,
-                    // textFieldFocusNode: textFieldFocusNode,
-                    // searchFocusNode: searchFocusNode,
-                    clearIconProperty:
-                        IconProperty(color: Palette.buttonOrange),
-                    textFieldDecoration: InputDecoration(
-                      hintText: "선택하세요.",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
+      body: CenterConstrainedBody(
+        child: SafeArea(
+          child: Container(
+            padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+            color: Palette.secondaryBackground,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                SizedBox(height: 10),
+                Align(
+                  alignment: AlignmentDirectional(-1, 0),
+                  child: Text('문제 페이지',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Palette.gray00,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                    child: DropDownTextField(
+                      controller: reportPageController,
+                      isEnabled: true,
+                      clearOption: false,
+                      enableSearch: true,
+                      // textFieldFocusNode: textFieldFocusNode,
+                      // searchFocusNode: searchFocusNode,
+                      clearIconProperty:
+                          IconProperty(color: Palette.buttonOrange),
+                      textFieldDecoration: InputDecoration(
+                        hintText: "선택하세요.",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
                         ),
+                        filled: true,
+                        contentPadding: EdgeInsets.all(20),
+                        fillColor: Colors.white,
                       ),
-                      filled: true,
+                      searchDecoration: InputDecoration(
+                        hintText: "검색하고 싶은 페이지를 입력하세요",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.all(16),
+                        fillColor: Colors.white,
+                      ),
+                      validator: (value) {
+                        print("position validator value : ${value}");
+                        if (value == null) {
+                          return "required field";
+                        } else {
+                          return null;
+                        }
+                      },
+                      dropDownItemCount: pages.length,
+                      dropDownList: pages,
+                      onChanged: (val) {
+                        print("position onChange val : ${val}");
+                        print(
+                            "positionController.dropDownValue : ${reportPageController.dropDownValue!.value}");
+                        selectedPageName =
+                            reportPageController.dropDownValue!.value;
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Align(
+                  alignment: AlignmentDirectional(-1, 0),
+                  child: Text('오류 및 개선요청 내용',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Palette.gray00,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Palette.mainBackground,
+                  ),
+                  constraints:
+                      BoxConstraints(minHeight: 300, minWidth: double.infinity),
+                  child: TextFormField(
+                    enabled: true,
+                    maxLines: null,
+                    controller: errorContents,
+                    autofocus: true,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      /* content padding을 20이상 잡아두지 않으면,
+                      한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
                       contentPadding: EdgeInsets.all(20),
-                      fillColor: Colors.white,
+                      hintText: '오류가 발생한 내용 또는 개선이 필요한 부분을 알려주세요.',
+                      hintStyle: TextStyle(color: Palette.gray99),
+                      border: InputBorder.none,
                     ),
-                    searchDecoration: InputDecoration(
-                      hintText: "검색하고 싶은 페이지를 입력하세요",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      contentPadding: EdgeInsets.all(16),
-                      fillColor: Colors.white,
-                    ),
-                    validator: (value) {
-                      print("position validator value : ${value}");
-                      if (value == null) {
-                        return "required field";
-                      } else {
-                        return null;
-                      }
-                    },
-                    dropDownItemCount: pages.length,
-                    dropDownList: pages,
-                    onChanged: (val) {
-                      print("position onChange val : ${val}");
-                      print(
-                          "positionController.dropDownValue : ${reportPageController.dropDownValue!.value}");
-                      selectedPageName =
-                          reportPageController.dropDownValue!.value;
-                    },
+                    style: TextStyle(color: Palette.gray00),
+                    /* validator:
+                          _model.textControllerValidator.asValidator(context), */
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Align(
-                alignment: AlignmentDirectional(-1, 0),
-                child: Text('오류 및 개선요청 내용',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: Palette.gray00,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Palette.mainBackground,
-                ),
-                constraints:
-                    BoxConstraints(minHeight: 300, minWidth: double.infinity),
-                child: TextFormField(
-                  enabled: true,
-                  maxLines: null,
-                  controller: errorContents,
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    /* content padding을 20이상 잡아두지 않으면,
-                    한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
-                    contentPadding: EdgeInsets.all(20),
-                    hintText: '오류가 발생한 내용 또는 개선이 필요한 부분을 알려주세요.',
-                    hintStyle: TextStyle(color: Palette.gray99),
-                    border: InputBorder.none,
-                  ),
-                  style: TextStyle(color: Palette.gray00),
-                  /* validator:
-                        _model.textControllerValidator.asValidator(context), */
-                ),
-              ),
-              Spacer(),
-              Align(
-                alignment: AlignmentDirectional(0, -0.05),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          // 로그인 페이지로 이동
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 80,
-                          height: 50,
-                          child: Text("취소",
-                              style: TextStyle(
-                                  color: Palette.textRed, fontSize: 16)),
-                        )),
-                    TextButton(
-                        onPressed: () {
-                          content = errorContents.text;
-                          AuthService authService = AuthService();
-                          var user = authService.currentUser();
-                          ReportService reportService = ReportService();
-                          reportService
-                              .create(
-                                  user!.uid,
-                                  user.displayName,
-                                  user.phoneNumber,
-                                  user.email,
-                                  selectedPageName,
-                                  content,
-                                  DateTime.now(),
-                                  'N',
-                                  null)
-                              .then((value) {
+                Spacer(),
+                Align(
+                  alignment: AlignmentDirectional(0, -0.05),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            // 로그인 페이지로 이동
                             Navigator.pop(context);
-                          });
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 80,
-                          height: 50,
-                          child: Text("제출",
-                              style: TextStyle(
-                                  color: Palette.textBlue, fontSize: 16)),
-                        )),
-                  ],
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 80,
+                            height: 50,
+                            child: Text("취소",
+                                style: TextStyle(
+                                    color: Palette.textRed, fontSize: 16)),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            content = errorContents.text;
+                            AuthService authService = AuthService();
+                            var user = authService.currentUser();
+                            ReportService reportService = ReportService();
+                            reportService
+                                .create(
+                                    user!.uid,
+                                    user.displayName,
+                                    user.phoneNumber,
+                                    user.email,
+                                    selectedPageName,
+                                    content,
+                                    DateTime.now(),
+                                    'N',
+                                    null)
+                                .then((value) {
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 80,
+                            height: 50,
+                            child: Text("제출",
+                                style: TextStyle(
+                                    color: Palette.textBlue, fontSize: 16)),
+                          )),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:web_project/color.dart';
 import 'package:web_project/userInfo.dart';
 
 import 'auth_service.dart';
+import 'centerConstraintBody.dart';
 import 'globalWidget.dart';
 import 'main.dart';
 import 'app/binding/member_service.dart';
@@ -112,85 +113,88 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: FutureBuilder<QuerySnapshot>(
-                    future: memberService.read(user.uid, 'name'),
-                    builder: (context, snapshot) {
-                      final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                      if (docs.isEmpty) {
-                        return Center(child: Text("수업을 준비 중입니다."));
-                      } else if (docs.isNotEmpty) {
-                        return ListView.separated(
-                          itemCount: docs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final doc = docs[index];
-                            String name = doc.get('name');
-                            String registerDate = doc.get('registerDate');
-                            String phoneNumber = doc.get('phoneNumber');
-                            String registerType = doc.get('registerType');
-                            String goal = doc.get('goal');
-                            String info = doc.get('info');
-                            String note = doc.get('note');
-                            bool isActive = doc.get('isActive');
-                            bool isFavorite = doc.get('isFavorite') ?? false;
-                            return InkWell(
-                              onTap: () {
-                                //memberService.update(doc.id, !isActive);
-                              },
-                              child: BaseContainer(
-                                  docId: doc.id,
-                                  name: name,
-                                  registerDate: registerDate,
-                                  goal: goal,
-                                  info: info,
-                                  note: note,
-                                  phoneNumber: phoneNumber,
-                                  isActive: isActive,
-                                  isFavorite: isFavorite,
-                                  memberService: memberService,
-                                  resultMemberList: globalVariables.resultList,
-                                  customFunctionOnTap: () async {
-                                    // 회원 카드 선택시 MemberInfo로 이동
+            body: CenterConstrainedBody(
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: FutureBuilder<QuerySnapshot>(
+                      future: memberService.read(user.uid, 'name'),
+                      builder: (context, snapshot) {
+                        final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+                        if (docs.isEmpty) {
+                          return Center(child: Text("수업을 준비 중입니다."));
+                        } else if (docs.isNotEmpty) {
+                          return ListView.separated(
+                            itemCount: docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final doc = docs[index];
+                              String name = doc.get('name');
+                              String registerDate = doc.get('registerDate');
+                              String phoneNumber = doc.get('phoneNumber');
+                              String registerType = doc.get('registerType');
+                              String goal = doc.get('goal');
+                              String info = doc.get('info');
+                              String note = doc.get('note');
+                              bool isActive = doc.get('isActive');
+                              bool isFavorite = doc.get('isFavorite') ?? false;
+                              return InkWell(
+                                onTap: () {
+                                  //memberService.update(doc.id, !isActive);
+                                },
+                                child: BaseContainer(
+                                    docId: doc.id,
+                                    name: name,
+                                    registerDate: registerDate,
+                                    goal: goal,
+                                    info: info,
+                                    note: note,
+                                    phoneNumber: phoneNumber,
+                                    isActive: isActive,
+                                    isFavorite: isFavorite,
+                                    memberService: memberService,
+                                    resultMemberList:
+                                        globalVariables.resultList,
+                                    customFunctionOnTap: () async {
+                                      // 회원 카드 선택시 MemberInfo로 이동
 
-                                    // resultList.add(resultActionList);
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            MemberInfo.getUserInfoAndActionList(
-                                                userInfo,
-                                                globalVariables.resultList,
-                                                globalVariables.actionList),
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        /* settings: RouteSettings(
-                                          arguments: userInfo
-                                        ), */
-                                      ),
-                                    ).then((result) {
-                                      globalVariables.sortList();
-                                      print(
-                                          "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-                                      UserInfo tmpUserInfo = result;
-                                      print(
-                                          "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
-                                      setState(() {
+                                      // resultList.add(resultActionList);
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MemberInfo
+                                              .getUserInfoAndActionList(
+                                                  userInfo,
+                                                  globalVariables.resultList,
+                                                  globalVariables.actionList),
+                                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                          /* settings: RouteSettings(
+                                            arguments: userInfo
+                                          ), */
+                                        ),
+                                      ).then((result) {
+                                        globalVariables.sortList();
                                         print(
-                                            "memberList - memberinfo pop setState!!");
+                                            "MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                        UserInfo tmpUserInfo = result;
+                                        print(
+                                            "MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                        setState(() {
+                                          print(
+                                              "memberList - memberinfo pop setState!!");
+                                        });
                                       });
-                                    });
-                                  }),
-                            );
-                          },
-                          separatorBuilder: ((context, index) => Divider()),
-                        );
-                      } else {
-                        return CircularProgressIndicator(
-                          color: Palette.buttonOrange,
-                        );
-                      }
-                    }),
+                                    }),
+                              );
+                            },
+                            separatorBuilder: ((context, index) => Divider()),
+                          );
+                        } else {
+                          return CircularProgressIndicator(
+                            color: Palette.buttonOrange,
+                          );
+                        }
+                      }),
+                ),
               ),
             ),
             bottomNavigationBar: BaseBottomAppBar(),

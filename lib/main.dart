@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/action_service.dart';
 import 'package:web_project/analyticLog.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
+import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/globalVariables.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
 import 'package:web_project/local_info.dart';
@@ -246,6 +247,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final maxWidth = 480.0;
+
   const MyApp({Key? key}) : super(key: key);
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
@@ -337,434 +340,441 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Palette.grayFF,
           // 디자인적 요소 더하기 위해 appBar 제거
           // appBar: BaseAppBarMethod(context, "로그인", null),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                /// 현재 유저 로그인 상태
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 120),
-                      SizedBox(
-                        height: 100,
-                        child:
-                            Image.asset("assets/images/logo.png", width: 230),
-                      ),
-                      SizedBox(height: 30),
-                      SizedBox(
-                        child: Column(
-                          children: [
-                            Text(
-                              "필라테스 강사를 위한 레슨 기록 솔루션",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Palette.textOrange,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
+          body: CenterConstrainedBody(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  /// 현재 유저 로그인 상태
+                  Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 120),
+                        SizedBox(
+                          height: 100,
+                          child:
+                              Image.asset("assets/images/logo.png", width: 230),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 30),
+                        SizedBox(
+                          child: Column(
+                            children: [
+                              Text(
+                                "필라테스 강사를 위한 레슨 기록 솔루션",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Palette.textOrange,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                SizedBox(height: 80),
-                Offstage(
-                  offstage: isEmailLoginDeactivated,
-                  child: Column(children: [
-                    /// 이메일
-                    LoginTextField(
-                      customController: emailController,
-                      hint: "이메일",
-                      width: 100,
-                      height: 100,
-                      customFunction: () {},
-                      isSecure: false,
-                    ),
-                    SizedBox(height: 10),
+                  SizedBox(height: 80),
+                  Offstage(
+                    offstage: isEmailLoginDeactivated,
+                    child: Column(children: [
+                      /// 이메일
+                      LoginTextField(
+                        customController: emailController,
+                        hint: "이메일",
+                        width: 100,
+                        height: 100,
+                        customFunction: () {},
+                        isSecure: false,
+                      ),
+                      SizedBox(height: 10),
 
-                    /// 비밀번호
-                    LoginTextField(
-                      customController: passwordController,
-                      hint: "비밀번호",
-                      width: 100,
-                      height: 100,
-                      customFunction: () {},
-                      isSecure: true,
-                    ),
-                    SizedBox(height: 10),
+                      /// 비밀번호
+                      LoginTextField(
+                        customController: passwordController,
+                        hint: "비밀번호",
+                        width: 100,
+                        height: 100,
+                        customFunction: () {},
+                        isSecure: true,
+                      ),
+                      SizedBox(height: 10),
 
-                    Center(
-                      child: SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: TextField(
-                          readOnly: true,
-                          controller: switchController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            suffixIcon: Switch(
-                              value: isLogInActiveChecked,
-                              onChanged: (value) {
-                                setState(() {
-                                  isLogInActiveChecked = !isLogInActiveChecked;
-                                  // if (isLogInActiveChecked) {
-                                  prefs.setString(
-                                      "userEmail", emailController.text);
-                                  prefs.setString(
-                                      "userPassword", passwordController.text);
-                                  // }
-                                  print(
-                                      "isLogInActiveChecked : ${isLogInActiveChecked}");
-                                });
-                              },
+                      Center(
+                        child: SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: TextField(
+                            readOnly: true,
+                            controller: switchController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              suffixIcon: Switch(
+                                value: isLogInActiveChecked,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isLogInActiveChecked =
+                                        !isLogInActiveChecked;
+                                    // if (isLogInActiveChecked) {
+                                    prefs.setString(
+                                        "userEmail", emailController.text);
+                                    prefs.setString("userPassword",
+                                        passwordController.text);
+                                    // }
+                                    print(
+                                        "isLogInActiveChecked : ${isLogInActiveChecked}");
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    SizedBox(height: 26),
+                      SizedBox(height: 26),
 
-                    /// 이메일 가입 지원 종료
-                    Text(
-                      "*이메일 회원가입은 더이상 지원되지 않습니다.",
-                      style: TextStyle(color: Palette.gray99),
-                    ),
-                    SizedBox(height: 20),
-
-                    /// 이메일 로그인 버튼
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.all(0),
-                        elevation: 0,
-                        backgroundColor: Palette.buttonOrange,
+                      /// 이메일 가입 지원 종료
+                      Text(
+                        "*이메일 회원가입은 더이상 지원되지 않습니다.",
+                        style: TextStyle(color: Palette.gray99),
                       ),
-                      onPressed: () {
-                        loginMethod(context, authService);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(14.0),
+                      SizedBox(height: 20),
+
+                      /// 이메일 로그인 버튼
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.all(0),
+                          elevation: 0,
+                          backgroundColor: Palette.buttonOrange,
+                        ),
+                        onPressed: () {
+                          loginMethod(context, authService);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(14.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.mail),
+                              SizedBox(width: 4),
+                              Text("이메일로 로그인하기",
+                                  style: TextStyle(fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ]),
+                  ),
+
+                  // 카카오톡으로 로그인 버튼
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.all(0),
+                      elevation: 0,
+                      backgroundColor: Palette.buttonKakao,
+                    ),
+                    onPressed: () async {
+                      analyticLog.sendAnalyticsEvent(screenName, "카카오로_로그인하기",
+                          "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
+                      try {
+                        if (kIsWeb) {
+                          // web 방식 로그인 구현
+                          print("JAVASCRIPT - 카카오톡으로 로그인 시작");
+                          loginController.kakaoSignIn().then((value) {
+                            print("value : ${value}");
+                            loginWithCurrentUser(value, context);
+                          });
+                        } else {
+                          // Navtive App 방식 로그인 구현
+                          print("NATIVE - 카카오톡으로 로그인 시작");
+                          loginController.kakaoSignIn().then((value) {
+                            print("value : ${value}");
+                            loginWithCurrentUser(value, context);
+                          });
+                        }
+                      } catch (error) {
+                        print('카카오톡으로 로그인 실패 - error : ${error}');
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: SizedBox(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.mail),
-                            SizedBox(width: 4),
-                            Text("이메일로 로그인하기", style: TextStyle(fontSize: 16)),
+                            SizedBox(
+                                child: Image.asset("assets/images/kakao.png")),
+                            SizedBox(width: 5),
+                            Text("카카오로 로그인하기",
+                                style: TextStyle(
+                                    fontSize: 16, color: Palette.gray00)),
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
-                  ]),
-                ),
-
-                // 카카오톡으로 로그인 버튼
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.buttonKakao,
                   ),
-                  onPressed: () async {
-                    analyticLog.sendAnalyticsEvent(screenName, "카카오로_로그인하기",
-                        "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
-                    try {
-                      if (kIsWeb) {
-                        // web 방식 로그인 구현
-                        print("JAVASCRIPT - 카카오톡으로 로그인 시작");
-                        loginController.kakaoSignIn().then((value) {
-                          print("value : ${value}");
-                          loginWithCurrentUser(value, context);
-                        });
-                      } else {
-                        // Navtive App 방식 로그인 구현
-                        print("NATIVE - 카카오톡으로 로그인 시작");
-                        loginController.kakaoSignIn().then((value) {
-                          print("value : ${value}");
-                          loginWithCurrentUser(value, context);
-                        });
-                      }
-                    } catch (error) {
-                      print('카카오톡으로 로그인 실패 - error : ${error}');
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
-                      child: Row(
+                  SizedBox(height: 10),
+
+                  // Apple로 로그인 버튼
+                  ElevatedButton(
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: SizedBox(
+                          child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                              child: Image.asset("assets/images/kakao.png")),
+                              width: 16,
+                              child: Image.asset("assets/images/apple.png")),
                           SizedBox(width: 5),
-                          Text("카카오로 로그인하기",
+                          Text("Apple로 로그인하기", style: TextStyle(fontSize: 16)),
+                        ],
+                      )),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.all(0),
+                      elevation: 0,
+                      backgroundColor: Palette.gray00,
+                    ),
+                    onPressed: () async {
+                      analyticLog.sendAnalyticsEvent(screenName, "Apple로_로그인하기",
+                          "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
+                      /* try {
+                        isKakaoInstalled = await isKakaoTalkInstalled();
+                        print("isKakaoInstalled : ${isKakaoInstalled}");
+                        if (kIsWeb) {
+                          // web 방식 로그인 구현
+                        } else {
+                          OAuthToken token = isKakaoInstalled
+                              ? await UserApi.instance.loginWithKakaoTalk()
+                              : await UserApi.instance.loginWithKakaoAccount();
+                          print("카카오톡으로 로그인 성공 - token : ${token}");
+                          final url = Uri.https('kapi.kakao.com', '/v2/user/me');
+                          final response = await http.get(
+                            url,
+                            headers: {
+                              HttpHeaders.authorizationHeader:
+                                  'Bearer ${token.accessToken}'
+                            },
+                          );
+          
+                          final profileInfo = json.decode(response.body);
+                          print("profileInfo.toString() : " +
+                              profileInfo.toString());
+                        }
+                      } catch (error) {
+                        print('카카오톡으로 로그인 실패 - error : ${error}');
+                      } */
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("애플 로그인 기능은 현재 개발 중입니다."),
+                      ));
+                    },
+                  ),
+                  SizedBox(height: 10),
+
+                  // Google로 로그인 버튼
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Palette.grayB4, width: 1.0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.all(0),
+                      elevation: 0,
+                      backgroundColor: Palette.grayFF,
+                    ),
+                    onPressed: () async {
+                      print("Google onPress 울립니다!");
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "Google로_로그인하기",
+                          "Google로 로그인하기 테스트 스트링",
+                          "Google로 로그인하기 테스트 파라미터");
+                      try {
+                        // if (Platform.isIOS || Platform.isAndroid) {
+
+                        loginController.googleSignIn().then((value) {
+                          print("value : ${value}");
+                          loginWithCurrentUser(value, context);
+                        });
+                        // } else {
+                        //   signInWithGoogle();
+                        // }
+                      } catch (error) {
+                        print('Google로 로그인 실패 - error : ${error}');
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: SizedBox(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              width: 16,
+                              child: Image.asset("assets/images/google.png")),
+                          SizedBox(width: 5),
+                          Text("Google로 로그인하기",
                               style: TextStyle(
                                   fontSize: 16, color: Palette.gray00)),
                         ],
-                      ),
+                      )),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
+                  SizedBox(height: 10),
 
-                // Apple로 로그인 버튼
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
+                  /// 로그인 없이 사용하기 버튼
+                  TextButton(
+                    onPressed: () {
+                      analyticLog.sendAnalyticsEvent(screenName, "로그인_없이_체험하기",
+                          "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
+                      loginMethodforDemo(context, authService);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: SizedBox(
                         child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            width: 16,
-                            child: Image.asset("assets/images/apple.png")),
-                        SizedBox(width: 5),
-                        Text("Apple로 로그인하기", style: TextStyle(fontSize: 16)),
-                      ],
-                    )),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("로그인 없이 체험하기",
+                                style: TextStyle(
+                                    fontSize: 14, color: Palette.gray66)),
+                            Icon(
+                              size: 14,
+                              Icons.arrow_forward,
+                              color: Palette.gray66,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.gray00,
                   ),
-                  onPressed: () async {
-                    analyticLog.sendAnalyticsEvent(screenName, "Apple로_로그인하기",
-                        "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
-                    /* try {
-                      isKakaoInstalled = await isKakaoTalkInstalled();
-                      print("isKakaoInstalled : ${isKakaoInstalled}");
-                      if (kIsWeb) {
-                        // web 방식 로그인 구현
-                      } else {
-                        OAuthToken token = isKakaoInstalled
-                            ? await UserApi.instance.loginWithKakaoTalk()
-                            : await UserApi.instance.loginWithKakaoAccount();
-                        print("카카오톡으로 로그인 성공 - token : ${token}");
-                        final url = Uri.https('kapi.kakao.com', '/v2/user/me');
-                        final response = await http.get(
-                          url,
-                          headers: {
-                            HttpHeaders.authorizationHeader:
-                                'Bearer ${token.accessToken}'
-                          },
-                        );
 
-                        final profileInfo = json.decode(response.body);
-                        print("profileInfo.toString() : " +
-                            profileInfo.toString());
-                      }
-                    } catch (error) {
-                      print('카카오톡으로 로그인 실패 - error : ${error}');
-                    } */
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("애플 로그인 기능은 현재 개발 중입니다."),
-                    ));
-                  },
-                ),
-                SizedBox(height: 10),
-
-                // Google로 로그인 버튼
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Palette.grayB4, width: 1.0),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    backgroundColor: Palette.grayFF,
-                  ),
-                  onPressed: () async {
-                    print("Google onPress 울립니다!");
-                    analyticLog.sendAnalyticsEvent(screenName, "Google로_로그인하기",
-                        "Google로 로그인하기 테스트 스트링", "Google로 로그인하기 테스트 파라미터");
-                    try {
-                      // if (Platform.isIOS || Platform.isAndroid) {
-
-                      loginController.googleSignIn().then((value) {
-                        print("value : ${value}");
-                        loginWithCurrentUser(value, context);
-                      });
-                      // } else {
-                      //   signInWithGoogle();
-                      // }
-                    } catch (error) {
-                      print('Google로 로그인 실패 - error : ${error}');
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
+                  TextButton(
+                    onPressed: () {
+                      isEmailLoginDeactivated = !isEmailLoginDeactivated;
+                      setState(() {});
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(14.0),
+                      child: SizedBox(
                         child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            width: 16,
-                            child: Image.asset("assets/images/google.png")),
-                        SizedBox(width: 5),
-                        Text("Google로 로그인하기",
-                            style:
-                                TextStyle(fontSize: 16, color: Palette.gray00)),
-                      ],
-                    )),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                /// 로그인 없이 사용하기 버튼
-                TextButton(
-                  onPressed: () {
-                    analyticLog.sendAnalyticsEvent(screenName, "로그인_없이_체험하기",
-                        "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
-                    loginMethodforDemo(context, authService);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: SizedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("로그인 없이 체험하기",
-                              style: TextStyle(
-                                  fontSize: 14, color: Palette.gray66)),
-                          Icon(
-                            size: 14,
-                            Icons.arrow_forward,
-                            color: Palette.gray66,
-                          ),
-                        ],
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("이메일 로그인",
+                                style: TextStyle(
+                                    fontSize: 14, color: Palette.gray66)),
+                            Icon(
+                              size: 14,
+                              Icons.arrow_forward,
+                              color: Palette.gray66,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  SizedBox(height: 20),
 
-                TextButton(
-                  onPressed: () {
-                    isEmailLoginDeactivated = !isEmailLoginDeactivated;
-                    setState(() {});
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(14.0),
-                    child: SizedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("이메일 로그인",
-                              style: TextStyle(
-                                  fontSize: 14, color: Palette.gray66)),
-                          Icon(
-                            size: 14,
-                            Icons.arrow_forward,
-                            color: Palette.gray66,
-                          ),
-                        ],
+                  /* 
+                  /// 회원가입 버튼
+                  ElevatedButton(
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Text("회원가입", style: TextStyle(fontSize: 16)),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
                       ),
+                      backgroundColor: Palette.buttonOrange,
                     ),
+                    onPressed: () async {
+                      // 회원가입
+                      print("sign up");
+                      Map locationMap = await getLocalInfos();
+          
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => SignUp.getLocationMap(locationMap)),
+                      );
+                    },
                   ),
-                ),
-                SizedBox(height: 20),
+                  SizedBox(height: 30), */
 
-                /* 
-                /// 회원가입 버튼
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text("회원가입", style: TextStyle(fontSize: 16)),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                    ),
-                    backgroundColor: Palette.buttonOrange,
-                  ),
-                  onPressed: () async {
-                    // 회원가입
-                    print("sign up");
-                    Map locationMap = await getLocalInfos();
+                  //   // 버켓리스트 버튼
+                  //   ElevatedButton(
+                  //     child: Text("버켓리스트", style: TextStyle(fontSize: 20)),
+                  //     onPressed: () {
+                  //       // 로그인
+                  //       authService.signIn(
+                  //         email: emailController.text,
+                  //         password: passwordController.text,
+                  //         onSuccess: () {
+                  //           // 로그인 성공
+                  //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //             content: Text("로그인 성공"),
+                  //           ));
+                  //           // 로그인 성공시 Home로 이동
+                  //           Navigator.pushReplacement(
+                  //             context,
+                  //             MaterialPageRoute(builder: (_) => HomePage()),
+                  //           );
+                  //         },
+                  //         onError: (err) {
+                  //           // 에러 발생
+                  //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //             content: Text(err),
+                  //           ));
+                  //         },
+                  //       );
+                  //     },
+                  //   ),
+                  //   SizedBox(height: 10),
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => SignUp.getLocationMap(locationMap)),
-                    );
-                  },
-                ),
-                SizedBox(height: 30), */
+                  //   /// Cloud Storage 개발화면 버튼
+                  //   ElevatedButton(
+                  //     child: Text("클라우드 스토리지", style: TextStyle(fontSize: 20)),
+                  //     onPressed: () {
+                  //       // 회원가입
+                  //       print("cloud storage");
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(builder: (_) => CloudStorage()),
+                  //       );
+                  //     },
+                  //   ),
+                  //   SizedBox(height: 10),
 
-                //   // 버켓리스트 버튼
-                //   ElevatedButton(
-                //     child: Text("버켓리스트", style: TextStyle(fontSize: 20)),
-                //     onPressed: () {
-                //       // 로그인
-                //       authService.signIn(
-                //         email: emailController.text,
-                //         password: passwordController.text,
-                //         onSuccess: () {
-                //           // 로그인 성공
-                //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //             content: Text("로그인 성공"),
-                //           ));
-                //           // 로그인 성공시 Home로 이동
-                //           Navigator.pushReplacement(
-                //             context,
-                //             MaterialPageRoute(builder: (_) => HomePage()),
-                //           );
-                //         },
-                //         onError: (err) {
-                //           // 에러 발생
-                //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //             content: Text(err),
-                //           ));
-                //         },
-                //       );
-                //     },
-                //   ),
-                //   SizedBox(height: 10),
-
-                //   /// Cloud Storage 개발화면 버튼
-                //   ElevatedButton(
-                //     child: Text("클라우드 스토리지", style: TextStyle(fontSize: 20)),
-                //     onPressed: () {
-                //       // 회원가입
-                //       print("cloud storage");
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(builder: (_) => CloudStorage()),
-                //       );
-                //     },
-                //   ),
-                //   SizedBox(height: 10),
-
-                /// 글로벌 대쉬보드 버튼
-                // ElevatedButton(
-                //   child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
-                //   onPressed: () {
-                //     // 회원가입
-                //     print("global widget");
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (_) => GlobalWidgetDashboard(),
-                //       ),
-                //     );
-                //   },
-                // ),
-              ],
+                  /// 글로벌 대쉬보드 버튼
+                  // ElevatedButton(
+                  //   child: Text("글로벌 위젯 대쉬보드", style: TextStyle(fontSize: 20)),
+                  //   onPressed: () {
+                  //     // 회원가입
+                  //     print("global widget");
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (_) => GlobalWidgetDashboard(),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                ],
+              ),
             ),
           ),
         );

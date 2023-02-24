@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/actionListTileWidget.dart';
 import 'package:web_project/app/ui/importSequenceFromSaved.dart';
 import 'package:web_project/buttonWidget.dart';
+import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/color.dart';
 
 import 'actionAdd.dart';
@@ -917,116 +918,42 @@ class _ActionSelectorState extends State<ActionSelector> {
                 },
                 icon: Icon(Icons.open_in_full))
           ], null),
-          body: SafeArea(
-            child: Stack(
-              children: [
-                /// 동작 리스트
-                ListView.builder(
-                  padding: EdgeInsets.only(top: 190),
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    final doc = docs[index];
-                    // print("doc : ${doc}");
-                    String apparatus = doc['apparatus'];
-                    String otherApparatusName = doc['otherApparatusName'];
-                    String position = doc['position'];
-                    String name = doc['name'];
-                    String lowerCaseName = doc['lowerCaseName'];
-                    bool isSelected = doc['selected'];
-                    List<dynamic> nGramizedLowerCaseName =
-                        doc['nGramizedLowerCaseName'] ?? [];
+          body: CenterConstrainedBody(
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  /// 동작 리스트
+                  ListView.builder(
+                    padding: EdgeInsets.only(top: isFullScreen ? 0 : 190),
+                    itemCount: docs.length,
+                    itemBuilder: (context, index) {
+                      final doc = docs[index];
+                      // print("doc : ${doc}");
+                      String apparatus = doc['apparatus'];
+                      String otherApparatusName = doc['otherApparatusName'];
+                      String position = doc['position'];
+                      String name = doc['name'];
+                      String lowerCaseName = doc['lowerCaseName'];
+                      bool isSelected = doc['selected'];
+                      List<dynamic> nGramizedLowerCaseName =
+                          doc['nGramizedLowerCaseName'] ?? [];
 
-                    final ActionInfo actionInfo = ActionInfo(
-                      name,
-                      apparatus,
-                      position,
-                    );
+                      final ActionInfo actionInfo = ActionInfo(
+                        name,
+                        apparatus,
+                        position,
+                      );
 
-                    customFunctionOnTap() {
-                      doc['selected'] = !doc['selected'];
+                      customFunctionOnTap() {
+                        doc['selected'] = !doc['selected'];
 
-                      print(
-                          'docs[index][selected]: ${docs[index]['selected']}');
-                      setState(() {});
-                    }
+                        print(
+                            'docs[index][selected]: ${docs[index]['selected']}');
+                        setState(() {});
+                      }
 
-                    if (searchString.isEmpty) {
-                      if (positionArray.isEmpty) {
-                        if (apparatusArray.isEmpty) {
-                          return ActionListTile(
-                              actionName: name,
-                              apparatus: apparatus,
-                              position: position,
-                              name: customUserInfo.name,
-                              phoneNumber: customUserInfo.phoneNumber,
-                              lessonDate: lessonDate,
-                              grade: '50',
-                              totalNote: totalNote,
-                              docId: '',
-                              memberdocId: customUserInfo.docId,
-                              uid: user.uid,
-                              pos: index,
-                              isSelected: isSelected,
-                              isSelectable: true,
-                              isDraggable: false,
-                              customFunctionOnTap: customFunctionOnTap);
-
-                          // return ActionTile(
-                          //     memberdocId: customUserInfo.docId,
-                          //     apparatus: apparatus,
-                          //     actionName: name,
-                          //     name: customUserInfo.name,
-                          //     phoneNumber: "temp",
-                          //     lessonDate: lessonDate,
-                          //     grade: "50",
-                          //     totalNote: totalNote,
-                          //     docId: "",
-                          //     uid: user.uid,
-                          //     pos: index);
-                        } else {
-                          if (apparatusArray.contains(apparatus)) {
-                            return ActionListTile(
-                                actionName: name,
-                                apparatus: apparatus,
-                                position: position,
-                                name: customUserInfo.name,
-                                phoneNumber: customUserInfo.phoneNumber,
-                                lessonDate: lessonDate,
-                                grade: '50',
-                                totalNote: totalNote,
-                                docId: '',
-                                memberdocId: customUserInfo.docId,
-                                uid: user.uid,
-                                pos: index,
-                                isSelected: isSelected,
-                                isSelectable: true,
-                                isDraggable: false,
-                                customFunctionOnTap: () {
-                                  doc['selected'] = !doc['selected'];
-
-                                  print(
-                                      'docs[index][selected]: ${docs[index]['selected']}');
-                                  setState(() {});
-                                });
-                            // return ActionTile(
-                            //     memberdocId: customUserInfo.docId,
-                            //     apparatus: apparatus,
-                            //     actionName: name,
-                            //     name: customUserInfo.name,
-                            //     phoneNumber: "temp",
-                            //     lessonDate: lessonDate,
-                            //     grade: "50",
-                            //     totalNote: totalNote,
-                            //     docId: "",
-                            //     uid: user.uid,
-                            //     pos: index);
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        }
-                      } else {
-                        if (positionArray.contains(position)) {
-                          positionFilteredSize++;
+                      if (searchString.isEmpty) {
+                        if (positionArray.isEmpty) {
                           if (apparatusArray.isEmpty) {
                             return ActionListTile(
                                 actionName: name,
@@ -1044,13 +971,167 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 isSelected: isSelected,
                                 isSelectable: true,
                                 isDraggable: false,
-                                customFunctionOnTap: () {
-                                  doc['selected'] = !doc['selected'];
+                                customFunctionOnTap: customFunctionOnTap);
 
-                                  print(
-                                      'docs[index][selected]: ${docs[index]['selected']}');
-                                  setState(() {});
-                                });
+                            // return ActionTile(
+                            //     memberdocId: customUserInfo.docId,
+                            //     apparatus: apparatus,
+                            //     actionName: name,
+                            //     name: customUserInfo.name,
+                            //     phoneNumber: "temp",
+                            //     lessonDate: lessonDate,
+                            //     grade: "50",
+                            //     totalNote: totalNote,
+                            //     docId: "",
+                            //     uid: user.uid,
+                            //     pos: index);
+                          } else {
+                            if (apparatusArray.contains(apparatus)) {
+                              return ActionListTile(
+                                  actionName: name,
+                                  apparatus: apparatus,
+                                  position: position,
+                                  name: customUserInfo.name,
+                                  phoneNumber: customUserInfo.phoneNumber,
+                                  lessonDate: lessonDate,
+                                  grade: '50',
+                                  totalNote: totalNote,
+                                  docId: '',
+                                  memberdocId: customUserInfo.docId,
+                                  uid: user.uid,
+                                  pos: index,
+                                  isSelected: isSelected,
+                                  isSelectable: true,
+                                  isDraggable: false,
+                                  customFunctionOnTap: () {
+                                    doc['selected'] = !doc['selected'];
+
+                                    print(
+                                        'docs[index][selected]: ${docs[index]['selected']}');
+                                    setState(() {});
+                                  });
+                              // return ActionTile(
+                              //     memberdocId: customUserInfo.docId,
+                              //     apparatus: apparatus,
+                              //     actionName: name,
+                              //     name: customUserInfo.name,
+                              //     phoneNumber: "temp",
+                              //     lessonDate: lessonDate,
+                              //     grade: "50",
+                              //     totalNote: totalNote,
+                              //     docId: "",
+                              //     uid: user.uid,
+                              //     pos: index);
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          }
+                        } else {
+                          if (positionArray.contains(position)) {
+                            positionFilteredSize++;
+                            if (apparatusArray.isEmpty) {
+                              return ActionListTile(
+                                  actionName: name,
+                                  apparatus: apparatus,
+                                  position: position,
+                                  name: customUserInfo.name,
+                                  phoneNumber: customUserInfo.phoneNumber,
+                                  lessonDate: lessonDate,
+                                  grade: '50',
+                                  totalNote: totalNote,
+                                  docId: '',
+                                  memberdocId: customUserInfo.docId,
+                                  uid: user.uid,
+                                  pos: index,
+                                  isSelected: isSelected,
+                                  isSelectable: true,
+                                  isDraggable: false,
+                                  customFunctionOnTap: () {
+                                    doc['selected'] = !doc['selected'];
+
+                                    print(
+                                        'docs[index][selected]: ${docs[index]['selected']}');
+                                    setState(() {});
+                                  });
+                              // return ActionTile(
+                              //     memberdocId: customUserInfo.docId,
+                              //     apparatus: apparatus,
+                              //     actionName: name,
+                              //     name: customUserInfo.name,
+                              //     phoneNumber: "temp",
+                              //     lessonDate: lessonDate,
+                              //     grade: "50",
+                              //     totalNote: totalNote,
+                              //     docId: customUserInfo.docId,
+                              //     uid: user.uid,
+                              //     pos: index);
+                            } else {
+                              if (apparatusArray.contains(apparatus)) {
+                                return ActionListTile(
+                                    actionName: name,
+                                    apparatus: apparatus,
+                                    position: position,
+                                    name: customUserInfo.name,
+                                    phoneNumber: customUserInfo.phoneNumber,
+                                    lessonDate: lessonDate,
+                                    grade: '50',
+                                    totalNote: totalNote,
+                                    docId: '',
+                                    memberdocId: customUserInfo.docId,
+                                    uid: user.uid,
+                                    pos: index,
+                                    isSelected: isSelected,
+                                    isSelectable: true,
+                                    isDraggable: false,
+                                    customFunctionOnTap: () {
+                                      doc['selected'] = !doc['selected'];
+
+                                      print(
+                                          'docs[index][selected]: ${docs[index]['selected']}');
+                                      setState(() {});
+                                    });
+                                // return ActionTile(
+                                //     memberdocId: customUserInfo.docId,
+                                //     apparatus: apparatus,
+                                //     actionName: name,
+                                //     name: customUserInfo.name,
+                                //     phoneNumber: "temp",
+                                //     lessonDate: lessonDate,
+                                //     grade: "50",
+                                //     totalNote: totalNote,
+                                //     docId: customUserInfo.docId,
+                                //     uid: user.uid,
+                                //     pos: index);
+                              } else {
+                                return SizedBox.shrink();
+                              }
+                            }
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                        }
+                      } else {
+                        // if (lowerCaseName
+                        //     .startsWith(searchString.toLowerCase())) {
+                        if (positionArray.isEmpty) {
+                          if (apparatusArray.isEmpty) {
+                            return ActionListTile(
+                                actionName: name,
+                                apparatus: apparatus,
+                                position: position,
+                                name: customUserInfo.name,
+                                phoneNumber: customUserInfo.phoneNumber,
+                                lessonDate: lessonDate,
+                                grade: '50',
+                                totalNote: totalNote,
+                                docId: '',
+                                memberdocId: customUserInfo.docId,
+                                uid: user.uid,
+                                pos: index,
+                                isSelected: isSelected,
+                                isSelectable: true,
+                                isDraggable: false,
+                                customFunctionOnTap: customFunctionOnTap);
                             // return ActionTile(
                             //     memberdocId: customUserInfo.docId,
                             //     apparatus: apparatus,
@@ -1105,125 +1186,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                             }
                           }
                         } else {
-                          return SizedBox.shrink();
-                        }
-                      }
-                    } else {
-                      // if (lowerCaseName
-                      //     .startsWith(searchString.toLowerCase())) {
-                      if (positionArray.isEmpty) {
-                        if (apparatusArray.isEmpty) {
-                          return ActionListTile(
-                              actionName: name,
-                              apparatus: apparatus,
-                              position: position,
-                              name: customUserInfo.name,
-                              phoneNumber: customUserInfo.phoneNumber,
-                              lessonDate: lessonDate,
-                              grade: '50',
-                              totalNote: totalNote,
-                              docId: '',
-                              memberdocId: customUserInfo.docId,
-                              uid: user.uid,
-                              pos: index,
-                              isSelected: isSelected,
-                              isSelectable: true,
-                              isDraggable: false,
-                              customFunctionOnTap: customFunctionOnTap);
-                          // return ActionTile(
-                          //     memberdocId: customUserInfo.docId,
-                          //     apparatus: apparatus,
-                          //     actionName: name,
-                          //     name: customUserInfo.name,
-                          //     phoneNumber: "temp",
-                          //     lessonDate: lessonDate,
-                          //     grade: "50",
-                          //     totalNote: totalNote,
-                          //     docId: customUserInfo.docId,
-                          //     uid: user.uid,
-                          //     pos: index);
-                        } else {
-                          if (apparatusArray.contains(apparatus)) {
-                            return ActionListTile(
-                                actionName: name,
-                                apparatus: apparatus,
-                                position: position,
-                                name: customUserInfo.name,
-                                phoneNumber: customUserInfo.phoneNumber,
-                                lessonDate: lessonDate,
-                                grade: '50',
-                                totalNote: totalNote,
-                                docId: '',
-                                memberdocId: customUserInfo.docId,
-                                uid: user.uid,
-                                pos: index,
-                                isSelected: isSelected,
-                                isSelectable: true,
-                                isDraggable: false,
-                                customFunctionOnTap: () {
-                                  doc['selected'] = !doc['selected'];
-
-                                  print(
-                                      'docs[index][selected]: ${docs[index]['selected']}');
-                                  setState(() {});
-                                });
-                            // return ActionTile(
-                            //     memberdocId: customUserInfo.docId,
-                            //     apparatus: apparatus,
-                            //     actionName: name,
-                            //     name: customUserInfo.name,
-                            //     phoneNumber: "temp",
-                            //     lessonDate: lessonDate,
-                            //     grade: "50",
-                            //     totalNote: totalNote,
-                            //     docId: customUserInfo.docId,
-                            //     uid: user.uid,
-                            //     pos: index);
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        }
-                      } else {
-                        if (positionArray.contains(position)) {
-                          positionFilteredSize++;
-                          if (apparatusArray.isEmpty) {
-                            return ActionListTile(
-                                actionName: name,
-                                apparatus: apparatus,
-                                position: position,
-                                name: customUserInfo.name,
-                                phoneNumber: customUserInfo.phoneNumber,
-                                lessonDate: lessonDate,
-                                grade: '50',
-                                totalNote: totalNote,
-                                docId: '',
-                                memberdocId: customUserInfo.docId,
-                                uid: user.uid,
-                                pos: index,
-                                isSelected: isSelected,
-                                isSelectable: true,
-                                isDraggable: false,
-                                customFunctionOnTap: () {
-                                  doc['selected'] = !doc['selected'];
-
-                                  print(
-                                      'docs[index][selected]: ${docs[index]['selected']}');
-                                  setState(() {});
-                                });
-                            // return ActionTile(
-                            //     apparatus: apparatus,
-                            //     actionName: name,
-                            //     name: customUserInfo.name,
-                            //     phoneNumber: "temp",
-                            //     lessonDate: lessonDate,
-                            //     grade: "50",
-                            //     totalNote: totalNote,
-                            //     docId: "",
-                            //     memberdocId: customUserInfo.docId,
-                            //     uid: user.uid,
-                            //     pos: index);
-                          } else {
-                            if (apparatusArray.contains(apparatus)) {
+                          if (positionArray.contains(position)) {
+                            positionFilteredSize++;
+                            if (apparatusArray.isEmpty) {
                               return ActionListTile(
                                   actionName: name,
                                   apparatus: apparatus,
@@ -1260,342 +1225,358 @@ class _ActionSelectorState extends State<ActionSelector> {
                               //     uid: user.uid,
                               //     pos: index);
                             } else {
-                              return SizedBox.shrink();
+                              if (apparatusArray.contains(apparatus)) {
+                                return ActionListTile(
+                                    actionName: name,
+                                    apparatus: apparatus,
+                                    position: position,
+                                    name: customUserInfo.name,
+                                    phoneNumber: customUserInfo.phoneNumber,
+                                    lessonDate: lessonDate,
+                                    grade: '50',
+                                    totalNote: totalNote,
+                                    docId: '',
+                                    memberdocId: customUserInfo.docId,
+                                    uid: user.uid,
+                                    pos: index,
+                                    isSelected: isSelected,
+                                    isSelectable: true,
+                                    isDraggable: false,
+                                    customFunctionOnTap: () {
+                                      doc['selected'] = !doc['selected'];
+
+                                      print(
+                                          'docs[index][selected]: ${docs[index]['selected']}');
+                                      setState(() {});
+                                    });
+                                // return ActionTile(
+                                //     apparatus: apparatus,
+                                //     actionName: name,
+                                //     name: customUserInfo.name,
+                                //     phoneNumber: "temp",
+                                //     lessonDate: lessonDate,
+                                //     grade: "50",
+                                //     totalNote: totalNote,
+                                //     docId: "",
+                                //     memberdocId: customUserInfo.docId,
+                                //     uid: user.uid,
+                                //     pos: index);
+                              } else {
+                                return SizedBox.shrink();
+                              }
                             }
+                          } else {
+                            return SizedBox.shrink();
                           }
-                        } else {
-                          return SizedBox.shrink();
                         }
+                        // } else {
+                        //   return SizedBox.shrink();
+                        // }
                       }
-                      // } else {
-                      //   return SizedBox.shrink();
-                      // }
-                    }
 
-                    // return ActionListTile(
-                    //   isSelectable: true,
-                    //   isSelected: isSelected,
-                    //   actionList: docs,
-                    //   isDraggable: false,
-                    //   actionName: name,
-                    //   apparatus: apparatus,
-                    //   position: position,
-                    //   customFunctionOnTap: () {
-                    //     doc['selected'] = !doc['selected'];
+                      // return ActionListTile(
+                      //   isSelectable: true,
+                      //   isSelected: isSelected,
+                      //   actionList: docs,
+                      //   isDraggable: false,
+                      //   actionName: name,
+                      //   apparatus: apparatus,
+                      //   position: position,
+                      //   customFunctionOnTap: () {
+                      //     doc['selected'] = !doc['selected'];
 
-                    //     print(
-                    //         'docs[index][selected]: ${docs[index]['selected']}');
-                    //     setState(() {});
-                    //   },
-                    // );
-                  },
-                ),
+                      //     print(
+                      //         'docs[index][selected]: ${docs[index]['selected']}');
+                      //     setState(() {});
+                      //   },
+                      // );
+                    },
+                  ),
 
-                // /// 동작 리스트
-                // Expanded(
-                //   child: Stack(
-                //     children: [
-                //       resultActionList.isEmpty
-                //           ? Center(
-                //               child: CircularProgressIndicator(
-                //               color: Palette.buttonOrange,
-                //             ))
-                //           : Container(
-                //               decoration: BoxDecoration(
-                //                 color: Palette.mainBackground,
-                //                 borderRadius: BorderRadius.circular(10),
-                //               ),
-                //               child: ListView.builder(
-                //                 scrollDirection: Axis.vertical,
-                //                 controller: scrollController,
-                //                 shrinkWrap: true,
-                //                 itemCount: docs.length,
-                //                 itemBuilder:
-                //                     (BuildContext context, int index) {
-                //                   final doc = docs[index];
-                //                   // print("doc : ${doc}");
-                //                   String apparatus = doc['apparatus'];
-                //                   String otherApparatusName =
-                //                       doc['otherApparatusName'];
-                //                   String position = doc['position'];
-                //                   String name = doc['name'];
-                //                   String lowerCaseName = doc['lowerCaseName'];
-                //                   List<dynamic> nGramizedLowerCaseName =
-                //                       doc['nGramizedLowerCaseName'] ?? [];
+                  // /// 동작 리스트
+                  // Expanded(
+                  //   child: Stack(
+                  //     children: [
+                  //       resultActionList.isEmpty
+                  //           ? Center(
+                  //               child: CircularProgressIndicator(
+                  //               color: Palette.buttonOrange,
+                  //             ))
+                  //           : Container(
+                  //               decoration: BoxDecoration(
+                  //                 color: Palette.mainBackground,
+                  //                 borderRadius: BorderRadius.circular(10),
+                  //               ),
+                  //               child: ListView.builder(
+                  //                 scrollDirection: Axis.vertical,
+                  //                 controller: scrollController,
+                  //                 shrinkWrap: true,
+                  //                 itemCount: docs.length,
+                  //                 itemBuilder:
+                  //                     (BuildContext context, int index) {
+                  //                   final doc = docs[index];
+                  //                   // print("doc : ${doc}");
+                  //                   String apparatus = doc['apparatus'];
+                  //                   String otherApparatusName =
+                  //                       doc['otherApparatusName'];
+                  //                   String position = doc['position'];
+                  //                   String name = doc['name'];
+                  //                   String lowerCaseName = doc['lowerCaseName'];
+                  //                   List<dynamic> nGramizedLowerCaseName =
+                  //                       doc['nGramizedLowerCaseName'] ?? [];
 
-                //                   final ActionInfo actionInfo = ActionInfo(
-                //                     name,
-                //                     apparatus,
-                //                     position,
-                //                   );
+                  //                   final ActionInfo actionInfo = ActionInfo(
+                  //                     name,
+                  //                     apparatus,
+                  //                     position,
+                  //                   );
 
-                //                   // print(
-                //                   //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
+                  //                   // print(
+                  //                   //     "noteId : ${noteId}, apparatus : ${apparatus}, actionName : ${name}, nGramizedLowerCaseName : ${nGramizedLowerCaseName}");
 
-                //                   if (searchString.isEmpty) {
-                //                     if (positionArray.isEmpty) {
-                //                       if (apparatusArray.isEmpty) {
-                //                         return ActionTile(
-                //                             memberdocId: customUserInfo.docId,
-                //                             apparatus: apparatus,
-                //                             actionName: name,
-                //                             name: customUserInfo.name,
-                //                             phoneNumber: "temp",
-                //                             lessonDate: lessonDate,
-                //                             grade: "50",
-                //                             totalNote: totalNote,
-                //                             docId: "",
-                //                             uid: user.uid,
-                //                             pos: index);
-                //                       } else {
-                //                         if (apparatusArray
-                //                             .contains(apparatus)) {
-                //                           return ActionTile(
-                //                               memberdocId:
-                //                                   customUserInfo.docId,
-                //                               apparatus: apparatus,
-                //                               actionName: name,
-                //                               name: customUserInfo.name,
-                //                               phoneNumber: "temp",
-                //                               lessonDate: lessonDate,
-                //                               grade: "50",
-                //                               totalNote: totalNote,
-                //                               docId: "",
-                //                               uid: user.uid,
-                //                               pos: index);
-                //                         } else {
-                //                           return SizedBox.shrink();
-                //                         }
-                //                       }
-                //                     } else {
-                //                       if (positionArray.contains(position)) {
-                //                         positionFilteredSize++;
-                //                         if (apparatusArray.isEmpty) {
-                //                           return ActionTile(
-                //                               memberdocId:
-                //                                   customUserInfo.docId,
-                //                               apparatus: apparatus,
-                //                               actionName: name,
-                //                               name: customUserInfo.name,
-                //                               phoneNumber: "temp",
-                //                               lessonDate: lessonDate,
-                //                               grade: "50",
-                //                               totalNote: totalNote,
-                //                               docId: customUserInfo.docId,
-                //                               uid: user.uid,
-                //                               pos: index);
-                //                         } else {
-                //                           if (apparatusArray
-                //                               .contains(apparatus)) {
-                //                             return ActionTile(
-                //                                 memberdocId:
-                //                                     customUserInfo.docId,
-                //                                 apparatus: apparatus,
-                //                                 actionName: name,
-                //                                 name: customUserInfo.name,
-                //                                 phoneNumber: "temp",
-                //                                 lessonDate: lessonDate,
-                //                                 grade: "50",
-                //                                 totalNote: totalNote,
-                //                                 docId: customUserInfo.docId,
-                //                                 uid: user.uid,
-                //                                 pos: index);
-                //                           } else {
-                //                             return SizedBox.shrink();
-                //                           }
-                //                         }
-                //                       } else {
-                //                         return SizedBox.shrink();
-                //                       }
-                //                     }
-                //                   } else {
-                //                     // if (lowerCaseName
-                //                     //     .startsWith(searchString.toLowerCase())) {
-                //                     if (positionArray.isEmpty) {
-                //                       if (apparatusArray.isEmpty) {
-                //                         return ActionTile(
-                //                             memberdocId: customUserInfo.docId,
-                //                             apparatus: apparatus,
-                //                             actionName: name,
-                //                             name: customUserInfo.name,
-                //                             phoneNumber: "temp",
-                //                             lessonDate: lessonDate,
-                //                             grade: "50",
-                //                             totalNote: totalNote,
-                //                             docId: customUserInfo.docId,
-                //                             uid: user.uid,
-                //                             pos: index);
-                //                       } else {
-                //                         if (apparatusArray
-                //                             .contains(apparatus)) {
-                //                           return ActionTile(
-                //                               memberdocId:
-                //                                   customUserInfo.docId,
-                //                               apparatus: apparatus,
-                //                               actionName: name,
-                //                               name: customUserInfo.name,
-                //                               phoneNumber: "temp",
-                //                               lessonDate: lessonDate,
-                //                               grade: "50",
-                //                               totalNote: totalNote,
-                //                               docId: customUserInfo.docId,
-                //                               uid: user.uid,
-                //                               pos: index);
-                //                         } else {
-                //                           return SizedBox.shrink();
-                //                         }
-                //                       }
-                //                     } else {
-                //                       if (positionArray.contains(position)) {
-                //                         positionFilteredSize++;
-                //                         if (apparatusArray.isEmpty) {
-                //                           return ActionTile(
-                //                               apparatus: apparatus,
-                //                               actionName: name,
-                //                               name: customUserInfo.name,
-                //                               phoneNumber: "temp",
-                //                               lessonDate: lessonDate,
-                //                               grade: "50",
-                //                               totalNote: totalNote,
-                //                               docId: "",
-                //                               memberdocId:
-                //                                   customUserInfo.docId,
-                //                               uid: user.uid,
-                //                               pos: index);
-                //                         } else {
-                //                           if (apparatusArray
-                //                               .contains(apparatus)) {
-                //                             return ActionTile(
-                //                                 apparatus: apparatus,
-                //                                 actionName: name,
-                //                                 name: customUserInfo.name,
-                //                                 phoneNumber: "temp",
-                //                                 lessonDate: lessonDate,
-                //                                 grade: "50",
-                //                                 totalNote: totalNote,
-                //                                 docId: "",
-                //                                 memberdocId:
-                //                                     customUserInfo.docId,
-                //                                 uid: user.uid,
-                //                                 pos: index);
-                //                           } else {
-                //                             return SizedBox.shrink();
-                //                           }
-                //                         }
-                //                       } else {
-                //                         return SizedBox.shrink();
-                //                       }
-                //                     }
-                //                     // } else {
-                //                     //   return SizedBox.shrink();
-                //                     // }
-                //                   }
-                //                 },
-                //               ),
-                //             ),
-                //     ],
-                //   ),
-                // ),
-                Offstage(
-                  offstage: isFullScreen,
-                  child: Column(
-                    children: [
-                      /// 동작 검색 창
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                        color: Palette.secondaryBackground,
-                        height: searchString.isEmpty ? 190 : 60,
-                        child: Column(
-                          children: [
-                            BaseSearchTextField(
-                              customController: searchController,
-                              customFocusNode: searchFocusNode,
-                              hint: "동작을 검색하세요.",
-                              showArrow: true,
-                              customFunction: () {
-                                setState(() {
-                                  searchString =
-                                      searchController.text.toLowerCase();
-                                });
-                              },
-                              clearfunction: () {
-                                setState(() {
-                                  searchController.clear();
-                                  searchString = "";
-                                });
-                              },
-                            ),
-                            SizedBox(height: 5),
-                            Offstage(
-                              offstage: searchString.isNotEmpty,
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 5),
-                                  GrayInkwellButton(
-                                    label: '신규 동작 추가',
-                                    customFunctionOnTap: () async {
-                                      print("신규 동작 추가");
-                                      // LessonAdd로 이동
-                                      final result = await showDialog(
-                                        context: context,
-                                        builder: (context) => StatefulBuilder(
-                                          builder: (context, setState) {
-                                            return ActionAdd.manageList(
-                                                resultActionList);
-                                          },
-                                        ),
-                                      );
-                                      setState(() {
-                                        if (result == null) {
-                                          searchString = "";
-                                        } else {
-                                          List resultList = result as List;
-                                          String tmpSearchStr =
-                                              resultList[0].toString().trim();
-                                          if (tmpSearchStr.isNotEmpty) {
-                                            searchController.text =
-                                                tmpSearchStr;
-                                            searchString = tmpSearchStr;
-                                          } else {
+                  //                   if (searchString.isEmpty) {
+                  //                     if (positionArray.isEmpty) {
+                  //                       if (apparatusArray.isEmpty) {
+                  //                         return ActionTile(
+                  //                             memberdocId: customUserInfo.docId,
+                  //                             apparatus: apparatus,
+                  //                             actionName: name,
+                  //                             name: customUserInfo.name,
+                  //                             phoneNumber: "temp",
+                  //                             lessonDate: lessonDate,
+                  //                             grade: "50",
+                  //                             totalNote: totalNote,
+                  //                             docId: "",
+                  //                             uid: user.uid,
+                  //                             pos: index);
+                  //                       } else {
+                  //                         if (apparatusArray
+                  //                             .contains(apparatus)) {
+                  //                           return ActionTile(
+                  //                               memberdocId:
+                  //                                   customUserInfo.docId,
+                  //                               apparatus: apparatus,
+                  //                               actionName: name,
+                  //                               name: customUserInfo.name,
+                  //                               phoneNumber: "temp",
+                  //                               lessonDate: lessonDate,
+                  //                               grade: "50",
+                  //                               totalNote: totalNote,
+                  //                               docId: "",
+                  //                               uid: user.uid,
+                  //                               pos: index);
+                  //                         } else {
+                  //                           return SizedBox.shrink();
+                  //                         }
+                  //                       }
+                  //                     } else {
+                  //                       if (positionArray.contains(position)) {
+                  //                         positionFilteredSize++;
+                  //                         if (apparatusArray.isEmpty) {
+                  //                           return ActionTile(
+                  //                               memberdocId:
+                  //                                   customUserInfo.docId,
+                  //                               apparatus: apparatus,
+                  //                               actionName: name,
+                  //                               name: customUserInfo.name,
+                  //                               phoneNumber: "temp",
+                  //                               lessonDate: lessonDate,
+                  //                               grade: "50",
+                  //                               totalNote: totalNote,
+                  //                               docId: customUserInfo.docId,
+                  //                               uid: user.uid,
+                  //                               pos: index);
+                  //                         } else {
+                  //                           if (apparatusArray
+                  //                               .contains(apparatus)) {
+                  //                             return ActionTile(
+                  //                                 memberdocId:
+                  //                                     customUserInfo.docId,
+                  //                                 apparatus: apparatus,
+                  //                                 actionName: name,
+                  //                                 name: customUserInfo.name,
+                  //                                 phoneNumber: "temp",
+                  //                                 lessonDate: lessonDate,
+                  //                                 grade: "50",
+                  //                                 totalNote: totalNote,
+                  //                                 docId: customUserInfo.docId,
+                  //                                 uid: user.uid,
+                  //                                 pos: index);
+                  //                           } else {
+                  //                             return SizedBox.shrink();
+                  //                           }
+                  //                         }
+                  //                       } else {
+                  //                         return SizedBox.shrink();
+                  //                       }
+                  //                     }
+                  //                   } else {
+                  //                     // if (lowerCaseName
+                  //                     //     .startsWith(searchString.toLowerCase())) {
+                  //                     if (positionArray.isEmpty) {
+                  //                       if (apparatusArray.isEmpty) {
+                  //                         return ActionTile(
+                  //                             memberdocId: customUserInfo.docId,
+                  //                             apparatus: apparatus,
+                  //                             actionName: name,
+                  //                             name: customUserInfo.name,
+                  //                             phoneNumber: "temp",
+                  //                             lessonDate: lessonDate,
+                  //                             grade: "50",
+                  //                             totalNote: totalNote,
+                  //                             docId: customUserInfo.docId,
+                  //                             uid: user.uid,
+                  //                             pos: index);
+                  //                       } else {
+                  //                         if (apparatusArray
+                  //                             .contains(apparatus)) {
+                  //                           return ActionTile(
+                  //                               memberdocId:
+                  //                                   customUserInfo.docId,
+                  //                               apparatus: apparatus,
+                  //                               actionName: name,
+                  //                               name: customUserInfo.name,
+                  //                               phoneNumber: "temp",
+                  //                               lessonDate: lessonDate,
+                  //                               grade: "50",
+                  //                               totalNote: totalNote,
+                  //                               docId: customUserInfo.docId,
+                  //                               uid: user.uid,
+                  //                               pos: index);
+                  //                         } else {
+                  //                           return SizedBox.shrink();
+                  //                         }
+                  //                       }
+                  //                     } else {
+                  //                       if (positionArray.contains(position)) {
+                  //                         positionFilteredSize++;
+                  //                         if (apparatusArray.isEmpty) {
+                  //                           return ActionTile(
+                  //                               apparatus: apparatus,
+                  //                               actionName: name,
+                  //                               name: customUserInfo.name,
+                  //                               phoneNumber: "temp",
+                  //                               lessonDate: lessonDate,
+                  //                               grade: "50",
+                  //                               totalNote: totalNote,
+                  //                               docId: "",
+                  //                               memberdocId:
+                  //                                   customUserInfo.docId,
+                  //                               uid: user.uid,
+                  //                               pos: index);
+                  //                         } else {
+                  //                           if (apparatusArray
+                  //                               .contains(apparatus)) {
+                  //                             return ActionTile(
+                  //                                 apparatus: apparatus,
+                  //                                 actionName: name,
+                  //                                 name: customUserInfo.name,
+                  //                                 phoneNumber: "temp",
+                  //                                 lessonDate: lessonDate,
+                  //                                 grade: "50",
+                  //                                 totalNote: totalNote,
+                  //                                 docId: "",
+                  //                                 memberdocId:
+                  //                                     customUserInfo.docId,
+                  //                                 uid: user.uid,
+                  //                                 pos: index);
+                  //                           } else {
+                  //                             return SizedBox.shrink();
+                  //                           }
+                  //                         }
+                  //                       } else {
+                  //                         return SizedBox.shrink();
+                  //                       }
+                  //                     }
+                  //                     // } else {
+                  //                     //   return SizedBox.shrink();
+                  //                     // }
+                  //                   }
+                  //                 },
+                  //               ),
+                  //             ),
+                  //     ],
+                  //   ),
+                  // ),
+                  Offstage(
+                    offstage: isFullScreen,
+                    child: Column(
+                      children: [
+                        /// 동작 검색 창
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          color: Palette.secondaryBackground,
+                          height: searchString.isEmpty ? 190 : 60,
+                          child: Column(
+                            children: [
+                              BaseSearchTextField(
+                                customController: searchController,
+                                customFocusNode: searchFocusNode,
+                                hint: "동작을 검색하세요.",
+                                showArrow: true,
+                                customFunction: () {
+                                  setState(() {
+                                    searchString =
+                                        searchController.text.toLowerCase();
+                                  });
+                                },
+                                clearfunction: () {
+                                  setState(() {
+                                    searchController.clear();
+                                    searchString = "";
+                                  });
+                                },
+                              ),
+                              SizedBox(height: 5),
+                              Offstage(
+                                offstage: searchString.isNotEmpty,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 5),
+                                    GrayInkwellButton(
+                                      label: '신규 동작 추가',
+                                      customFunctionOnTap: () async {
+                                        print("신규 동작 추가");
+                                        // LessonAdd로 이동
+                                        final result = await showDialog(
+                                          context: context,
+                                          builder: (context) => StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return ActionAdd.manageList(
+                                                  resultActionList);
+                                            },
+                                          ),
+                                        );
+                                        setState(() {
+                                          if (result == null) {
                                             searchString = "";
+                                          } else {
+                                            List resultList = result as List;
+                                            String tmpSearchStr =
+                                                resultList[0].toString().trim();
+                                            if (tmpSearchStr.isNotEmpty) {
+                                              searchController.text =
+                                                  tmpSearchStr;
+                                              searchString = tmpSearchStr;
+                                            } else {
+                                              searchString = "";
+                                            }
+
+                                            resultActionList = resultList[1];
                                           }
-
-                                          resultActionList = resultList[1];
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  Divider(),
-
-                                  /// 기구 필터
-                                  SizedBox(
-                                    height: 30,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          for (final chip in apparatusChips)
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      4.0, 0, 4, 0),
-                                              child: chip,
-                                            ),
-                                        ],
-                                      ),
+                                        });
+                                      },
                                     ),
-                                  ),
-                                  SizedBox(height: 4),
+                                    Divider(),
 
-                                  /// 자세 필터
-                                  SizedBox(
-                                    height: 30,
-                                    child: Center(
+                                    /// 기구 필터
+                                    SizedBox(
+                                      height: 30,
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.horizontal,
                                         child: Row(
                                           children: [
-                                            for (final chip in positionChips)
+                                            for (final chip in apparatusChips)
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
@@ -1606,136 +1587,159 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: 10),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                                    SizedBox(height: 4),
 
-                      Spacer(),
-
-                      /// 동작 추가 버튼과 칩 영역
-                      Offstage(
-                        offstage: searchString.isNotEmpty,
-                        child: Container(
-                          padding: EdgeInsets.only(bottom: 10),
-                          color: tmpLessonInfoList.isEmpty
-                              ? Palette.gray00.withOpacity(0)
-                              : Palette.gray00.withOpacity(0.3),
-                          height: 100,
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              /// 선택된 동작 칩들
-                              Offstage(
-                                offstage: tmpLessonInfoList.isEmpty,
-                                child: SizedBox(
-                                  height: 30,
-                                  child: Center(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          for (final chip in actionChips)
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 4),
-                                              child: chip,
-                                            ),
-                                        ],
+                                    /// 자세 필터
+                                    SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              for (final chip in positionChips)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          4.0, 0, 4, 0),
+                                                  child: chip,
+                                                ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-
-                              /// 동작 추가 버튼
-                              ElevatedButton(
-                                onPressed: () {
-                                  print("동작추가");
-
-                                  // lessonAdd
-                                  if (tmpLessonInfoList.isNotEmpty) {
-                                    print(
-                                        "userInfo.docId : ${customUserInfo.docId}");
-
-                                    List<DateTime> tmpEventList = [];
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text("동작추가 성공"),
-                                    ));
-                                    // 저장하기 성공시 MemberInfo로 이동
-                                    Navigator.pop(context, tmpLessonInfoList);
-
-                                    initStateVar = !initStateVar;
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text("동작을 선택해주세요."),
-                                    ));
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  elevation: 0,
-                                  backgroundColor: Palette.buttonOrange,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 14, horizontal: 90),
-                                  child: Text(
-                                      "동작추가(${tmpLessonInfoList.isEmpty ? 0 : selectedActionCount})",
-                                      style: TextStyle(fontSize: 16)),
+                                    SizedBox(height: 10),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
 
-                      /// 확인버튼
-                      Offstage(
-                        offstage: searchString.isEmpty,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              print("신규 동작추가 확인");
-                              setState(() {
-                                searchString = "";
-                                searchController.clear();
-                                searchFocusNode.unfocus();
-                                /* scrollController.jumpTo(
-                                  scrollController.position.minScrollExtent); */
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              elevation: 0,
-                              backgroundColor: Palette.buttonOrange,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 14, horizontal: 90),
-                              child: Text("확인", style: TextStyle(fontSize: 16)),
+                        Spacer(),
+
+                        /// 동작 추가 버튼과 칩 영역
+                        Offstage(
+                          offstage: searchString.isNotEmpty,
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            color: tmpLessonInfoList.isEmpty
+                                ? Palette.gray00.withOpacity(0)
+                                : Palette.gray00.withOpacity(0.3),
+                            height: 100,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                /// 선택된 동작 칩들
+                                Offstage(
+                                  offstage: tmpLessonInfoList.isEmpty,
+                                  child: SizedBox(
+                                    height: 30,
+                                    child: Center(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            for (final chip in actionChips)
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 4),
+                                                child: chip,
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+
+                                /// 동작 추가 버튼
+                                ElevatedButton(
+                                  onPressed: () {
+                                    print("동작추가");
+
+                                    // lessonAdd
+                                    if (tmpLessonInfoList.isNotEmpty) {
+                                      print(
+                                          "userInfo.docId : ${customUserInfo.docId}");
+
+                                      List<DateTime> tmpEventList = [];
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("동작추가 성공"),
+                                      ));
+                                      // 저장하기 성공시 MemberInfo로 이동
+                                      Navigator.pop(context, tmpLessonInfoList);
+
+                                      initStateVar = !initStateVar;
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("동작을 선택해주세요."),
+                                      ));
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    elevation: 0,
+                                    backgroundColor: Palette.buttonOrange,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14, horizontal: 90),
+                                    child: Text(
+                                        "동작추가(${tmpLessonInfoList.isEmpty ? 0 : selectedActionCount})",
+                                        style: TextStyle(fontSize: 16)),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                )
-              ],
+
+                        /// 확인버튼
+                        Offstage(
+                          offstage: searchString.isEmpty,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print("신규 동작추가 확인");
+                                setState(() {
+                                  searchString = "";
+                                  searchController.clear();
+                                  searchFocusNode.unfocus();
+                                  /* scrollController.jumpTo(
+                                    scrollController.position.minScrollExtent); */
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Palette.buttonOrange,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14, horizontal: 90),
+                                child:
+                                    Text("확인", style: TextStyle(fontSize: 16)),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           // bottomNavigationBar: BaseBottomAppBar(),
