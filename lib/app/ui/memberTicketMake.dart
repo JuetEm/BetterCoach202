@@ -253,6 +253,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       ticketDateLeft,
                       Timestamp.fromDate(DateTime.now()).toDate(),
                       false,
+                      true,
                     )
                         .then((value) {
                       print("${screenName} - 티켓 라이브러리 생성 update is called!");
@@ -277,6 +278,8 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                               ticketStartDate;
                               globalVariables.memberTicketList[i]['isSelected'] =
                               false;
+                              globalVariables.memberTicketList[i]['isAlive'] =
+                              false;
                           print(
                               "update globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                           break;
@@ -299,6 +302,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       ticketDateLeft,
                       Timestamp.fromDate(DateTime.now()).toDate(),
                       false,
+                      true,
                     )
                         .then((value) {
                       print("${screenName} - 티켓 라이브러리 생성 create is called!");
@@ -318,6 +322,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                         "memberId": ticketMakeController.dropDownValue!.value,
                         "id":value,
                         "isSelected": false,
+                        "isAlive": true,
                       });
                       globalVariables.memberTicketList.sort((a, b) =>
                           (a['ticketTitle']).compareTo(b['ticketTitle']));
