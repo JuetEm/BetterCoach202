@@ -8,8 +8,9 @@ import 'package:web_project/color.dart';
 import 'package:web_project/globalVariables.dart';
 
 class MemberTicketList extends StatefulWidget {
-  const MemberTicketList(this.ticketList, this.customFunction, {super.key});
+  const MemberTicketList(this.memberId ,this.ticketList, this.customFunction, {super.key});
 
+  final String memberId;
   final List ticketList;
   final Function customFunction;
 
@@ -38,7 +39,8 @@ class _MemberTicketListState extends State<MemberTicketList> {
                     shrinkWrap: true,
                     itemCount: widget.ticketList.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
+                      if(widget.ticketList[index]['memberId'] == widget.memberId){
+                        return ListTile(
                         title: Text(widget.ticketList[index]['ticketTitle']),
                         trailing: IconButton(
                             onPressed: () {
@@ -61,6 +63,10 @@ class _MemberTicketListState extends State<MemberTicketList> {
                             },
                             icon: Icon(Icons.clear)),
                       );
+                      }else{
+                        return SizedBox.shrink();
+                      }
+                      
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return SizedBox.shrink();
