@@ -16,7 +16,7 @@ class TicketWidget extends StatefulWidget {
   final int ticketDateLeft;
   final Function? customFunctionOnHover;
   final Function customFunctionOnTap;
-  final Function customFunctionOnLongPress;
+  final Function? customFunctionOnLongPress;
 
   const TicketWidget({
     Key? key,
@@ -29,7 +29,7 @@ class TicketWidget extends StatefulWidget {
     required this.ticketDateLeft,
     this.customFunctionOnHover,
     required this.customFunctionOnTap,
-    required this.customFunctionOnLongPress,
+    this.customFunctionOnLongPress,
   }) : super(key: key);
 
   @override
@@ -52,7 +52,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                     : Palette.backgroundOrange)),
         child: InkWell(
           onLongPress: () {
-            widget.customFunctionOnLongPress();
+            widget.customFunctionOnLongPress ?? () {};
           },
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,

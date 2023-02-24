@@ -210,6 +210,7 @@ class _MemberListState extends State<MemberList> {
                                   isFavorite: isFavorite,
                                   memberService: memberService,
                                   resultMemberList: [],
+                                  customFunctionOnTap: () {},
                                 ),
                               );
                             },
