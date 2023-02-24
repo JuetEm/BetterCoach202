@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/actionListTileWidget.dart';
 import 'package:web_project/app/ui/importSequenceFromSaved.dart';
+import 'package:web_project/buttonWidget.dart';
 import 'package:web_project/color.dart';
 
 import 'actionAdd.dart';
@@ -336,6 +337,7 @@ class _ActionSelectorState extends State<ActionSelector> {
     if (tmpLessonInfoList.isNotEmpty) {
       actionChips = tmpLessonInfoList
           .map((e) => FilterChip(
+                padding: EdgeInsets.only(bottom: 3),
                 label: Row(
                   children: [
                     Text(e.actionName),
@@ -388,6 +390,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     final apparatusChips = [
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isMatSelected ? Palette.grayFF : Palette.gray99),
@@ -414,6 +417,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isReformerSelected ? Palette.grayFF : Palette.gray99),
@@ -441,6 +445,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isCadillacSelected ? Palette.grayFF : Palette.gray99),
@@ -469,6 +474,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isChairSelected ? Palette.grayFF : Palette.gray99),
@@ -496,6 +502,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isLadderBarrelSelected ? Palette.grayFF : Palette.gray99),
@@ -523,6 +530,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSpringBoardSelected ? Palette.grayFF : Palette.gray99),
@@ -550,6 +558,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSpineCorrectorSelected ? Palette.grayFF : Palette.gray99),
@@ -577,6 +586,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray99),
@@ -608,6 +618,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     final positionChips = [
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSupineSelected ? Palette.grayFF : Palette.gray99),
@@ -635,6 +646,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isProneSelected ? Palette.grayFF : Palette.gray99),
@@ -662,6 +674,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSittingSelected ? Palette.grayFF : Palette.gray99),
@@ -689,6 +702,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isStandingSelected ? Palette.grayFF : Palette.gray99),
@@ -716,6 +730,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isKneelingSelected ? Palette.grayFF : Palette.gray99),
@@ -743,6 +758,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSideLyingSelected ? Palette.grayFF : Palette.gray99),
@@ -770,6 +786,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isQuadrupedSelected ? Palette.grayFF : Palette.gray99),
@@ -797,6 +814,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isPlankSelected ? Palette.grayFF : Palette.gray99),
@@ -824,6 +842,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
+        padding: EdgeInsets.only(bottom: 3),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isOthersPositionSelected ? Palette.grayFF : Palette.gray99),
@@ -1512,75 +1531,39 @@ class _ActionSelectorState extends State<ActionSelector> {
                               child: Column(
                                 children: [
                                   SizedBox(height: 5),
-                                  SizedBox(
-                                    height: 40,
-                                    width: double.infinity,
-                                    child: Material(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
-                                      ),
-                                      color: Palette.grayEE,
-                                      child: InkWell(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
+                                  GrayInkwellButton(
+                                    label: '신규 동작 추가',
+                                    customFunctionOnTap: () async {
+                                      print("신규 동작 추가");
+                                      // LessonAdd로 이동
+                                      final result = await showDialog(
+                                        context: context,
+                                        builder: (context) => StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return ActionAdd.manageList(
+                                                resultActionList);
+                                          },
                                         ),
-                                        onTap: () async {
-                                          print("신규 동작 추가");
-                                          // LessonAdd로 이동
-                                          final result = await showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                StatefulBuilder(
-                                              builder: (context, setState) {
-                                                return ActionAdd.manageList(
-                                                    resultActionList);
-                                              },
-                                            ),
-                                          );
-                                          setState(() {
-                                            if (result == null) {
-                                              searchString = "";
-                                            } else {
-                                              List resultList = result as List;
-                                              String tmpSearchStr =
-                                                  resultList[0]
-                                                      .toString()
-                                                      .trim();
-                                              if (tmpSearchStr.isNotEmpty) {
-                                                searchController.text =
-                                                    tmpSearchStr;
-                                                searchString = tmpSearchStr;
-                                              } else {
-                                                searchString = "";
-                                              }
+                                      );
+                                      setState(() {
+                                        if (result == null) {
+                                          searchString = "";
+                                        } else {
+                                          List resultList = result as List;
+                                          String tmpSearchStr =
+                                              resultList[0].toString().trim();
+                                          if (tmpSearchStr.isNotEmpty) {
+                                            searchController.text =
+                                                tmpSearchStr;
+                                            searchString = tmpSearchStr;
+                                          } else {
+                                            searchString = "";
+                                          }
 
-                                              resultActionList = resultList[1];
-                                            }
-                                          });
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "신규 동작 생성",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Palette.gray66,
-                                              ),
-                                            ),
-                                            SizedBox(width: 4),
-                                            Icon(
-                                              Icons.add_circle_outline,
-                                              color: Palette.gray66,
-                                              size: 16,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                          resultActionList = resultList[1];
+                                        }
+                                      });
+                                    },
                                   ),
                                   Divider(),
 

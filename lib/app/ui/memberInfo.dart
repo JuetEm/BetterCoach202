@@ -787,7 +787,10 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 print("ConnectionState.waiting : ${ConnectionState.waiting}");
-                return CircularProgressIndicator();
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Palette.buttonOrange,
+                ));
               } else if (snapshot.connectionState == ConnectionState.done) {
                 print("ConnectionState.done : ${ConnectionState.done}");
                 final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
@@ -894,7 +897,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
 
     return Consumer<MemberTicketService>(
         builder: (context, memberTicketService, child) {
-      
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20.0),

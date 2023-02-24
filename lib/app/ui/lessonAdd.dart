@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/ui/sequenceLibrary.dart';
+import 'package:web_project/buttonWidget.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
@@ -790,83 +791,56 @@ class _LessonAddState extends State<LessonAdd> {
                           padding: EdgeInsets.symmetric(horizontal: 15),
                           child: Column(children: [
                             // 동작입력 버튼
-                            SizedBox(
-                              height: 40,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Palette.grayEE,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(10),
-                                  onTap: () async {
-                                    //String currentAppratus =
-                                    //    apratusNameController.text;
-                                    String currentAppratus = "";
+                            GrayInkwellButton(
+                              label: '동작 추가',
+                              customFunctionOnTap: () async {
+                                //String currentAppratus =
+                                //    apratusNameController.text;
+                                String currentAppratus = "";
 
-                                    String lessonDate =
-                                        lessonDateController.text;
-                                    String totalNote = "";
+                                String lessonDate = lessonDateController.text;
+                                String totalNote = "";
 
-                                    //동작선택 모드
-                                    //bool initState = true;
-                                    actionSelectMode = true;
-                                    print(
-                                        "[LA] 동작추가시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
-                                    final List<TmpLessonInfo> result =
-                                        await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ActionSelector(),
-                                        fullscreenDialog: true,
-                                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(arguments: [
-                                          customUserInfo,
-                                          currentAppratus,
-                                          lessonDate,
-                                          initState,
-                                          totalNote,
-                                          tmpLessonInfoList,
-                                          resultActionList,
-                                        ]),
-                                      ),
-                                    );
-
-                                    tmpLessonInfoList = result;
-
-                                    additionalActionlength = result.length
-                                            .toInt() -
-                                        totalNoteTextFieldDocId.length.toInt();
-
-                                    print(
-                                        "추가된 동작 개수 : ${additionalActionlength.toString()}");
-
-                                    // 동작추가시에 textcontroller 추가 생성
-                                    createControllers(additionalActionlength);
-
-                                    print("동작추가시컨트롤러:${totalNoteControllers}");
-                                    print(
-                                        "동작추가시노트아이디:${totalNoteTextFieldDocId}");
-
-                                    lessonService.notifyListeners();
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '동작 추가',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Palette.gray66),
-                                      ),
-                                      SizedBox(width: 4),
-                                      Icon(
-                                        Icons.add_circle_outline,
-                                        color: Palette.gray66,
-                                        size: 16,
-                                      ),
-                                    ],
+                                //동작선택 모드
+                                //bool initState = true;
+                                actionSelectMode = true;
+                                print(
+                                    "[LA] 동작추가시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
+                                final List<TmpLessonInfo> result =
+                                    await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ActionSelector(),
+                                    fullscreenDialog: true,
+                                    // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                    settings: RouteSettings(arguments: [
+                                      customUserInfo,
+                                      currentAppratus,
+                                      lessonDate,
+                                      initState,
+                                      totalNote,
+                                      tmpLessonInfoList,
+                                      resultActionList,
+                                    ]),
                                   ),
-                                ),
-                              ),
+                                );
+
+                                tmpLessonInfoList = result;
+
+                                additionalActionlength = result.length.toInt() -
+                                    totalNoteTextFieldDocId.length.toInt();
+
+                                print(
+                                    "추가된 동작 개수 : ${additionalActionlength.toString()}");
+
+                                // 동작추가시에 textcontroller 추가 생성
+                                createControllers(additionalActionlength);
+
+                                print("동작추가시컨트롤러:${totalNoteControllers}");
+                                print("동작추가시노트아이디:${totalNoteTextFieldDocId}");
+
+                                lessonService.notifyListeners();
+                              },
                             ),
 
                             // 재정렬 가능한 리스트 시작
