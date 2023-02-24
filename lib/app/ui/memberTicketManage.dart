@@ -277,8 +277,6 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                           Offstage(
                             offstage: isActiveTicketListOpened,
                             child: Container(
-                              height: 100,
-                              color: Palette.backgroundBlue,
                               child: ListView.builder(
                                   scrollDirection: Axis.vertical,
                                   controller: scrollController,
@@ -287,8 +285,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                         print("globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                                        if(globalVariables.memberTicketList[index]['id'] == userInfo!.docId){
-                                          return TicketWidget(customFunctionOnTap: (){}, ticketCountLeft: globalVariables.memberTicketList[index]['ticketCountLeft'], ticketCountAll: globalVariables.memberTicketList[index]['ticketCountAll'], ticketTitle: globalVariables.memberTicketList[index]['ticketTitle'], ticketDescription: globalVariables.memberTicketList[index]['ticketDescription'], ticketStartDate: globalVariables.memberTicketList[index]['ticketStartDate'], ticketEndDate: globalVariables.memberTicketList[index]['ticketEndDate'], ticketDateLeft: globalVariables.memberTicketList[index]['ticketDateLeft']);
+                                        if(globalVariables.memberTicketList[index]['memberId'] == userInfo!.docId){
+                                          return Container(alignment: Alignment.center, child: TicketWidget(customFunctionOnTap: (){}, ticketCountLeft: globalVariables.memberTicketList[index]['ticketCountLeft'], ticketCountAll: globalVariables.memberTicketList[index]['ticketCountAll'], ticketTitle: globalVariables.memberTicketList[index]['ticketTitle'], ticketDescription: globalVariables.memberTicketList[index]['ticketDescription'], ticketStartDate: globalVariables.memberTicketList[index]['ticketStartDate'], ticketEndDate: globalVariables.memberTicketList[index]['ticketEndDate'], ticketDateLeft: globalVariables.memberTicketList[index]['ticketDateLeft']));
                                         }else{
                                     return null;
 

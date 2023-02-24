@@ -24,11 +24,11 @@ class MemberTicketService extends ChangeNotifier {
     return resultList;
   }
 
-  Future<List> readByMember(String uid, String docId) async {
+  Future<List> readByMember(String uid, String memberId) async {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
     var result = await memberTicketCollection
         .where('uid', isEqualTo: uid)
-        .where('docId', isEqualTo: docId)
+        .where('memberId', isEqualTo: memberId)
         .orderBy('ticketTitle', descending: false)
         .get();
 
