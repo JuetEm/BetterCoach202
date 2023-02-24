@@ -780,66 +780,73 @@ class _LessonNoteViewState extends State<LessonNoteView> {
 
         //레슨 노트 보기 시작
         FutureBuilder<QuerySnapshot>(
-          future: widget.lessonService.read(
-            widget.userInfo.uid,
-            widget.userInfo.docId,
-          ),
-          builder: (context, snapshot) {
-            final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
+            future: widget.lessonService.read(
+              widget.userInfo.uid,
+              widget.userInfo.docId,
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                print("ConnectionState.waiting : ${ConnectionState.waiting}");
+                return CircularProgressIndicator();
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                print("ConnectionState.done : ${ConnectionState.done}");
+                final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
 
-            print(
-                "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
-            if (doc.isEmpty && dayNotelessonCnt == 0) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Center(
-                    child: Text("첫번째 노트를 작성해보세요!"),
-                  ),
-                ],
-              );
-            } else if (doc.isEmpty && dayNotelessonCnt > 0) {
-              print("동작은 없는데, 일별노트는 있는 경우");
-              if (listMode == "동작별") {
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Center(
-                      child: Text("노트에서 동작을 추가해보세요!"),
-                    ),
-                  ],
-                );
+                print(
+                    "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
+                if (doc.isEmpty && dayNotelessonCnt == 0) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                        child: Text("첫번째 노트를 작성해보세요!"),
+                      ),
+                    ],
+                  );
+                } else if (doc.isEmpty && dayNotelessonCnt > 0) {
+                  print("동작은 없는데, 일별노트는 있는 경우");
+                  if (listMode == "동작별") {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Center(
+                          child: Text("노트에서 동작을 추가해보세요!"),
+                        ),
+                      ],
+                    );
+                  } else {
+                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    return NoteListDateCategory(
+                      docs: doc,
+                      userInfo: widget.userInfo,
+                      lessonService: widget.lessonService,
+                      tmpLessonInfoList: tmpLessonInfoList,
+                    );
+                  }
+                } else {
+                  print("왜가리지?");
+                  if (listMode == "동작별") {
+                    return NoteListActionCategory(
+                        docs: doc, userInfo: widget.userInfo);
+                  } else {
+                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    return NoteListDateCategory(
+                      docs: doc,
+                      userInfo: widget.userInfo,
+                      lessonService: widget.lessonService,
+                      tmpLessonInfoList: tmpLessonInfoList,
+                    );
+                  }
+                }
               } else {
-                List<TmpLessonInfo> tmpLessonInfoList = [];
-                return NoteListDateCategory(
-                  docs: doc,
-                  userInfo: widget.userInfo,
-                  lessonService: widget.lessonService,
-                  tmpLessonInfoList: tmpLessonInfoList,
-                );
+                print("ConnectionState.else");
+                return CircularProgressIndicator();
               }
-            } else {
-              print("왜가리지?");
-              if (listMode == "동작별") {
-                return NoteListActionCategory(
-                    docs: doc, userInfo: widget.userInfo);
-              } else {
-                List<TmpLessonInfo> tmpLessonInfoList = [];
-                return NoteListDateCategory(
-                  docs: doc,
-                  userInfo: widget.userInfo,
-                  lessonService: widget.lessonService,
-                  tmpLessonInfoList: tmpLessonInfoList,
-                );
-              }
-            }
-            ;
-          },
-        ),
+            }),
         SizedBox(
           height: 14,
         ),
