@@ -48,6 +48,17 @@ class _ReportState extends State<Report> {
     DropDownValueModel(name: "노트추가", value: '노트추가', toolTipMsg: "노트추가"),
     DropDownValueModel(name: "동작선택", value: '동작선택', toolTipMsg: "동작선택"),
     DropDownValueModel(name: "동작추가", value: '동작추가', toolTipMsg: "동작추가"),
+    DropDownValueModel(name: "회원등록", value: '회원등록', toolTipMsg: "회원등록"),
+    DropDownValueModel(
+        name: "시퀀스 라이브러리", value: '시퀀스 라이브러리', toolTipMsg: "시퀀스 라이브러리"),
+    DropDownValueModel(
+        name: "시퀀스 불러오기", value: '시퀀스 불러오기', toolTipMsg: "시퀀스 불러오기"),
+    DropDownValueModel(name: "수강권추가", value: '수강권추가', toolTipMsg: "수강권추가"),
+    DropDownValueModel(name: "수강권관리", value: '수강권관리', toolTipMsg: "수강권관리"),
+    DropDownValueModel(
+        name: "수강권 라이브러리", value: '수강권 라이브러리', toolTipMsg: "수강권 라이브러리"),
+    DropDownValueModel(
+        name: "로그인/회원가입", value: '로그인/회원가입', toolTipMsg: "로그인/회원가입"),
   ];
 
   @override
