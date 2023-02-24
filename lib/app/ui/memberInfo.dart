@@ -943,7 +943,8 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             /// 티켓모양 수강권
             Container(
               alignment: Alignment.center,
-              child: memberTicketList.where((element) {
+              child: globalVariables.memberTicketList.where((element) {
+                print("element : ${element}");
                 return element['isSelected'] == true;
               }).isNotEmpty
                   ? TicketWidget(
