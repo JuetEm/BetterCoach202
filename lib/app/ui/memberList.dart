@@ -515,6 +515,7 @@ class _MemberListState extends State<MemberList> {
                       child: Stack(
                         children: [
                           ListView.builder(
+                            padding: EdgeInsets.only(bottom: 20),
                             itemCount: 1,
                             itemBuilder: (BuildContext context, int index) {
                               print("몇 번 그리나요? - ListView.builder");

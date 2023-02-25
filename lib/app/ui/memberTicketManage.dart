@@ -270,41 +270,58 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     color: Palette.mainBackground,
-                    child: TextButton(
-                      onPressed: () async {
-                        var result = await // 저장하기 성공시 Home로 이동
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  MemberTicketMake.getUserInfo(
-                                      widget.userInfo)),
-                        ).then((value) {
-                          print("수강권 추가 result");
-                        });
-                      },
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border:
-                                Border.all(color: Palette.gray99, width: 2)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "수강권 추가하기",
-                              style: TextStyle(
-                                  fontSize: 16, color: Palette.gray66),
-                            ),
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Palette.gray66,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    child: AddTicketWidget(
+                        customFunctionOnTap: () async {
+                          var result = await // 저장하기 성공시 Home로 이동
+                              Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MemberTicketMake.getUserInfo(
+                                        widget.userInfo)),
+                          ).then((value) {
+                            print("수강권 추가 result");
+                          });
+                        },
+                        label: '수강권 추가하기',
+                        addIcon: true),
+
+                    // ### 기존 버튼 -> 문제 없을 시 삭제
+                    // child: TextButton(
+                    //   onPressed: () async {
+                    //     var result = await // 저장하기 성공시 Home로 이동
+                    //         Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) =>
+                    //               MemberTicketMake.getUserInfo(
+                    //                   widget.userInfo)),
+                    //     ).then((value) {
+                    //       print("수강권 추가 result");
+                    //     });
+                    //   },
+                    //   child: Container(
+                    //     height: 50,
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(10),
+                    //         border:
+                    //             Border.all(color: Palette.gray99, width: 2)),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         Text(
+                    //           "수강권 추가하기",
+                    //           style: TextStyle(
+                    //               fontSize: 16, color: Palette.gray66),
+                    //         ),
+                    //         Icon(
+                    //           Icons.add_circle_outline,
+                    //           color: Palette.gray66,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ),
 
                   /// 수강권 리스트 영역 시작

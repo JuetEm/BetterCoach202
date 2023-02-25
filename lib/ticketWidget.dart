@@ -63,6 +63,7 @@ class _TicketWidgetState extends State<TicketWidget> {
           onLongPress: () {
             widget.customFunctionOnLongPress!();
           },
+          hoverColor: Colors.transparent,
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTapDown: (details) {

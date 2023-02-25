@@ -89,6 +89,7 @@ class _ReportState extends State<Report> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Palette.gray66),
         leading: IconButton(
           onPressed: () {
             print('back');
@@ -111,7 +112,10 @@ class _ReportState extends State<Report> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.send_outlined))
+          IconButton(onPressed: () {}, icon: Icon(Icons.send_rounded)),
+          SizedBox(
+            width: 10,
+          )
         ],
       ),
       body: CenterConstrainedBody(
@@ -230,7 +234,9 @@ class _ReportState extends State<Report> {
                           _model.textControllerValidator.asValidator(context), */
                   ),
                 ),
-                Spacer(),
+                SizedBox(
+                  height: 20,
+                ),
                 Align(
                   alignment: AlignmentDirectional(0, -0.05),
                   child: Row(
@@ -282,6 +288,75 @@ class _ReportState extends State<Report> {
                     ],
                   ),
                 ),
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('프리텐다드 normal',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20)),
+                        Text('프리텐다드 normal',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20)),
+                        Text('프리텐다드 normal',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20)),
+                        Text('프리텐다드 normal',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20)),
+                        Text('프리텐다드 normal',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20)),
+                        Text('프리텐다드 normal',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20)),
+                        Text('프리텐다드 bold',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('프리텐다드 bold',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('프리텐다드 bold',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                      ],
+                    ),
+                    SizedBox(width: 2),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('프리텐다드 100 THin',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w100, fontSize: 20)),
+                        Text('프리텐다드 200 ExtraLight',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w200, fontSize: 20)),
+                        Text('프리텐다드 300 Light',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 20)),
+                        Text('프리텐다드 400 Regular',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 20)),
+                        Text('프리텐다드 500 Medium',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 20)),
+                        Text('프리텐다드 600 SemiBold',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 20)),
+                        Text('프리텐다드 700 Bold',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 20)),
+                        Text('프리텐다드 800 ExtraBold',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800, fontSize: 20)),
+                        Text('프리텐다드 900 Black',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900, fontSize: 20)),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
           ),
