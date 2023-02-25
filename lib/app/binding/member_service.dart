@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/auth_service.dart';
 import 'package:web_project/globalVariables.dart';
+import 'package:web_project/lesson_service.dart';
 
 class MemberService extends ChangeNotifier {
   final memberCollection = FirebaseFirestore.instance.collection('member');
@@ -31,6 +35,7 @@ class MemberService extends ChangeNotifier {
       // print("result.docs[i].data() : ${result.docs[i].data()}");
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
+
       resultList.add(rstObj);
     }
 

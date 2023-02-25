@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/actionSelector.dart';
+import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/ui/lessonAdd.dart';
 import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/app/ui/sequenceLibrary.dart';
@@ -228,6 +229,7 @@ class _MemberListState extends State<MemberList> {
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         print("몇 번 그리나요? - Consumer");
+
         return Scaffold(
           drawerScrimColor: Palette.gray66,
           drawer: SafeArea(
@@ -542,6 +544,7 @@ class _MemberListState extends State<MemberList> {
                               } else {
                                 globalVariables.sortList();
                                 docs = globalVariables.resultList; // 문서들 가져오기
+                                print('docs = ${docs[0]}');
                               }
                               /* 멤버 리트스 최초 1번 받아오기 리뉴얼 작업위해 주석 - 정규호 2022/11/23 
                               FutureBuilder<QuerySnapshot>(
@@ -596,6 +599,8 @@ class _MemberListState extends State<MemberList> {
                                     String registerType =
                                         doc['registerType'] ?? "";
                                     String goal = doc['goal'] ?? "";
+                                    int memberDayLessonCount =
+                                        doc['memberDayLessonCount'] ?? 0;
                                     List<String> selectedGoals =
                                         List<String>.from(
                                             doc['selectedGoals'] ?? []);
@@ -658,6 +663,8 @@ class _MemberListState extends State<MemberList> {
                                       memberService: memberService,
                                       resultMemberList:
                                           globalVariables.resultList,
+                                      memberDayLessonCount:
+                                          memberDayLessonCount,
 
                                       /// 회원카드 선택 시 함수
                                       customFunctionOnTap: () async {

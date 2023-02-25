@@ -824,6 +824,7 @@ class BaseContainer extends StatefulWidget {
       required this.phoneNumber,
       required this.memberService,
       required this.resultMemberList,
+      required this.memberDayLessonCount,
       required this.customFunctionOnTap,
       required this.noteAddFunctionOnTap})
       : super(key: key);
@@ -838,6 +839,8 @@ class BaseContainer extends StatefulWidget {
   final bool isFavorite;
   final MemberService memberService;
   final List resultMemberList;
+  final int memberDayLessonCount;
+
   final Function customFunctionOnTap;
   final Function noteAddFunctionOnTap;
 
@@ -1071,7 +1074,7 @@ class _BaseContainerState extends State<BaseContainer> {
                       ),
                       SizedBox(width: 3),
                       Text(
-                        "999",
+                        "${widget.memberDayLessonCount}",
                         style: TextStyle(
                             color: Palette.grayFF,
                             fontWeight: FontWeight.bold,

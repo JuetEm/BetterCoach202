@@ -141,6 +141,8 @@ class _MemberListState extends State<MemberList> {
                                 String phoneNumber = doc.get('phoneNumber');
                                 String registerType = doc.get('registerType');
                                 String goal = doc.get('goal');
+                                int memberDayLessonCount =
+                                    doc.get('memberDayLessonCount');
                                 List<String> selectedGoals =
                                     List<String>.from(doc.get('selectedGoals'));
                                 print(
@@ -213,6 +215,7 @@ class _MemberListState extends State<MemberList> {
                                     isFavorite: isFavorite,
                                     memberService: memberService,
                                     resultMemberList: [],
+                                    memberDayLessonCount: memberDayLessonCount,
                                     customFunctionOnTap: () {},
                                     noteAddFunctionOnTap: () {},
                                   ),

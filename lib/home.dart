@@ -137,6 +137,8 @@ class _HomeState extends State<Home> {
                               String note = doc.get('note');
                               bool isActive = doc.get('isActive');
                               bool isFavorite = doc.get('isFavorite') ?? false;
+                              int memberDayLessonCount =
+                                  doc.get('memberDayLessonCount');
                               return InkWell(
                                 onTap: () {
                                   //memberService.update(doc.id, !isActive);
@@ -153,6 +155,7 @@ class _HomeState extends State<Home> {
                                   isFavorite: isFavorite,
                                   memberService: memberService,
                                   resultMemberList: globalVariables.resultList,
+                                  memberDayLessonCount: memberDayLessonCount,
 
                                   /// 멤버 카드 버튼 클릭 시 함수
                                   customFunctionOnTap: () async {
