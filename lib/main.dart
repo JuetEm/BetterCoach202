@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_project/action_service.dart';
+import 'package:web_project/app/binding/action_service.dart';
 import 'package:web_project/analyticLog.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
 import 'package:web_project/centerConstraintBody.dart';

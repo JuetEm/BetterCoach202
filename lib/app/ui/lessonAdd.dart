@@ -10,6 +10,8 @@ import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/ui/sequenceLibrary.dart';
 import 'package:web_project/buttonWidget.dart';
 import 'package:web_project/centerConstraintBody.dart';
+import 'package:web_project/lessonActionListTileWidget.dart';
+import 'package:web_project/main.dart';
 import 'package:web_project/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
@@ -100,7 +102,17 @@ bool isFirst = true;
 
 String getActionPosition(
     String apparatunName, String actionName, List actionList) {
-  return "";
+  String position = "";
+
+  for(int i=0; i< actionList.length; i++){
+
+    if((actionList[i]['apparatus'] == apparatunName)&&(actionList[i]['name'] == actionName)){
+      position = actionList[i]['position'];
+      break;
+    }
+  }
+
+  return position;
 }
 
 class LessonAdd extends StatefulWidget {
@@ -944,7 +956,22 @@ class _LessonAddState extends State<LessonAdd> {
                                       print("재정렬 기능 시작");
                                       final docs =
                                           snapshot.data?.docs ?? []; // 문서들 가져오기
-                                      if (docs.isEmpty) {
+                                      List docList = List.filled(docs.length, {});
+                                          for(int i=0; i<docs.length; i++){
+                                            docList[i]['selected'] = false;
+                                            docList[i]['actionName'] = docs[i]['actionName'];
+                                            docList[i]['docId'] = docs[i]['docId'];
+                                            docList[i]['pos'] = docs[i]['pos'];
+                                            docList[i]['lessonDate'] = docs[i]['lessonDate'];
+                                            docList[i]['totalNote'] = docs[i]['totalNote'];
+                                            docList[i]['grade'] = docs[i]['grade'];
+                                            docList[i]['uid'] = docs[i]['uid'];
+                                            docList[i]['apratusName'] = docs[i]['apratusName'];
+                                            docList[i]['timestamp'] = docs[i]['timestamp'];
+                                            docList[i]['name'] = docs[i]['name'];
+                                            docList[i]['phoneNumber'] = docs[i]['phoneNumber'];
+                                          }
+                                      if (docList.isEmpty) {
                                         actionNullCheck = true;
                                         print(
                                             '문서 비워져 있을경우 ActionNullCheck : ${actionNullCheck}');
@@ -1005,7 +1032,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         //초기화
                                         totalNoteTextFieldDocId =
-                                            List<String>.filled(docs.length, "",
+                                            List<String>.filled(docList.length, "",
                                                 growable: true);
 
                                         TmpLessonInfo tmpLessonInfo =
@@ -1024,42 +1051,52 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         tmpLessonInfoList =
                                             List<TmpLessonInfo>.filled(
-                                                docs.length, tmpLessonInfo,
+                                                docList.length, tmpLessonInfo,
                                                 growable: true);
 
                                         return Column(
                                           children: [
                                             ListView.builder(
                                                 shrinkWrap: true,
-                                                itemCount: docs.length,
+                                                itemCount: docList.length,
                                                 itemBuilder: (context, index) {
-                                                  final doc = docs[index];
+                                                  final doc = docList[index];
+                                                  
                                                   print(
-                                                      "kkkkkkkkkkk - doc : ${doc.data()}");
+                                                      "kkkkkkkkkkk - doc : ${doc}");
                                                   String uid =
-                                                      doc.get('uid'); // 강사 고유번호
+                                                      doc['uid']; // 강사 고유번호
 
                                                   String name =
-                                                      doc.get('name'); //회원이름
-                                                  String phoneNumber = doc.get(
-                                                      'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
-                                                  String apratusName = doc.get(
-                                                      'apratusName'); //기구이름
+                                                      doc['name']; //회원이름
+                                                  String phoneNumber = doc[
+                                                      'phoneNumber']; // 회원 고유번호 (전화번호로 회원 식별)
+                                                  String apratusName = doc[
+                                                      'apratusName']; //기구이름
                                                   String actionName = doc
-                                                      .get('actionName'); //동작이름
+                                                      ['actionName']; //동작이름
                                                   String lessonDate = doc
-                                                      .get('lessonDate'); //수업날짜
+                                                      ['lessonDate']; //수업날짜
                                                   String grade =
-                                                      doc.get('grade'); //수행도
+                                                      doc['grade']; //수행도
                                                   String totalNote = doc
-                                                      .get('totalNote'); //수업총메모
+                                                      ['totalNote']; //수업총메모
 
-                                                  String position = "";
+                                                  int pos = doc
+                                                      ['pos']; //수업총메모
 
-                                                  return Text(
-                                                      "허허 : ${actionName}");
+                                                  bool isSelected = doc['selected'];
 
-                                                  // return ActionListTile(actionName: actionName, apparatus: apratusName, position: position, name: name, phoneNumber: phoneNumber, lessonDate: lessonDate, grade: grade, totalNote: totalNote, docId: docId, memberdocId: memberdocId, uid: uid, pos: pos, isSelected: isSelected, isSelectable: isSelectable, isDraggable: isDraggable, customFunctionOnTap: customFunctionOnTap)
+                                                  String position =
+                                                      getActionPosition(
+                                                          apratusName,
+                                                          actionName,
+                                                          globalVariables
+                                                              .actionList);
+
+                                                  // return Text("허허 : ${actionName}");
+
+                                                  return LessonActionListTile(actionName: actionName, apparatus: apratusName, position: position, name: name, phoneNumber: phoneNumber, lessonDate: lessonDate, grade: grade, totalNote: totalNote, docId: customUserInfo.docId, memberdocId: customUserInfo.docId, uid: uid, pos: pos, isSelected: isSelected, isSelectable: true, isDraggable: true, customFunctionOnTap: (){});
                                                 }),
                                             ReorderableListView.builder(
                                               itemCount: docs.length,
