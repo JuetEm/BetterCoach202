@@ -96,6 +96,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(height: 6),
                       Text("남은 횟수",
                           style:
                               TextStyle(color: Palette.gray66, fontSize: 12)),
@@ -132,13 +133,14 @@ class _TicketWidgetState extends State<TicketWidget> {
                           )
                         ],
                       ),
+                      SizedBox(height: 4),
                       Text(
                         widget.ticketDateLeft > 0
                             ? "(D+${widget.ticketDateLeft})"
                             : "(D-${widget.ticketDateLeft.abs()})",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: 14,
                             color: widget.ticketDateLeft <= 7
                                 ? Palette.textRed
                                 : Palette.gray66),

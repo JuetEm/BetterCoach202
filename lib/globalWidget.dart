@@ -890,7 +890,6 @@ class _BaseContainerState extends State<BaseContainer> {
                     Column(
                       children: [
                         /// 별모양
-
                         Container(
                           decoration: BoxDecoration(
                               border: Border(
@@ -1007,21 +1006,30 @@ class _BaseContainerState extends State<BaseContainer> {
                     ),
                     Spacer(flex: 1),
                     // 노트 개수 UI
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.text_snippet_outlined,
-                          color: Palette.gray99,
+                    TextButton(
+                      onPressed: () {
+                        print('노트추가 버튼 클릭');
+                      },
+                      child: SizedBox(
+                        height: 50,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.post_add_outlined,
+                              color: Palette.gray99,
+                            ),
+                            SizedBox(width: 3),
+                            Text(
+                              "999",
+                              style: TextStyle(
+                                  color: Palette.gray66,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 3),
-                        Text(
-                          "999",
-                          style: TextStyle(
-                              color: Palette.gray66,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12),
-                        ),
-                      ],
+                      ),
                     ),
                     /* Icon(
                       Icons.arrow_forward_ios,
