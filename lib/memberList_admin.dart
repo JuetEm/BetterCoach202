@@ -214,6 +214,7 @@ class _MemberListState extends State<MemberList> {
                                     memberService: memberService,
                                     resultMemberList: [],
                                     customFunctionOnTap: () {},
+                                    noteAddFunctionOnTap: () {},
                                   ),
                                 );
                               },

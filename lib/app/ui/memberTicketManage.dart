@@ -266,333 +266,369 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                       ],
                     ),
                   ),
-                  // 수강권 추가 버튼
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    color: Palette.mainBackground,
-                    child: AddTicketWidget(
-                        customFunctionOnTap: () async {
-                          var result = await // 저장하기 성공시 Home로 이동
-                              Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    MemberTicketMake.getUserInfo(
-                                        widget.userInfo)),
-                          ).then((value) {
-                            print("수강권 추가 result");
-                          });
-                        },
-                        label: '수강권 추가하기',
-                        addIcon: true),
 
-                    // ### 기존 버튼 -> 문제 없을 시 삭제
-                    // child: TextButton(
-                    //   onPressed: () async {
-                    //     var result = await // 저장하기 성공시 Home로 이동
-                    //         Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) =>
-                    //               MemberTicketMake.getUserInfo(
-                    //                   widget.userInfo)),
-                    //     ).then((value) {
-                    //       print("수강권 추가 result");
-                    //     });
-                    //   },
-                    //   child: Container(
-                    //     height: 50,
-                    //     decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(10),
-                    //         border:
-                    //             Border.all(color: Palette.gray99, width: 2)),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       children: [
-                    //         Text(
-                    //           "수강권 추가하기",
-                    //           style: TextStyle(
-                    //               fontSize: 16, color: Palette.gray66),
-                    //         ),
-                    //         Icon(
-                    //           Icons.add_circle_outline,
-                    //           color: Palette.gray66,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                  ),
-
-                  /// 수강권 리스트 영역 시작
+                  /// 스크롤 가능 영역
                   Expanded(
                     child: SingleChildScrollView(
-                      child: Container(
-                        constraints: BoxConstraints(minHeight: 700),
-                        color: Palette.mainBackground,
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            /// 사용 가능한 수강권 리스트
+                      physics: ScrollPhysics(),
+                      child: Column(
+                        children: [
+                          // 수강권 추가 버튼
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 5),
+                            color: Palette.mainBackground,
+                            child: AddTicketWidget(
+                                customFunctionOnTap: () async {
+                                  var result = await // 저장하기 성공시 Home로 이동
+                                      Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MemberTicketMake.getUserInfo(
+                                                widget.userInfo)),
+                                  ).then((value) {
+                                    print("수강권 추가 result");
+                                  });
+                                },
+                                label: '수강권 추가하기',
+                                addIcon: true),
 
-                            ////// 타이틀 + Expand 버튼
-                            InkWell(
-                              onTap: () {
-                                /// 리스트 오픈 토글
-                                isActiveTicketListOpened =
-                                    !isActiveTicketListOpened;
+                            // ### 기존 버튼 -> 문제 없을 시 삭제
+                            // child: TextButton(
+                            //   onPressed: () async {
+                            //     var result = await // 저장하기 성공시 Home로 이동
+                            //         Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               MemberTicketMake.getUserInfo(
+                            //                   widget.userInfo)),
+                            //     ).then((value) {
+                            //       print("수강권 추가 result");
+                            //     });
+                            //   },
+                            //   child: Container(
+                            //     height: 50,
+                            //     decoration: BoxDecoration(
+                            //         borderRadius: BorderRadius.circular(10),
+                            //         border:
+                            //             Border.all(color: Palette.gray99, width: 2)),
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       children: [
+                            //         Text(
+                            //           "수강권 추가하기",
+                            //           style: TextStyle(
+                            //               fontSize: 16, color: Palette.gray66),
+                            //         ),
+                            //         Icon(
+                            //           Icons.add_circle_outline,
+                            //           color: Palette.gray66,
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                          ),
 
-                                setState(() {});
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "사용 가능한 수강권(${getListCnt(globalVariables.memberTicketList, true)})",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Palette.gray66,
-                                        fontWeight: FontWeight.bold),
+                          /// 수강권 리스트 영역 시작
+                          Container(
+                            constraints: BoxConstraints(minHeight: 700),
+                            color: Palette.mainBackground,
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                /// 사용 가능한 수강권 리스트
+
+                                ////// 타이틀 + Expand 버튼
+                                InkWell(
+                                  onTap: () {
+                                    /// 리스트 오픈 토글
+                                    isActiveTicketListOpened =
+                                        !isActiveTicketListOpened;
+
+                                    setState(() {});
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "사용 가능한 수강권(${getListCnt(globalVariables.memberTicketList, true)})",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Palette.gray66,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(
+                                          isActiveTicketListOpened
+                                              ? Icons.expand_more
+                                              : Icons.expand_less,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Icon(
-                                    isActiveTicketListOpened
-                                        ? Icons.expand_more
-                                        : Icons.expand_less,
-                                  )
-                                ],
-                              ),
-                            ),
+                                ),
 
-                            ////// 사용 가능한 수강권 리스트
+                                ////// 사용 가능한 수강권 리스트
 
-                            Offstage(
-                              offstage: isActiveTicketListOpened,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    ListView.builder(
+                                Offstage(
+                                  offstage: isActiveTicketListOpened,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: globalVariables
+                                                .memberTicketList.length,
+                                            itemBuilder: ((BuildContext context,
+                                                int index) {
+                                              print(
+                                                  "widget.memberTList![index]['ticketCountLeft'] : ${widget.memberTList![index]['ticketCountLeft']} ");
+                                              if (widget.memberTList![index]
+                                                          ['memberId'] ==
+                                                      widget.userInfo!.docId &&
+                                                  widget.memberTList![index]
+                                                          ['isAlive'] ==
+                                                      true) {
+                                                return Container(
+                                                  alignment: Alignment.center,
+                                                  child: TicketWidget(
+                                                    customFunctionOnLongPress:
+                                                        () async {
+                                                      var result =
+                                                          await // 저장하기 성공시 Home로 이동
+                                                          Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                MemberTicketMake(
+                                                                    widget
+                                                                        .userInfo,
+                                                                    widget.memberTList![
+                                                                            index]
+                                                                        [
+                                                                        'ticketTitle'])),
+                                                      ).then((value) {
+                                                        print("수강권 추가 result");
+                                                      });
+                                                    },
+                                                    selected: widget
+                                                            .memberTList![index]
+                                                        ['isSelected'],
+                                                    ticketCountLeft: int.parse(
+                                                        widget
+                                                            .memberTList![index]
+                                                                [
+                                                                'ticketCountLeft']
+                                                            .toString()),
+                                                    ticketCountAll: int.parse(
+                                                        widget
+                                                            .memberTList![index]
+                                                                [
+                                                                'ticketCountAll']
+                                                            .toString()),
+                                                    ticketTitle: widget
+                                                            .memberTList![index]
+                                                        ['ticketTitle'],
+                                                    ticketDescription: widget
+                                                            .memberTList![index]
+                                                        ['ticketDescription'],
+                                                    ticketStartDate:
+                                                        getDateFromTimeStamp(
+                                                            widget.memberTList![
+                                                                    index][
+                                                                'ticketStartDate']),
+                                                    ticketEndDate:
+                                                        getDateFromTimeStamp(
+                                                            widget.memberTList![
+                                                                    index][
+                                                                'ticketEndDate']),
+                                                    ticketDateLeft: int.parse(
+                                                        widget
+                                                            .memberTList![index]
+                                                                [
+                                                                'ticketDateLeft']
+                                                            .toString()),
+                                                    customFunctionOnTap: () {
+                                                      for (int i = 0;
+                                                          i <
+                                                              widget
+                                                                  .memberTList!
+                                                                  .length;
+                                                          i++) {
+                                                        if (i == index) {
+                                                          widget.memberTList![i]
+                                                                  [
+                                                                  'isSelected'] =
+                                                              !widget.memberTList![
+                                                                      i][
+                                                                  'isSelected'];
+                                                        } else {
+                                                          widget.memberTList![i]
+                                                                  [
+                                                                  'isSelected'] =
+                                                              false;
+                                                        }
+                                                      }
+                                                      print(
+                                                          "widget.memberTList![index]['selectedUi'] : ${widget.memberTList![index]['selectedUi']}");
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                );
+                                              } else {
+                                                return SizedBox.shrink();
+                                              }
+                                            })),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+
+                                /// 만료된 수강권 리스트
+
+                                /// /// 타이틀 + Expand버튼
+                                InkWell(
+                                  onTap: () {
+                                    /// 리스트 오픈 토글
+                                    isExpiredTicketListOpened =
+                                        !isExpiredTicketListOpened;
+                                    setState(() {});
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "만료된 수강권(${getListCnt(globalVariables.memberTicketList, false)})",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Palette.gray66,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(
+                                          isExpiredTicketListOpened
+                                              ? Icons.expand_more
+                                              : Icons.expand_less,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                ////// 만료된 수강권 리스트
+                                Offstage(
+                                  offstage: isExpiredTicketListOpened,
+                                  child: Container(
+                                    width: double.infinity,
+                                    child: Container(
+                                      child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        controller: scrollController,
                                         shrinkWrap: true,
                                         itemCount: globalVariables
                                             .memberTicketList.length,
                                         itemBuilder:
-                                            ((BuildContext context, int index) {
-                                          print(
-                                              "widget.memberTList![index]['ticketCountLeft'] : ${widget.memberTList![index]['ticketCountLeft']} ");
+                                            (BuildContext context, int index) {
+                                          // print("Expired - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                                           if (widget.memberTList![index]
                                                       ['memberId'] ==
                                                   widget.userInfo!.docId &&
                                               widget.memberTList![index]
                                                       ['isAlive'] ==
-                                                  true) {
+                                                  false) {
                                             return Container(
-                                              alignment: Alignment.center,
-                                              child: TicketWidget(
-                                                customFunctionOnLongPress:
-                                                    () async {
-                                                  var result =
-                                                      await // 저장하기 성공시 Home로 이동
-                                                      Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MemberTicketMake(
-                                                                widget.userInfo,
-                                                                widget.memberTList![
-                                                                        index][
-                                                                    'ticketTitle'])),
-                                                  ).then((value) {
-                                                    print("수강권 추가 result");
-                                                  });
-                                                },
-                                                selected:
-                                                    widget.memberTList![index]
+                                                alignment: Alignment.center,
+                                                child: TicketWidget(
+                                                    customFunctionOnTap: () {
+                                                      for (int i = 0;
+                                                          i <
+                                                              widget
+                                                                  .memberTList!
+                                                                  .length;
+                                                          i++) {
+                                                        if (i == index) {
+                                                          widget.memberTList![i]
+                                                                  [
+                                                                  'isSelected'] =
+                                                              !widget.memberTList![
+                                                                      i][
+                                                                  'isSelected'];
+                                                        } else {
+                                                          widget.memberTList![i]
+                                                                  [
+                                                                  'isSelected'] =
+                                                              false;
+                                                        }
+                                                      }
+                                                      print(
+                                                          "widget.memberTList![index]['isSelected'] : ${widget.memberTList![index]['selectedUi']}");
+                                                      setState(() {});
+                                                    },
+                                                    customFunctionOnLongPress:
+                                                        () async {
+                                                      var result =
+                                                          await // 저장하기 성공시 Home로 이동
+                                                          Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                MemberTicketMake(
+                                                                    widget
+                                                                        .userInfo,
+                                                                    widget.memberTList![
+                                                                            index]
+                                                                        [
+                                                                        'ticketTitle'])),
+                                                      ).then((value) {
+                                                        print("수강권 추가 result");
+                                                      });
+                                                    },
+                                                    selected: widget.memberTList![index]
                                                         ['isSelected'],
-                                                ticketCountLeft: int.parse(
-                                                    widget.memberTList![index]
-                                                            ['ticketCountLeft']
-                                                        .toString()),
-                                                ticketCountAll: int.parse(widget
-                                                    .memberTList![index]
-                                                        ['ticketCountAll']
-                                                    .toString()),
-                                                ticketTitle:
-                                                    widget.memberTList![index]
-                                                        ['ticketTitle'],
-                                                ticketDescription:
-                                                    widget.memberTList![index]
+                                                    ticketCountLeft:
+                                                        widget.memberTList![index]
+                                                            ['ticketCountLeft'],
+                                                    ticketCountAll:
+                                                        widget.memberTList![index]
+                                                            ['ticketCountAll'],
+                                                    ticketTitle:
+                                                        widget.memberTList![index]
+                                                            ['ticketTitle'],
+                                                    ticketDescription: widget
+                                                            .memberTList![index]
                                                         ['ticketDescription'],
-                                                ticketStartDate:
-                                                    getDateFromTimeStamp(widget
-                                                            .memberTList![index]
-                                                        ['ticketStartDate']),
-                                                ticketEndDate:
-                                                    getDateFromTimeStamp(widget
-                                                            .memberTList![index]
-                                                        ['ticketEndDate']),
-                                                ticketDateLeft: int.parse(widget
-                                                    .memberTList![index]
-                                                        ['ticketDateLeft']
-                                                    .toString()),
-                                                customFunctionOnTap: () {
-                                                  for (int i = 0;
-                                                      i <
-                                                          widget.memberTList!
-                                                              .length;
-                                                      i++) {
-                                                    if (i == index) {
-                                                      widget.memberTList![i]
-                                                              ['isSelected'] =
-                                                          !widget.memberTList![
-                                                              i]['isSelected'];
-                                                    } else {
-                                                      widget.memberTList![i]
-                                                              ['isSelected'] =
-                                                          false;
-                                                    }
-                                                  }
-                                                  print(
-                                                      "widget.memberTList![index]['selectedUi'] : ${widget.memberTList![index]['selectedUi']}");
-                                                  setState(() {});
-                                                },
-                                              ),
-                                            );
+                                                    ticketStartDate: getDateFromTimeStamp(
+                                                        widget.memberTList![index]
+                                                            ['ticketStartDate']),
+                                                    ticketEndDate: getDateFromTimeStamp(widget.memberTList![index]['ticketEndDate']),
+                                                    ticketDateLeft: widget.memberTList![index]['ticketDateLeft']));
                                           } else {
-                                            return SizedBox.shrink();
+                                            return null;
                                           }
-                                        })),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            /// 만료된 수강권 리스트
-
-                            /// /// 타이틀 + Expand버튼
-                            InkWell(
-                              onTap: () {
-                                /// 리스트 오픈 토글
-                                isExpiredTicketListOpened =
-                                    !isExpiredTicketListOpened;
-                                setState(() {});
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "만료된 수강권(${getListCnt(globalVariables.memberTicketList, false)})",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Palette.gray66,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(
-                                    isExpiredTicketListOpened
-                                        ? Icons.expand_more
-                                        : Icons.expand_less,
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            ////// 만료된 수강권 리스트
-                            Offstage(
-                              offstage: isExpiredTicketListOpened,
-                              child: Container(
-                                width: double.infinity,
-                                child: Container(
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    controller: scrollController,
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        globalVariables.memberTicketList.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      // print("Expired - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                                      if (widget.memberTList![index]
-                                                  ['memberId'] ==
-                                              widget.userInfo!.docId &&
-                                          widget.memberTList![index]
-                                                  ['isAlive'] ==
-                                              false) {
-                                        return Container(
-                                            alignment: Alignment.center,
-                                            child: TicketWidget(
-                                                customFunctionOnTap: () {
-                                                  for (int i = 0;
-                                                      i <
-                                                          widget.memberTList!
-                                                              .length;
-                                                      i++) {
-                                                    if (i == index) {
-                                                      widget.memberTList![i]
-                                                              ['isSelected'] =
-                                                          !widget.memberTList![
-                                                              i]['isSelected'];
-                                                    } else {
-                                                      widget.memberTList![i]
-                                                              ['isSelected'] =
-                                                          false;
-                                                    }
-                                                  }
-                                                  print(
-                                                      "widget.memberTList![index]['isSelected'] : ${widget.memberTList![index]['selectedUi']}");
-                                                  setState(() {});
-                                                },
-                                                customFunctionOnLongPress:
-                                                    () async {
-                                                  var result =
-                                                      await // 저장하기 성공시 Home로 이동
-                                                      Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MemberTicketMake(
-                                                                widget.userInfo,
-                                                                widget.memberTList![
-                                                                        index][
-                                                                    'ticketTitle'])),
-                                                  ).then((value) {
-                                                    print("수강권 추가 result");
-                                                  });
-                                                },
-                                                selected:
-                                                    widget.memberTList![index]
-                                                        ['isSelected'],
-                                                ticketCountLeft:
-                                                    widget.memberTList![index]
-                                                        ['ticketCountLeft'],
-                                                ticketCountAll:
-                                                    widget.memberTList![index]
-                                                        ['ticketCountAll'],
-                                                ticketTitle:
-                                                    widget.memberTList![index]
-                                                        ['ticketTitle'],
-                                                ticketDescription:
-                                                    widget.memberTList![index]
-                                                        ['ticketDescription'],
-                                                ticketStartDate: getDateFromTimeStamp(
-                                                    widget.memberTList![index]
-                                                        ['ticketStartDate']),
-                                                ticketEndDate:
-                                                    getDateFromTimeStamp(widget.memberTList![index]['ticketEndDate']),
-                                                ticketDateLeft: widget.memberTList![index]['ticketDateLeft']));
-                                      } else {
-                                        return null;
-                                      }
-                                    },
+                                        },
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

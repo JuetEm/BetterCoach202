@@ -342,7 +342,7 @@ class _LoginPageState extends State<LoginPage> {
           // appBar: BaseAppBarMethod(context, "로그인", null),
           body: CenterConstrainedBody(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

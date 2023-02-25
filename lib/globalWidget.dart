@@ -861,6 +861,7 @@ class _BaseContainerState extends State<BaseContainer> {
     return Row(
       children: [
         Container(
+          constraints: BoxConstraints(maxWidth: 378),
           width: MediaQuery.of(context).size.width - 102,
           alignment: Alignment.center,
           child: Card(

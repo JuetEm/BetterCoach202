@@ -112,7 +112,28 @@ class _ReportState extends State<Report> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.send_rounded)),
+          IconButton(
+              onPressed: () {
+                content = errorContents.text;
+                AuthService authService = AuthService();
+                var user = authService.currentUser();
+                ReportService reportService = ReportService();
+                reportService
+                    .create(
+                        user!.uid,
+                        user.displayName,
+                        user.phoneNumber,
+                        user.email,
+                        selectedPageName,
+                        content,
+                        DateTime.now(),
+                        'N',
+                        null)
+                    .then((value) {
+                  Navigator.pop(context);
+                });
+              },
+              icon: Icon(Icons.send_rounded)),
           SizedBox(
             width: 10,
           )
