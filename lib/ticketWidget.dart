@@ -189,7 +189,7 @@ class _TicketWidgetState extends State<TicketWidget> {
             ),
           ),
         ),
-      ).animate(target: _toggle ? 0.5 : 0).scaleXY(end: 0.9),
+      ).animate(target: _toggle ? 1 : 0).scaleXY(end: 0.95, duration: 100.ms),
     );
   }
 }
@@ -265,7 +265,7 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
             ),
           ),
         ),
-      ).animate(target: _toggle ? 0.5 : 0).scaleXY(end: 0.9),
+      ).animate(target: _toggle ? 1 : 0).scaleXY(end: 0.95, duration: 100.ms),
     );
   }
 }

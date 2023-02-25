@@ -62,6 +62,6 @@ class _GrayInkwellButtonState extends State<GrayInkwellButton> {
           ),
         ),
       ),
-    ).animate(target: _toggle ? 0.5 : 0).scaleXY(end: 0.9);
+    ).animate(target: _toggle ? 1 : 0).scaleXY(end: 0.95, duration: 100.ms);
   }
 }

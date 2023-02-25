@@ -3,6 +3,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/binding/memberTicket_service.dart';
@@ -1032,7 +1033,11 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                           pageName: calendarName,
                           eventList: [],
                         ),
-                      ),
+                      )
+                          .animate(target: !calendarIsOffStaged ? 1 : 0)
+                          .fadeIn(duration: 300.ms)
+                          .animate(target: calendarIsOffStaged ? 1 : 0)
+                          .fadeOut(duration: 300.ms),
                     ),
 
                     /// 수강권 설명
