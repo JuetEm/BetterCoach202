@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/actionSelector.dart';
+import 'package:web_project/app/ui/lessonAdd.dart';
 import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/app/ui/sequenceLibrary.dart';
 import 'package:web_project/app/ui/ticketLibraryManage.dart';
@@ -354,7 +355,7 @@ class _MemberListState extends State<MemberList> {
             backgroundColor: Palette.mainBackground,
             title: Text(
               "회원목록",
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                     color: Palette.gray00,
@@ -657,6 +658,8 @@ class _MemberListState extends State<MemberList> {
                                       memberService: memberService,
                                       resultMemberList:
                                           globalVariables.resultList,
+
+                                      /// 회원카드 선택 시 함수
                                       customFunctionOnTap: () async {
                                         // 회원 카드 선택시 MemberInfo로 이동
 
@@ -684,6 +687,12 @@ class _MemberListState extends State<MemberList> {
                                                 "memberList - memberinfo pop setState!!");
                                           });
                                         });
+                                      },
+
+                                      /// 노트 추가 버튼
+                                      noteAddFunctionOnTap: () {
+                                        print('노트 추가 버튼 클릭!');
+                                        setState(() {});
                                       },
                                     ).animate().slide(
                                         begin: Offset(0, 0.5),
