@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +97,11 @@ bool isSequenceSaveChecked = false;
 bool isTicketCountChecked = true;
 
 bool isFirst = true;
+
+String getActionPosition(String apparatunName, String actionName, List actionList){
+
+return "";
+}
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
@@ -978,383 +985,443 @@ class _LessonAddState extends State<LessonAdd> {
                                                 docs.length, tmpLessonInfo,
                                                 growable: true);
 
-                                        return ReorderableListView.builder(
-                                          itemCount: docs.length,
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          //buildDefaultDragHandles: false,
-                                          onReorder: ((oldIndex, newIndex) {
-                                            if (newIndex > docs.length)
-                                              newIndex = docs.length;
-                                            if (oldIndex < newIndex)
-                                              newIndex -= 1;
-                                            docs.insert(newIndex,
-                                                docs.removeAt(oldIndex));
-                                            totalNoteControllers.insert(
-                                                newIndex,
-                                                totalNoteControllers
-                                                    .removeAt(oldIndex));
-                                            //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
-                                            // totalNoteTextFieldDocId.insert(
-                                            //     newIndex,
-                                            //     totalNoteTextFieldDocId
-                                            //         .removeAt(oldIndex));
-                                            //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
-                                            // tmpLessonInfoList.insert(
-                                            //     newIndex,
-                                            //     tmpLessonInfoList
-                                            //         .removeAt(oldIndex));
+                                        return Column(
+                                          children: [
+                                            ListView.builder(
+                                              shrinkWrap: true,
+                                                itemCount: docs.length,
+                                                itemBuilder: (context, index) {
+                                                  final doc = docs[index];
+                                                  print("kkkkkkkkkkk - doc : ${doc.data()}");
+                                                  String uid =
+                                                    doc.get('uid'); // 강사 고유번호
 
-                                            for (int pos = 0;
-                                                pos < docs.length;
-                                                pos++) {
-                                              lessonService.updatePos(
-                                                  docs[pos].id, pos);
-                                            }
+                                                String name =
+                                                    doc.get('name'); //회원이름
+                                                String phoneNumber = doc.get(
+                                                    'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                                String apratusName = doc
+                                                    .get('apratusName'); //기구이름
+                                                String actionName = doc
+                                                    .get('actionName'); //동작이름
+                                                String lessonDate = doc
+                                                    .get('lessonDate'); //수업날짜
+                                                String grade =
+                                                    doc.get('grade'); //수행도
+                                                String totalNote = doc
+                                                    .get('totalNote'); //수업총메모
 
-                                            //setState(() {});
-                                          }),
+                                                String position = "";
+                                                  
+                                                  return Text("허허 : ${actionName}");
+                                                  
+                                                  // return ActionListTile(actionName: actionName, apparatus: apratusName, position: position, name: name, phoneNumber: phoneNumber, lessonDate: lessonDate, grade: grade, totalNote: totalNote, docId: docId, memberdocId: memberdocId, uid: uid, pos: pos, isSelected: isSelected, isSelectable: isSelectable, isDraggable: isDraggable, customFunctionOnTap: customFunctionOnTap)
+                                                }),
+                                            ReorderableListView.builder(
+                                              itemCount: docs.length,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              //buildDefaultDragHandles: false,
+                                              onReorder: ((oldIndex, newIndex) {
+                                                if (newIndex > docs.length)
+                                                  newIndex = docs.length;
+                                                if (oldIndex < newIndex)
+                                                  newIndex -= 1;
+                                                docs.insert(newIndex,
+                                                    docs.removeAt(oldIndex));
+                                                totalNoteControllers.insert(
+                                                    newIndex,
+                                                    totalNoteControllers
+                                                        .removeAt(oldIndex));
+                                                //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
+                                                // totalNoteTextFieldDocId.insert(
+                                                //     newIndex,
+                                                //     totalNoteTextFieldDocId
+                                                //         .removeAt(oldIndex));
+                                                //재정렬에 따른 컨트롤러, totalNote DocId, tmp 저장
+                                                // tmpLessonInfoList.insert(
+                                                //     newIndex,
+                                                //     tmpLessonInfoList
+                                                //         .removeAt(oldIndex));
 
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final doc = docs[index];
-                                            print('에러포인트시작 : ${index}');
+                                                for (int pos = 0;
+                                                    pos < docs.length;
+                                                    pos++) {
+                                                  lessonService.updatePos(
+                                                      docs[pos].id, pos);
+                                                }
 
-                                            totalNoteTextFieldDocId[index] =
-                                                doc.id;
+                                                //setState(() {});
+                                              }),
 
-                                            print(
-                                                "total노트 : ${totalNoteTextFieldDocId}");
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final doc = docs[index];
+                                                print('에러포인트시작 : ${index}');
 
-                                            //일괄 textfeild 저장하기 위해 docID저장
-                                            //예외처리 ::
-                                            // if ((totalNoteTextFieldDocId.length -
-                                            //         1) >=
-                                            //     index) {
-                                            //   totalNoteTextFieldDocId[index] =
-                                            //       doc.id;
-                                            //   flagIndexErr = true;
-                                            // } else {
-                                            //   flagIndexErr = false;
-                                            // }
-                                            // print(
-                                            //     '에러방지실행 : ${flagIndexErr},${totalNoteTextFieldDocId.length},${index}');
+                                                totalNoteTextFieldDocId[index] =
+                                                    doc.id;
 
-                                            // print('에러포인트끝 : ${index}');
+                                                print(
+                                                    "total노트 : ${totalNoteTextFieldDocId}");
 
-                                            String uid =
-                                                doc.get('uid'); // 강사 고유번호
+                                                //일괄 textfeild 저장하기 위해 docID저장
+                                                //예외처리 ::
+                                                // if ((totalNoteTextFieldDocId.length -
+                                                //         1) >=
+                                                //     index) {
+                                                //   totalNoteTextFieldDocId[index] =
+                                                //       doc.id;
+                                                //   flagIndexErr = true;
+                                                // } else {
+                                                //   flagIndexErr = false;
+                                                // }
+                                                // print(
+                                                //     '에러방지실행 : ${flagIndexErr},${totalNoteTextFieldDocId.length},${index}');
 
-                                            String name =
-                                                doc.get('name'); //회원이름
-                                            String phoneNumber = doc.get(
-                                                'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
-                                            String apratusName =
-                                                doc.get('apratusName'); //기구이름
-                                            String actionName =
-                                                doc.get('actionName'); //동작이름
-                                            String lessonDate =
-                                                doc.get('lessonDate'); //수업날짜
-                                            String grade =
-                                                doc.get('grade'); //수행도
-                                            String totalNote =
-                                                doc.get('totalNote'); //수업총메모
+                                                // print('에러포인트끝 : ${index}');
 
-                                            print(
-                                                "[LA] 사용자 id tmpLessonInfo에 저장 : ${customUserInfo.docId}");
+                                                String uid =
+                                                    doc.get('uid'); // 강사 고유번호
 
-                                            tmpLessonInfo = TmpLessonInfo(
-                                              customUserInfo.docId,
-                                              apratusName,
-                                              actionName,
-                                              name,
-                                              lessonDate,
-                                              grade,
-                                              totalNote,
-                                              doc.id,
-                                              uid,
-                                              true,
-                                            );
+                                                String name =
+                                                    doc.get('name'); //회원이름
+                                                String phoneNumber = doc.get(
+                                                    'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                                String apratusName = doc
+                                                    .get('apratusName'); //기구이름
+                                                String actionName = doc
+                                                    .get('actionName'); //동작이름
+                                                String lessonDate = doc
+                                                    .get('lessonDate'); //수업날짜
+                                                String grade =
+                                                    doc.get('grade'); //수행도
+                                                String totalNote = doc
+                                                    .get('totalNote'); //수업총메모
 
-                                            tmpLessonInfoList[index] =
-                                                tmpLessonInfo;
+                                                print(
+                                                    "[LA] 사용자 id tmpLessonInfo에 저장 : ${customUserInfo.docId}");
 
-                                            // if (tmpLessonInfoList.isEmpty) {
-                                            //   tmpLessonInfoList
-                                            //       .add(tmpLessonInfo);
-                                            // } else {
-                                            //   addTmpInfoList(tmpLessonInfoList,
-                                            //       tmpLessonInfo);
-                                            // }
-                                            for (var i = 0;
-                                                i < tmpLessonInfoList.length;
-                                                ++i) {
-                                              print(
-                                                  "${tmpLessonInfoList[i].docId}");
-                                            }
-                                            print(
-                                                "InfoList에 내용 추가 : 길이${tmpLessonInfoList.length.toString()}");
-                                            //tmpLessonInfoList.add(tmpLessonInfo);
+                                                tmpLessonInfo = TmpLessonInfo(
+                                                  customUserInfo.docId,
+                                                  apratusName,
+                                                  actionName,
+                                                  name,
+                                                  lessonDate,
+                                                  grade,
+                                                  totalNote,
+                                                  doc.id,
+                                                  uid,
+                                                  true,
+                                                );
 
-                                            //print(
-                                            //    "tmpLessonInfoList:${tmpLessonInfoList[index]}");
-                                            //totalNotes[index] =
-                                            //    doc.get('totalNote'); //수업총메모
-                                            String lessonDateTrim = " ";
-                                            String apratusNameTrim = " ";
-                                            int pos = doc.get('pos'); //순서
-                                            // 날짜 글자 자르기
-                                            if (lessonDate.length > 0) {
-                                              lessonDateTrim =
-                                                  lessonDate.substring(2, 10);
-                                            }
-                                            // 기구 첫두글자 자르기
-                                            if (apratusName.length > 0) {
-                                              apratusNameTrim =
-                                                  apratusName.substring(0, 2);
-                                            }
+                                                tmpLessonInfoList[index] =
+                                                    tmpLessonInfo;
 
-                                            // 첫 화면에서
+                                                // if (tmpLessonInfoList.isEmpty) {
+                                                //   tmpLessonInfoList
+                                                //       .add(tmpLessonInfo);
+                                                // } else {
+                                                //   addTmpInfoList(tmpLessonInfoList,
+                                                //       tmpLessonInfo);
+                                                // }
+                                                for (var i = 0;
+                                                    i <
+                                                        tmpLessonInfoList
+                                                            .length;
+                                                    ++i) {
+                                                  print(
+                                                      "${tmpLessonInfoList[i].docId}");
+                                                }
+                                                print(
+                                                    "InfoList에 내용 추가 : 길이${tmpLessonInfoList.length.toString()}");
+                                                //tmpLessonInfoList.add(tmpLessonInfo);
 
-                                            // ScaffoldMessenger.of(context)
-                                            //     .showSnackBar(SnackBar(
-                                            //   content: Text(
-                                            //       "텍스트필드!!${initStateTextfield}"),
-                                            // ));
-                                            // print(
-                                            //     '텍스트필드채움 : ActionSelectMode-${ActionSelectMode}');
+                                                //print(
+                                                //    "tmpLessonInfoList:${tmpLessonInfoList[index]}");
+                                                //totalNotes[index] =
+                                                //    doc.get('totalNote'); //수업총메모
+                                                String lessonDateTrim = " ";
+                                                String apratusNameTrim = " ";
+                                                int pos = doc.get('pos'); //순서
+                                                // 날짜 글자 자르기
+                                                if (lessonDate.length > 0) {
+                                                  lessonDateTrim = lessonDate
+                                                      .substring(2, 10);
+                                                }
+                                                // 기구 첫두글자 자르기
+                                                if (apratusName.length > 0) {
+                                                  apratusNameTrim = apratusName
+                                                      .substring(0, 2);
+                                                }
 
-                                            // totalNoteControllers[index].text =
-                                            //     totalNote;
+                                                // 첫 화면에서
 
-                                            // if (initStateTextfield) {
-                                            //   //예외처리 ::
-                                            //   if (totalNoteTextFieldDocId.length >
-                                            //       index) {
-                                            //     totalNoteControllers[index].text =
-                                            //         totalNote;
-                                            //   }
+                                                // ScaffoldMessenger.of(context)
+                                                //     .showSnackBar(SnackBar(
+                                                //   content: Text(
+                                                //       "텍스트필드!!${initStateTextfield}"),
+                                                // ));
+                                                // print(
+                                                //     '텍스트필드채움 : ActionSelectMode-${ActionSelectMode}');
 
-                                            //   if (index == (docs.length - 1)) {
-                                            //     if (initStateTextfieldCnt > 2) {
-                                            //       initStateTextfield = false;
-                                            //       initStateTextfieldCnt = 0;
-                                            //     } else {
-                                            //       initStateTextfieldCnt++;
-                                            //     }
-                                            //     print(
-                                            //         '이제안바꿔 : ${initStateTextfield}');
-                                            //   }
-                                            // }
-                                            return Column(
-                                              key: ValueKey(doc),
-                                              children: [
-                                                Column(
+                                                // totalNoteControllers[index].text =
+                                                //     totalNote;
+
+                                                // if (initStateTextfield) {
+                                                //   //예외처리 ::
+                                                //   if (totalNoteTextFieldDocId.length >
+                                                //       index) {
+                                                //     totalNoteControllers[index].text =
+                                                //         totalNote;
+                                                //   }
+
+                                                //   if (index == (docs.length - 1)) {
+                                                //     if (initStateTextfieldCnt > 2) {
+                                                //       initStateTextfield = false;
+                                                //       initStateTextfieldCnt = 0;
+                                                //     } else {
+                                                //       initStateTextfieldCnt++;
+                                                //     }
+                                                //     print(
+                                                //         '이제안바꿔 : ${initStateTextfield}');
+                                                //   }
+                                                // }
+                                                return Column(
+                                                  key: ValueKey(doc),
                                                   children: [
-                                                    Container(
-                                                      //color: Colors.red.withOpacity(0),
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                        top: 10,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    10.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    10.0),
-                                                          ),
-                                                          color: Palette
-                                                              .titleOrange
+                                                    Column(
+                                                      children: [
+                                                        Container(
                                                           //color: Colors.red.withOpacity(0),
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 10,
                                                           ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          //top: 5,
-                                                          //bottom: 5,
-                                                          left: 10.0,
-                                                          right: 10.0,
-                                                        ),
-                                                        child: SizedBox(
-                                                          height: 40,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Icon(
-                                                                Icons
-                                                                    .drag_handle_outlined,
-                                                                color: Palette
-                                                                    .gray33,
-                                                                size: 20.0,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                apratusNameTrim,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                actionName,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      14.0,
-                                                                ),
-                                                              ),
-                                                              Spacer(flex: 1),
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    barrierDismissible:
-                                                                        true,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return AlertDialog(
-                                                                        title:
-                                                                            Text(
-                                                                          '삭제',
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontSize: 16),
-                                                                        ),
-                                                                        content: Text(
-                                                                            '동작을 삭제하시겠습니까?',
-                                                                            style:
-                                                                                TextStyle(fontSize: 14)),
-                                                                        actions: <
-                                                                            Widget>[
-                                                                          TextButton(
-                                                                            onPressed:
-                                                                                () async {
-                                                                              await lessonService.deleteSinglelesson(
-                                                                                  uid: uid,
-                                                                                  memberId: customUserInfo.docId,
-                                                                                  docId: doc.id,
-                                                                                  lessonDate: lessonDate,
-                                                                                  onSuccess: () {
-                                                                                    totalNoteControllers.removeAt(index);
-                                                                                    //totalNoteTextFieldDocId.removeAt(index);
-                                                                                    //tmpLessonInfoList.removeAt(index);
-
-                                                                                    //print("삭제시시컨트롤러:${totalNoteControllers}");
-                                                                                    //print("삭제시노트아이디:${totalNoteTextFieldDocId}");
-                                                                                  },
-                                                                                  onError: () {});
-                                                                              Navigator.of(context).pop();
-                                                                            },
-                                                                            child:
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10.0),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10.0),
+                                                                  ),
+                                                                  color: Palette
+                                                                      .titleOrange
+                                                                  //color: Colors.red.withOpacity(0),
+                                                                  ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              //top: 5,
+                                                              //bottom: 5,
+                                                              left: 10.0,
+                                                              right: 10.0,
+                                                            ),
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .drag_handle_outlined,
+                                                                    color: Palette
+                                                                        .gray33,
+                                                                    size: 20.0,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Text(
+                                                                    apratusNameTrim,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Text(
+                                                                    actionName,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14.0,
+                                                                    ),
+                                                                  ),
+                                                                  Spacer(
+                                                                      flex: 1),
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        barrierDismissible:
+                                                                            true,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return AlertDialog(
+                                                                            title:
                                                                                 Text(
                                                                               '삭제',
-                                                                              style: TextStyle(fontSize: 16),
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                                                             ),
-                                                                          ),
-                                                                          TextButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.of(context).pop();
-                                                                            },
-                                                                            child:
-                                                                                Text(
-                                                                              '취소',
-                                                                              style: TextStyle(fontSize: 16, color: Palette.textRed),
-                                                                            ),
-                                                                          ),
-                                                                        ],
+                                                                            content:
+                                                                                Text('동작을 삭제하시겠습니까?', style: TextStyle(fontSize: 14)),
+                                                                            actions: <Widget>[
+                                                                              TextButton(
+                                                                                onPressed: () async {
+                                                                                  await lessonService.deleteSinglelesson(
+                                                                                      uid: uid,
+                                                                                      memberId: customUserInfo.docId,
+                                                                                      docId: doc.id,
+                                                                                      lessonDate: lessonDate,
+                                                                                      onSuccess: () {
+                                                                                        totalNoteControllers.removeAt(index);
+                                                                                        //totalNoteTextFieldDocId.removeAt(index);
+                                                                                        //tmpLessonInfoList.removeAt(index);
+
+                                                                                        //print("삭제시시컨트롤러:${totalNoteControllers}");
+                                                                                        //print("삭제시노트아이디:${totalNoteTextFieldDocId}");
+                                                                                      },
+                                                                                      onError: () {});
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: Text(
+                                                                                  '삭제',
+                                                                                  style: TextStyle(fontSize: 16),
+                                                                                ),
+                                                                              ),
+                                                                              TextButton(
+                                                                                onPressed: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: Text(
+                                                                                  '취소',
+                                                                                  style: TextStyle(fontSize: 16, color: Palette.textRed),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        },
                                                                       );
                                                                     },
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .remove_circle,
-                                                                  color: Palette
-                                                                      .statusRed,
-                                                                ),
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .remove_circle,
+                                                                      color: Palette
+                                                                          .statusRed,
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      height: 1,
-                                                      color: Palette.grayEE,
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              true,
-                                                          // ignore: unnecessary_new
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              10.0))),
-                                                              //title: Text('일별 메모 작성'),
-                                                              content: Builder(
-                                                                builder:
-                                                                    (context) {
-                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                                                  var height =
-                                                                      MediaQuery.of(
+                                                        Container(
+                                                          height: 1,
+                                                          color: Palette.grayEE,
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            showDialog(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true,
+                                                              // ignore: unnecessary_new
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(10.0))),
+                                                                  //title: Text('일별 메모 작성'),
+                                                                  content:
+                                                                      Builder(
+                                                                    builder:
+                                                                        (context) {
+                                                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                      var height = MediaQuery.of(
                                                                               context)
                                                                           .size
                                                                           .height;
-                                                                  var width =
-                                                                      MediaQuery.of(
+                                                                      var width = MediaQuery.of(
                                                                               context)
                                                                           .size
                                                                           .width;
-                                                                  totalNoteControllers[
-                                                                              index]
-                                                                          .text =
-                                                                      totalNote;
+                                                                      totalNoteControllers[index]
+                                                                              .text =
+                                                                          totalNote;
 
-                                                                  return Container(
-                                                                    //height:
-                                                                    //    40,
-                                                                    width:
-                                                                        width -
+                                                                      return Container(
+                                                                        //height:
+                                                                        //    40,
+                                                                        width: width -
                                                                             100,
-                                                                    child:
-                                                                        PopupTextField(
-                                                                      customController:
-                                                                          totalNoteControllers[
-                                                                              index],
-                                                                      hint:
-                                                                          "동작별 메모",
-                                                                      showArrow:
-                                                                          false,
-                                                                      customFunction:
+                                                                        child:
+                                                                            PopupTextField(
+                                                                          customController:
+                                                                              totalNoteControllers[index],
+                                                                          hint:
+                                                                              "동작별 메모",
+                                                                          showArrow:
+                                                                              false,
+                                                                          customFunction:
+                                                                              () async {
+                                                                            //일별 노트 저장
+                                                                            await totalNoteSingleSave(
+                                                                                lessonService,
+                                                                                totalNoteTextFieldDocId[index],
+                                                                                totalNoteControllers[index].text,
+                                                                                context,
+                                                                                index);
+                                                                          },
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  actions: <
+                                                                      Widget>[
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child:
+                                                                          Text(
+                                                                        '취소',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
                                                                           () async {
-                                                                        //일별 노트 저장
+                                                                        print(
+                                                                            "[LA] 동작별메모 저장 : totalNoteTextFieldDocId[index] / totalNoteControllers[index].text");
+                                                                        //동작별 노트 저장
                                                                         await totalNoteSingleSave(
                                                                             lessonService,
                                                                             totalNoteTextFieldDocId[index],
@@ -1362,132 +1429,108 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             context,
                                                                             index);
                                                                       },
+                                                                      child:
+                                                                          Text(
+                                                                        '저장',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
                                                                     ),
-                                                                  );
-                                                                },
-                                                              ),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  child: Text(
-                                                                    '취소',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            16),
-                                                                  ),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    print(
-                                                                        "[LA] 동작별메모 저장 : totalNoteTextFieldDocId[index] / totalNoteControllers[index].text");
-                                                                    //동작별 노트 저장
-                                                                    await totalNoteSingleSave(
-                                                                        lessonService,
-                                                                        totalNoteTextFieldDocId[
-                                                                            index],
-                                                                        totalNoteControllers[index]
-                                                                            .text,
-                                                                        context,
-                                                                        index);
-                                                                  },
-                                                                  child: Text(
-                                                                    '저장',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            16),
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                                  ],
+                                                                );
+                                                              },
                                                             );
                                                           },
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        //height: 40,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          10.0),
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          10.0),
-                                                                ),
-                                                                color: Palette
-                                                                    .grayFA
-                                                                //color: Colors.red.withOpacity(0),
-                                                                ),
-                                                        //color: Palette.grayEE,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  25, 5, 10, 5),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              totalNote.isEmpty
-                                                                  ? Text(
-                                                                      "동작별 메모를 남겨보세요.",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            14.0,
-                                                                        //fontWeight:
-                                                                        //FontWeight.bold,
-                                                                        color: Palette
-                                                                            .gray99,
-                                                                      ))
-                                                                  : Text(""),
-                                                              //SizedBox(width: 20),
-                                                              Expanded(
-                                                                child: Text(
-                                                                  totalNote,
-                                                                  // overflow:
-                                                                  //     TextOverflow
-                                                                  //         .fade,
-                                                                  maxLines: 10,
-                                                                  softWrap:
-                                                                      true,
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyText1!
-                                                                      .copyWith(
-                                                                        fontSize:
-                                                                            14.0,
-                                                                        height:
-                                                                            1.6, //줄간격
-                                                                      ),
-                                                                ),
+                                                          child: Container(
+                                                            //height: 40,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .only(
+                                                                      bottomLeft:
+                                                                          Radius.circular(
+                                                                              10.0),
+                                                                      bottomRight:
+                                                                          Radius.circular(
+                                                                              10.0),
+                                                                    ),
+                                                                    color: Palette
+                                                                        .grayFA
+                                                                    //color: Colors.red.withOpacity(0),
+                                                                    ),
+                                                            //color: Palette.grayEE,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      25,
+                                                                      5,
+                                                                      10,
+                                                                      5),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  totalNote
+                                                                          .isEmpty
+                                                                      ? Text(
+                                                                          "동작별 메모를 남겨보세요.",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            //fontWeight:
+                                                                            //FontWeight.bold,
+                                                                            color:
+                                                                                Palette.gray99,
+                                                                          ))
+                                                                      : Text(
+                                                                          ""),
+                                                                  //SizedBox(width: 20),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      totalNote,
+                                                                      // overflow:
+                                                                      //     TextOverflow
+                                                                      //         .fade,
+                                                                      maxLines:
+                                                                          10,
+                                                                      softWrap:
+                                                                          true,
+                                                                      style: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .bodyText1!
+                                                                          .copyWith(
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            height:
+                                                                                1.6, //줄간격
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                  //Spacer(flex: 1),
+                                                                  Icon(
+                                                                    Icons
+                                                                        .mode_edit,
+                                                                    color: Palette
+                                                                        .gray66,
+                                                                  ),
+                                                                ],
                                                               ),
-                                                              //Spacer(flex: 1),
-                                                              Icon(
-                                                                Icons.mode_edit,
-                                                                color: Palette
-                                                                    .gray66,
-                                                              ),
-                                                            ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
                                                   ],
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                                );
+                                              },
+                                            ),
+                                          ],
                                         );
                                       }
                                       ;
