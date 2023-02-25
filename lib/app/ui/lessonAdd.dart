@@ -98,9 +98,9 @@ bool isTicketCountChecked = true;
 
 bool isFirst = true;
 
-String getActionPosition(String apparatunName, String actionName, List actionList){
-
-return "";
+String getActionPosition(
+    String apparatunName, String actionName, List actionList) {
+  return "";
 }
 
 class LessonAdd extends StatefulWidget {
@@ -227,7 +227,49 @@ class _LessonAddState extends State<LessonAdd> {
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
-          }, null, null),
+          }, [
+            Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: TextButton(
+                  onPressed: () async {
+                    print(
+                        "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
+
+                    // 수업일, 동작선택, 필수 입력
+                    if ((todayNoteView == "") && actionNullCheck == true) {
+                      //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
+                      //await todayNoteSave(
+                      //    lessonService, customUserInfo, context);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
+                      ));
+                    } else {
+                      print(
+                          "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / initState : ${initState}");
+                      DateChangeMode = false;
+
+                      print("[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+
+                      //일별 노트 저장
+                      await todayNoteSave(
+                          lessonService, customUserInfo, context);
+
+                      // await totalNoteSave(
+                      //     lessonService, customUserInfo, context);
+
+                      lessonService.notifyListeners();
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(
+                    '완료',
+                    style: TextStyle(
+                      color: Palette.textBlue,
+                      fontSize: 16,
+                    ),
+                  )),
+            )
+          ], null),
 
           body: CenterConstrainedBody(
             child: Container(
@@ -988,33 +1030,35 @@ class _LessonAddState extends State<LessonAdd> {
                                         return Column(
                                           children: [
                                             ListView.builder(
-                                              shrinkWrap: true,
+                                                shrinkWrap: true,
                                                 itemCount: docs.length,
                                                 itemBuilder: (context, index) {
                                                   final doc = docs[index];
-                                                  print("kkkkkkkkkkk - doc : ${doc.data()}");
+                                                  print(
+                                                      "kkkkkkkkkkk - doc : ${doc.data()}");
                                                   String uid =
-                                                    doc.get('uid'); // 강사 고유번호
+                                                      doc.get('uid'); // 강사 고유번호
 
-                                                String name =
-                                                    doc.get('name'); //회원이름
-                                                String phoneNumber = doc.get(
-                                                    'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
-                                                String apratusName = doc
-                                                    .get('apratusName'); //기구이름
-                                                String actionName = doc
-                                                    .get('actionName'); //동작이름
-                                                String lessonDate = doc
-                                                    .get('lessonDate'); //수업날짜
-                                                String grade =
-                                                    doc.get('grade'); //수행도
-                                                String totalNote = doc
-                                                    .get('totalNote'); //수업총메모
+                                                  String name =
+                                                      doc.get('name'); //회원이름
+                                                  String phoneNumber = doc.get(
+                                                      'phoneNumber'); // 회원 고유번호 (전화번호로 회원 식별)
+                                                  String apratusName = doc.get(
+                                                      'apratusName'); //기구이름
+                                                  String actionName = doc
+                                                      .get('actionName'); //동작이름
+                                                  String lessonDate = doc
+                                                      .get('lessonDate'); //수업날짜
+                                                  String grade =
+                                                      doc.get('grade'); //수행도
+                                                  String totalNote = doc
+                                                      .get('totalNote'); //수업총메모
 
-                                                String position = "";
-                                                  
-                                                  return Text("허허 : ${actionName}");
-                                                  
+                                                  String position = "";
+
+                                                  return Text(
+                                                      "허허 : ${actionName}");
+
                                                   // return ActionListTile(actionName: actionName, apparatus: apratusName, position: position, name: name, phoneNumber: phoneNumber, lessonDate: lessonDate, grade: grade, totalNote: totalNote, docId: docId, memberdocId: memberdocId, uid: uid, pos: pos, isSelected: isSelected, isSelectable: isSelectable, isDraggable: isDraggable, customFunctionOnTap: customFunctionOnTap)
                                                 }),
                                             ReorderableListView.builder(

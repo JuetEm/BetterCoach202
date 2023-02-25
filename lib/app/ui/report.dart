@@ -110,6 +110,9 @@ class _ReportState extends State<Report> {
               ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.send_outlined))
+        ],
       ),
       body: CenterConstrainedBody(
         child: SafeArea(
