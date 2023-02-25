@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/app/ui/lessonAdd.dart';
+import 'package:web_project/main.dart';
 
-import 'globalFunction.dart';
-import 'lessonDetail.dart';
+import '../../globalFunction.dart';
+import '../../lessonDetail.dart';
 
 Timestamp? timestamp = null;
 
@@ -12,6 +14,41 @@ class LessonService extends ChangeNotifier {
       FirebaseFirestore.instance.collection('daylesson');
 
   GlobalFunction globalFunction = GlobalFunction();
+
+  updateLessonInfo(
+    String docId,
+    String actionName,
+    String apratusName,
+    String memberId,
+    String grade,
+    String lessonDate,
+    String name,
+    String phoneNumber,
+    String pos,
+    DateTime timestamp,
+    String totalNote,
+    String uid,
+  ) {
+    lessonCollection
+        .doc(docId)
+        .update({
+         'docId' : docId,
+    'actionName' :actionName,
+    'apratusName' : apratusName,
+    'memberId' : memberId,
+    'grade' : grade,
+    'lessonDate' : lessonDate,
+    'name' : name,
+    'phoneNumber' : phoneNumber,
+    'pos' : pos,
+    'timestamp' :timestamp,
+    'totalNote' : totalNote,
+    'uidh' : uid,
+        })
+        .then((value) {})
+        .onError((error, stackTrace) {})
+        .whenComplete(() {});
+  }
 
   Future<void> create({
     required String
@@ -243,7 +280,56 @@ class LessonService extends ChangeNotifier {
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .where('actionName', isEqualTo: actionName)
+        .get()
+        .then((value) {
+      print("value : ${value.docs.toList()}");
+      return value;
+    });
+  }
+
+  Future<List> readDateMemberActionNote(
+      String uid, String memberId, String date) async {
+    List lessonActionResultList = [];
+    var lessonActionResult = await lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: memberId)
+        .where('lessonDate', isEqualTo: date)
+        .orderBy('pos', descending: false)
         .get();
+
+    var docsALength = lessonActionResult.docs.length;
+    var rstAObj = {};
+    for (int i = 0; i < docsALength; i++) {
+      print(
+          "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      rstAObj = lessonActionResult.docs[i].data();
+      rstAObj['id'] = lessonActionResult.docs[i].id;
+      rstAObj['selected'] = false;
+      rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
+          rstAObj['actionName'], globalVariables.actionList);
+      lessonActionResultList.add(rstAObj);
+    }
+
+    /* List lessonNoteResultList = [];
+    var lessonNoteResult = await todaylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: memberId)
+        .where('lessonDate', isEqualTo: date)
+        .get();
+
+    var docsNLength = lessonNoteResult.docs.length;
+    var rstNObj = {};
+    for (int i = 0; i < docsNLength; i++) {
+      print("readDateMemberComplexNote - lessonNoteResult.docs[i].data() : ${lessonNoteResult.docs[i].data()}");
+      rstNObj = lessonNoteResult.docs[i].data();
+      rstNObj['id'] = lessonNoteResult.docs[i].id;
+
+      lessonNoteResultList.add(rstNObj);
+    } */
+
+    //  notifyListeners();
+
+    return lessonActionResultList;
   }
 
   Future<QuerySnapshot> readNotesOflessonDate(

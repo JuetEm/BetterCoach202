@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/ui/lessonAdd.dart';
 import 'package:web_project/color.dart';
-import 'package:web_project/lesson_service.dart';
+import 'package:web_project/app/binding/lesson_service.dart';
 
 bool isFloating = false;
 

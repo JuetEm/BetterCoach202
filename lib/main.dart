@@ -37,7 +37,7 @@ import 'globalFunction.dart';
 import 'global_service.dart';
 import 'home.dart';
 import 'lessonDetail.dart';
-import 'lesson_service.dart';
+import 'app/binding/lesson_service.dart';
 import 'app/ui/memberList.dart';
 import 'app/binding/member_service.dart';
 import 'globalWidget.dart';

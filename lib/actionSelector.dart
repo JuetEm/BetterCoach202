@@ -15,7 +15,7 @@ import 'actionInfo.dart';
 import 'app/binding/action_service.dart';
 import 'app/ui/lessonAdd.dart';
 import 'lessonInfo.dart';
-import 'lesson_service.dart';
+import 'app/binding/lesson_service.dart';
 import 'auth_service.dart';
 import 'globalFunction.dart';
 import 'globalWidget.dart';

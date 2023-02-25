@@ -18,7 +18,7 @@ import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'lessonInfo.dart';
 import 'app/ui/memberInfo.dart';
-import 'lesson_service.dart';
+import 'app/binding/lesson_service.dart';
 
 // 2022 10 19 수요일 14시 36분 정규호 푸시 보이는지 테스트 입니다! 이 주석이 보이시나요?
 

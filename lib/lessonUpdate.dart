@@ -16,7 +16,7 @@ import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'app/ui/memberInfo.dart';
 import 'lessonInfo.dart';
-import 'lesson_service.dart';
+import 'app/binding/lesson_service.dart';
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 

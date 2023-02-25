@@ -20,7 +20,7 @@ import '../../color.dart';
 import '../../globalFunction.dart';
 import '../../globalWidget.dart';
 import 'memberInfo.dart';
-import '../../lesson_service.dart';
+import '../binding/lesson_service.dart';
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -58,7 +58,7 @@ GlobalFunction globalFunction = GlobalFunction();
 bool actionSelectMode = false;
 
 //초기상태
-bool initState = true;
+bool checkInitState = true;
 
 //날짜 변경할 경우 데이터 다시 불러오기에 활용.
 bool DateChangeMode = false;
@@ -100,13 +100,15 @@ bool isTicketCountChecked = true;
 
 bool isFirst = true;
 
+List lessonActionList = [];
+
 String getActionPosition(
     String apparatunName, String actionName, List actionList) {
   String position = "";
 
-  for(int i=0; i< actionList.length; i++){
-
-    if((actionList[i]['apparatus'] == apparatunName)&&(actionList[i]['name'] == actionName)){
+  for (int i = 0; i < actionList.length; i++) {
+    if ((actionList[i]['apparatus'] == apparatunName) &&
+        (actionList[i]['name'] == actionName)) {
       position = actionList[i]['position'];
       break;
     }
@@ -137,6 +139,11 @@ class _LessonAddState extends State<LessonAdd> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     isFirst = true;
@@ -149,10 +156,12 @@ class _LessonAddState extends State<LessonAdd> {
     todayNoteView = "";
 
     //deleteControllers();
-    initState = true;
+    checkInitState = true;
     DateChangeMode = false;
-    print("[LA] Dispose : initState ${initState} ");
+    print("[LA] Dispose : checkInitState ${checkInitState} ");
     super.dispose();
+
+    lessonActionList = [];
   }
 
   bool actionNullCheck = true;
@@ -167,19 +176,20 @@ class _LessonAddState extends State<LessonAdd> {
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     CustomUserInfo.UserInfo customUserInfo = argsList[0];
+    String lessonDateArg = argsList[1];
     List<DateTime> eventList = argsList[2];
     String lessonNoteId = argsList[3];
     String lessonAddMode = argsList[4];
-    tmpLessonInfoList = argsList[5];
+    tmpLessonInfoList = argsList[5]; // null
     resultActionList = argsList[6];
 
     print(
-        '[LA] 시작 initState - ${initState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
+        '[LA] 시작 checkInitState - ${checkInitState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
     print(
         "[LA] 노트 관련 ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
 
-    if (initState) {
-      print("INIT!!! : ${initState}, DateChange:${DateChangeMode}");
+    if (checkInitState) {
+      print("INIT!!! : ${checkInitState}, DateChange:${DateChangeMode}");
       //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
       if (!DateChangeMode) {
@@ -215,11 +225,11 @@ class _LessonAddState extends State<LessonAdd> {
       print("초기화시컨트롤러:${totalNoteControllers}");
       print("초기화시노트아이디:${totalNoteTextFieldDocId}");
 
-      initState = !initState;
+      checkInitState = !checkInitState;
       actionSelectMode = false;
-      print("INIT!!!변경 : ${initState}");
+      print("INIT!!!변경 : ${checkInitState}");
     }
-    print("재빌드시 init상태 : ${initState}");
+    print("재빌드시 init상태 : ${checkInitState}");
     // if (MediaQuery.of(context).viewInsets.bottom == 0) {
     //   if (keyboardOpenBefore) {
     //     FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
@@ -231,8 +241,18 @@ class _LessonAddState extends State<LessonAdd> {
 
     return Consumer<LessonService>(
       builder: (context, lessonService, child) {
-        /// 저장된 텍스트 있다면 부여해줌
-
+        print(
+            "customUserInfo.uid : ${customUserInfo..uid}, customUserInfo.docId :  ${customUserInfo.docId}");
+        if (lessonActionList.isEmpty) {
+          lessonService
+              .readDateMemberActionNote(
+                  customUserInfo.uid, customUserInfo.docId, lessonDateArg)
+              .then((value) {
+            print("ppppppppp - value : ${value}");
+            lessonActionList.addAll(value);
+            setState(() {});
+          });
+        }
         return Scaffold(
           //resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
@@ -257,7 +277,7 @@ class _LessonAddState extends State<LessonAdd> {
                       ));
                     } else {
                       print(
-                          "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / initState : ${initState}");
+                          "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / checkInitState : ${checkInitState}");
                       DateChangeMode = false;
 
                       print("[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
@@ -450,7 +470,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                                 //lessonDate = lessonDateController.text;
                                                 DateChangeMode = true;
-                                                initState = true;
+                                                checkInitState = true;
                                                 print(
                                                     "[LA] 수업일변경 : lessonDateController ${lessonDateController.text} / todayNoteController ${todayNoteController.text} / DateChangeMode ${DateChangeMode}");
                                                 initInpuWidget(
@@ -531,7 +551,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         //       //lessonDate = lessonDateController.text;
                                         //       DateChangeMode = true;
-                                        //       initState = true;
+                                        //       checkInitState = true;
                                         //       print(
                                         //           "[LA] 수업일변경 : lessonDateController ${lessonDateController.text} / todayNoteController ${todayNoteController.text} / DateChangeMode ${DateChangeMode}");
                                         //       initInpuWidget(
@@ -902,7 +922,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     String totalNote = "";
 
                                     //동작선택 모드
-                                    //bool initState = true;
+                                    //bool checkInitState = true;
                                     actionSelectMode = true;
                                     print(
                                         "[LA] 동작추가시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
@@ -917,7 +937,7 @@ class _LessonAddState extends State<LessonAdd> {
                                           customUserInfo,
                                           currentAppratus,
                                           lessonDate,
-                                          initState,
+                                          checkInitState,
                                           totalNote,
                                           tmpLessonInfoList,
                                           resultActionList,
@@ -945,8 +965,75 @@ class _LessonAddState extends State<LessonAdd> {
                                   },
                                 ),
 
-                                // 재정렬 가능한 리스트 시작
-                                FutureBuilder<QuerySnapshot>(
+                                // 손재형 재정렬 가능한 리스트 시작
+                                ReorderableListView.builder(
+                                    padding: EdgeInsets.only(bottom: 100),
+                                    onReorder: (oldIndex, newIndex) {
+                                      if (newIndex > oldIndex) {
+                                        newIndex -= 1;
+                                      }
+                                      final movedActionList =
+                                          lessonActionList.removeAt(oldIndex);
+                                      lessonActionList.insert(
+                                          newIndex, movedActionList);
+
+                                      setState(() {});
+                                    },
+                                    physics: BouncingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: lessonActionList.length,
+                                    itemBuilder: (context, index) {
+                                      Key? valueKey;
+                                      lessonActionList[index]['pos'] = index;
+                                      valueKey = ValueKey(
+                                          lessonActionList[index]['pos']);
+
+                                      final doc = lessonActionList[index];
+                                      print("bbbbbbbb - doc : ${doc}");
+
+                                      String uid = doc['uid']; // 강사 고유번호
+
+                                      String name = doc['name']; //회원이름
+                                      String phoneNumber = doc[
+                                          'phoneNumber']; // 회원 고유번호 (전화번호로 회원 식별)
+                                      String apratusName =
+                                          doc['apratusName']; //기구이름
+                                      String actionName =
+                                          doc['actionName']; //동작이름
+                                      String lessonDate =
+                                          doc['lessonDate']; //수업날짜
+                                      String grade = doc['grade']; //수행도
+                                      String totalNote =
+                                          doc['totalNote']; //수업총메모
+                                      int pos = doc['pos']; //수업총메모
+                                      bool isSelected = doc['selected'];
+
+                                      return LessonActionListTile(
+                                        key: valueKey,
+                                          actionName: actionName,
+                                          apparatus: apratusName,
+                                          position: getActionPosition(
+                                              apratusName,
+                                              actionName,
+                                              globalVariables.actionList),
+                                          name: name,
+                                          phoneNumber: phoneNumber,
+                                          lessonDate: lessonDate,
+                                          grade: grade,
+                                          totalNote: totalNote,
+                                          docId: userInfo.docId,
+                                          memberdocId: userInfo.docId,
+                                          uid: uid,
+                                          pos: pos,
+                                          isSelected: isSelected,
+                                          isSelectable: true,
+                                          isDraggable: true,
+                                          customFunctionOnTap: () {
+                                            doc['selected'] = !doc['selected'];
+                                          });
+                                    }),
+
+                                /* FutureBuilder<QuerySnapshot>(
                                     future: lessonService.readNotesOflessonDate(
                                       user.uid,
                                       customUserInfo.docId,
@@ -956,22 +1043,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       print("재정렬 기능 시작");
                                       final docs =
                                           snapshot.data?.docs ?? []; // 문서들 가져오기
-                                      List docList = List.filled(docs.length, {});
-                                          for(int i=0; i<docs.length; i++){
-                                            docList[i]['selected'] = false;
-                                            docList[i]['actionName'] = docs[i]['actionName'];
-                                            docList[i]['docId'] = docs[i]['docId'];
-                                            docList[i]['pos'] = docs[i]['pos'];
-                                            docList[i]['lessonDate'] = docs[i]['lessonDate'];
-                                            docList[i]['totalNote'] = docs[i]['totalNote'];
-                                            docList[i]['grade'] = docs[i]['grade'];
-                                            docList[i]['uid'] = docs[i]['uid'];
-                                            docList[i]['apratusName'] = docs[i]['apratusName'];
-                                            docList[i]['timestamp'] = docs[i]['timestamp'];
-                                            docList[i]['name'] = docs[i]['name'];
-                                            docList[i]['phoneNumber'] = docs[i]['phoneNumber'];
-                                          }
-                                      if (docList.isEmpty) {
+                                          
+                                      if (docs.isEmpty) {
                                         actionNullCheck = true;
                                         print(
                                             '문서 비워져 있을경우 ActionNullCheck : ${actionNullCheck}');
@@ -983,7 +1056,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             i < tmpLessonInfoList.length;
                                             ++i) {
                                           print(
-                                              "${tmpLessonInfoList[i].docId}");
+                                              "tmpLessonInfoList[${i}].docId : ${tmpLessonInfoList[i].docId}");
                                         }
                                         totalNoteTextFieldDocId.clear();
 
@@ -1032,7 +1105,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         //초기화
                                         totalNoteTextFieldDocId =
-                                            List<String>.filled(docList.length, "",
+                                            List<String>.filled(docs.length, "",
                                                 growable: true);
 
                                         TmpLessonInfo tmpLessonInfo =
@@ -1051,53 +1124,12 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         tmpLessonInfoList =
                                             List<TmpLessonInfo>.filled(
-                                                docList.length, tmpLessonInfo,
+                                                docs.length, tmpLessonInfo,
                                                 growable: true);
 
                                         return Column(
                                           children: [
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: docList.length,
-                                                itemBuilder: (context, index) {
-                                                  final doc = docList[index];
-                                                  
-                                                  print(
-                                                      "kkkkkkkkkkk - doc : ${doc}");
-                                                  String uid =
-                                                      doc['uid']; // 강사 고유번호
-
-                                                  String name =
-                                                      doc['name']; //회원이름
-                                                  String phoneNumber = doc[
-                                                      'phoneNumber']; // 회원 고유번호 (전화번호로 회원 식별)
-                                                  String apratusName = doc[
-                                                      'apratusName']; //기구이름
-                                                  String actionName = doc
-                                                      ['actionName']; //동작이름
-                                                  String lessonDate = doc
-                                                      ['lessonDate']; //수업날짜
-                                                  String grade =
-                                                      doc['grade']; //수행도
-                                                  String totalNote = doc
-                                                      ['totalNote']; //수업총메모
-
-                                                  int pos = doc
-                                                      ['pos']; //수업총메모
-
-                                                  bool isSelected = doc['selected'];
-
-                                                  String position =
-                                                      getActionPosition(
-                                                          apratusName,
-                                                          actionName,
-                                                          globalVariables
-                                                              .actionList);
-
-                                                  // return Text("허허 : ${actionName}");
-
-                                                  return LessonActionListTile(actionName: actionName, apparatus: apratusName, position: position, name: name, phoneNumber: phoneNumber, lessonDate: lessonDate, grade: grade, totalNote: totalNote, docId: customUserInfo.docId, memberdocId: customUserInfo.docId, uid: uid, pos: pos, isSelected: isSelected, isSelectable: true, isDraggable: true, customFunctionOnTap: (){});
-                                                }),
+                                            
                                             ReorderableListView.builder(
                                               itemCount: docs.length,
                                               shrinkWrap: true,
@@ -1615,61 +1647,63 @@ class _LessonAddState extends State<LessonAdd> {
                                         );
                                       }
                                       ;
-                                    }),
+                                    }), 
 
-                                const SizedBox(height: 30),
+                                const SizedBox(height: 30),*/
                               ]),
                             ),
 
                             /// 저장버튼 추가버튼 UI 수정
                             ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  elevation: 0,
-                                  backgroundColor: Palette.buttonOrange,
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 14, horizontal: 90),
-                                  child: Text("저장하기",
-                                      style: TextStyle(fontSize: 16)),
-                                ),
-                                onPressed: () async {
+                                elevation: 0,
+                                backgroundColor: Palette.buttonOrange,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14, horizontal: 90),
+                                child: Text("저장하기",
+                                    style: TextStyle(fontSize: 16)),
+                              ),
+                              onPressed: () async {
+                                print(
+                                    "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
+
+                                // 수업일, 동작선택, 필수 입력
+                                if ((todayNoteView == "") &&
+                                    actionNullCheck == true) {
+                                  //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
+                                  //await todayNoteSave(
+                                  //    lessonService, customUserInfo, context);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content:
+                                        Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
+                                  ));
+                                } else {
                                   print(
-                                      "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
+                                      "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / checkInitState : ${checkInitState}");
+                                  DateChangeMode = false;
 
-                                  // 수업일, 동작선택, 필수 입력
-                                  if ((todayNoteView == "") &&
-                                      actionNullCheck == true) {
-                                    //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                                    //await todayNoteSave(
-                                    //    lessonService, customUserInfo, context);
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content:
-                                          Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
-                                    ));
-                                  } else {
-                                    print(
-                                        "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / initState : ${initState}");
-                                    DateChangeMode = false;
+                                  print(
+                                      "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
 
-                                    print(
-                                        "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                                  //일별 노트 저장
+                                  /* await todayNoteSave(
+                                      lessonService, customUserInfo, context); */
 
-                                    //일별 노트 저장
-                                    await todayNoteSave(
-                                        lessonService, customUserInfo, context);
+                                  // await totalNoteSave(
+                                  //     lessonService, customUserInfo, context);
 
-                                    // await totalNoteSave(
-                                    //     lessonService, customUserInfo, context);
-
-                                    lessonService.notifyListeners();
-                                    Navigator.pop(context);
-                                  }
-                                }),
+                                  
+                                  lessonService.notifyListeners();
+                                  // Navigator.pop(context);
+                                }
+                              },
+                            ),
 
                             const SizedBox(height: 10),
                             lessonAddMode == "노트편집"
@@ -1971,7 +2005,7 @@ void initInpuWidget({
 
   print(
       "[LA] 수업일변경 - initInpuWidget/재생성 totalNoteControllers${totalNoteControllers} / totalNoteTextFieldDocId${totalNoteTextFieldDocId} / tmpLessonInfoList${tmpLessonInfoList})");
-  print("[LA] 수업일변경 - notifyListeners / ${initState}");
+  print("[LA] 수업일변경 - notifyListeners / ${checkInitState}");
   lessonService.notifyListeners();
   // 에러 발생해서 정리..
 //     The following assertion was thrown while dispatching notifications for TextEditingController:

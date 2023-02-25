@@ -21,7 +21,7 @@ import '../../color.dart';
 import 'lessonAdd.dart';
 
 import '../../lessonUpdate.dart';
-import '../../lesson_service.dart';
+import '../binding/lesson_service.dart';
 import 'memberAdd.dart';
 import 'memberList.dart';
 import '../../memberUpdate.dart';

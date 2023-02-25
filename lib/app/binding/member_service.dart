@@ -2,7 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:web_project/auth_service.dart';
+=======
+import 'package:web_project/app/binding/lesson_service.dart';
+>>>>>>> a980ded (code merge 2023-02-25 21:31)
 import 'package:web_project/globalVariables.dart';
 import 'package:web_project/lesson_service.dart';
 
