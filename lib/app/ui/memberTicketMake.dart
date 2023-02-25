@@ -248,6 +248,31 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
           }, [
             TextButton(
               onPressed: () async {
+                if (DateTime.parse(ticketEndDateController.text).difference(
+                        DateTime.parse(ticketStartDateController.text)) <
+                    Duration.zero) {
+                  return showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('수강권을 저장할 수 없음'),
+                        content: Text('수강 시작일은 수강 종료일 이전이어야 합니다.'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                '확인',
+                                style: TextStyle(
+                                    color: Palette.textRed, fontSize: 16),
+                              ))
+                        ],
+                      );
+                    },
+                  );
+                }
+
                 ticketDateLeft = globalFunction.getDDayLeft(ticketEndDate);
                 print(
                     "MemberTicketMake AppBar TextButton is called! ticketMakeController.dropDownValue?.value.toString().trim() : ${ticketMakeController.dropDownValue?.value.toString().trim()}");
@@ -969,6 +994,15 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                                       print("수강 종료일 TextField onTap called!");
                                     },
                                     style: TextStyle(
+                                        decoration: DateTime.parse(
+                                                        ticketEndDateController
+                                                            .text)
+                                                    .difference(DateTime.parse(
+                                                        ticketStartDateController
+                                                            .text)) <
+                                                Duration.zero
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
                                         color: calendarName == "수강 종료일"
                                             ? Palette.textRed
                                             : Palette.gray00),

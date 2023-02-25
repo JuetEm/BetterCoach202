@@ -104,7 +104,7 @@ class _ReportState extends State<Report> {
         backgroundColor: Palette.mainBackground,
         title: Text(
           "오류 및 개선요청",
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
                 color: Palette.gray00,
@@ -288,75 +288,77 @@ class _ReportState extends State<Report> {
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('프리텐다드 normal',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20)),
-                        Text('프리텐다드 normal',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20)),
-                        Text('프리텐다드 normal',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20)),
-                        Text('프리텐다드 normal',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20)),
-                        Text('프리텐다드 normal',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20)),
-                        Text('프리텐다드 normal',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20)),
-                        Text('프리텐다드 bold',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                        Text('프리텐다드 bold',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                        Text('프리텐다드 bold',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                      ],
-                    ),
-                    SizedBox(width: 2),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('프리텐다드 100 THin',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w100, fontSize: 20)),
-                        Text('프리텐다드 200 ExtraLight',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w200, fontSize: 20)),
-                        Text('프리텐다드 300 Light',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 20)),
-                        Text('프리텐다드 400 Regular',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 20)),
-                        Text('프리텐다드 500 Medium',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 20)),
-                        Text('프리텐다드 600 SemiBold',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 20)),
-                        Text('프리텐다드 700 Bold',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 20)),
-                        Text('프리텐다드 800 ExtraBold',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800, fontSize: 20)),
-                        Text('프리텐다드 900 Black',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 20)),
-                      ],
-                    ),
-                  ],
-                )
+
+                /*##################FontWeight 실험실####################*/
+                // Row(
+                //   children: [
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text('프리텐다드 normal',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.normal, fontSize: 20)),
+                //         Text('프리텐다드 normal',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.normal, fontSize: 20)),
+                //         Text('프리텐다드 normal',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.normal, fontSize: 20)),
+                //         Text('프리텐다드 normal',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.normal, fontSize: 20)),
+                //         Text('프리텐다드 normal',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.normal, fontSize: 20)),
+                //         Text('프리텐다드 normal',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.normal, fontSize: 20)),
+                //         Text('프리텐다드 bold',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.bold, fontSize: 20)),
+                //         Text('프리텐다드 bold',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.bold, fontSize: 20)),
+                //         Text('프리텐다드 bold',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.bold, fontSize: 20)),
+                //       ],
+                //     ),
+                //     SizedBox(width: 2),
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text('프리텐다드 100 THin',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w100, fontSize: 20)),
+                //         Text('프리텐다드 200 ExtraLight',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w200, fontSize: 20)),
+                //         Text('프리텐다드 300 Light',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w300, fontSize: 20)),
+                //         Text('프리텐다드 400 Regular',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w400, fontSize: 20)),
+                //         Text('프리텐다드 500 Medium',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w500, fontSize: 20)),
+                //         Text('프리텐다드 600 SemiBold',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w600, fontSize: 20)),
+                //         Text('프리텐다드 700 Bold',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w700, fontSize: 20)),
+                //         Text('프리텐다드 800 ExtraBold',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w800, fontSize: 20)),
+                //         Text('프리텐다드 900 Black',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w900, fontSize: 20)),
+                //       ],
+                //     ),
+                //   ],
+                // )
               ],
             ),
           ),
