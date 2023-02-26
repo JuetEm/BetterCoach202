@@ -264,6 +264,13 @@ class _MemberListState extends State<MemberList> {
                   //     color: Palette.buttonOrange,
                   //   ),
                   // ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 40),
+                    child: SizedBox(
+                        width: 190,
+                        child: Image.asset("assets/images/logo.png")),
+                  ),
                   ListTile(
                     leading: Icon(
                       Icons.person,
