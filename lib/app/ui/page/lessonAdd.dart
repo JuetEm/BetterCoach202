@@ -132,98 +132,6 @@ class LessonAdd extends StatefulWidget {
 }
 
 class _LessonAddState extends State<LessonAdd> {
-  // @override
-  // void initState() {
-  //   //처음에만 날짜 받아옴.
-
-  //   super.initState();
-  // }
-
-  List<dynamic> makeChips(List<dynamic> resultChips, List<dynamic> targetList,
-      Color chipBackgroundColor) {
-    if (targetList.isNotEmpty) {
-      resultChips = targetList.map((e) {
-        return FilterChip(
-          label: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(e['actionName']),
-                  SizedBox(width: 1),
-                  Icon(
-                    Icons.close_outlined,
-                    size: 14,
-                    color: targetList.contains(e)
-                        ? Palette.gray00
-                        : Palette.gray99,
-                  )
-                ],
-              ),
-            ],
-          ),
-          onSelected: ((value) {
-            setState(() {
-              targetList.remove(e);
-            });
-            print("value : ${value}");
-          }),
-          selected: targetList.contains(e),
-          labelStyle: TextStyle(
-              fontSize: 14,
-              color: targetList.contains(e) ? Palette.gray00 : Palette.gray99),
-          selectedColor: chipBackgroundColor,
-          backgroundColor: Colors.transparent,
-          showCheckmark: false,
-          side: targetList.contains(e)
-              ? BorderSide.none
-              : BorderSide(color: Palette.grayB4),
-        );
-      }).toList();
-      resultChips = targetList.map((e) {
-        return FilterChip(
-          label: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(e['actionName']),
-                  SizedBox(width: 1),
-                  Icon(
-                    Icons.close_outlined,
-                    size: 14,
-                    color: targetList.contains(e)
-                        ? Palette.gray00
-                        : Palette.gray99,
-                  )
-                ],
-              ),
-            ],
-          ),
-          onSelected: ((value) {
-            setState(() {
-              targetList.remove(e);
-            });
-            print("value : ${value}");
-          }),
-          selected: targetList.contains(e),
-          labelStyle: TextStyle(
-              fontSize: 14,
-              color: targetList.contains(e) ? Palette.gray00 : Palette.gray99),
-          selectedColor: chipBackgroundColor,
-          backgroundColor: Colors.transparent,
-          showCheckmark: false,
-          side: targetList.contains(e)
-              ? BorderSide.none
-              : BorderSide(color: Palette.grayB4),
-        );
-      }).toList();
-    }
-    print("[MA] makeChips : ${resultChips}");
-    return resultChips;
-  }
 
   @override
   void didChangeDependencies() {
@@ -344,7 +252,7 @@ class _LessonAddState extends State<LessonAdd> {
     return Consumer2<LessonService, DayLessonService>(
       builder: (context, lessonService, dayLessonService, child) {
         print(
-            "customUserInfo.uid : ${customUserInfo..uid}, customUserInfo.docId :  ${customUserInfo.docId}");
+            "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
         if (lessonActionList.isEmpty) {
           lessonService
               .readDateMemberActionNote(
@@ -359,7 +267,7 @@ class _LessonAddState extends State<LessonAdd> {
               txtEdtCtrlrList.add(new TextEditingController());
             });
 
-            setState(() {});
+            // setState(() {});
           });
         }
 
@@ -370,7 +278,7 @@ class _LessonAddState extends State<LessonAdd> {
               .then((value) {
             dayLessonList.add(value);
             dayLessonList.forEach((element) {
-              print("dayLessonList - element : ${element}");
+              print("ppppppppp - dayLessonList - element : ${element}");
             });
           });
         }
@@ -431,15 +339,17 @@ class _LessonAddState extends State<LessonAdd> {
                         }
                       }
 
-                      if (todayNoteController.text.trim().isNotEmpty &&
-                          (todayNoteController.text.trim() != todayNoteView)) {
+                      // print("ppppppppp - todayNoteController.text.trim() : ${todayNoteController.text.trim()}, todayNoteView : ${todayNoteView}");
+                      if (todayNoteController.text.trim().isNotEmpty) {
+                        dayLessonList[0][0]['todayNote'] = todayNoteController.text.trim();
+                        print("ppppppppp - dayLessonList[0]['id'] : ${dayLessonList[0][0]['id']}");
                         daylessonService.updateDayNote(
-                          dayLessonList[0]['id'],
-                          dayLessonList[0]['docId'],
-                          dayLessonList[0]['lessonDate'],
-                          dayLessonList[0]['name'],
-                          dayLessonList[0]['todayNote'],
-                          dayLessonList[0]['uid'],
+                          dayLessonList[0][0]['id'],
+                          dayLessonList[0][0]['docId'],
+                          dayLessonList[0][0]['lessonDate'],
+                          dayLessonList[0][0]['name'],
+                          dayLessonList[0][0]['todayNote'],
+                          dayLessonList[0][0]['uid'],
                         );
                       }
 

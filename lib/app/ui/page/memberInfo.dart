@@ -690,6 +690,8 @@ class _MemberInfoState extends State<MemberInfo> {
                       // );
                     } else {
                       // if (viewMode == "레슨노트") {
+
+                        // print("ㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑ - 여기가 울리나요?");
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
