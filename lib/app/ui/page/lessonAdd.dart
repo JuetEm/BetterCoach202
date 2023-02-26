@@ -138,51 +138,45 @@ class _LessonAddState extends State<LessonAdd> {
   List<dynamic> makeChips(List<dynamic> resultChips, List<dynamic> targetList,
       Color chipBackgroundColor) {
     if (targetList.isNotEmpty) {
-      resultChips = targetList
-          .map((e){ 
-            
-            return FilterChip(
-                label: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(e['actionName']),
-                        SizedBox(width: 1),
-                        Icon(
-                          Icons.close_outlined,
-                          size: 14,
-                          color: targetList.contains(e)
-                              ? Palette.gray00
-                              : Palette.gray99,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                onSelected: ((value) {
-                  setState(() {
-                    targetList.remove(e);
-                  });
-                  print("value : ${value}");
-                }),
-                selected: targetList.contains(e),
-                labelStyle: TextStyle(
-                    fontSize: 14,
+      resultChips = targetList.map((e) {
+        return FilterChip(
+          label: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(e['actionName']),
+                  SizedBox(width: 1),
+                  Icon(
+                    Icons.close_outlined,
+                    size: 14,
                     color: targetList.contains(e)
                         ? Palette.gray00
-                        : Palette.gray99),
-                selectedColor: chipBackgroundColor,
-                backgroundColor: Colors.transparent,
-                showCheckmark: false,
-                side: targetList.contains(e)
-                    ? BorderSide.none
-                    : BorderSide(color: Palette.grayB4),
-              );
-              })
-          .toList();
-    
+                        : Palette.gray99,
+                  )
+                ],
+              ),
+            ],
+          ),
+          onSelected: ((value) {
+            setState(() {
+              targetList.remove(e);
+            });
+            print("value : ${value}");
+          }),
+          selected: targetList.contains(e),
+          labelStyle: TextStyle(
+              fontSize: 14,
+              color: targetList.contains(e) ? Palette.gray00 : Palette.gray99),
+          selectedColor: chipBackgroundColor,
+          backgroundColor: Colors.transparent,
+          showCheckmark: false,
+          side: targetList.contains(e)
+              ? BorderSide.none
+              : BorderSide(color: Palette.grayB4),
+        );
+      }).toList();
     }
     print("[MA] makeChips : ${resultChips}");
     return resultChips;
@@ -309,11 +303,11 @@ class _LessonAddState extends State<LessonAdd> {
 
             // 동작별 노트가 있는 경우 칩 생성
             lessonActionList.forEach((element) {
-              if(element['totalNote'].isNotEmpty){
+              if (element['totalNote'].isNotEmpty) {
                 // notedActionsList.add(element['actionName']);
                 element['isSelected'] = true;
               }
-              
+              print('lessonActionList$lessonActionList');
             });
             notedActionWidget = makeChips(
                 notedActionWidget, lessonActionList, Palette.backgroundOrange);
@@ -838,8 +832,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         lessonActionList
                                                 .isNotEmpty // is동작메모하나라도있니? 변수 필요
                                             /// 동작 있을 경우
-                                            ? 
-                                            Expanded(
+                                            ? Expanded(
                                                 child: ListView.builder(
                                                     padding: EdgeInsets.only(
                                                         bottom: 100),
@@ -947,6 +940,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                       );
                                                     }),
                                               )
+
                                             /// 동작 하나도 없을 경우
                                             : Padding(
                                                 padding:

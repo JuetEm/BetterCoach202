@@ -17,6 +17,7 @@ import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/ui/page/locationAdd.dart';
+import 'package:web_project/app/ui/widget/lessonCardWidget.dart';
 import 'package:web_project/app/ui/widget/tableCalendarWidget.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
@@ -773,7 +774,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+      padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(10.0),
@@ -784,28 +785,76 @@ class _LessonNoteViewState extends State<LessonNoteView> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ///
         /// 헤딩 영역: 총 개수, 캘린더 버튼, 동작별/날짜별 버튼
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //
-            // 총 노트 개수
-            Text(
-              '총 ${dayNotelessonCnt}개',
-              style: TextStyle(
-                fontSize: 14,
-                color: Palette.gray66,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //
+              // 총 노트 개수
+              Text(
+                '총 ${dayNotelessonCnt}개',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Palette.gray66,
+                ),
               ),
-            ),
-            Spacer(),
-            // 캘린더 버튼
-            Offstage(
-              offstage: listMode == "동작별" ? true : false,
-              child: Material(
+              Spacer(),
+              // 캘린더 버튼
+              Offstage(
+                offstage: listMode == "동작별" ? true : false,
+                child: Material(
+                  child: InkWell(
+                    onTap: () {
+                      isNoteCalendarHided = !isNoteCalendarHided;
+                      setState(() {});
+                      print('Calender Button Clicked');
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Palette.grayF5,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month,
+                            color: Palette.gray99,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            '캘린더',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Palette.gray33,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              // 동작별/날짜별 버튼
+              Material(
                 child: InkWell(
                   onTap: () {
-                    isNoteCalendarHided = !isNoteCalendarHided;
-                    setState(() {});
-                    print('Calender Button Clicked');
+                    if (listMode == "동작별") {
+                      setState(() {
+                        listMode = "날짜별";
+                      });
+                    } else {
+                      setState(() {
+                        listMode = "동작별";
+                      });
+                    }
+                    ;
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
@@ -818,14 +867,14 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.calendar_month,
+                          Icons.sync,
                           color: Palette.gray99,
                         ),
                         SizedBox(
                           width: 5,
                         ),
                         Text(
-                          '캘린더',
+                          listMode == "동작별" ? "날짜별" : "동작별",
                           style: TextStyle(
                             fontSize: 14,
                             color: Palette.gray33,
@@ -836,53 +885,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                   ),
                 ),
               ),
-            ),
-            SizedBox(width: 10),
-            // 동작별/날짜별 버튼
-            Material(
-              child: InkWell(
-                onTap: () {
-                  if (listMode == "동작별") {
-                    setState(() {
-                      listMode = "날짜별";
-                    });
-                  } else {
-                    setState(() {
-                      listMode = "동작별";
-                    });
-                  }
-                  ;
-                },
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Palette.grayF5,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.sync,
-                        color: Palette.gray99,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        listMode == "동작별" ? "날짜별" : "동작별",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Palette.gray33,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         // 캘린더 시작
 
@@ -968,78 +972,6 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               }
             }),
 
-        //레슨 노트 보기 시작
-        FutureBuilder<QuerySnapshot>(
-            future: widget.lessonService.read(
-              widget.userInfo.uid,
-              widget.userInfo.docId,
-            ),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                print("ConnectionState.waiting : ${ConnectionState.waiting}");
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Palette.buttonOrange,
-                ));
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                print("ConnectionState.done : ${ConnectionState.done}");
-                final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
-
-                print(
-                    "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
-                if (doc.isEmpty && dayNotelessonCnt == 0) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Center(
-                        child: Text("첫번째 노트를 작성해보세요!"),
-                      ),
-                    ],
-                  );
-                } else if (doc.isEmpty && dayNotelessonCnt > 0) {
-                  print("동작은 없는데, 일별노트는 있는 경우");
-                  if (listMode == "동작별") {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Center(
-                          child: Text("노트에서 동작을 추가해보세요!"),
-                        ),
-                      ],
-                    );
-                  } else {
-                    List<TmpLessonInfo> tmpLessonInfoList = [];
-                    return NoteListDateCategory(
-                      docs: doc,
-                      userInfo: widget.userInfo,
-                      lessonService: widget.lessonService,
-                      tmpLessonInfoList: tmpLessonInfoList,
-                    );
-                  }
-                } else {
-                  print("왜가리지?");
-                  if (listMode == "동작별") {
-                    return NoteListActionCategory(
-                        docs: doc, userInfo: widget.userInfo);
-                  } else {
-                    List<TmpLessonInfo> tmpLessonInfoList = [];
-                    return NoteListDateCategory(
-                      docs: doc,
-                      userInfo: widget.userInfo,
-                      lessonService: widget.lessonService,
-                      tmpLessonInfoList: tmpLessonInfoList,
-                    );
-                  }
-                }
-              } else {
-                print("ConnectionState.else");
-                return CircularProgressIndicator();
-              }
-            }),
         SizedBox(
           height: 14,
         ),
@@ -1594,15 +1526,24 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
 
-                return LessonCard(
+                return LessonCardWidget(
                   userInfo: widget.userInfo,
                   memberId: memberId,
                   lessonDate: lessonDate,
                   todayNote: todayNote,
-                  lessonService: widget.lessonService,
+                  lessonActionList: [],
                 );
+
+                // return LessonCard(
+                //   userInfo: widget.userInfo,
+                //   memberId: memberId,
+                //   lessonDate: lessonDate,
+                //   todayNote: todayNote,
+                //   lessonService: widget.lessonService,
+                // );
               },
-              separatorBuilder: ((context, index) => SizedBox(
+              separatorBuilder: ((context, index) => Container(
+                    color: Palette.secondaryBackground,
                     height: 10,
                   )),
             );
