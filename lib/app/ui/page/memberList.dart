@@ -648,7 +648,8 @@ class _MemberListState extends State<MemberList> {
                                                 .getUserInfoAndActionList(
                                                     userInfo,
                                                     globalVariables.resultList,
-                                                    globalVariables.actionList),
+                                                    globalVariables.actionList,
+                                                    false),
                                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                                             /* settings: RouteSettings(
                                             arguments: userInfo
@@ -667,8 +668,36 @@ class _MemberListState extends State<MemberList> {
                                       },
 
                                       /// 노트 추가 버튼
-                                      noteAddFunctionOnTap: () {
+                                      noteAddFunctionOnTap: () async {
                                         print('노트 추가 버튼 클릭!');
+
+                                        bool isQuickAdd = true;
+
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MemberInfo
+                                                .getUserInfoAndActionList(
+                                                    userInfo,
+                                                    globalVariables.resultList,
+                                                    globalVariables.actionList,
+                                                    true),
+                                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                                            /* settings: RouteSettings(
+                                            arguments: userInfo
+                                          ), */
+                                          ),
+                                        ).then((result) {
+                                          globalVariables.sortList();
+                                          // print("MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
+                                          // UserInfo tmpUserInfo = result;
+                                          // print("MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
+                                          setState(() {
+                                            print(
+                                                "memberList - memberinfo pop setState!!");
+                                          });
+                                        });
+
                                         setState(() {});
                                       },
                                     ).animate().slide(

@@ -59,9 +59,12 @@ class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
   List tmpResultActionList = [];
   List tmpResultMemeberList = [];
+  late bool isQuickAdd;
+
   MemberInfo({super.key});
-  MemberInfo.getUserInfoAndActionList(
-      this.userInfo, this.tmpResultMemeberList, this.tmpResultActionList,
+
+  MemberInfo.getUserInfoAndActionList(this.userInfo, this.tmpResultMemeberList,
+      this.tmpResultActionList, this.isQuickAdd,
       {super.key});
 
   @override
@@ -74,7 +77,40 @@ class _MemberInfoState extends State<MemberInfo> {
     //처음에만 날짜 받아옴.
 
     super.initState();
+
+    if (widget.isQuickAdd) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 300), () async {
+          lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+          List<TmpLessonInfo> tmpLessonInfoList = [];
+          eventList = [];
+          lessonAddMode = "노트 추가";
+          List<dynamic> args = [
+            userInfo,
+            lessonDate,
+            eventList,
+            lessonNoteId,
+            lessonAddMode,
+            tmpLessonInfoList,
+            resultActionList,
+          ];
+          print(
+              "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonAdd(),
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(arguments: args),
+            ),
+          );
+        });
+      });
+    }
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -946,16 +982,30 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               alignment: Alignment.center,
               child: globalVariables.memberTicketList.where((element) {
                 // print("element : ${element}");
-                return (element['isSelected'] == true) && (element['memberId'] == userInfo.docId);
+                return (element['isSelected'] == true) &&
+                    (element['memberId'] == userInfo.docId);
               }).isNotEmpty
                   ? TicketWidget(
-                      ticketTitle: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketTitle'],
-                      ticketDescription: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketDescription'],
-                      ticketStartDate: globalFunction.getDateFromTimeStamp(globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketStartDate']) ,
-                      ticketEndDate: globalFunction.getDateFromTimeStamp(globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketEndDate']) ,
-                      ticketDateLeft: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketDateLeft'],
-                      ticketCountAll: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketCountAll'],
-                      ticketCountLeft: globalVariables.memberTicketList[globalVariables.selectedTicketIndex]['ticketCountLeft'],
+                      ticketTitle: globalVariables.memberTicketList[
+                          globalVariables.selectedTicketIndex]['ticketTitle'],
+                      ticketDescription: globalVariables.memberTicketList[
+                              globalVariables.selectedTicketIndex]
+                          ['ticketDescription'],
+                      ticketStartDate: globalFunction.getDateFromTimeStamp(
+                          globalVariables.memberTicketList[globalVariables
+                              .selectedTicketIndex]['ticketStartDate']),
+                      ticketEndDate: globalFunction.getDateFromTimeStamp(
+                          globalVariables.memberTicketList[globalVariables
+                              .selectedTicketIndex]['ticketEndDate']),
+                      ticketDateLeft: globalVariables.memberTicketList[
+                              globalVariables.selectedTicketIndex]
+                          ['ticketDateLeft'],
+                      ticketCountAll: globalVariables.memberTicketList[
+                              globalVariables.selectedTicketIndex]
+                          ['ticketCountAll'],
+                      ticketCountLeft: globalVariables.memberTicketList[
+                              globalVariables.selectedTicketIndex]
+                          ['ticketCountLeft'],
                       customFunctionOnHover: () {
                         print("수강권 추가 onHover!!");
                       },
@@ -966,7 +1016,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  MemberTicketManage.getUserInfo(globalVariables.memberTicketList,widget.userInfo)),
+                                  MemberTicketManage.getUserInfo(
+                                      globalVariables.memberTicketList,
+                                      widget.userInfo)),
                         ).then((value) {
                           globalVariables.selectedTicketIndex = value;
                           print("수강권 클릭 result : ${value}");
@@ -978,7 +1030,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           });
                         });
                       },
-                      customFunctionOnLongPress: (){},
+                      customFunctionOnLongPress: () {},
                     )
                   : AddTicketWidget(
                       label: '수강권 선택하기',
@@ -991,7 +1043,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  MemberTicketManage.getUserInfo(globalVariables.memberTicketList, widget.userInfo)),
+                                  MemberTicketManage.getUserInfo(
+                                      globalVariables.memberTicketList,
+                                      widget.userInfo)),
                         ).then((value) {
                           globalVariables.selectedTicketIndex = value;
                           print("수강권 선택 result : ${value}");
@@ -1003,7 +1057,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           });
                         });
                       },
-                      
                     ),
             ),
             SizedBox(
