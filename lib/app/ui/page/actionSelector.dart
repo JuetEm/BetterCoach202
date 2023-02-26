@@ -943,7 +943,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                       String position = doc['position'];
                       String name = doc['name'];
                       String lowerCaseName = doc['lowerCaseName'];
-                      bool isSelected = doc['selected'];
+                      bool isSelected = doc['actionSelected'];
                       /* print(
                           '#####TempLEssonList: ${tmpLessonInfoList[1].toString()}');
                       inspect(tmpLessonInfoList[1]); */
@@ -952,7 +952,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                       //     (element) => element['actionName'] == doc['name'])) {
                       //   isSelected = true;
                       // } else {
-                      //   isSelected = doc['selected'];
+                      //   isSelected = doc['actionSelected'];
                       // }
 
                       List<dynamic> nGramizedLowerCaseName =
@@ -1011,10 +1011,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 isSelectable: true,
                                 isDraggable: false,
                                 customFunctionOnTap: () {
-                                  doc['selected'] = !doc['selected'];
+                                  doc['actionSelected'] = !doc['actionSelected'];
 
                                   print(
-                                      'docs[index][selected]: ${docs[index]['selected']}');
+                                      'docs[index][selected]: ${docs[index]['actionSelected']}');
                                   setState(() {});
                                 });
 
@@ -1049,10 +1049,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['selected'] = !doc['selected'];
+                                    doc['actionSelected'] = !doc['actionSelected'];
 
                                     print(
-                                        'docs[index][selected]: ${docs[index]['selected']}');
+                                        'docs[index][selected]: ${docs[index]['actionSelected']}');
                                     setState(() {});
                                   });
                               // return ActionTile(
@@ -1092,10 +1092,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['selected'] = !doc['selected'];
+                                    doc['actionSelected'] = !doc['actionSelected'];
 
                                     print(
-                                        'docs[index][selected]: ${docs[index]['selected']}');
+                                        'docs[index][selected]: ${docs[index]['actionSelected']}');
                                     setState(() {});
                                   });
                               // return ActionTile(
@@ -1129,10 +1129,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     isSelectable: true,
                                     isDraggable: false,
                                     customFunctionOnTap: () {
-                                      doc['selected'] = !doc['selected'];
+                                      doc['actionSelected'] = !doc['actionSelected'];
 
                                       print(
-                                          'docs[index][selected]: ${docs[index]['selected']}');
+                                          'docs[index][selected]: ${docs[index]['actionSelected']}');
                                       setState(() {});
                                     });
                                 // return ActionTile(
@@ -1177,10 +1177,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 isSelectable: true,
                                 isDraggable: false,
                                 customFunctionOnTap: () {
-                                  doc['selected'] = !doc['selected'];
+                                  doc['actionSelected'] = !doc['actionSelected'];
 
                                   print(
-                                      'docs[index][selected]: ${docs[index]['selected']}');
+                                      'docs[index][selected]: ${docs[index]['actionSelected']}');
                                   setState(() {});
                                 });
                             // return ActionTile(
@@ -1214,10 +1214,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['selected'] = !doc['selected'];
+                                    doc['actionSelected'] = !doc['actionSelected'];
 
                                     print(
-                                        'docs[index][selected]: ${docs[index]['selected']}');
+                                        'docs[index][selected]: ${docs[index]['actionSelected']}');
                                     setState(() {});
                                   });
                               // return ActionTile(
@@ -1257,10 +1257,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['selected'] = !doc['selected'];
+                                    doc['actionSelected'] = !doc['actionSelected'];
 
                                     print(
-                                        'docs[index][selected]: ${docs[index]['selected']}');
+                                        'docs[index][selected]: ${docs[index]['actionSelected']}');
                                     setState(() {});
                                   });
                               // return ActionTile(
@@ -1294,10 +1294,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     isSelectable: true,
                                     isDraggable: false,
                                     customFunctionOnTap: () {
-                                      doc['selected'] = !doc['selected'];
+                                      doc['actionSelected'] = !doc['actionSelected'];
 
                                       print(
-                                          'docs[index][selected]: ${docs[index]['selected']}');
+                                          'docs[index][selected]: ${docs[index]['actionSelected']}');
                                       setState(() {});
                                     });
                                 // return ActionTile(
@@ -1334,10 +1334,10 @@ class _ActionSelectorState extends State<ActionSelector> {
                       //   apparatus: apparatus,
                       //   position: position,
                       //   customFunctionOnTap: () {
-                      //     doc['selected'] = !doc['selected'];
+                      //     doc['actionSelected'] = !doc['actionSelected'];
 
                       //     print(
-                      //         'docs[index][selected]: ${docs[index]['selected']}');
+                      //         'docs[index][selected]: ${docs[index]['actionSelected']}');
                       //     setState(() {});
                       //   },
                       // );
