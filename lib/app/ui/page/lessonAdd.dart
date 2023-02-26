@@ -102,7 +102,7 @@ bool isFirst = true;
 
 List lessonActionList = [];
 
-List notedActionChips = [];
+List notedActionWidget = [];
 List<String> notedActionsList = [];
 
 String getActionPosition(
@@ -308,13 +308,15 @@ class _LessonAddState extends State<LessonAdd> {
             lessonActionList.addAll(value);
 
             // 동작별 노트가 있는 경우 칩 생성
-            /* lessonActionList.forEach((element) {
+            lessonActionList.forEach((element) {
               if(element['totalNote'].isNotEmpty){
-                notedActionsList.add(element['actionName']);
+                // notedActionsList.add(element['actionName']);
+                element['isSelected'] = true;
               }
-            }); */
-            notedActionChips = makeChips(
-                notedActionChips, lessonActionList, Palette.backgroundOrange);
+              
+            });
+            notedActionWidget = makeChips(
+                notedActionWidget, lessonActionList, Palette.backgroundOrange);
             setState(() {});
           });
         }
@@ -836,46 +838,115 @@ class _LessonAddState extends State<LessonAdd> {
                                         lessonActionList
                                                 .isNotEmpty // is동작메모하나라도있니? 변수 필요
                                             /// 동작 있을 경우
-                                            ? Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 20),
-                                                      child: Chip(label: Text("MA Abs Series"),
-                                                      deleteIcon: Icon(Icons.close_sharp, size: 16,),onDeleted: (){},)
-                                                    ),
-                                                    TextFormField(
-                                                      maxLines: null,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        /* content padding을 20이상 잡아두지 않으면,
-                                                            한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
-                                                        contentPadding:
-                                                            EdgeInsets.all(20),
-                                                        hintText:
-                                                            '동작 수행 시 특이사항을 남겨보세요.',
-                                                        hintStyle: TextStyle(
-                                                            color:
-                                                                Palette.gray99,
-                                                            fontSize: 14),
-                                                        border:
-                                                            InputBorder.none,
-                                                      ),
-                                                      style: TextStyle(
-                                                          color: Palette.gray00,
-                                                          fontSize: 14),
-                                                      /* validator:
-                                                                _model.textControllerValidator.asValidator(context), */
-                                                    )
-                                                  ],
-                                                ),
-                                              )
+                                            ? 
+                                            Expanded(
+                                                child: ListView.builder(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 100),
+                                                    physics:
+                                                        BouncingScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount:
+                                                        lessonActionList.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      Key? valueKey;
+                                                      lessonActionList[index]
+                                                          ['pos'] = index;
+                                                      valueKey = ValueKey(
+                                                          lessonActionList[
+                                                              index]['pos']);
 
+                                                      final doc =
+                                                          lessonActionList[
+                                                              index];
+
+                                                      print(
+                                                          "bbbbbbbb - doc : ${doc}");
+
+                                                      String uid =
+                                                          doc['uid']; // 강사 고유번호
+
+                                                      String name =
+                                                          doc['name']; //회원이름
+                                                      String phoneNumber = doc[
+                                                          'phoneNumber']; // 회원 고유번호 (전화번호로 회원 식별)
+                                                      String apratusName = doc[
+                                                          'apratusName']; //기구이름
+                                                      String actionName = doc[
+                                                          'actionName']; //동작이름
+                                                      String lessonDate = doc[
+                                                          'lessonDate']; //수업날짜
+                                                      String grade =
+                                                          doc['grade']; //수행도
+                                                      String totalNote = doc[
+                                                          'totalNote']; //수업총메모
+                                                      int pos =
+                                                          doc['pos']; //수업총메모
+                                                      bool isSelected =
+                                                          doc['selected'];
+
+                                                      return Offstage(
+                                                        key: valueKey,
+                                                        offstage: !isSelected,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            20),
+                                                                child: Chip(
+                                                                  label: Text(
+                                                                      "$actionName"),
+                                                                  deleteIcon:
+                                                                      Icon(
+                                                                    Icons
+                                                                        .close_sharp,
+                                                                    size: 16,
+                                                                  ),
+                                                                  onDeleted:
+                                                                      () {},
+                                                                )),
+                                                            TextFormField(
+                                                              maxLines: null,
+                                                              autofocus: true,
+                                                              obscureText:
+                                                                  false,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                /* content padding을 20이상 잡아두지 않으면,
+                                                              한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
+                                                                contentPadding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            20),
+                                                                hintText:
+                                                                    '동작 수행 시 특이사항을 남겨보세요.',
+                                                                hintStyle: TextStyle(
+                                                                    color: Palette
+                                                                        .gray99,
+                                                                    fontSize:
+                                                                        14),
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                              ),
+                                                              style: TextStyle(
+                                                                  color: Palette
+                                                                      .gray00,
+                                                                  fontSize: 14),
+                                                              /* validator:
+                                                                  _model.textControllerValidator.asValidator(context), */
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    }),
+                                              )
                                             /// 동작 하나도 없을 경우
                                             : Padding(
                                                 padding:
