@@ -1749,6 +1749,12 @@ class _ActionSelectorState extends State<ActionSelector> {
                                           tmpResultList.add(element);
                                         }
                                       });
+                                      globalVariables.actionList
+                                          .forEach((element) {
+                                        if (element['actionSelected'] == true) {
+                                          element['actionSelected'] = false;
+                                        }
+                                      });
                                       // 저장하기 성공시 MemberInfo로 이동
                                       Navigator.pop(context, tmpResultList);
 
