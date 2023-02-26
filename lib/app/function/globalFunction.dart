@@ -101,12 +101,12 @@ class GlobalFunction {
   } */
 
   String getDateFromTimeStamp(var timestamp) {
-  String date = "";
+    String date = "";
 
-  date = DateFormat("yyyy-MM-dd").format(timestamp.toDate());
+    date = DateFormat("yyyy-MM-dd").format(timestamp.toDate());
 
-  return date;
-}
+    return date;
+  }
 
   int getDDayLeft(String date) {
     var _toDay = DateTime.now();
@@ -470,6 +470,8 @@ class GlobalFunction {
             selectedDate: selectedDate,
             pageName: pageName,
             eventList: [],
+            hideBottonDateText: false,
+            hideButton: false,
           ),
           fullscreenDialog: true,
         ));

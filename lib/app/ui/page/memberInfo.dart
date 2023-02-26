@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
+import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
@@ -767,7 +770,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(22.0),
+      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(10.0),
@@ -776,9 +779,13 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         color: Palette.mainBackground,
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        ///
+        /// 헤딩 영역: 총 개수, 캘린더 버튼, 동작별/날짜별 버튼
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            //
+            // 총 노트 개수
             Text(
               '총 ${dayNotelessonCnt}개',
               style: TextStyle(
@@ -786,13 +793,49 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 color: Palette.gray66,
               ),
             ),
-            Spacer(
-              flex: 1,
+            Spacer(),
+            // 캘린더 버튼
+            Offstage(
+              offstage: listMode == "동작별" ? true : false,
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    print('Calender Button Clicked');
+                  },
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Palette.grayF5,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_month,
+                          color: Palette.gray99,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '캘린더',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Palette.gray33,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
+            SizedBox(width: 10),
+            // 캘린더 버튼
             Material(
-              color: Palette.mainBackground,
               child: InkWell(
-                borderRadius: BorderRadius.circular(10),
                 onTap: () {
                   if (listMode == "동작별") {
                     setState(() {
@@ -805,14 +848,19 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                   }
                   ;
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Palette.grayF5,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Row(
                     children: [
                       Icon(
                         Icons.sync,
                         color: Palette.gray99,
-                        size: 15.0,
                       ),
                       SizedBox(
                         width: 5,
@@ -821,7 +869,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                         listMode == "동작별" ? "날짜별" : "동작별",
                         style: TextStyle(
                           fontSize: 14,
-                          color: Palette.gray66,
+                          color: Palette.gray33,
                         ),
                       ),
                     ],
@@ -831,7 +879,29 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             ),
           ],
         ),
-        const SizedBox(height: 5.0),
+        // 캘린더 시작
+
+        Offstage(
+            offstage: false,
+            child: Container(
+              constraints: BoxConstraints.tight(Size.fromHeight(400)),
+              child: BaseTableCalendar(
+                () {
+                  setState(() {});
+                },
+                true,
+                selectedDate: "",
+                pageName: "",
+                eventList: [],
+                hideBottonDateText: true,
+                hideButton: true,
+              ),
+            )
+            // .animate(target: !calendarIsOffStaged ? 1 : 0)
+            // .fadeIn(duration: 300.ms)
+            // .animate(target: calendarIsOffStaged ? 1 : 0)
+            // .fadeOut(duration: 300.ms),
+            ),
 
         //레슨 노트 보기 시작
         FutureBuilder<QuerySnapshot>(

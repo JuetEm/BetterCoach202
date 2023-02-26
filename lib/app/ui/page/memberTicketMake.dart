@@ -758,13 +758,15 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                                 ticketCountAllController.text =
                                     ticketCountAll.toString();
 
-                                ticketStartDate = globalFunction.getDateFromTimeStamp(
-                                    ticketVal['ticketStartDate']);
+                                ticketStartDate =
+                                    globalFunction.getDateFromTimeStamp(
+                                        ticketVal['ticketStartDate']);
                                 ticketStartDateController.text =
                                     ticketStartDate;
 
-                                ticketEndDate = globalFunction.getDateFromTimeStamp(
-                                    ticketVal['ticketEndDate']);
+                                ticketEndDate =
+                                    globalFunction.getDateFromTimeStamp(
+                                        ticketVal['ticketEndDate']);
                                 ticketEndDateController.text = ticketEndDate;
 
                                 ticketDescription =
@@ -1045,18 +1047,18 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       offstage: calendarIsOffStaged,
                       child: Container(
                         constraints: BoxConstraints.tight(Size.fromHeight(530)),
-                        child: BaseTableCalendar(
-                          () {
-                            // git test
-                            print("ticketStartDate : $ticketStartDate}");
-                            print("ticketEndDate : $ticketEndDate}");
-                            setState(() {});
-                          },
-                          true,
-                          selectedDate: "",
-                          pageName: calendarName,
-                          eventList: [],
-                        ),
+                        child: BaseTableCalendar(() {
+                          calendarIsOffStaged = !calendarIsOffStaged;
+                          // git test
+                          print("ticketStartDate : $ticketStartDate}");
+                          print("ticketEndDate : $ticketEndDate}");
+                          setState(() {});
+                        }, true,
+                            selectedDate: "",
+                            pageName: calendarName,
+                            eventList: [],
+                            hideBottonDateText: false,
+                            hideButton: false),
                       )
                           .animate(target: !calendarIsOffStaged ? 1 : 0)
                           .fadeIn(duration: 300.ms)

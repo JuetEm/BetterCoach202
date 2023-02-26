@@ -21,6 +21,8 @@ class BaseTableCalendar extends StatefulWidget {
     required this.selectedDate,
     required this.pageName,
     required this.eventList,
+    required this.hideBottonDateText,
+    required this.hideButton,
   });
 
   final Function customFunction;
@@ -28,6 +30,8 @@ class BaseTableCalendar extends StatefulWidget {
   final String selectedDate;
   final String pageName;
   final List<dynamic> eventList;
+  bool hideBottonDateText;
+  bool hideButton;
 
   @override
   State<BaseTableCalendar> createState() => _BaseTableCalendarState();
@@ -108,13 +112,17 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                           Divider(
                             height: 1,
                           ),
-                          Container(
-                            height: 30,
-                            child: Center(
-                              child: Text(
-                                "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                          Offstage(
+                            offstage: widget.hideBottonDateText,
+                            child: Container(
+                              height: 30,
+                              child: Center(
+                                child: Text(
+                                  "${widget.pageName} : ${focusedDate.year}-${focusedDate.month}-${focusedDate.day}",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ),
@@ -135,33 +143,39 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
                                     Divider(),
                                   ],
                                 )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    padding: EdgeInsets.all(0),
-                                    elevation: 0,
-                                    backgroundColor: Palette.buttonOrange,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 14, horizontal: 100),
-                                    child: Text("${widget.pageName} 선택",
-                                        style: TextStyle(fontSize: 16)),
-                                  ),
-                                  onPressed: () {
-                                    calendarService.setDate(
-                                      DateTime(
-                                        focusedDate.year,
-                                        focusedDate.month,
-                                        focusedDate.day,
+                              : Offstage(
+                                  offstage: widget.hideButton,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        elevation: 0,
+                                        backgroundColor: Palette.buttonOrange,
                                       ),
-                                    );
-                                    // 저장하기 성공시 MemberAdd로 이동
-                                    Navigator.pop(context,
-                                        calendarService.currentSelectedDate());
-                                  })
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14, horizontal: 100),
+                                        child: Text("${widget.pageName} 선택",
+                                            style: TextStyle(fontSize: 16)),
+                                      ),
+                                      onPressed: () {
+                                        calendarService.setDate(
+                                          DateTime(
+                                            focusedDate.year,
+                                            focusedDate.month,
+                                            focusedDate.day,
+                                          ),
+                                        );
+                                        // 저장하기 성공시 MemberAdd로 이동
+                                        Navigator.pop(
+                                            context,
+                                            calendarService
+                                                .currentSelectedDate());
+                                      }),
+                                ),
                         ],
                       ),
                     ),
@@ -195,7 +209,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           ticketStartDate = DateFormat("yyyy-MM-dd").format(focusedDate);
           ticketStartDateController!.text = ticketStartDate!;
           // calendarIsOffStaged = true;
-          
+
           widget.customFunction();
         } else if (widget.pageName == "수강 종료일") {
           print("수강 종료일");
