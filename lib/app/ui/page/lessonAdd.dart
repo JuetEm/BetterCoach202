@@ -102,7 +102,8 @@ bool isFirst = true;
 
 List lessonActionList = [];
 
-var actionNoteChips = [];
+List notedActionChips = [];
+List<String> notedActionsList = [];
 
 String getActionPosition(
     String apparatunName, String actionName, List actionList) {
@@ -134,24 +135,30 @@ class _LessonAddState extends State<LessonAdd> {
   //   super.initState();
   // }
 
-  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList,
+  List<dynamic> makeChips(List<dynamic> resultChips, List<dynamic> targetList,
       Color chipBackgroundColor) {
     if (targetList.isNotEmpty) {
       resultChips = targetList
-          .map((e) => FilterChip(
-                label: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+          .map((e){ 
+            
+            return FilterChip(
+                label: Column(
                   children: [
-                    Text(e),
-                    SizedBox(width: 1),
-                    Icon(
-                      Icons.close_outlined,
-                      size: 14,
-                      color: targetList.contains(e)
-                          ? Palette.gray00
-                          : Palette.gray99,
-                    )
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(e['actionName']),
+                        SizedBox(width: 1),
+                        Icon(
+                          Icons.close_outlined,
+                          size: 14,
+                          color: targetList.contains(e)
+                              ? Palette.gray00
+                              : Palette.gray99,
+                        )
+                      ],
+                    ),
                   ],
                 ),
                 onSelected: ((value) {
@@ -172,8 +179,10 @@ class _LessonAddState extends State<LessonAdd> {
                 side: targetList.contains(e)
                     ? BorderSide.none
                     : BorderSide(color: Palette.grayB4),
-              ))
+              );
+              })
           .toList();
+    
     }
     print("[MA] makeChips : ${resultChips}");
     return resultChips;
@@ -297,13 +306,15 @@ class _LessonAddState extends State<LessonAdd> {
               .then((value) {
             print("ppppppppp - value : ${value}");
             lessonActionList.addAll(value);
-            
-            
+
             // 동작별 노트가 있는 경우 칩 생성
-            lessonActionList.forEach((element) {
-              
-            });
-            // goalChips = makeChips(goalChips, selectedGoals, Palette.backgroundOrange);
+            /* lessonActionList.forEach((element) {
+              if(element['totalNote'].isNotEmpty){
+                notedActionsList.add(element['actionName']);
+              }
+            }); */
+            notedActionChips = makeChips(
+                notedActionChips, lessonActionList, Palette.backgroundOrange);
             setState(() {});
           });
         }
@@ -702,10 +713,19 @@ class _LessonAddState extends State<LessonAdd> {
                                                   todayNoteView =
                                                       docsTodayNote[0]
                                                           .get('todayNote');
-                                                          print("todayNoteView : ${todayNoteView}");
-                                                  todayNoteController.text = todayNoteView;
-                                                  // 
-                                                  todayNoteController.selection = TextSelection.fromPosition(TextPosition(offset: todayNoteController.text.length));
+                                                  print(
+                                                      "todayNoteView : ${todayNoteView}");
+                                                  todayNoteController.text =
+                                                      todayNoteView;
+                                                  //
+                                                  todayNoteController
+                                                          .selection =
+                                                      TextSelection.fromPosition(
+                                                          TextPosition(
+                                                              offset:
+                                                                  todayNoteController
+                                                                      .text
+                                                                      .length));
                                                 }
                                                 todayNotedocId =
                                                     docsTodayNote[0].id;
@@ -747,7 +767,6 @@ class _LessonAddState extends State<LessonAdd> {
                                               //   },
                                               // );
                                               // 새로 불러오기
-                                              
 
                                               /// 리턴 시작
                                               return Container(
@@ -757,10 +776,16 @@ class _LessonAddState extends State<LessonAdd> {
                                                   child: TextFormField(
                                                     onChanged: (value) {
                                                       todayNoteView = value;
-                                                      todayNoteController.selection = TextSelection.fromPosition(TextPosition(offset: todayNoteController.text.length));
+                                                      todayNoteController
+                                                              .selection =
+                                                          TextSelection.fromPosition(
+                                                              TextPosition(
+                                                                  offset: todayNoteController
+                                                                      .text
+                                                                      .length));
                                                     },
                                                     maxLines: null,
-                                                    controller: 
+                                                    controller:
                                                         todayNoteController,
                                                     autofocus: true,
                                                     obscureText: false,
@@ -808,7 +833,8 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         /// 동작별 메모 한 묶음.
                                         /// 묶음 단위로 불러와져야 함.
-                                        lessonActionList.isNotEmpty // is동작메모하나라도있니? 변수 필요
+                                        lessonActionList
+                                                .isNotEmpty // is동작메모하나라도있니? 변수 필요
                                             /// 동작 있을 경우
                                             ? Expanded(
                                                 child: Column(
@@ -818,15 +844,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                     Padding(
                                                       padding: EdgeInsets.only(
                                                           left: 20),
-                                                      child: Chip(
-                                                        label: Text(
-                                                            'MA Abs Series'),
-                                                        deleteIcon: Icon(
-                                                          Icons.close_sharp,
-                                                          size: 16,
-                                                        ),
-                                                        onDeleted: () {},
-                                                      ),
+                                                      child: Chip(label: Text("MA Abs Series"),
+                                                      deleteIcon: Icon(Icons.close_sharp, size: 16,),onDeleted: (){},)
                                                     ),
                                                     TextFormField(
                                                       maxLines: null,
@@ -1066,7 +1085,7 @@ class _LessonAddState extends State<LessonAdd> {
                                       bool isSelected = doc['selected'];
 
                                       return LessonActionListTile(
-                                        key: valueKey,
+                                          key: valueKey,
                                           actionName: actionName,
                                           apparatus: apratusName,
                                           position: getActionPosition(
@@ -1755,7 +1774,6 @@ class _LessonAddState extends State<LessonAdd> {
                                   // await totalNoteSave(
                                   //     lessonService, customUserInfo, context);
 
-                                  
                                   lessonService.notifyListeners();
                                   // Navigator.pop(context);
                                 }
