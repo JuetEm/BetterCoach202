@@ -355,21 +355,23 @@ class _LessonAddState extends State<LessonAdd> {
 
             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
 
-                lessonActionList.forEach((element) { 
-                  txtEdtCtrlrList.add(new TextEditingController());
-                });
-                
+            lessonActionList.forEach((element) {
+              txtEdtCtrlrList.add(new TextEditingController());
+            });
+
             setState(() {});
           });
         }
 
-        if(dayLessonList.isEmpty){
-          daylessonService.readTodayNoteOflessonDate(customUserInfo.uid, customUserInfo.docId, lessonDateArg).then((value){
+        if (dayLessonList.isEmpty) {
+          daylessonService
+              .readTodayNoteOflessonDate(
+                  customUserInfo.uid, customUserInfo.docId, lessonDateArg)
+              .then((value) {
             dayLessonList.add(value);
-            dayLessonList.forEach((element) { 
+            dayLessonList.forEach((element) {
               print("dayLessonList - element : ${element}");
             });
-            
           });
         }
 
@@ -408,30 +410,38 @@ class _LessonAddState extends State<LessonAdd> {
 
                       for (int i = 0; i < txtEdtCtrlrList.length; i++) {
                         if (txtEdtCtrlrList[i].text.trim().isNotEmpty) {
-                          print("lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote'] }");
-                          lessonActionList[i]['totalNote'] = txtEdtCtrlrList[i].text;
+                          print(
+                              "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}");
+                          lessonActionList[i]['totalNote'] =
+                              txtEdtCtrlrList[i].text;
 
                           lessonService.updateLessonActionNote(
-                          lessonActionList[i]['id'],
-                          lessonActionList[i]['docId'],
-                          lessonActionList[i]['actionName'],
-                          lessonActionList[i]['apratusName'],
-                          lessonActionList[i]['grade'],
-                          lessonActionList[i]['lessonDate'],
-                          lessonActionList[i]['name'],
-                          lessonActionList[i]['phoneNumber'],
-                          lessonActionList[i]['pos'],
-                          lessonActionList[i]['timestamp'],
-                          lessonActionList[i]['totalNote'],
-                          lessonActionList[i]['uid']
-                        );
+                              lessonActionList[i]['id'],
+                              lessonActionList[i]['docId'],
+                              lessonActionList[i]['actionName'],
+                              lessonActionList[i]['apratusName'],
+                              lessonActionList[i]['grade'],
+                              lessonActionList[i]['lessonDate'],
+                              lessonActionList[i]['name'],
+                              lessonActionList[i]['phoneNumber'],
+                              lessonActionList[i]['pos'],
+                              lessonActionList[i]['timestamp'],
+                              lessonActionList[i]['totalNote'],
+                              lessonActionList[i]['uid']);
                         }
                       }
-                      
-                      if(todayNoteController.text.trim().isNotEmpty && (todayNoteController.text.trim() != todayNoteView)){
-                        // daylessonService.updateDayNote(id, docId, lessonDate, name, todayNote, uid)
+
+                      if (todayNoteController.text.trim().isNotEmpty &&
+                          (todayNoteController.text.trim() != todayNoteView)) {
+                        daylessonService.updateDayNote(
+                          dayLessonList[0]['id'],
+                          dayLessonList[0]['docId'],
+                          dayLessonList[0]['lessonDate'],
+                          dayLessonList[0]['name'],
+                          dayLessonList[0]['todayNote'],
+                          dayLessonList[0]['uid'],
+                        );
                       }
-                          
 
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
@@ -858,7 +868,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                   child: TextFormField(
                                                     onChanged: (value) {
                                                       todayNoteView = value;
-                                                      todayNoteController.text = value;
+                                                      todayNoteController.text =
+                                                          value;
                                                       todayNoteController
                                                               .selection =
                                                           TextSelection.fromPosition(
@@ -974,15 +985,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                       String actionNote =
                                                           doc['totalNote'];
 
-                                                          
-                                                            
-                                                      
-                                                      if(txtEdtCtrlrList[index]
-                                                          .text.isEmpty){txtEdtCtrlrList[index]
-                                                          .text = actionNote;}
-                                                      
+                                                      if (txtEdtCtrlrList[index]
+                                                          .text
+                                                          .isEmpty) {
+                                                        txtEdtCtrlrList[index]
+                                                            .text = actionNote;
+                                                      }
 
-                                                          txtEdtCtrlrList[index]
+                                                      txtEdtCtrlrList[index]
                                                               .selection =
                                                           TextSelection.fromPosition(
                                                               TextPosition(
@@ -990,7 +1000,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                           index]
                                                                       .text
                                                                       .length));
-                                                      
+
                                                       return Offstage(
                                                         key: valueKey,
                                                         offstage: !isSelected,
@@ -1035,14 +1045,13 @@ class _LessonAddState extends State<LessonAdd> {
                                                                 txtEdtCtrlrList[
                                                                         index]
                                                                     .text = value;
-                                                                    txtEdtCtrlrList[index]
-                                                              .selection =
-                                                          TextSelection.fromPosition(
-                                                              TextPosition(
-                                                                  offset: txtEdtCtrlrList[
-                                                                          index]
-                                                                      .text
-                                                                      .length));
+                                                                txtEdtCtrlrList[
+                                                                            index]
+                                                                        .selection =
+                                                                    TextSelection
+                                                                        .fromPosition(TextPosition(
+                                                                            offset:
+                                                                                txtEdtCtrlrList[index].text.length));
                                                               },
                                                               controller:
                                                                   txtEdtCtrlrList[
