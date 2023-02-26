@@ -125,8 +125,7 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
                 "YES contain!! remove item => widget.apparatus : ${widget.uid}/${widget.docId}/${widget.lessonDate}/${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
             // checkedTileList.remove(widget.pos);
 
-            lessonService.deleteFromActionSelect(widget.uid, widget.memberdocId,
-                widget.lessonDate, widget.apparatus, widget.actionName);
+            // lessonService.deleteFromActionSelect(widget.uid, widget.memberdocId,widget.lessonDate, widget.apparatus, widget.actionName);
           } else {
             actionTileColor = Palette.buttonOrange;
             apparatusTextColor = Palette.grayFF;
@@ -138,7 +137,7 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
 
             print("[AS createFromActionSelect - ${widget.memberdocId}]");
 
-            lessonService.createFromActionSelect(
+            /* lessonService.createFromActionSelect(
               docId: widget.memberdocId,
               uid: widget.uid,
               name: widget.name,
@@ -157,7 +156,7 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
                 print(
                     "동작추가 에러 : widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}");
               },
-            );
+            ); */
           }
 
           // setState 함수는 클래스 내부에서만 다시 그린다. floatingActionButton은 actionTile 클래스를 감싸고 있는

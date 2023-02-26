@@ -1,9 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class DaylessonService extends ChangeNotifier {
+class DayLessonService extends ChangeNotifier {
   final daylessonCollection =
       FirebaseFirestore.instance.collection('daylesson');
+
+      Future<QuerySnapshot> readTodayNoteOflessonDate(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    final result;
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+
+    result = await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .get();
+
+    return result;
+  }
 
   Future<List> readDaylessonListAtFirstTime(String uid) async {
     var result = await daylessonCollection
@@ -28,5 +47,26 @@ class DaylessonService extends ChangeNotifier {
     }
     print('[daylesson]resultList:$resultList');
     return resultList;
+  }
+
+  updateDayNote(
+    String id,
+    String docId,
+    String lessonDate,
+    String name,
+    // Timestamp,
+    String todayNote,
+    String uid,
+  ){
+    daylessonCollection.doc(id).update(
+      {
+        'docId':docId,
+        'lessonDate':lessonDate,
+        'name':name,
+        'timestamp':DateTime.now(),
+        'todayNote':todayNote,
+        'uid':uid,
+      }
+    );
   }
 }

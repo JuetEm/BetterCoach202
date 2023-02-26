@@ -14,26 +14,25 @@ class LessonService extends ChangeNotifier {
   GlobalFunction globalFunction = GlobalFunction();
 
   updateLessonActionNote(
+    String id,
     String docId,
     String actionName,
     String apratusName,
-    String memberId,
     String grade,
     String lessonDate,
     String name,
     String phoneNumber,
-    String pos,
-    DateTime timestamp,
+    int pos,
+    Timestamp timestamp,
     String totalNote,
     String uid,
   ) {
     lessonCollection
-        .doc(docId)
+        .doc(id)
         .update({
          'docId' : docId,
     'actionName' :actionName,
     'apratusName' : apratusName,
-    'memberId' : memberId,
     'grade' : grade,
     'lessonDate' : lessonDate,
     'name' : name,
@@ -41,7 +40,7 @@ class LessonService extends ChangeNotifier {
     'pos' : pos,
     'timestamp' :timestamp,
     'totalNote' : totalNote,
-    'uidh' : uid,
+    'uid' : uid,
         })
         .then((value) {})
         .onError((error, stackTrace) {})

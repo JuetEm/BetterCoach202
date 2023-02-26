@@ -72,7 +72,7 @@ TicketLibraryService ticketLibraryService = TicketLibraryService();
 
 MemberTicketService memberTicketService = MemberTicketService();
 
-DaylessonService daylessonService = DaylessonService();
+DayLessonService daylessonService = DayLessonService();
 
 enum LoginPlatform {
   kakao,
@@ -211,7 +211,7 @@ void main() async {
           providers: [
             ChangeNotifierProvider(create: (context) => AuthService()),
             ChangeNotifierProvider(create: (context) => MemberService()),
-            ChangeNotifierProvider(create: (context) => DaylessonService()),
+            ChangeNotifierProvider(create: (context) => DayLessonService()),
             ChangeNotifierProvider(create: (context) => LessonService()),
             ChangeNotifierProvider(create: (context) => CalendarService()),
             ChangeNotifierProvider(create: (context) => ActionService()),
@@ -230,6 +230,7 @@ void main() async {
         providers: [
           ChangeNotifierProvider(create: (context) => AuthService()),
           ChangeNotifierProvider(create: (context) => MemberService()),
+          ChangeNotifierProvider(create: (context) => DayLessonService()),
           ChangeNotifierProvider(create: (context) => LessonService()),
           ChangeNotifierProvider(create: (context) => CalendarService()),
           ChangeNotifierProvider(create: (context) => ActionService()),
