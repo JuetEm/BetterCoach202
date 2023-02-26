@@ -141,7 +141,6 @@ class _LessonAddState extends State<LessonAdd> {
   @override
   void initState() {
     super.initState();
-    todayNoteController.text = todayNoteView;
   }
 
   @override
@@ -649,7 +648,9 @@ class _LessonAddState extends State<LessonAdd> {
                                                   todayNoteView =
                                                       docsTodayNote[0]
                                                           .get('todayNote');
-                                                  isFirst = false;
+                                                          print("todayNoteView : ${todayNoteView}");
+                                                  todayNoteController.text = todayNoteView;
+                                                  todayNoteController.selection = TextSelection.fromPosition(TextPosition(offset: todayNoteController.text.length));
                                                 }
                                                 todayNotedocId =
                                                     docsTodayNote[0].id;
@@ -701,9 +702,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                   child: TextFormField(
                                                     onChanged: (value) {
                                                       todayNoteView = value;
+                                                      todayNoteController.selection = TextSelection.fromPosition(TextPosition(offset: todayNoteController.text.length));
                                                     },
                                                     maxLines: null,
-                                                    controller:
+                                                    controller: 
                                                         todayNoteController,
                                                     autofocus: true,
                                                     obscureText: false,
@@ -1826,7 +1828,7 @@ Future<void> todayNoteSave(LessonService lessonService,
             content: Text("일별노트 저장"),
           ));
           //todayNoteController.clear();
-          Navigator.pop(context);
+          // Navigator.pop(context);
           //lessonService.notifyListeners();
         },
         onError: () {
@@ -1846,7 +1848,7 @@ Future<void> todayNoteSave(LessonService lessonService,
           ));
 
           // 저장하기 성공시 MemberInfo로 이동, 뒤로가기
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
         onError: () {
           print("저장하기 ERROR");
