@@ -5,13 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalFunction.dart';
-import 'app/data/provider/auth_service.dart';
-import 'app/ui/widget/baseTableCalendar.dart';
-import 'main.dart';
-import 'app/ui/page/memberList.dart';
+import 'package:web_project/app/function/globalFunction.dart';
+import '../../data/provider/auth_service.dart';
+import 'baseTableCalendar.dart';
+import '../../../main.dart';
+import '../page/memberList.dart';
 
-import 'app/data/model/color.dart';
+import '../../data/model/color.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
 

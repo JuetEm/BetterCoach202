@@ -15,8 +15,8 @@ import '../../data/provider/auth_service.dart';
 import '../widget/baseTableCalendar.dart';
 import '../widget/centerConstraintBody.dart';
 import '../../data/model/color.dart';
-import '../../../globalFunction.dart';
-import '../../../globalWidget.dart';
+import '../../function/globalFunction.dart';
+import '../widget/globalWidget.dart';
 import '../../data/model/lessonInfo.dart';
 import 'memberInfo.dart';
 

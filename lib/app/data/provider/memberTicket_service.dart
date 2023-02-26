@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
-import 'package:web_project/globalFunction.dart';
+import 'package:web_project/app/function/globalFunction.dart';
 
 class MemberTicketService extends ChangeNotifier {
   CollectionReference<Map<String, dynamic>> memberTicketCollection =

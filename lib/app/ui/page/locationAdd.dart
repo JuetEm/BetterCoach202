@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/model/localavailable_Info.dart';
 
-import 'app/data/model/color.dart';
+import '../../data/model/color.dart';
 
 Map LocationMap = {};
 List cityNameList = [];

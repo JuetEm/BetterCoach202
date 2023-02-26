@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
 
-import 'globalFunction.dart';
+import '../../function/globalFunction.dart';
 import 'globalWidget.dart';
 
 GlobalFunction globalfunction = GlobalFunction();

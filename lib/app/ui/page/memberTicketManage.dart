@@ -11,12 +11,12 @@ import 'package:web_project/app/ui/page/memberTicketMake.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalFunction.dart';
-import 'package:web_project/globalWidget.dart';
+import 'package:web_project/app/function/globalFunction.dart';
+import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/main.dart';
-import 'package:web_project/ticketWidget.dart';
+import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
-import 'package:web_project/ticketWidget.dart';
+import 'package:web_project/app/ui/widget/ticketWidget.dart';
 
 int ticketCnt = 0; // 사용가능한 수강권 개수
 int expiredTicketCnt = 0; // 만료된 수강권 개수

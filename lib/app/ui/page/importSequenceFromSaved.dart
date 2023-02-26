@@ -7,7 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalWidget.dart';
+import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/data/model/actionInfo.dart';
 
 class ImportSequenceFromSaved extends StatefulWidget {

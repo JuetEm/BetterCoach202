@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
-import 'package:web_project/globalFunction.dart';
+import 'package:web_project/app/function/globalFunction.dart';
 
 import '../../data/provider/calendar_service.dart';
 import 'centerConstraintBody.dart';
 import '../../data/model/color.dart';
-import '../../../globalWidget.dart';
+import 'globalWidget.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
 

@@ -18,8 +18,8 @@ import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
-import '../../../globalFunction.dart';
-import '../../../globalWidget.dart';
+import '../../function/globalFunction.dart';
+import '../widget/globalWidget.dart';
 import '../../../main.dart';
 import 'memberAdd.dart';
 import 'memberInfo.dart';

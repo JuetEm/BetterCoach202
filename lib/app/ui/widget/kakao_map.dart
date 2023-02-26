@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 
-import 'app/ui/widget/centerConstraintBody.dart';
-import 'globalFunction.dart';
+import 'centerConstraintBody.dart';
+import '../../function/globalFunction.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
 

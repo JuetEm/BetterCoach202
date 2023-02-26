@@ -4,15 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 
-import 'app/data/provider/auth_service.dart';
-import 'app/ui/widget/baseTableCalendar.dart';
-import 'app/data/model/color.dart';
-import 'globalFunction.dart';
-import 'globalWidget.dart';
-import 'app/ui/page/memberInfo.dart';
-import 'app/ui/page/memberList.dart';
+import '../../data/provider/auth_service.dart';
+import '../widget/baseTableCalendar.dart';
+import '../../data/model/color.dart';
+import '../../function/globalFunction.dart';
+import '../widget/globalWidget.dart';
+import 'memberInfo.dart';
+import 'memberList.dart';
 import 'membershipList.dart';
-import 'app/data/model/userInfo.dart';
+import '../../data/model/userInfo.dart';
 
 GlobalFunction globalFunction = GlobalFunction();
 

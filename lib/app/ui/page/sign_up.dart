@@ -4,17 +4,17 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/coachInfo.dart';
-import 'package:web_project/globalWidget.dart';
-import 'package:web_project/kakaomap_webview.dart';
+import 'package:web_project/app/ui/widget/globalWidget.dart';
+import 'package:web_project/app/ui/widget/kakaomap_webview.dart';
 import 'package:web_project/app/data/model/localavailable_Info.dart';
-import 'package:web_project/locationAdd.dart';
+import 'package:web_project/app/ui/page/locationAdd.dart';
 
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
-import '../../../kakao_map.dart';
+import '../widget/kakao_map.dart';
 import 'dart:io' show Platform;
 
-import '../../../kakaomap_web.dart';
+import '../widget/kakaomap_web.dart';
 
 bool isPswdSame = false;
 bool isEmailValidate = false;

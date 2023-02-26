@@ -12,10 +12,10 @@ import 'package:web_project/app/data/provider/auth_service.dart';
 import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalWidget.dart';
-import 'package:web_project/locationAdd.dart';
+import 'package:web_project/app/ui/widget/globalWidget.dart';
+import 'package:web_project/app/ui/page/locationAdd.dart';
 import 'package:web_project/main.dart';
-import 'package:web_project/ticketWidget.dart';
+import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 
 String screenName = "수강권 추가";

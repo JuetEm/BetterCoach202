@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 
-import 'app/ui/widget/baseTableCalendar.dart';
-import 'app/ui/widget/bottomSheetContent.dart';
+import '../ui/widget/baseTableCalendar.dart';
+import '../ui/widget/bottomSheetContent.dart';
 
 List firstChars = [
   "ㄱ",

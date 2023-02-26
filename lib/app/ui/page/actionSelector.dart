@@ -17,8 +17,8 @@ import 'actionAdd.dart';
 import '../../data/model/actionInfo.dart';
 import 'lessonAdd.dart';
 import '../../data/provider/auth_service.dart';
-import '../../../globalFunction.dart';
-import '../../../globalWidget.dart';
+import '../../function/globalFunction.dart';
+import '../widget/globalWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 

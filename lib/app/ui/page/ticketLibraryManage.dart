@@ -5,9 +5,9 @@ import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalWidget.dart';
+import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/main.dart';
-import 'package:web_project/ticketWidget.dart';
+import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 
 class TicketLibraryManage extends StatefulWidget {

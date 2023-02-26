@@ -4,7 +4,7 @@ import 'package:web_project/app/ui/page/importSequenceFromRecent.dart';
 import 'package:web_project/app/ui/page/importSequenceFromSaved.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalWidget.dart';
+import 'package:web_project/app/ui/widget/globalWidget.dart';
 
 class SequenceLibrary extends StatefulWidget {
   const SequenceLibrary({super.key});

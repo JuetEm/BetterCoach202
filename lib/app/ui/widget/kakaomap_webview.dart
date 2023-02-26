@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
-import 'package:web_project/globalFunction.dart';
+import 'package:web_project/app/function/globalFunction.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 GlobalFunction globalFunction = GlobalFunction();

@@ -4,7 +4,7 @@ import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/data/provider/auth_service.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 
-import 'globalWidget.dart';
+import '../widget/globalWidget.dart';
 
 class MembershipList extends StatefulWidget {
   const MembershipList({super.key, required String lessonCount});

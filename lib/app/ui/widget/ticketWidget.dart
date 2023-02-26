@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import 'app/data/model/color.dart';
+import '../../data/model/color.dart';
 
 /// 티켓 위젯
 class TicketWidget extends StatefulWidget {

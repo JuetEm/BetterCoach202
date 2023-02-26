@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
-import 'package:web_project/globalVariables.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 
 class MemberTicketList extends StatefulWidget {
   const MemberTicketList(this.memberId ,this.ticketList, this.customFunction, {super.key});

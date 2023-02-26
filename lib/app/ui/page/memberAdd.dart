@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
-import 'package:web_project/ticketWidget.dart';
+import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 import 'package:web_project/app/data/model/userInfo.dart';
@@ -15,11 +15,11 @@ import 'actionSelector.dart';
 import '../../data/provider/auth_service.dart';
 import '../widget/baseTableCalendar.dart';
 import '../../data/model/color.dart';
-import '../../../globalFunction.dart';
-import '../../../globalWidget.dart';
+import '../../function/globalFunction.dart';
+import '../widget/globalWidget.dart';
 import 'memberInfo.dart';
 import 'memberList.dart';
-import '../../../membershipList.dart';
+import 'membershipList.dart';
 
 String memberAddMode = "추가";
 
