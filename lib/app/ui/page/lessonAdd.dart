@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
@@ -101,6 +102,7 @@ bool isTicketCountChecked = true;
 bool isFirst = true;
 
 List lessonActionList = [];
+List dayLessonList = [];
 
 List notedActionWidget = [];
 List<String> notedActionsList = [];
@@ -119,6 +121,8 @@ String getActionPosition(
 
   return position;
 }
+
+List<TextEditingController> txtEdtCtrlrList = [];
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
@@ -177,6 +181,45 @@ class _LessonAddState extends State<LessonAdd> {
               : BorderSide(color: Palette.grayB4),
         );
       }).toList();
+      resultChips = targetList.map((e) {
+        return FilterChip(
+          label: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(e['actionName']),
+                  SizedBox(width: 1),
+                  Icon(
+                    Icons.close_outlined,
+                    size: 14,
+                    color: targetList.contains(e)
+                        ? Palette.gray00
+                        : Palette.gray99,
+                  )
+                ],
+              ),
+            ],
+          ),
+          onSelected: ((value) {
+            setState(() {
+              targetList.remove(e);
+            });
+            print("value : ${value}");
+          }),
+          selected: targetList.contains(e),
+          labelStyle: TextStyle(
+              fontSize: 14,
+              color: targetList.contains(e) ? Palette.gray00 : Palette.gray99),
+          selectedColor: chipBackgroundColor,
+          backgroundColor: Colors.transparent,
+          showCheckmark: false,
+          side: targetList.contains(e)
+              ? BorderSide.none
+              : BorderSide(color: Palette.grayB4),
+        );
+      }).toList();
     }
     print("[MA] makeChips : ${resultChips}");
     return resultChips;
@@ -191,6 +234,10 @@ class _LessonAddState extends State<LessonAdd> {
   @override
   void initState() {
     super.initState();
+
+    lessonActionList = [];
+    txtEdtCtrlrList = [];
+    dayLessonList = [];
   }
 
   @override
@@ -212,6 +259,8 @@ class _LessonAddState extends State<LessonAdd> {
     super.dispose();
 
     lessonActionList = [];
+    txtEdtCtrlrList = [];
+    dayLessonList = [];
   }
 
   bool actionNullCheck = true;
@@ -221,6 +270,9 @@ class _LessonAddState extends State<LessonAdd> {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
     final lessonService = context.read<LessonService>();
+
+    // TextEditController 재빌드시 초기화
+    // txtEdtCtrlrList = [];
 
     // 이전 화면에서 보낸 변수 받기
     final argsList =
@@ -289,8 +341,8 @@ class _LessonAddState extends State<LessonAdd> {
     //   keyboardOpenBefore = true;
     // }
 
-    return Consumer<LessonService>(
-      builder: (context, lessonService, child) {
+    return Consumer2<LessonService, DayLessonService>(
+      builder: (context, lessonService, dayLessonService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo..uid}, customUserInfo.docId :  ${customUserInfo.docId}");
         if (lessonActionList.isEmpty) {
@@ -301,19 +353,26 @@ class _LessonAddState extends State<LessonAdd> {
             print("ppppppppp - value : ${value}");
             lessonActionList.addAll(value);
 
-            // 동작별 노트가 있는 경우 칩 생성
-            lessonActionList.forEach((element) {
-              if (element['totalNote'].isNotEmpty) {
-                // notedActionsList.add(element['actionName']);
-                element['isSelected'] = true;
-              }
-              print('lessonActionList$lessonActionList');
-            });
-            notedActionWidget = makeChips(
-                notedActionWidget, lessonActionList, Palette.backgroundOrange);
+            // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
+
+                lessonActionList.forEach((element) { 
+                  txtEdtCtrlrList.add(new TextEditingController());
+                });
+                
             setState(() {});
           });
         }
+
+        if(dayLessonList.isEmpty){
+          daylessonService.readTodayNoteOflessonDate(customUserInfo.uid, customUserInfo.docId, lessonDateArg).then((value){
+            dayLessonList.add(value);
+            dayLessonList.forEach((element) { 
+              print("dayLessonList - element : ${element}");
+            });
+            
+          });
+        }
+
         return Scaffold(
           //resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
@@ -344,8 +403,35 @@ class _LessonAddState extends State<LessonAdd> {
                       print("[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
 
                       //일별 노트 저장
-                      await todayNoteSave(
-                          lessonService, customUserInfo, context);
+                      /* await todayNoteSave(
+                          lessonService, customUserInfo, context); */
+
+                      for (int i = 0; i < txtEdtCtrlrList.length; i++) {
+                        if (txtEdtCtrlrList[i].text.trim().isNotEmpty) {
+                          print("lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote'] }");
+                          lessonActionList[i]['totalNote'] = txtEdtCtrlrList[i].text;
+
+                          lessonService.updateLessonActionNote(
+                          lessonActionList[i]['id'],
+                          lessonActionList[i]['docId'],
+                          lessonActionList[i]['actionName'],
+                          lessonActionList[i]['apratusName'],
+                          lessonActionList[i]['grade'],
+                          lessonActionList[i]['lessonDate'],
+                          lessonActionList[i]['name'],
+                          lessonActionList[i]['phoneNumber'],
+                          lessonActionList[i]['pos'],
+                          lessonActionList[i]['timestamp'],
+                          lessonActionList[i]['totalNote'],
+                          lessonActionList[i]['uid']
+                        );
+                        }
+                      }
+                      
+                      if(todayNoteController.text.trim().isNotEmpty && (todayNoteController.text.trim() != todayNoteView)){
+                        // daylessonService.updateDayNote(id, docId, lessonDate, name, todayNote, uid)
+                      }
+                          
 
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
@@ -772,6 +858,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                   child: TextFormField(
                                                     onChanged: (value) {
                                                       todayNoteView = value;
+                                                      todayNoteController.text = value;
                                                       todayNoteController
                                                               .selection =
                                                           TextSelection.fromPosition(
@@ -830,12 +917,15 @@ class _LessonAddState extends State<LessonAdd> {
                                         /// 동작별 메모 한 묶음.
                                         /// 묶음 단위로 불러와져야 함.
                                         lessonActionList
+                                                .where((element) =>
+                                                    element['noteSelected'] ==
+                                                    true)
                                                 .isNotEmpty // is동작메모하나라도있니? 변수 필요
                                             /// 동작 있을 경우
                                             ? Expanded(
                                                 child: ListView.builder(
                                                     padding: EdgeInsets.only(
-                                                        bottom: 100),
+                                                        bottom: 0),
                                                     physics:
                                                         BouncingScrollPhysics(),
                                                     shrinkWrap: true,
@@ -844,8 +934,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                     itemBuilder:
                                                         (context, index) {
                                                       Key? valueKey;
+
                                                       lessonActionList[index]
                                                           ['pos'] = index;
+
                                                       valueKey = ValueKey(
                                                           lessonActionList[
                                                               index]['pos']);
@@ -877,8 +969,28 @@ class _LessonAddState extends State<LessonAdd> {
                                                       int pos =
                                                           doc['pos']; //수업총메모
                                                       bool isSelected =
-                                                          doc['selected'];
+                                                          doc['noteSelected'];
 
+                                                      String actionNote =
+                                                          doc['totalNote'];
+
+                                                          
+                                                            
+                                                      
+                                                      if(txtEdtCtrlrList[index]
+                                                          .text.isEmpty){txtEdtCtrlrList[index]
+                                                          .text = actionNote;}
+                                                      
+
+                                                          txtEdtCtrlrList[index]
+                                                              .selection =
+                                                          TextSelection.fromPosition(
+                                                              TextPosition(
+                                                                  offset: txtEdtCtrlrList[
+                                                                          index]
+                                                                      .text
+                                                                      .length));
+                                                      
                                                       return Offstage(
                                                         key: valueKey,
                                                         offstage: !isSelected,
@@ -902,9 +1014,39 @@ class _LessonAddState extends State<LessonAdd> {
                                                                     size: 16,
                                                                   ),
                                                                   onDeleted:
-                                                                      () {},
+                                                                      () {
+                                                                    lessonActionList[
+                                                                            index]
+                                                                        [
+                                                                        'noteSelected'] = !lessonActionList[
+                                                                            index]
+                                                                        [
+                                                                        'noteSelected'];
+                                                                    txtEdtCtrlrList[
+                                                                            index]
+                                                                        .text = "";
+                                                                    setState(
+                                                                        () {});
+                                                                  },
                                                                 )),
                                                             TextFormField(
+                                                              onChanged:
+                                                                  (value) {
+                                                                txtEdtCtrlrList[
+                                                                        index]
+                                                                    .text = value;
+                                                                    txtEdtCtrlrList[index]
+                                                              .selection =
+                                                          TextSelection.fromPosition(
+                                                              TextPosition(
+                                                                  offset: txtEdtCtrlrList[
+                                                                          index]
+                                                                      .text
+                                                                      .length));
+                                                              },
+                                                              controller:
+                                                                  txtEdtCtrlrList[
+                                                                      index],
                                                               maxLines: null,
                                                               autofocus: true,
                                                               obscureText:
@@ -1105,6 +1247,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     lessonService.notifyListeners();
                                   },
                                 ),
+                                const SizedBox(height: 20),
 
                                 // 손재형 재정렬 가능한 리스트 시작
                                 ReorderableListView.builder(
@@ -1147,7 +1290,7 @@ class _LessonAddState extends State<LessonAdd> {
                                       String totalNote =
                                           doc['totalNote']; //수업총메모
                                       int pos = doc['pos']; //수업총메모
-                                      bool isSelected = doc['selected'];
+                                      bool isSelected = doc['noteSelected'];
 
                                       return LessonActionListTile(
                                           key: valueKey,
@@ -1170,7 +1313,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           isSelectable: true,
                                           isDraggable: true,
                                           customFunctionOnTap: () {
-                                            doc['selected'] = !doc['selected'];
+                                            doc['noteSelected'] =
+                                                !doc['noteSelected'];
                                           });
                                     }),
 

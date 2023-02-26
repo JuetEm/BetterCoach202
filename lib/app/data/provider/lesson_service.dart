@@ -13,27 +13,26 @@ class LessonService extends ChangeNotifier {
 
   GlobalFunction globalFunction = GlobalFunction();
 
-  updateLessonInfo(
+  updateLessonActionNote(
+    String id,
     String docId,
     String actionName,
     String apratusName,
-    String memberId,
     String grade,
     String lessonDate,
     String name,
     String phoneNumber,
-    String pos,
-    DateTime timestamp,
+    int pos,
+    Timestamp timestamp,
     String totalNote,
     String uid,
   ) {
     lessonCollection
-        .doc(docId)
+        .doc(id)
         .update({
          'docId' : docId,
     'actionName' :actionName,
     'apratusName' : apratusName,
-    'memberId' : memberId,
     'grade' : grade,
     'lessonDate' : lessonDate,
     'name' : name,
@@ -41,7 +40,7 @@ class LessonService extends ChangeNotifier {
     'pos' : pos,
     'timestamp' :timestamp,
     'totalNote' : totalNote,
-    'uidh' : uid,
+    'uid' : uid,
         })
         .then((value) {})
         .onError((error, stackTrace) {})
@@ -302,7 +301,9 @@ class LessonService extends ChangeNotifier {
           "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
-      rstAObj['selected'] = false;
+
+      rstAObj['noteSelected'] = rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
+      rstAObj['actionSelected'] = false;
       rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
@@ -407,14 +408,6 @@ class LessonService extends ChangeNotifier {
     });
     print('[LS] updateTotalNote : ${docId} - ${totalNote}');
     // 화면 갱신
-  }
-
-  Future<void> updateLesson(String docId, bool isActive) async {
-    // bucket isActive 업데이트
-
-    await lessonCollection.doc(docId).update({'isActive': isActive});
-    print('[LS] updateLesson 실행 - NotifyListner');
-    notifyListeners(); // 화면 갱신
   }
 
   Future<void> updateposition(String docId, bool isActive) async {
