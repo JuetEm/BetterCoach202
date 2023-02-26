@@ -17,6 +17,7 @@ import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/ui/page/locationAdd.dart';
+import 'package:web_project/app/ui/widget/tableCalendarWidget.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
 
@@ -57,6 +58,8 @@ List resultList = [];
 
 List resultActionList = [];
 List resultMemberList = [];
+
+bool isNoteCalendarHided = true;
 
 class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
@@ -800,6 +803,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               child: Material(
                 child: InkWell(
                   onTap: () {
+                    isNoteCalendarHided = !isNoteCalendarHided;
+                    setState(() {});
                     print('Calender Button Clicked');
                   },
                   borderRadius: BorderRadius.circular(10),
@@ -833,7 +838,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               ),
             ),
             SizedBox(width: 10),
-            // 캘린더 버튼
+            // 동작별/날짜별 버튼
             Material(
               child: InkWell(
                 onTap: () {
@@ -882,26 +887,86 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         // 캘린더 시작
 
         Offstage(
-            offstage: false,
-            child: Container(
-              constraints: BoxConstraints.tight(Size.fromHeight(400)),
-              child: BaseTableCalendar(
-                () {
-                  setState(() {});
-                },
-                true,
-                selectedDate: "",
-                pageName: "",
-                eventList: [],
-                hideBottonDateText: true,
-                hideButton: true,
-              ),
-            )
-            // .animate(target: !calendarIsOffStaged ? 1 : 0)
-            // .fadeIn(duration: 300.ms)
-            // .animate(target: calendarIsOffStaged ? 1 : 0)
-            // .fadeOut(duration: 300.ms),
+          offstage: isNoteCalendarHided,
+          child: TableCalendarWidget(selectedDate: "")
+              .animate(target: !isNoteCalendarHided ? 1 : 0)
+              .fadeIn(duration: 300.ms)
+              .animate(target: isNoteCalendarHided ? 1 : 0)
+              .fadeOut(duration: 300.ms),
+        ),
+
+        /// 새로운 레슨 노트 보기 리스트 시작
+        FutureBuilder<QuerySnapshot>(
+            future: widget.lessonService.read(
+              widget.userInfo.uid,
+              widget.userInfo.docId,
             ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                print("ConnectionState.waiting : ${ConnectionState.waiting}");
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Palette.buttonOrange,
+                ));
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                print("ConnectionState.done : ${ConnectionState.done}");
+                final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
+
+                print(
+                    "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
+                if (doc.isEmpty && dayNotelessonCnt == 0) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                        child: Text("첫번째 노트를 작성해보세요!"),
+                      ),
+                    ],
+                  );
+                } else if (doc.isEmpty && dayNotelessonCnt > 0) {
+                  print("동작은 없는데, 일별노트는 있는 경우");
+                  if (listMode == "동작별") {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Center(
+                          child: Text("노트에서 동작을 추가해보세요!"),
+                        ),
+                      ],
+                    );
+                  } else {
+                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    return NoteListDateCategory(
+                      docs: doc,
+                      userInfo: widget.userInfo,
+                      lessonService: widget.lessonService,
+                      tmpLessonInfoList: tmpLessonInfoList,
+                    );
+                  }
+                } else {
+                  print("왜가리지?");
+                  if (listMode == "동작별") {
+                    return NoteListActionCategory(
+                        docs: doc, userInfo: widget.userInfo);
+                  } else {
+                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    return NoteListDateCategory(
+                      docs: doc,
+                      userInfo: widget.userInfo,
+                      lessonService: widget.lessonService,
+                      tmpLessonInfoList: tmpLessonInfoList,
+                    );
+                  }
+                }
+              } else {
+                print("ConnectionState.else");
+                return CircularProgressIndicator();
+              }
+            }),
 
         //레슨 노트 보기 시작
         FutureBuilder<QuerySnapshot>(
