@@ -690,8 +690,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               //   },
                                               // );
                                               // 새로 불러오기
-                                              todayNoteController.text =
-                                                  todayNoteView;
+                                              
 
                                               /// 리턴 시작
                                               return Container(
