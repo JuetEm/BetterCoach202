@@ -5,7 +5,7 @@ class DayLessonService extends ChangeNotifier {
   final daylessonCollection =
       FirebaseFirestore.instance.collection('daylesson');
 
-      Future<QuerySnapshot> readTodayNoteOflessonDate(
+  Future<List> readTodayNoteOflessonDate(
     String uid,
     String docId,
     String lessonDate,
@@ -21,7 +21,23 @@ class DayLessonService extends ChangeNotifier {
         .where('lessonDate', isEqualTo: lessonDate)
         .get();
 
-    return result;
+    List resultList = [];
+    var docsLength = result.docs.length;
+    var rstObj = {};
+    for (int i = 0; i < result.docs.length; i++) {
+      rstObj = result.docs[i].data();
+      rstObj['id'] = result.docs[i].id;
+
+      // if (rstObj)
+      resultList.add(rstObj);
+      print("[daylesson]result.docs[i].data() : ${result.docs[i].data()}");
+      /* rstObj = result.docs[i].data();
+          rstObj['id'] = result.docs[i].id;
+          resultList.add(rstObj); */
+    }
+    print('[daylesson]resultList:$resultList');
+
+    return resultList;
   }
 
   Future<List> readDaylessonListAtFirstTime(String uid) async {
@@ -57,16 +73,14 @@ class DayLessonService extends ChangeNotifier {
     // Timestamp,
     String todayNote,
     String uid,
-  ){
-    daylessonCollection.doc(id).update(
-      {
-        'docId':docId,
-        'lessonDate':lessonDate,
-        'name':name,
-        'timestamp':DateTime.now(),
-        'todayNote':todayNote,
-        'uid':uid,
-      }
-    );
+  ) {
+    daylessonCollection.doc(id).update({
+      'docId': docId,
+      'lessonDate': lessonDate,
+      'name': name,
+      'timestamp': DateTime.now(),
+      'todayNote': todayNote,
+      'uid': uid,
+    });
   }
 }
