@@ -102,6 +102,8 @@ bool isFirst = true;
 
 List lessonActionList = [];
 
+var actionNoteChips = [];
+
 String getActionPosition(
     String apparatunName, String actionName, List actionList) {
   String position = "";
@@ -131,6 +133,51 @@ class _LessonAddState extends State<LessonAdd> {
 
   //   super.initState();
   // }
+
+  List<dynamic> makeChips(List<dynamic> resultChips, List<String> targetList,
+      Color chipBackgroundColor) {
+    if (targetList.isNotEmpty) {
+      resultChips = targetList
+          .map((e) => FilterChip(
+                label: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(e),
+                    SizedBox(width: 1),
+                    Icon(
+                      Icons.close_outlined,
+                      size: 14,
+                      color: targetList.contains(e)
+                          ? Palette.gray00
+                          : Palette.gray99,
+                    )
+                  ],
+                ),
+                onSelected: ((value) {
+                  setState(() {
+                    targetList.remove(e);
+                  });
+                  print("value : ${value}");
+                }),
+                selected: targetList.contains(e),
+                labelStyle: TextStyle(
+                    fontSize: 14,
+                    color: targetList.contains(e)
+                        ? Palette.gray00
+                        : Palette.gray99),
+                selectedColor: chipBackgroundColor,
+                backgroundColor: Colors.transparent,
+                showCheckmark: false,
+                side: targetList.contains(e)
+                    ? BorderSide.none
+                    : BorderSide(color: Palette.grayB4),
+              ))
+          .toList();
+    }
+    print("[MA] makeChips : ${resultChips}");
+    return resultChips;
+  }
 
   @override
   void didChangeDependencies() {
@@ -250,6 +297,13 @@ class _LessonAddState extends State<LessonAdd> {
               .then((value) {
             print("ppppppppp - value : ${value}");
             lessonActionList.addAll(value);
+            
+            
+            // 동작별 노트가 있는 경우 칩 생성
+            lessonActionList.forEach((element) {
+              
+            });
+            // goalChips = makeChips(goalChips, selectedGoals, Palette.backgroundOrange);
             setState(() {});
           });
         }
@@ -650,6 +704,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                           .get('todayNote');
                                                           print("todayNoteView : ${todayNoteView}");
                                                   todayNoteController.text = todayNoteView;
+                                                  // 
                                                   todayNoteController.selection = TextSelection.fromPosition(TextPosition(offset: todayNoteController.text.length));
                                                 }
                                                 todayNotedocId =
@@ -753,7 +808,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                         /// 동작별 메모 한 묶음.
                                         /// 묶음 단위로 불러와져야 함.
-                                        false // is동작메모하나라도있니? 변수 필요
+                                        lessonActionList.isNotEmpty // is동작메모하나라도있니? 변수 필요
                                             /// 동작 있을 경우
                                             ? Expanded(
                                                 child: Column(

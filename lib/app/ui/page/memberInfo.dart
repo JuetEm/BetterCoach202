@@ -38,7 +38,7 @@ String lessonDate = "";
 String lessonNoteId = "";
 String lessonAddMode = "";
 
-bool initState = true;
+bool initStateCheck = true;
 
 int indexCheck = 0;
 String listMode = "날짜별";
@@ -69,17 +69,17 @@ class MemberInfo extends StatefulWidget {
 }
 
 class _MemberInfoState extends State<MemberInfo> {
-  //@override
-  // void initState() {
-  //   //처음에만 날짜 받아옴.
+  @override
+  void initState() {
+    //처음에만 날짜 받아옴.
 
-  //   super.initState();
-  // }
+    super.initState();
+  }
   @override
   void dispose() {
     // TODO: implement dispose
-    initState = true;
-    print("[MI] Dispose : initState ${initState} ");
+    initStateCheck = true;
+    print("[MI] Dispose : initStateCheck ${initStateCheck} ");
     super.dispose();
   }
 
@@ -95,15 +95,15 @@ class _MemberInfoState extends State<MemberInfo> {
     //final user = authService.currentUser()!;
     final memberService = context.read<MemberService>();
 
-    print('[MI] 시작 : initState - ${initState}');
+    print('[MI] 시작 : initStateCheck - ${initStateCheck}');
 
-    if (initState) {
+    if (initStateCheck) {
       // 이전 화면에서 보낸 변수 받기
       // resultList = ModalRoute.of(context)!.settings.arguments as List;
       userInfo = widget.userInfo!;
       resultMemberList = widget.tmpResultMemeberList;
       resultActionList = widget.tmpResultActionList;
-      initState = false;
+      initStateCheck = false;
       print("[MI]시작 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
       print("[MI]시작 - userInfo.goal / ${userInfo.goal}");
     } else {
@@ -618,7 +618,7 @@ class _MemberInfoState extends State<MemberInfo> {
                         userInfo = tmpResult[0];
                         resultMemberList = tmpResult[1];
                         resultActionList = tmpResult[2];
-                        //initState = true;
+                        //initStateCheck = true;
                         globalFunction.updatefavoriteMember();
                         //lessonService.notifyListeners();
                       } else {
