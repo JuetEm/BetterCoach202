@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:web_project/app/ui/lessonAdd.dart';
+import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/globalFunction.dart';
 import 'package:web_project/main.dart';
 

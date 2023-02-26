@@ -10,37 +10,32 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_project/analyticLog.dart';
+import 'package:web_project/app/data/provider/analyticLog.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
+import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/data/provider/report_service.dart';
 import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
-import 'package:web_project/centerConstraintBody.dart';
+import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/globalVariables.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
-import 'package:web_project/local_info.dart';
+import 'package:web_project/app/data/model/local_info.dart';
 import 'package:web_project/app/controller/login_controller.dart';
-import 'package:web_project/sign_up.dart';
+import 'package:web_project/app/ui/page/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:web_project/testShowDialog.dart';
 import 'dart:io' show HttpHeaders, Platform;
 import 'package:http/http.dart' as http;
 
-import 'auth_service.dart';
-import 'bucket_service.dart';
-import 'calendar_service.dart';
-import 'cloudStorage.dart';
-import 'color.dart';
-import 'firebase_options.dart';
+import 'app/data/provider/auth_service.dart';
+import 'app/data/provider/calendar_service.dart';
+import 'app/data/model/color.dart';
+import 'app/config/firebase_options.dart';
 import 'globalFunction.dart';
-import 'global_service.dart';
-import 'home.dart';
-import 'lessonDetail.dart';
-import 'app/binding/lesson_service.dart';
-import 'app/ui/memberList.dart';
+import 'app/ui/page/lessonDetail.dart';
+import 'app/ui/page/memberList.dart';
 import 'globalWidget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
@@ -215,8 +210,6 @@ void main() async {
         MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (context) => AuthService()),
-            ChangeNotifierProvider(create: (context) => BucketService()),
-            ChangeNotifierProvider(create: (context) => GlobalService()),
             ChangeNotifierProvider(create: (context) => MemberService()),
             ChangeNotifierProvider(create: (context) => DaylessonService()),
             ChangeNotifierProvider(create: (context) => LessonService()),
@@ -236,8 +229,6 @@ void main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => AuthService()),
-          ChangeNotifierProvider(create: (context) => BucketService()),
-          ChangeNotifierProvider(create: (context) => GlobalService()),
           ChangeNotifierProvider(create: (context) => MemberService()),
           ChangeNotifierProvider(create: (context) => LessonService()),
           ChangeNotifierProvider(create: (context) => CalendarService()),

@@ -2,9 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:web_project/auth_service.dart';
-import 'package:web_project/app/binding/lesson_service.dart';
-import 'package:web_project/globalVariables.dart';
+import 'package:web_project/app/data/provider/auth_service.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/main.dart';
 
 class MemberService extends ChangeNotifier {

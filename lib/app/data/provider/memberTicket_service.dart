@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:web_project/app/ui/memberTicketMake.dart';
+import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/globalFunction.dart';
 
 class MemberTicketService extends ChangeNotifier {
@@ -23,7 +23,7 @@ class MemberTicketService extends ChangeNotifier {
       // print("result.docs[i].data() : ${result.docs[i].data()}");
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
-      rstObj['ticketDateLeft'] = globalFunction.getDDayLeft(getDateFromTimeStamp(result.docs[i]['ticketEndDate'])); 
+      rstObj['ticketDateLeft'] = globalFunction.getDDayLeft(globalFunction.getDateFromTimeStamp(result.docs[i]['ticketEndDate'])); 
       resultList.add(rstObj);
     }
     return resultList;
