@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/centerConstraintBody.dart';
 
 import 'auth_service.dart';
@@ -10,7 +11,6 @@ import 'globalFunction.dart';
 import 'globalWidget.dart';
 import 'app/ui/memberInfo.dart';
 import 'app/ui/memberList.dart';
-import 'app/binding/member_service.dart';
 import 'membershipList.dart';
 import 'userInfo.dart';
 

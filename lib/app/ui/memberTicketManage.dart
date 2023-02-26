@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/binding/memberTicket_service.dart';
+import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/ui/memberInfo.dart';
 import 'package:web_project/app/ui/memberList.dart';
 import 'package:web_project/app/ui/memberTicketMake.dart';

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/actionListTileWidget.dart';
+import 'package:web_project/app/data/provider/action_service.dart';
 import 'package:web_project/app/ui/importSequenceFromSaved.dart';
 import 'package:web_project/buttonWidget.dart';
 import 'package:web_project/centerConstraintBody.dart';
@@ -12,7 +13,6 @@ import 'package:web_project/color.dart';
 
 import 'actionAdd.dart';
 import 'actionInfo.dart';
-import 'app/binding/action_service.dart';
 import 'app/ui/lessonAdd.dart';
 import 'lessonInfo.dart';
 import 'app/binding/lesson_service.dart';

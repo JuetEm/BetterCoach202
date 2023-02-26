@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/centerConstraintBody.dart';
 
 import 'auth_service.dart';
 import 'globalWidget.dart';
 import 'main.dart';
-import 'app/binding/member_service.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});

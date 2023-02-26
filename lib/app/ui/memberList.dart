@@ -9,6 +9,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/actionSelector.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
+import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/lessonAdd.dart';
 import 'package:web_project/app/ui/report.dart';
 import 'package:web_project/app/ui/sequenceLibrary.dart';
@@ -23,7 +24,6 @@ import '../../globalWidget.dart';
 import '../../main.dart';
 import 'memberAdd.dart';
 import 'memberInfo.dart';
-import '../binding/member_service.dart';
 import '../../userInfo.dart';
 
 int searchResultCnt = 0;

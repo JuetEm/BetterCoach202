@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/memberTicketManage.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/ticketWidget.dart';
@@ -18,7 +19,6 @@ import '../../globalFunction.dart';
 import '../../globalWidget.dart';
 import 'memberInfo.dart';
 import 'memberList.dart';
-import '../binding/member_service.dart';
 import '../../membershipList.dart';
 
 String memberAddMode = "추가";

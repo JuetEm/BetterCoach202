@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/centerConstraintBody.dart';
 
 import 'auth_service.dart';
@@ -9,7 +10,6 @@ import 'globalWidget.dart';
 import 'main.dart';
 import 'app/ui/memberAdd.dart';
 import 'app/ui/memberInfo.dart';
-import 'app/binding/member_service.dart';
 import 'userInfo.dart';
 
 String conutMemberList = "";

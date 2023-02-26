@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:web_project/app/binding/memberTicket_service.dart';
-import 'package:web_project/app/binding/ticketLibrary_service.dart';
+import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/globalVariables.dart';
