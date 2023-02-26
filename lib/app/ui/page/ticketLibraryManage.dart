@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';

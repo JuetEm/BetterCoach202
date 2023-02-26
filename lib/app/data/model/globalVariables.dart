@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:web_project/app/ui/page/memberInfo.dart';
-
+/// GlobalVariables 에 선언하여 사용하는 모든 전역 변수들은, mian.dart 에서 GlobalVariables 객체를 선언한 객체를 참조해 사용하는 것이 원칙
+/// import 'package:web_project/main.dart'; 임포트 해서 사용한다.
 class GlobalVariables {
   // member list
   List resultList = [];

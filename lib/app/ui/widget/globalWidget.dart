@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/function/globalFunction.dart';

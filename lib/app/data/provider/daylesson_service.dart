@@ -37,6 +37,8 @@ class DayLessonService extends ChangeNotifier {
     }
     print('[daylesson]resultList:$resultList');
 
+    notifyListeners();
+
     return resultList;
   }
 
@@ -62,6 +64,8 @@ class DayLessonService extends ChangeNotifier {
           resultList.add(rstObj); */
     }
     print('[daylesson]resultList:$resultList');
+
+    notifyListeners();
     return resultList;
   }
 
@@ -73,8 +77,8 @@ class DayLessonService extends ChangeNotifier {
     // Timestamp,
     String todayNote,
     String uid,
-  ) {
-    daylessonCollection.doc(id).update({
+  ) async {
+    await daylessonCollection.doc(id).update({
       'docId': docId,
       'lessonDate': lessonDate,
       'name': name,
@@ -82,5 +86,27 @@ class DayLessonService extends ChangeNotifier {
       'todayNote': todayNote,
       'uid': uid,
     });
+
+    notifyListeners();
+  }
+
+  creatDayNote(
+     String docId,
+    String lessonDate,
+    String name,
+    // Timestamp,
+    String todayNote,
+    String uid,
+  ) async {
+    await daylessonCollection.add({
+      'docId': docId,
+      'lessonDate': lessonDate,
+      'name': name,
+      'timestamp': DateTime.now(),
+      'todayNote': todayNote,
+      'uid': uid,
+    });
+
+    notifyListeners();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/main.dart';
@@ -58,7 +59,7 @@ class LessonService extends ChangeNotifier {
     required String lessonDate, //수업날짜
     required String grade, //수행도
     required String totalNote, //수업총메모
-    int? pos,
+    int? pos, // 동작 순서
     required Function onSuccess,
     required Function onError,
   }) async {
@@ -303,7 +304,6 @@ class LessonService extends ChangeNotifier {
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
       rstAObj['noteSelected'] = rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
-      rstAObj['actionSelected'] = false;
       rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);

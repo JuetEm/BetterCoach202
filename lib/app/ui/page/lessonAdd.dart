@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
@@ -94,7 +95,7 @@ bool keyboardOpenBefore = false;
 String todayNotedocId = "";
 String todayNoteView = "";
 
-List resultActionList = [];
+// List resultActionList = [];
 
 bool isSequenceSaveChecked = false;
 bool isTicketCountChecked = true;
@@ -132,7 +133,6 @@ class LessonAdd extends StatefulWidget {
 }
 
 class _LessonAddState extends State<LessonAdd> {
-
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -171,6 +171,13 @@ class _LessonAddState extends State<LessonAdd> {
     dayLessonList = [];
   }
 
+  @override
+  void didUpdateWidget(covariant LessonAdd oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    print("oldWidget : ${oldWidget}");
+  }
+
   bool actionNullCheck = true;
 
   @override
@@ -191,7 +198,7 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonNoteId = argsList[3];
     String lessonAddMode = argsList[4];
     tmpLessonInfoList = argsList[5]; // null
-    resultActionList = argsList[6];
+    // resultActionList = argsList[6];
 
     print(
         '[LA] 시작 checkInitState - ${checkInitState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
@@ -253,7 +260,7 @@ class _LessonAddState extends State<LessonAdd> {
       builder: (context, lessonService, dayLessonService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
-        if (lessonActionList.isEmpty) {
+        if (lessonActionList.isEmpty && lessonAddMode == "노트편집") {
           lessonService
               .readDateMemberActionNote(
                   customUserInfo.uid, customUserInfo.docId, lessonDateArg)
@@ -267,11 +274,14 @@ class _LessonAddState extends State<LessonAdd> {
               txtEdtCtrlrList.add(new TextEditingController());
             });
 
-            // setState(() {});
+            setState(() {});
+            // lessonService.notifyListeners();
           });
         }
+        print(
+            "lessonActionList.where((element) => element['noteSelected'] == true).isNotEmpty; : ${lessonActionList.where((element) => element['noteSelected'] == true).isNotEmpty}");
 
-        if (dayLessonList.isEmpty) {
+        if (dayLessonList.isEmpty && lessonAddMode == "노트편집") {
           daylessonService
               .readTodayNoteOflessonDate(
                   customUserInfo.uid, customUserInfo.docId, lessonDateArg)
@@ -280,8 +290,16 @@ class _LessonAddState extends State<LessonAdd> {
             dayLessonList.forEach((element) {
               print("ppppppppp - dayLessonList - element : ${element}");
             });
+            setState(() {});
+            // lessonService.notifyListeners();
           });
         }
+        print("aaaaaaaaa - lessonActionList.length ${lessonActionList.length}");
+        totalNoteTextFieldDocId = [];
+        lessonActionList.forEach((element) {
+          print("aaaaaaaaa - element['docId'] : ${element['docId']}");
+          totalNoteTextFieldDocId.add(element['docId']);
+        },);
 
         return Scaffold(
           //resizeToAvoidBottomInset: false,
@@ -298,7 +316,7 @@ class _LessonAddState extends State<LessonAdd> {
                         "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
                     // 수업일, 동작선택, 필수 입력
-                    if ((todayNoteView == "") && actionNullCheck == true) {
+                    if ((todayNoteView == "") && lessonActionList.where((element) => element['noteSelected']).isEmpty) {
                       //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
                       //await todayNoteSave(
                       //    lessonService, customUserInfo, context);
@@ -316,42 +334,8 @@ class _LessonAddState extends State<LessonAdd> {
                       /* await todayNoteSave(
                           lessonService, customUserInfo, context); */
 
-                      for (int i = 0; i < txtEdtCtrlrList.length; i++) {
-                        if (txtEdtCtrlrList[i].text.trim().isNotEmpty) {
-                          print(
-                              "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}");
-                          lessonActionList[i]['totalNote'] =
-                              txtEdtCtrlrList[i].text;
-
-                          lessonService.updateLessonActionNote(
-                              lessonActionList[i]['id'],
-                              lessonActionList[i]['docId'],
-                              lessonActionList[i]['actionName'],
-                              lessonActionList[i]['apratusName'],
-                              lessonActionList[i]['grade'],
-                              lessonActionList[i]['lessonDate'],
-                              lessonActionList[i]['name'],
-                              lessonActionList[i]['phoneNumber'],
-                              lessonActionList[i]['pos'],
-                              lessonActionList[i]['timestamp'],
-                              lessonActionList[i]['totalNote'],
-                              lessonActionList[i]['uid']);
-                        }
-                      }
-
-                      // print("ppppppppp - todayNoteController.text.trim() : ${todayNoteController.text.trim()}, todayNoteView : ${todayNoteView}");
-                      if (todayNoteController.text.trim().isNotEmpty) {
-                        dayLessonList[0][0]['todayNote'] = todayNoteController.text.trim();
-                        print("ppppppppp - dayLessonList[0]['id'] : ${dayLessonList[0][0]['id']}");
-                        daylessonService.updateDayNote(
-                          dayLessonList[0][0]['id'],
-                          dayLessonList[0][0]['docId'],
-                          dayLessonList[0][0]['lessonDate'],
-                          dayLessonList[0][0]['name'],
-                          dayLessonList[0][0]['todayNote'],
-                          dayLessonList[0][0]['uid'],
-                        );
-                      }
+                          
+                      saveMethod(lessonService, lessonDateArg, lessonAddMode, customUserInfo, dayLessonService);
 
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
@@ -711,7 +695,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                 print(
                                                     "뿌릴 일별 노트 없음 : ${todayNoteController.text}");
                                               } else {
-                                                if (isFirst) {
+                                                
                                                   todayNoteView =
                                                       docsTodayNote[0]
                                                           .get('todayNote');
@@ -728,7 +712,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   todayNoteController
                                                                       .text
                                                                       .length));
-                                                }
+                                                
                                                 todayNotedocId =
                                                     docsTodayNote[0].id;
 
@@ -944,7 +928,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         'noteSelected'];
                                                                     txtEdtCtrlrList[
                                                                             index]
-                                                                        .text = "";
+                                                                        .text = "삭제";
+                                                                        
                                                                     setState(
                                                                         () {});
                                                                   },
@@ -1128,8 +1113,14 @@ class _LessonAddState extends State<LessonAdd> {
                                     actionSelectMode = true;
                                     print(
                                         "[LA] 동작추가시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
-                                    final List<TmpLessonInfo> result =
-                                        await Navigator.push(
+
+                                        // ActionSelector 화면 진입 전에, actionSelected 초기화
+                                    globalVariables.actionList
+                                        .forEach((element) {
+                                      element['actionSelected'] = false;
+                                    });
+
+                                    var result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ActionSelector(),
@@ -1142,14 +1133,53 @@ class _LessonAddState extends State<LessonAdd> {
                                           checkInitState,
                                           totalNote,
                                           tmpLessonInfoList,
-                                          resultActionList,
+                                          // resultActionList,
                                         ]),
                                       ),
-                                    );
+                                    ).then((value) {
+                                      if(value != null){
+                                        print("aewregfdsfgdaf - value : ${value}");
+                                      value.forEach((element){
+                                        var rElement = {
+                                        'actionName': element['name'],
+                                        'docId': customUserInfo.docId,
+                                        'pos': lessonActionList.length,
+                                        'lessonDate': lessonDateArg,
+                                        'totalNote': "",
+                                        'grade': '50',
+                                        'uid': customUserInfo.uid,
+                                        'apratusName': element['apparatus'],
+                                        'timestamp': lessonActionList.isNotEmpty
+                                            ? lessonActionList[0]['timestamp']
+                                            : null,
+                                        'name': customUserInfo.name,
+                                        'phoneNumber':
+                                            customUserInfo.phoneNumber,
+                                        'id': lessonActionList.isNotEmpty
+                                            ? lessonActionList[0]['id']
+                                            : null,
+                                        'noteSelected': false,
+                                        'position': element['name'],
+                                      };
+                                      print("rElement : ${rElement}");
+                                      lessonActionList.add(rElement);
+                                      txtEdtCtrlrList.add(new TextEditingController());
+                                      txtEdtCtrlrList[txtEdtCtrlrList.length-1].selection  =
+                                                                    TextSelection
+                                                                        .fromPosition(TextPosition(
+                                                                            offset:
+                                                                                txtEdtCtrlrList[txtEdtCtrlrList.length-1].text.length));
+                                      });
+                                        
+                                      }
+                                      
+                                      
+                                      return value;
+                                    });
 
-                                    tmpLessonInfoList = result;
+                                   
 
-                                    additionalActionlength = result.length
+                                    /* additionalActionlength = result.length
                                             .toInt() -
                                         totalNoteTextFieldDocId.length.toInt();
 
@@ -1157,7 +1187,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         "추가된 동작 개수 : ${additionalActionlength.toString()}");
 
                                     // 동작추가시에 textcontroller 추가 생성
-                                    createControllers(additionalActionlength);
+                                    createControllers(additionalActionlength); */
 
                                     print("동작추가시컨트롤러:${totalNoteControllers}");
                                     print(
@@ -1878,7 +1908,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                 // 수업일, 동작선택, 필수 입력
                                 if ((todayNoteView == "") &&
-                                    actionNullCheck == true) {
+                                    lessonActionList.where((element) => element['noteSelected']).isEmpty) {
                                   //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
                                   //await todayNoteSave(
                                   //    lessonService, customUserInfo, context);
@@ -1901,9 +1931,10 @@ class _LessonAddState extends State<LessonAdd> {
 
                                   // await totalNoteSave(
                                   //     lessonService, customUserInfo, context);
+                                  saveMethod(lessonService, lessonDateArg, lessonAddMode, customUserInfo, dayLessonService);
 
                                   lessonService.notifyListeners();
-                                  // Navigator.pop(context);
+                                  Navigator.pop(context);
                                 }
                               },
                             ),
@@ -1932,6 +1963,63 @@ class _LessonAddState extends State<LessonAdd> {
         );
       },
     );
+  }
+
+  void saveMethod(LessonService lessonService, String lessonDateArg, String lessonAddMode, CustomUserInfo.UserInfo customUserInfo, DayLessonService dayLessonService) {
+    for (int i = 0; i < lessonActionList.length; i++) {
+      print("llllllllllll -- lessonActionList[$i] : ${lessonActionList[i]}");
+      print("tllllllllllll -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
+      if (txtEdtCtrlrList[i].text.trim().isNotEmpty && lessonAddMode == "노트편집") {
+        print(
+            "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}");
+        lessonActionList[i]['totalNote'] =
+            txtEdtCtrlrList[i].text == "삭제" ? "" : txtEdtCtrlrList[i].text ;
+    
+        lessonService.updateLessonActionNote(
+            lessonActionList[i]['id'],
+            lessonActionList[i]['docId'],
+            lessonActionList[i]['actionName'],
+            lessonActionList[i]['apratusName'],
+            lessonActionList[i]['grade'],
+            lessonActionList[i]['lessonDate'],
+            lessonActionList[i]['name'],
+            lessonActionList[i]['phoneNumber'],
+            lessonActionList[i]['pos'],
+            lessonActionList[i]['timestamp'],
+            lessonActionList[i]['totalNote'],
+            lessonActionList[i]['uid']);
+      }else{
+        lessonService.create(docId: lessonActionList[i]['docId'], uid: lessonActionList[i]['uid'], name: lessonActionList[i]['name'], phoneNumber: lessonActionList[i]['phoneNumber'], apratusName: lessonActionList[i]['apratusName'], actionName: lessonActionList[i]['actionName'], lessonDate: lessonDateArg, grade: '50', totalNote: txtEdtCtrlrList[i].text.trim(), onSuccess: (){}, onError: (){});
+      }
+    }
+    
+    // print("ppppppppp - todayNoteController.text.trim() : ${todayNoteController.text.trim()}, todayNoteView : ${todayNoteView}");
+    if (todayNoteController.text.trim().isNotEmpty) {
+      if (lessonAddMode == "노트편집") {
+        dayLessonList[0][0]['todayNote'] =
+            todayNoteController.text.trim();
+        print(
+            "ppppppppp - dayLessonList[0]['id'] : ${dayLessonList[0][0]['id']}");
+        daylessonService.updateDayNote(
+          dayLessonList[0][0]['id'],
+          dayLessonList[0][0]['docId'],
+          dayLessonList[0][0]['lessonDate'],
+          dayLessonList[0][0]['name'],
+          dayLessonList[0][0]['todayNote'],
+          dayLessonList[0][0]['uid'],
+        );
+      } else if (lessonAddMode == "노트 추가") {
+        print(
+            "xmxmxmxmxmxmxmxmx - customUserInfo : ${customUserInfo}");
+        dayLessonService.creatDayNote(
+          customUserInfo.docId,
+          lessonDateArg,
+          customUserInfo.name,
+          todayNoteController.text,
+          customUserInfo.uid,
+        );
+      }
+    }
   }
 
   Future<void> totalNoteSave(LessonService lessonService,

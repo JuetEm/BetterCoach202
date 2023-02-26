@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/ui/page/memberInfo.dart';
 import 'package:web_project/app/ui/page/memberList.dart';
@@ -17,6 +18,7 @@ import 'package:web_project/main.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
+
 
 int ticketCnt = 0; // 사용가능한 수강권 개수
 int expiredTicketCnt = 0; // 만료된 수강권 개수

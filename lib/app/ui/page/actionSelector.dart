@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/data/model/lessonInfo.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
@@ -12,6 +13,7 @@ import 'package:web_project/app/ui/page/importSequenceFromSaved.dart';
 import 'package:web_project/app/ui/widget/buttonWidget.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
+import 'package:web_project/main.dart';
 
 import 'actionAdd.dart';
 import '../../data/model/actionInfo.dart';
@@ -21,6 +23,9 @@ import '../../function/globalFunction.dart';
 import '../widget/globalWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
+
+// tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
+var actionChips = [];
 
 bool isReformerSelected = false;
 bool isCadillacSelected = false;
@@ -72,7 +77,7 @@ late List<int> checkedTileList;
 
 late List<TmpLessonInfo> unEditedTmpLessonInfo;
 
-List resultActionList = [];
+// List globalVariables.actionList = [];
 List searchedList = [];
 
 // 세로 자음 검색 바 구현
@@ -189,6 +194,8 @@ class _ActionSelectorState extends State<ActionSelector> {
       print("scrollController.offset : ${scrollController.offset}");
     });
     super.initState();
+
+    actionChips = [];
   }
 
   @override
@@ -232,6 +239,8 @@ class _ActionSelectorState extends State<ActionSelector> {
     combinedLngs.clear();
     rmNameList.clear();
     super.dispose();
+
+    actionChips = [];
   }
 
   @override
@@ -252,11 +261,11 @@ class _ActionSelectorState extends State<ActionSelector> {
     // initState = args[3];
     final String totalNote = args[4];
     tmpLessonInfoList = args[5];
-    resultActionList = args[6];
+    // globalVariables.actionList = args[6];
 
     if (rmNameList.isEmpty) {
       rmNameList = [];
-      resultActionList.forEach(
+      globalVariables.actionList.forEach(
         (element) {
           rmNameList.add(globalFunction.getChosungFromString(element['name']));
         },
@@ -271,13 +280,13 @@ class _ActionSelectorState extends State<ActionSelector> {
       isFloating = true;
     }
 
-    List docs = resultActionList;
+    List docs = globalVariables.actionList;
     if (searchString.isNotEmpty) {
       print("searchString.isNotEmpty : ${searchString}");
       List searchedList = [];
       String varName = "";
 
-      resultActionList.forEach((element) {
+      globalVariables.actionList.forEach((element) {
         varName = element['name'];
         // 검색 기능 함수 convert
         if (globalFunction.searchString(varName, searchString, "action")) {
@@ -286,10 +295,10 @@ class _ActionSelectorState extends State<ActionSelector> {
       });
       docs = searchedList; // 문서들 가져오기
     } else {
-      docs = resultActionList; // 문서들 가져오기
+      docs = globalVariables.actionList; // 문서들 가져오기
     }
 
-    print(resultActionList);
+    print(globalVariables.actionList);
 
     print("[AS] 시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
 
@@ -336,8 +345,6 @@ class _ActionSelectorState extends State<ActionSelector> {
       }
     }
 
-    // tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
-    var actionChips = [];
     if (tmpLessonInfoList.isNotEmpty) {
       actionChips = tmpLessonInfoList
           .map((e) => FilterChip(
@@ -913,7 +920,7 @@ class _ActionSelectorState extends State<ActionSelector> {
             positionArray = [];
 
             searchString = "";
-            Navigator.pop(context, tmpLessonInfoList);
+            Navigator.pop(context);
           }, [
             IconButton(
                 onPressed: () {
@@ -1011,7 +1018,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 isSelectable: true,
                                 isDraggable: false,
                                 customFunctionOnTap: () {
-                                  doc['actionSelected'] = !doc['actionSelected'];
+                                  doc['actionSelected'] =
+                                      !doc['actionSelected'];
 
                                   print(
                                       'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1049,7 +1057,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['actionSelected'] = !doc['actionSelected'];
+                                    doc['actionSelected'] =
+                                        !doc['actionSelected'];
 
                                     print(
                                         'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1092,7 +1101,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['actionSelected'] = !doc['actionSelected'];
+                                    doc['actionSelected'] =
+                                        !doc['actionSelected'];
 
                                     print(
                                         'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1129,7 +1139,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     isSelectable: true,
                                     isDraggable: false,
                                     customFunctionOnTap: () {
-                                      doc['actionSelected'] = !doc['actionSelected'];
+                                      doc['actionSelected'] =
+                                          !doc['actionSelected'];
 
                                       print(
                                           'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1177,7 +1188,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 isSelectable: true,
                                 isDraggable: false,
                                 customFunctionOnTap: () {
-                                  doc['actionSelected'] = !doc['actionSelected'];
+                                  doc['actionSelected'] =
+                                      !doc['actionSelected'];
 
                                   print(
                                       'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1214,7 +1226,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['actionSelected'] = !doc['actionSelected'];
+                                    doc['actionSelected'] =
+                                        !doc['actionSelected'];
 
                                     print(
                                         'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1257,7 +1270,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   isSelectable: true,
                                   isDraggable: false,
                                   customFunctionOnTap: () {
-                                    doc['actionSelected'] = !doc['actionSelected'];
+                                    doc['actionSelected'] =
+                                        !doc['actionSelected'];
 
                                     print(
                                         'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1294,7 +1308,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     isSelectable: true,
                                     isDraggable: false,
                                     customFunctionOnTap: () {
-                                      doc['actionSelected'] = !doc['actionSelected'];
+                                      doc['actionSelected'] =
+                                          !doc['actionSelected'];
 
                                       print(
                                           'docs[index][selected]: ${docs[index]['actionSelected']}');
@@ -1348,7 +1363,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   // Expanded(
                   //   child: Stack(
                   //     children: [
-                  //       resultActionList.isEmpty
+                  //       globalVariables.actionList.isEmpty
                   //           ? Center(
                   //               child: CircularProgressIndicator(
                   //               color: Palette.buttonOrange,
@@ -1594,7 +1609,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                           builder: (context) => StatefulBuilder(
                                             builder: (context, setState) {
                                               return ActionAdd.manageList(
-                                                  resultActionList);
+                                                  globalVariables.actionList);
                                             },
                                           ),
                                         );
@@ -1613,7 +1628,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                                               searchString = "";
                                             }
 
-                                            resultActionList = resultList[1];
+                                            globalVariables.actionList =
+                                                resultList[1];
                                           }
                                         });
                                       },
@@ -1713,17 +1729,28 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     print("동작추가");
 
                                     // lessonAdd
-                                    if (tmpLessonInfoList.isNotEmpty) {
+                                    if (globalVariables.actionList
+                                        .where((element) =>
+                                            element['actionSelected'])
+                                        .isNotEmpty) {
                                       print(
-                                          "userInfo.docId : ${customUserInfo.docId}");
+                                          "동작추가 userInfo.docId : ${customUserInfo.docId}");
 
                                       List<DateTime> tmpEventList = [];
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: Text("동작추가 성공"),
                                       ));
+
+                                      List tmpResultList = [];
+                                      globalVariables.actionList
+                                          .forEach((element) {
+                                        if (element['actionSelected'] == true) {
+                                          tmpResultList.add(element);
+                                        }
+                                      });
                                       // 저장하기 성공시 MemberInfo로 이동
-                                      Navigator.pop(context, tmpLessonInfoList);
+                                      Navigator.pop(context, tmpResultList);
 
                                       initStateVar = !initStateVar;
                                     } else {
