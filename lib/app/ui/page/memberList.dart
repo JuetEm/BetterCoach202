@@ -271,17 +271,17 @@ class _MemberListState extends State<MemberList> {
                         width: 190,
                         child: Image.asset("assets/images/logo.png")),
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.person,
-                      color: Palette.gray66,
-                    ),
-                    title: Text('내 프로필'),
-                    onTap: () {
-                      print('내 프로필 is clicked');
-                    },
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                  ),
+                  // ListTile(
+                  //   leading: Icon(
+                  //     Icons.person,
+                  //     color: Palette.gray66,
+                  //   ),
+                  //   title: Text('내 프로필'),
+                  //   onTap: () {
+                  //     print('내 프로필 is clicked');
+                  //   },
+                  //   trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  // ),
                   ListTile(
                     leading: Icon(
                       Icons.confirmation_number_outlined,
