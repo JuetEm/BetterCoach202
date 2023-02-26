@@ -444,35 +444,7 @@ class _MemberListState extends State<MemberList> {
               SizedBox(width: 10)
             ],
           ),
-          /* endDrawer: Container(
-            child: Drawer(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('This is the Drawer'),
-                    ElevatedButton(
-                      onPressed: () {
-                        _closeEndDrawer();
-                      },
-                      child: const Text('Close Drawer'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // 로그아웃
-                        context.read<AuthService>().signOut();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => LoginPage()),
-                        );
-                      },
-                      child: const Text('Log Out'),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ), */
+
           body: CenterConstrainedBody(
             child: SafeArea(
               child: Padding(
@@ -600,7 +572,7 @@ class _MemberListState extends State<MemberList> {
                                         doc['registerType'] ?? "";
                                     String goal = doc['goal'] ?? "";
                                     int memberDayLessonCount =
-                                        doc['memberDayLessonCount'] ?? 0;
+                                        doc['memberDaylessonCount'] ?? 0;
                                     List<String> selectedGoals =
                                         List<String>.from(
                                             doc['selectedGoals'] ?? []);

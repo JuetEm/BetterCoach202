@@ -5,11 +5,11 @@ import 'package:web_project/app/ui/memberInfo.dart';
 import 'package:web_project/color.dart';
 import 'package:web_project/userInfo.dart';
 
-import 'auth_service.dart';
-import 'centerConstraintBody.dart';
-import 'globalWidget.dart';
+import 'auth_service.dart'; // Firebase Auth
+import 'centerConstraintBody.dart'; // 가운데로 제한시켜주는 클래스
+import 'globalWidget.dart'; // 글로벌하게 쓰이는 위젯들
 import 'main.dart';
-import 'app/binding/member_service.dart';
+import 'app/binding/member_service.dart'; // 멤버 콜렉션에 CRUD하는 함수들
 
 class Home extends StatefulWidget {
   const Home({super.key});

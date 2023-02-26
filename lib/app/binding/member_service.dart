@@ -36,7 +36,13 @@ class MemberService extends ChangeNotifier {
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
 
+      // int memberDaylessonCount = 0;
+
+      // rstObj['memberDaylessonCount'] = memberDaylessonCount;
+
+      // if (rstObj)
       resultList.add(rstObj);
+      print('### rstObj[id]:${rstObj['id']}');
     }
 
     return resultList;

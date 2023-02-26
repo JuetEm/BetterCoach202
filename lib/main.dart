@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/app/binding/action_service.dart';
 import 'package:web_project/analyticLog.dart';
 import 'package:web_project/app/binding/ticketLibrary_service.dart';
+import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/centerConstraintBody.dart';
 import 'package:web_project/globalVariables.dart';
 import 'package:web_project/globalWidgetDashboard.dart';
@@ -75,6 +76,8 @@ ActionService actionService = ActionService();
 TicketLibraryService ticketLibraryService = TicketLibraryService();
 
 MemberTicketService memberTicketService = MemberTicketService();
+
+DaylessonService daylessonService = DaylessonService();
 
 enum LoginPlatform {
   kakao,
@@ -165,13 +168,39 @@ void main() async {
   if (user != null) {
     print("object user is not null");
     print("user.email : ${user.email}, user.displayName : ${user.displayName}");
+
+    List daylessonResultList = [];
+
+    await daylessonService.readDaylessonListAtFirstTime(user.uid).then((value) {
+      daylessonResultList.addAll(value);
+    }).onError((error, stackTrace) {
+      print("[daylesson]error: $error");
+      print("[daylesson]stackTrace : \r\n${stackTrace}");
+    }).whenComplete(() async {
+      print("daylessonList await init complete!");
+    });
+
+    print('daylessonResultList:$daylessonResultList');
+
     await memberService.readMemberListAtFirstTime(user.uid).then((value) {
       globalVariables.resultList.addAll(value);
       /* for (int i = 0; i < resultList.length; i++) {
         print("resultList[${i}] : ${resultList[i]}");
       } */
+      print('globalVariables.resultList:${globalVariables.resultList}');
+
+      /// Global Member List에 Member별 노트 수 넣는 과정
+      for (var i = 0; i < globalVariables.resultList.length; i++) {
+        var rstObj = globalVariables.resultList[i];
+
+        int memberDaylessonCount = daylessonResultList
+            .where((element) => element['docId'] == rstObj['id'])
+            .length;
+
+        rstObj['memberDaylessonCount'] = memberDaylessonCount;
+      }
     }).onError((error, stackTrace) {
-      print("error : ${error}");
+      print("111error : ${error}");
       print("stackTrace : \r\n${stackTrace}");
     }).whenComplete(() async {
       print("0 - main memberList complete!!");
@@ -213,6 +242,7 @@ void main() async {
             ChangeNotifierProvider(create: (context) => BucketService()),
             ChangeNotifierProvider(create: (context) => GlobalService()),
             ChangeNotifierProvider(create: (context) => MemberService()),
+            ChangeNotifierProvider(create: (context) => DaylessonService()),
             ChangeNotifierProvider(create: (context) => LessonService()),
             ChangeNotifierProvider(create: (context) => CalendarService()),
             ChangeNotifierProvider(create: (context) => ActionService()),
