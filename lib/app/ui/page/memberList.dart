@@ -641,7 +641,6 @@ class _MemberListState extends State<MemberList> {
                                       customFunctionOnTap: () async {
                                         // 회원 카드 선택시 MemberInfo로 이동
 
-                                        // resultList.add(resultActionList);
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(
