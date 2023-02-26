@@ -1526,12 +1526,39 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
 
-                return LessonCardWidget(
-                  userInfo: widget.userInfo,
-                  memberId: memberId,
-                  lessonDate: lessonDate,
-                  todayNote: todayNote,
-                  lessonActionList: [],
+                return InkWell(
+                  onTap: () {
+                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    eventList = [];
+                    lessonAddMode = "노트편집";
+                    List<dynamic> args = [
+                      userInfo,
+                      lessonDate,
+                      eventList,
+                      lessonNoteId,
+                      lessonAddMode,
+                      tmpLessonInfoList,
+                      resultActionList,
+                    ];
+                    print("args.length : ${args.length}");
+                    print("[MI]LessonCard-lessonDate : ${lessonDate}");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LessonAdd(),
+                        // GlobalWidgetDashboard(), //
+                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                        settings: RouteSettings(arguments: args),
+                      ),
+                    );
+                  },
+                  child: LessonCardWidget(
+                    userInfo: widget.userInfo,
+                    memberId: memberId,
+                    lessonDate: lessonDate,
+                    todayNote: todayNote,
+                    lessonActionList: [],
+                  ),
                 );
 
                 // return LessonCard(

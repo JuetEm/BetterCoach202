@@ -6,14 +6,14 @@ import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 
 class LessonCardWidget extends StatelessWidget {
-  const LessonCardWidget(
-      {Key? key,
-      required this.userInfo,
-      required this.memberId,
-      required this.lessonDate,
-      required this.todayNote,
-      required this.lessonActionList})
-      : super(key: key);
+  const LessonCardWidget({
+    Key? key,
+    required this.userInfo,
+    required this.memberId,
+    required this.lessonDate,
+    required this.todayNote,
+    required this.lessonActionList,
+  }) : super(key: key);
 
   final UserInfo userInfo;
   final String memberId;
