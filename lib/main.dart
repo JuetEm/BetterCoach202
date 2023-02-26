@@ -169,36 +169,12 @@ void main() async {
     print("object user is not null");
     print("user.email : ${user.email}, user.displayName : ${user.displayName}");
 
-    List daylessonResultList = [];
-
-    await daylessonService.readDaylessonListAtFirstTime(user.uid).then((value) {
-      daylessonResultList.addAll(value);
-    }).onError((error, stackTrace) {
-      print("[daylesson]error: $error");
-      print("[daylesson]stackTrace : \r\n${stackTrace}");
-    }).whenComplete(() async {
-      print("daylessonList await init complete!");
-    });
-
-    print('daylessonResultList:$daylessonResultList');
-
     await memberService.readMemberListAtFirstTime(user.uid).then((value) {
       globalVariables.resultList.addAll(value);
       /* for (int i = 0; i < resultList.length; i++) {
         print("resultList[${i}] : ${resultList[i]}");
       } */
       print('globalVariables.resultList:${globalVariables.resultList}');
-
-      /// Global Member List에 Member별 노트 수 넣는 과정
-      for (var i = 0; i < globalVariables.resultList.length; i++) {
-        var rstObj = globalVariables.resultList[i];
-
-        int memberDaylessonCount = daylessonResultList
-            .where((element) => element['docId'] == rstObj['id'])
-            .length;
-
-        rstObj['memberDaylessonCount'] = memberDaylessonCount;
-      }
     }).onError((error, stackTrace) {
       print("111error : ${error}");
       print("stackTrace : \r\n${stackTrace}");

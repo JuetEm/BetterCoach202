@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:web_project/auth_service.dart';
 import 'package:web_project/app/binding/lesson_service.dart';
 import 'package:web_project/globalVariables.dart';
+import 'package:web_project/main.dart';
 
 class MemberService extends ChangeNotifier {
   final memberCollection = FirebaseFirestore.instance.collection('member');
@@ -31,18 +32,39 @@ class MemberService extends ChangeNotifier {
     List resultList = [];
     var docsLength = result.docs.length;
     var rstObj = {};
+
+    /// dayLesson List 가져오기 시작
+    List daylessonResultList = [];
+
+    await daylessonService.readDaylessonListAtFirstTime(uid).then((value) {
+      daylessonResultList.addAll(value);
+    }).onError((error, stackTrace) {
+      print("[daylesson]error: $error");
+      print("[daylesson]stackTrace : \r\n${stackTrace}");
+    }).whenComplete(() async {
+      print("daylessonList await init complete!");
+    });
+
+    print('daylessonResultList:$daylessonResultList');
+
+    /// dayLesson List 가져오기 끝
+
     for (int i = 0; i < result.docs.length; i++) {
       // print("result.docs[i].data() : ${result.docs[i].data()}");
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
 
-      // int memberDaylessonCount = 0;
+      /// 회원별 총 수 memberList에 넣어주기 시작
+      int memberDaylessonCount = daylessonResultList
+          .where((element) => element['docId'] == rstObj['id'])
+          .length;
 
-      // rstObj['memberDaylessonCount'] = memberDaylessonCount;
+      rstObj['memberDaylessonCount'] = memberDaylessonCount;
 
-      // if (rstObj)
+      /// 회원별 총 수 memberList에 넣어주기 끝
+
       resultList.add(rstObj);
-      print('### rstObj[id]:${rstObj['id']}');
+      // print('### rstObj[id]:${rstObj['id']}');
     }
 
     return resultList;
