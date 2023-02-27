@@ -31,17 +31,17 @@ class LessonService extends ChangeNotifier {
     lessonCollection
         .doc(id)
         .update({
-         'docId' : docId,
-    'actionName' :actionName,
-    'apratusName' : apratusName,
-    'grade' : grade,
-    'lessonDate' : lessonDate,
-    'name' : name,
-    'phoneNumber' : phoneNumber,
-    'pos' : pos,
-    'timestamp' :timestamp,
-    'totalNote' : totalNote,
-    'uid' : uid,
+          'docId': docId,
+          'actionName': actionName,
+          'apratusName': apratusName,
+          'grade': grade,
+          'lessonDate': lessonDate,
+          'name': name,
+          'phoneNumber': phoneNumber,
+          'pos': pos,
+          'timestamp': timestamp,
+          'totalNote': totalNote,
+          'uid': uid,
         })
         .then((value) {})
         .onError((error, stackTrace) {})
@@ -303,7 +303,8 @@ class LessonService extends ChangeNotifier {
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
-      rstAObj['noteSelected'] = rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
+      rstAObj['noteSelected'] =
+          rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
       rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
@@ -328,6 +329,36 @@ class LessonService extends ChangeNotifier {
     } */
 
     //  notifyListeners();
+
+    return lessonActionResultList;
+  }
+
+  Future<List> readMemberActionNote(
+    String uid,
+    String memberId,
+  ) async {
+    List lessonActionResultList = [];
+    var lessonActionResult = await lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: memberId)
+        .orderBy('pos', descending: false)
+        .get();
+
+    var docsALength = lessonActionResult.docs.length;
+    var rstAObj = {};
+    for (int i = 0; i < docsALength; i++) {
+      print(
+          "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      rstAObj = lessonActionResult.docs[i].data();
+      rstAObj['id'] = lessonActionResult.docs[i].id;
+
+      rstAObj['noteSelected'] =
+          rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
+      rstAObj['deleteSelected'] = true;
+      rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
+          rstAObj['actionName'], globalVariables.actionList);
+      lessonActionResultList.add(rstAObj);
+    }
 
     return lessonActionResultList;
   }
@@ -631,7 +662,7 @@ class LessonService extends ChangeNotifier {
   }) async {
     // bucket 삭제
     await lessonCollection.doc(docId).delete();
-    
+
     // 화면 갱신
     onSuccess(); // 화면 갱신
 

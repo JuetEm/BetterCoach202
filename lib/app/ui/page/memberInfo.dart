@@ -63,6 +63,9 @@ List resultMemberList = [];
 
 bool isNoteCalendarHided = true;
 
+// 회원 동작별 노트
+List memberActionNote = [];
+
 class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
   List tmpResultActionList = [];
@@ -182,6 +185,10 @@ class _MemberInfoState extends State<MemberInfo> {
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
+        
+        lessonService.readMemberActionNote(AuthService().currentUser()!.uid, userInfo.docId,).then((value) {
+          memberActionNote.addAll(value);
+        });
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -946,12 +953,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       ],
                     );
                   } else {
-                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    // List<TmpLessonInfo> tmpLessonInfoList = [];
                     return NoteListDateCategory(
                       docs: doc,
                       userInfo: widget.userInfo,
                       lessonService: widget.lessonService,
-                      tmpLessonInfoList: tmpLessonInfoList,
+                      memberActionNote: memberActionNote,
                     );
                   }
                 } else {
@@ -960,12 +967,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     return NoteListActionCategory(
                         docs: doc, userInfo: widget.userInfo);
                   } else {
-                    List<TmpLessonInfo> tmpLessonInfoList = [];
+                    // List<TmpLessonInfo> tmpLessonInfoList = [];
                     return NoteListDateCategory(
                       docs: doc,
                       userInfo: widget.userInfo,
                       lessonService: widget.lessonService,
-                      tmpLessonInfoList: tmpLessonInfoList,
+                      memberActionNote: memberActionNote,
                     );
                   }
                 }
@@ -1487,13 +1494,13 @@ class NoteListDateCategory extends StatefulWidget {
     required this.docs,
     required this.userInfo,
     required this.lessonService,
-    required this.tmpLessonInfoList,
+    required this.memberActionNote,
   }) : super(key: key);
 
   final List<QueryDocumentSnapshot<Object?>> docs;
   final UserInfo userInfo;
   final LessonService lessonService;
-  final tmpLessonInfoList;
+  final memberActionNote;
 
   @override
   State<NoteListDateCategory> createState() => _NoteListDateCategoryState();
@@ -1560,7 +1567,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                     memberId: memberId,
                     lessonDate: lessonDate,
                     todayNote: todayNote,
-                    lessonActionList: [],
+                    lessonActionList: widget.memberActionNote,
                   ),
                 );
 

@@ -132,7 +132,7 @@ class LessonCardWidget extends StatelessWidget {
                         String grade = doc['grade']; //수행도
                         String totalNote = doc['totalNote']; //수업총메모
                         int pos = doc['pos']; //수업총메모
-                        bool isSelected = doc['selected'];
+                        bool isSelected = doc['noteSelected'];
 
                         return Offstage(
                           key: valueKey,
