@@ -6,7 +6,7 @@ import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 
 class LessonCardWidget extends StatelessWidget {
-  const LessonCardWidget({
+  LessonCardWidget({
     Key? key,
     required this.userInfo,
     required this.memberId,
@@ -23,6 +23,8 @@ class LessonCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isExpanded = false;
+
     return Container(
       color: Palette.mainBackground,
       child: Padding(
@@ -132,11 +134,18 @@ class LessonCardWidget extends StatelessWidget {
                         String grade = doc['grade']; //수행도
                         String totalNote = doc['totalNote']; //수업총메모
                         int pos = doc['pos']; //수업총메모
-                        bool isSelected = doc['noteSelected'];
+                        // bool isSelected = doc['noteSelected'];
+
+                        bool isSelected;
+                        if (totalNote == "") {
+                          isSelected = true;
+                        } else {
+                          isSelected = false;
+                        }
 
                         return Offstage(
                           key: valueKey,
-                          offstage: !isSelected,
+                          offstage: isExpanded ? false : !isSelected,
                           child: IntrinsicHeight(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -183,12 +192,12 @@ class LessonCardWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: IconButton(
-                  icon: Icon(
-                      // _isExpandClicked
-                      true
-                          ? Icons.expand_less_outlined
-                          : Icons.expand_more_outlined),
-                  onPressed: () {},
+                  icon: Icon(isExpanded
+                      ? Icons.expand_less_outlined
+                      : Icons.expand_more_outlined),
+                  onPressed: () {
+                    isExpanded = !isExpanded;
+                  },
                 ),
               ),
             )
