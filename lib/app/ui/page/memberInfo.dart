@@ -1555,40 +1555,53 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
 
-                return InkWell(
-                  onTap: () {
-                    List<TmpLessonInfo> tmpLessonInfoList = [];
-                    eventList = [];
-                    lessonAddMode = "노트편집";
-                    List<dynamic> args = [
-                      userInfo,
-                      lessonDate,
-                      eventList,
-                      lessonNoteId,
-                      lessonAddMode,
-                      tmpLessonInfoList,
-                      resultActionList,
-                    ];
-                    print("args.length : ${args.length}");
-                    print("[MI]LessonCard-lessonDate : ${lessonDate}");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LessonAdd(),
-                        // GlobalWidgetDashboard(), //
-                        // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                        settings: RouteSettings(arguments: args),
-                      ),
-                    );
-                  },
-                  child: LessonCardWidget(
+                return InkWell(onTap: () {
+                  List<TmpLessonInfo> tmpLessonInfoList = [];
+                  eventList = [];
+                  lessonAddMode = "노트편집";
+                  List<dynamic> args = [
+                    userInfo,
+                    lessonDate,
+                    eventList,
+                    lessonNoteId,
+                    lessonAddMode,
+                    tmpLessonInfoList,
+                    resultActionList,
+                  ];
+                  print("args.length : ${args.length}");
+                  print("[MI]LessonCard-lessonDate : ${lessonDate}");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LessonAdd(),
+                      // GlobalWidgetDashboard(), //
+                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                      settings: RouteSettings(arguments: args),
+                    ),
+                  );
+                }, child: Consumer2<LessonService, MemberService>(
+                    builder: (context, lessonService, memberService, child) {
+                  print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
+                  // lessonService
+                  // ignore: dead_code
+
+                  lessonService
+                      .readMemberActionNote(
+                    AuthService().currentUser()!.uid,
+                    userInfo.docId,
+                  )
+                      .then((value) {
+                    memberActionNote.addAll(value);
+                  });
+
+                  return LessonCardWidget(
                     userInfo: widget.userInfo,
                     memberId: memberId,
                     lessonDate: lessonDate,
                     todayNote: todayNote,
                     lessonActionList: widget.memberActionNote,
-                  ),
-                );
+                  );
+                }));
 
                 // return LessonCard(
                 //   userInfo: widget.userInfo,
