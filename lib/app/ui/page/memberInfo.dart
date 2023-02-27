@@ -1584,7 +1584,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                     memberId: memberId,
                     lessonDate: lessonDate,
                     todayNote: todayNote,
-                    lessonActionList: globalVariables.memberTicketList,
+                    lessonActionList: globalVariables.lessonNoteGlobalList,
                   ));
 
                 // return LessonCard(
