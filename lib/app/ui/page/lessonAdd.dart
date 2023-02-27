@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
@@ -107,6 +108,7 @@ List dayLessonList = [];
 
 List notedActionWidget = [];
 List<String> notedActionsList = [];
+List deleteTargetDocIdLiet = [];
 
 String getActionPosition(
     String apparatunName, String actionName, List actionList) {
@@ -146,6 +148,7 @@ class _LessonAddState extends State<LessonAdd> {
     lessonActionList = [];
     txtEdtCtrlrList = [];
     dayLessonList = [];
+    deleteTargetDocIdLiet = [];
   }
 
   @override
@@ -169,6 +172,7 @@ class _LessonAddState extends State<LessonAdd> {
     lessonActionList = [];
     txtEdtCtrlrList = [];
     dayLessonList = [];
+    deleteTargetDocIdLiet= [];
 
     lessonAddMode = "";
   }
@@ -1249,30 +1253,67 @@ class _LessonAddState extends State<LessonAdd> {
                                       int pos = doc['pos']; //수업총메모
                                       bool isSelected = doc['noteSelected'];
 
-                                      return LessonActionListTile(
-                                          key: valueKey,
-                                          actionName: actionName,
-                                          apparatus: apratusName,
-                                          position: getActionPosition(
-                                              apratusName,
-                                              actionName,
-                                              globalVariables.actionList),
-                                          name: name,
-                                          phoneNumber: phoneNumber,
-                                          lessonDate: lessonDate,
-                                          grade: grade,
-                                          totalNote: totalNote,
-                                          docId: userInfo.docId,
-                                          memberdocId: userInfo.docId,
-                                          uid: uid,
-                                          pos: pos,
-                                          isSelected: isSelected,
-                                          isSelectable: true,
-                                          isDraggable: true,
-                                          customFunctionOnTap: () {
-                                            doc['noteSelected'] =
-                                                !doc['noteSelected'];
-                                          });
+                                      return GestureDetector(
+                                        key: valueKey,onHorizontalDragUpdate: (details) {
+                                        int sensitivity = 8;
+                                        if(details.delta.dx > sensitivity){
+                                          // right swipe
+                                          print("GestureDetector right swipe");
+                                          lessonActionList[index]['deleteSelected'] = true;
+                                        }else if(details.delta.dx < -sensitivity){
+                                          // left swipe
+                                          print("GestureDetector left swipe");
+                                          lessonActionList[index]['deleteSelected'] = false;
+                                        }
+                                      },
+                                        child: Row(
+                                          
+                                          children: [
+                                            Expanded(
+                                              
+                                              child: LessonActionListTile(
+                                                  
+                                                  actionName: actionName,
+                                                  apparatus: apratusName,
+                                                  position: getActionPosition(
+                                                      apratusName,
+                                                      actionName,
+                                                      globalVariables.actionList),
+                                                  name: name,
+                                                  phoneNumber: phoneNumber,
+                                                  lessonDate: lessonDate,
+                                                  grade: grade,
+                                                  totalNote: totalNote,
+                                                  docId: userInfo.docId,
+                                                  memberdocId: userInfo.docId,
+                                                  uid: uid,
+                                                  pos: pos,
+                                                  isSelected: isSelected,
+                                                  isSelectable: true,
+                                                  isDraggable: true,
+                                                  customFunctionOnTap: () {
+                                                    doc['noteSelected'] =
+                                                        !doc['noteSelected'];
+                                                  }),
+                                            ),
+                                                Offstage(
+                                                  offstage: lessonActionList[index]['deleteSelected'],
+                                                  child: IconButton(onPressed: (){
+                                                    // 노트편집 화면의 경우 기존 목록에서 동작을 삭제하는 경우 생길 수 있어서, 삭제이벤트 발생시 docId 수집
+                                                    getDeleteTargetDocId(index);
+                                                    lessonActionList.removeAt(index);
+                                                    int i = 0;
+                                                    lessonActionList.forEach((element) {
+                                                      element['pos'] = i;
+                                                      i++;
+                                                     });
+                                                     setState(() {
+                                                       
+                                                     });
+                                                  }, icon: Icon(Icons.delete, color: Palette.statusRed,),),),
+                                          ],
+                                        ),
+                                      );
                                     }),
 
                                 /* FutureBuilder<QuerySnapshot>(
@@ -1961,6 +2002,7 @@ class _LessonAddState extends State<LessonAdd> {
                                     actionNullCheck: actionNullCheck,
                                     todayNotedocId: todayNotedocId,
                                     lessonService: lessonService,
+                                    dayLessonService: dayLessonService,
                                     totalNoteTextFieldDocId:
                                         totalNoteTextFieldDocId,
                                   )
@@ -1979,6 +2021,11 @@ class _LessonAddState extends State<LessonAdd> {
         );
       },
     );
+  }
+
+  void getDeleteTargetDocId(int index) {
+    print("getDeleteTargetDocId - index : ${index}, lessonActionList[index]['docId'] : ${lessonActionList[index]['docId']}, lessonActionList[index]['id'] : ${lessonActionList[index]['id']}");
+    deleteTargetDocIdLiet.add(lessonActionList[index]['id']);
   }
 
   void saveMethod(
@@ -2034,6 +2081,12 @@ class _LessonAddState extends State<LessonAdd> {
               lessonActionList[i]['totalNote'],
               lessonActionList[i]['uid']);
         }
+
+        deleteTargetDocIdLiet.forEach((element) { 
+          print("deleted actions docId : element : ${element}");
+          lessonService.delete(docId: element, onSuccess: (){}, onError: (){});
+         });
+        
       } else if (lessonActionList.isNotEmpty && lessonAddMode == "노트 추가") {
         print(
             "tllllllllllll 자자자 노트 추가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
@@ -2251,12 +2304,14 @@ class DeleteButton extends StatefulWidget {
     required this.actionNullCheck,
     required this.todayNotedocId,
     required this.lessonService,
+    required this.dayLessonService,
     required this.totalNoteTextFieldDocId,
   }) : super(key: key);
 
   final bool actionNullCheck;
   final String todayNotedocId;
   final LessonService lessonService;
+  final DayLessonService dayLessonService;
   final List<String> totalNoteTextFieldDocId;
 
   @override
@@ -2282,7 +2337,16 @@ class _DeleteButtonState extends State<DeleteButton> {
         final retvaldelte = await showAlertDialog(context, '정말로 삭제하시겠습니까?',
             '해당 노트의 전체 내용이 삭제됩니다. 삭제된 내용은 이후 복구가 불가능합니다.');
         if (retvaldelte == "OK") {
-          if (widget.actionNullCheck) {
+          lessonActionList.forEach((element) { 
+            
+            widget.lessonService.delete(docId: element['id'], onSuccess: (){}, onError: (){});
+           });
+
+           dayLessonList.forEach((element) { 
+            widget.dayLessonService.delete(docId: element[0]['id'], onSuccess: (){}, onError: (){});
+            });
+          
+          /* if (widget.actionNullCheck) {
             print(
                 "전체삭제 - 오늘노트삭제 : actionNullCheck - ${widget.actionNullCheck} / ${todayNotedocId}");
             await widget.lessonService.deleteTodayNote(
@@ -2305,7 +2369,7 @@ class _DeleteButtonState extends State<DeleteButton> {
             docIds: totalNoteTextFieldDocId,
             onSuccess: () {},
             onError: () {},
-          );
+          ); */
 
           // for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
 

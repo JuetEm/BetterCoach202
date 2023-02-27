@@ -304,6 +304,7 @@ class LessonService extends ChangeNotifier {
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
       rstAObj['noteSelected'] = rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
+      rstAObj['deleteSelected'] = true;
       rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
@@ -621,5 +622,17 @@ class LessonService extends ChangeNotifier {
       onError();
     });
     //notifyListeners(); // 화면 갱신
+  }
+
+  void delete({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    // bucket 삭제
+    await lessonCollection.doc(docId).delete();
+    notifyListeners();
+    // 화면 갱신
+    onSuccess(); // 화면 갱신
   }
 }

@@ -109,4 +109,16 @@ class DayLessonService extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void delete({
+    required String docId,
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    // bucket 삭제
+    await daylessonCollection.doc(docId).delete();
+    notifyListeners();
+    // 화면 갱신
+    onSuccess(); // 화면 갱신
+  }
 }
