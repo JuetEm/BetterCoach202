@@ -72,7 +72,8 @@ class LessonCardWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Container(
-                  width: MediaQuery.of(context).size.width - 86,
+                  constraints: BoxConstraints(maxWidth: 366),
+                  width: MediaQuery.of(context).size.width - 114,
                   child: todayNote == ""
                       ? Text(
                           '-',
