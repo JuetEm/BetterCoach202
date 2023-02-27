@@ -1579,29 +1579,13 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       settings: RouteSettings(arguments: args),
                     ),
                   );
-                }, child: Consumer2<LessonService, MemberService>(
-                    builder: (context, lessonService, memberService, child) {
-                  print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
-                  // lessonService
-                  // ignore: dead_code
-
-                  lessonService
-                      .readMemberActionNote(
-                    AuthService().currentUser()!.uid,
-                    userInfo.docId,
-                  )
-                      .then((value) {
-                    memberActionNote.addAll(value);
-                  });
-
-                  return LessonCardWidget(
+                }, child:  LessonCardWidget(
                     userInfo: widget.userInfo,
                     memberId: memberId,
                     lessonDate: lessonDate,
                     todayNote: todayNote,
-                    lessonActionList: widget.memberActionNote,
-                  );
-                }));
+                    lessonActionList: globalVariables.memberTicketList,
+                  ));
 
                 // return LessonCard(
                 //   userInfo: widget.userInfo,

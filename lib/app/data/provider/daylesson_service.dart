@@ -5,6 +5,41 @@ class DayLessonService extends ChangeNotifier {
   final daylessonCollection =
       FirebaseFirestore.instance.collection('daylesson');
 
+
+      Future<List> readLessonDayNote(
+    String uid,
+  ) async {
+    final result;
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+
+    result = await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .orderBy('docId', descending: false)
+        .get();
+
+    List resultList = [];
+    var docsLength = result.docs.length;
+    var rstObj = {};
+    for (int i = 0; i < result.docs.length; i++) {
+      rstObj = result.docs[i].data();
+      rstObj['id'] = result.docs[i].id;
+
+      // if (rstObj)
+      resultList.add(rstObj);
+      // print("[daylesson]result.docs[i].data() : ${result.docs[i].data()}");
+      /* rstObj = result.docs[i].data();
+          rstObj['id'] = result.docs[i].id;
+          resultList.add(rstObj); */
+    }
+    print('[daylesson]resultList:$resultList');
+
+    notifyListeners();
+
+    return resultList;
+  }
+
   Future<List> readTodayNoteOflessonDate(
     String uid,
     String docId,

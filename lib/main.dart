@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_project/app/controller/member_info_controller.dart';
 import 'package:web_project/app/data/provider/analyticLog.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
@@ -40,6 +41,8 @@ import 'app/ui/widget/globalWidget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
+
+MemberInfoController memberInfoController = MemberInfoController();
 
 GlobalVariables globalVariables = GlobalVariables();
 
@@ -203,6 +206,7 @@ void main() async {
             print("stackTrace : \r\n${stackTrace}");
           }).whenComplete(() {
             print("memberTicketList await init complete!");
+            
           });
         });
       });

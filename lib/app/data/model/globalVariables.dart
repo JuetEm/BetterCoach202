@@ -15,6 +15,8 @@ class GlobalVariables {
   List memberTicketList = [];
   // selected memberTicket index
   int selectedTicketIndex = 0;
+  // lessonNoteGlobal List
+  List lessonNoteGlobalList = [];
 
 
   sortList() {
