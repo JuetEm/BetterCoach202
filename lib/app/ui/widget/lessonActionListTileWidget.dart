@@ -72,7 +72,6 @@ class LessonActionListTile extends StatefulWidget {
 }
 
 class _LessonActionListTileState extends State<LessonActionListTile> {
-
   @override
   void initState() {
     super.initState();
@@ -82,12 +81,10 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
   @override
   void dispose() {
     super.dispose();
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    
     State<LessonAdd>? lessonAdd = context.findAncestorStateOfType();
 
     ///
@@ -184,8 +181,8 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
             "apparatus : ${widget.apparatus}, position : ${widget.position}, actionName : ${widget.actionName}");
         // print(widget.actionList);
       },
-      selectedColor: Palette.gray66,
-      selectedTileColor: Palette.titleOrange,
+      selectedColor: Palette.gray33,
+      selectedTileColor: Palette.grayEE,
       shape: RoundedRectangleBorder(
           // side: BorderSide(color: Palette.grayEE, width: 1),
           ),

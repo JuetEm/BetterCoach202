@@ -137,23 +137,41 @@ class LessonCardWidget extends StatelessWidget {
                         return Offstage(
                           key: valueKey,
                           offstage: !isSelected,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.only(left: 14),
-                                  child: Chip(
-                                    label: Text("$actionName"),
-                                  )),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(16, 4, 0, 10),
-                                child: Text(
-                                  totalNote,
-                                  style: TextStyle(
-                                      color: Palette.gray00, fontSize: 14),
-                                ),
-                              )
-                            ],
+                          child: IntrinsicHeight(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 200,
+                                    padding: EdgeInsets.only(left: 14),
+                                    child: Chip(
+                                      backgroundColor: totalNote == ""
+                                          ? Palette.gray99
+                                          : Palette.titleOrange,
+                                      label: Text("$actionName",
+                                          style: TextStyle(
+                                              color: Palette.gray00,
+                                              fontSize: 12)),
+                                    )),
+                                SizedBox(width: 6),
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: 214),
+                                  width:
+                                      MediaQuery.of(context).size.width - 278,
+                                  padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 2),
+                                    child: Text(
+                                      totalNote,
+                                      style: TextStyle(
+                                          color: Palette.gray00, fontSize: 12),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       }),
@@ -161,6 +179,19 @@ class LessonCardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Center(
+                child: IconButton(
+                  icon: Icon(
+                      // _isExpandClicked
+                      true
+                          ? Icons.expand_less_outlined
+                          : Icons.expand_more_outlined),
+                  onPressed: () {},
+                ),
+              ),
+            )
           ],
         ),
       ),
