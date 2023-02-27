@@ -149,6 +149,8 @@ class _LessonAddState extends State<LessonAdd> {
     txtEdtCtrlrList = [];
     dayLessonList = [];
     deleteTargetDocIdLiet = [];
+
+    initStateCheck = true;
   }
 
   @override
@@ -172,9 +174,11 @@ class _LessonAddState extends State<LessonAdd> {
     lessonActionList = [];
     txtEdtCtrlrList = [];
     dayLessonList = [];
-    deleteTargetDocIdLiet= [];
+    deleteTargetDocIdLiet = [];
 
     lessonAddMode = "";
+
+    initStateCheck = true;
   }
 
   @override
@@ -311,6 +315,9 @@ class _LessonAddState extends State<LessonAdd> {
           },
         );
 
+        todayNoteController.selection = TextSelection.fromPosition(
+            TextPosition(offset: todayNoteController.text.length));
+
         return Scaffold(
           //resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
@@ -325,7 +332,8 @@ class _LessonAddState extends State<LessonAdd> {
                     print(
                         "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
-                    // 수업일, 동작선택, 필수 입력
+                    // 오늘의 레슨 종합 레슨 기록이 비어있고, 개별 기록도 없다면 안내 메세지 보여줌
+                    // 뭐 든 하나라도 있다면 저장
                     if ((todayNoteController.text.trim().isEmpty) &&
                         lessonActionList
                             .where((element) => element['noteSelected'])
@@ -667,34 +675,21 @@ class _LessonAddState extends State<LessonAdd> {
                                           ],
                                         ),
                                         Expanded(
-                                          child: FutureBuilder<QuerySnapshot>(
-                                            future: lessonService
-                                                .readTodayNoteOflessonDate(
-                                              user.uid,
-                                              customUserInfo.docId,
-                                              lessonDateController.text,
-                                            ),
-                                            builder: (context, snapshot) {
-                                              print(
+                                          child:
+                                              // child: FutureBuilder<QuerySnapshot>(
+                                              //   future: lessonService
+                                              //       .readTodayNoteOflessonDate(
+                                              //     user.uid,
+                                              //     customUserInfo.docId,
+                                              //     lessonDateController.text,
+                                              //   ),
+                                              //   builder: (context, snapshot) {
+                                              /* print(
                                                   "문서가져오기시작 : ${lessonDateController.text}");
 
                                               final docsTodayNote =
                                                   snapshot.data?.docs ??
                                                       []; // 문서들 가져오기
-                                              //print("문서가져오기끝");
-
-                                              // 기존 저장된 값이 없으면 초기화, 동작 선택모드 일경우
-                                              // if (docsTodayNote.isEmpty) {
-                                              //   if (ActionSelectMode) {
-                                              //   } else {
-                                              //     todayNoteController.text = "";
-                                              //   }
-                                              //   todayNotedocId = "";
-                                              // } else {
-                                              //   todayNoteController.text =
-                                              //       docsTodayNote[0].get('todayNote');
-                                              //   todayNotedocId = docsTodayNote[0].id;
-                                              // }
 
                                               print(
                                                   "[LA] 일별노트 출력 시작 : 유/무 ${docsTodayNote.isEmpty} / todayNotedocId ${todayNotedocId} / todayNoteView ${todayNoteView} / todayNoteController ${todayNoteController}");
@@ -702,10 +697,6 @@ class _LessonAddState extends State<LessonAdd> {
                                               if (docsTodayNote.isEmpty) {
                                                 todayNotedocId = "";
                                                 todayNoteView = "";
-                                                // WidgetsBinding.instance.addPostFrameCallback(
-                                                //     (_) => todayNoteController.clear());
-                                                //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
-                                                //todayNoteController.text = "";
                                                 print(
                                                     "뿌릴 일별 노트 없음 : ${todayNoteController.text}");
                                               } else {
@@ -713,9 +704,6 @@ class _LessonAddState extends State<LessonAdd> {
                                                     .get('todayNote');
                                                 print(
                                                     "todayNoteView : ${todayNoteView}");
-                                                /* todayNoteController.text =
-                                                      todayNoteView; */
-                                                //
                                                 todayNoteController.selection =
                                                     TextSelection.fromPosition(
                                                         TextPosition(
@@ -727,87 +715,58 @@ class _LessonAddState extends State<LessonAdd> {
                                                 todayNotedocId =
                                                     docsTodayNote[0].id;
 
-                                                // WidgetsBinding.instance.addPostFrameCallback(
-                                                //     (_) => todayNoteController.text =
-                                                //         docsTodayNote[0].get('todayNote'));
-                                                //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
 
                                                 print(
                                                     "뿌릴 일별 노트 출력 완료 : ${todayNoteController.text} - ${todayNotedocId} ");
                                               }
                                               print(
                                                   "[LA] 일별노트 출력 결과 : todayNotedocId ${todayNotedocId} / todayNoteView ${todayNoteView} / todayNoteController ${todayNoteController}");
-                                              // if (initStateTextfield) {
-                                              //   if (docsTodayNote.isEmpty) {
-                                              //     todayNotedocId = "";
-                                              //     todayNoteController.text = "";
-                                              //     print("뿌릴 일별 노트 없음");
-                                              //   } else {
-                                              //     todayNoteController.text =
-                                              //         docsTodayNote[0].get('todayNote');
-                                              //     todayNotedocId = docsTodayNote[0].id;
-                                              //     print("뿌릴 일별 노트 출력 완료");
-                                              //   }
-                                              //   //initStateTextfield = false;
-                                              // }
-
-                                              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                              //   content: Text("텍스트필드!!"),
-                                              // ));
-                                              // 텍스트 필드 이전
-                                              // return DynamicSaveTextField(
-                                              //   customController: todayNoteController,
-                                              //   hint: "일별 메모",
-                                              //   showArrow: false,
-                                              //   customFunction: () {
-                                              //     FocusScope.of(context).unfocus();
-                                              //   },
-                                              // );
-                                              // 새로 불러오기
+                                               */
 
                                               /// 리턴 시작
-                                              return Container(
-                                                constraints: BoxConstraints(
-                                                    minHeight: 120),
-                                                child: Container(
-                                                  child: TextFormField(
-                                                    onChanged: (value) {
-                                                      todayNoteView = value;
-                                                      todayNoteController.text =
-                                                          value;
-                                                      todayNoteController
-                                                              .selection =
-                                                          TextSelection.fromPosition(
-                                                              TextPosition(
-                                                                  offset: todayNoteController
+                                              // return
+                                              Container(
+                                            constraints:
+                                                BoxConstraints(minHeight: 120),
+                                            child: Container(
+                                              child: TextFormField(
+                                                onChanged: (value) {
+                                                  // todayNoteView = value;
+                                                  // 오늘의 레슨 기록 변화 시 todayNoteController에 넣는다
+                                                  todayNoteController.text =
+                                                      value;
+                                                  todayNoteController
+                                                          .selection =
+                                                      TextSelection.fromPosition(
+                                                          TextPosition(
+                                                              offset:
+                                                                  todayNoteController
                                                                       .text
                                                                       .length));
-                                                    },
-                                                    maxLines: null,
-                                                    controller:
-                                                        todayNoteController,
-                                                    autofocus: true,
-                                                    obscureText: false,
-                                                    decoration: InputDecoration(
-                                                      contentPadding:
-                                                          EdgeInsets.all(20),
-                                                      border: InputBorder.none,
-                                                      hintText:
-                                                          '오늘의 수업 내용을 기록해보세요',
-                                                      hintStyle: TextStyle(
-                                                          color: Palette.gray99,
-                                                          fontSize: 14),
-                                                    ),
-                                                    style: TextStyle(
-                                                        color: Palette.gray00,
-                                                        fontSize: 14),
-                                                    /* validator:
-                                                      _model.textControllerValidator.asValidator(context), */
-                                                  ),
+                                                },
+                                                maxLines: null,
+                                                controller: todayNoteController,
+                                                autofocus: true,
+                                                obscureText: false,
+                                                decoration: InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.all(20),
+                                                  border: InputBorder.none,
+                                                  hintText: '오늘의 수업 내용을 기록해보세요',
+                                                  hintStyle: TextStyle(
+                                                      color: Palette.gray99,
+                                                      fontSize: 14),
                                                 ),
-                                              );
-                                            },
+                                                style: TextStyle(
+                                                    color: Palette.gray00,
+                                                    fontSize: 14),
+                                                /* validator:
+                                                      _model.textControllerValidator.asValidator(context), */
+                                              ),
+                                            ),
                                           ),
+                                          //   },
+                                          // ),
                                         ),
                                       ],
                                     ),
@@ -830,8 +789,7 @@ class _LessonAddState extends State<LessonAdd> {
                                           ],
                                         ),
 
-                                        /// 동작별 메모 한 묶음.
-                                        /// 묶음 단위로 불러와져야 함.
+                                        // 레슨 기록에 동작별 기록이 있으면 칩으로 보여준다.
                                         lessonActionList
                                                 .where((element) =>
                                                     element['noteSelected'] ==
@@ -849,14 +807,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                         lessonActionList.length,
                                                     itemBuilder:
                                                         (context, index) {
-                                                      Key? valueKey;
+                                                      /* Key? valueKey;
 
-                                                      lessonActionList[index]
-                                                          ['pos'] = index;
+                                                      /* lessonActionList[index]
+                                                          ['pos'] = index; */
 
                                                       valueKey = ValueKey(
                                                           lessonActionList[
-                                                              index]['pos']);
+                                                              index]['pos']); */
 
                                                       final doc =
                                                           lessonActionList[
@@ -890,13 +848,27 @@ class _LessonAddState extends State<LessonAdd> {
                                                       String actionNote =
                                                           doc['totalNote'];
 
-                                                      if (txtEdtCtrlrList[index]
+                                                      /* if (txtEdtCtrlrList[index]
                                                           .text
-                                                          .isEmpty) {
+                                                          .isEmpty) { */
+
+                                                      /* } */
+
+                                                      if (initStateCheck) {
+                                                        String tmp =
+                                                            txtEdtCtrlrList[
+                                                                    index]
+                                                                .text;
                                                         txtEdtCtrlrList[index]
                                                             .text = actionNote;
+                                                        if (lessonActionList
+                                                                    .length -
+                                                                1 ==
+                                                            index) {
+                                                          initStateCheck =
+                                                              false;
+                                                        }
                                                       }
-
                                                       txtEdtCtrlrList[index]
                                                               .selection =
                                                           TextSelection.fromPosition(
@@ -907,7 +879,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                       .length));
 
                                                       return Offstage(
-                                                        key: valueKey,
+                                                        /* key: valueKey, */
                                                         offstage: !isSelected,
                                                         child: Column(
                                                           crossAxisAlignment:
@@ -937,9 +909,16 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             index]
                                                                         [
                                                                         'noteSelected'];
-                                                                    txtEdtCtrlrList[index]
-                                                                            .text =
-                                                                        "특정값을 주어서 맞으면 삭제 된 칩으로 인식";
+                                                                    // controller의 텍스트 초기화
+                                                                    txtEdtCtrlrList[
+                                                                            index]
+                                                                        .text = "";
+                                                                    String tmp =
+                                                                        txtEdtCtrlrList[index]
+                                                                            .text;
+
+                                                                    print(
+                                                                        "txtEdtCtrlrList[index].text : ${txtEdtCtrlrList[index].text}");
 
                                                                     setState(
                                                                         () {});
@@ -951,6 +930,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                                 txtEdtCtrlrList[
                                                                         index]
                                                                     .text = value;
+                                                                String tmp =
+                                                                    txtEdtCtrlrList[
+                                                                            index]
+                                                                        .text;
                                                                 txtEdtCtrlrList[
                                                                             index]
                                                                         .selection =
@@ -1168,6 +1151,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             'id': null,
                                             'noteSelected': false,
                                             'position': element['name'],
+                                            'deleteSelected': true,
                                           };
                                           print("rElement : ${rElement}");
                                           lessonActionList.add(rElement);
@@ -1210,31 +1194,36 @@ class _LessonAddState extends State<LessonAdd> {
                                 ),
                                 const SizedBox(height: 20),
 
-                                // 손재형 재정렬 가능한 리스트 시작
+                                // 손재형 재정렬 가능한 리스트 시작 => 동작 목록 리스트
                                 ReorderableListView.builder(
                                     padding: EdgeInsets.only(bottom: 100),
                                     onReorder: (oldIndex, newIndex) {
                                       if (newIndex > oldIndex) {
                                         newIndex -= 1;
                                       }
-                                      final movedActionList =
+                                      /* final movedActionList =
                                           lessonActionList.removeAt(oldIndex);
                                       lessonActionList.insert(
-                                          newIndex, movedActionList);
+                                          newIndex, movedActionList); */
 
-                                      setState(() {});
+                                          final movedActionList =
+                                              lessonActionList
+                                                  .removeAt(oldIndex);
+                                          lessonActionList.insert(
+                                              newIndex, movedActionList);
+                                       
                                     },
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: lessonActionList.length,
                                     itemBuilder: (context, index) {
                                       Key? valueKey;
-                                      lessonActionList[index]['pos'] = index;
-                                      valueKey = ValueKey(
-                                          lessonActionList[index]['pos']);
-
+                                        
+                                        lessonActionList[index]['pos'] = index;
+                                        valueKey = ValueKey(index);
+                                      
                                       final doc = lessonActionList[index];
-                                      print("bbbbbbbb - doc : ${doc}");
+                                      print("동작 목록 리스트 - doc : ${doc}");
 
                                       String uid = doc['uid']; // 강사 고유번호
 
@@ -1253,32 +1242,37 @@ class _LessonAddState extends State<LessonAdd> {
                                       int pos = doc['pos']; //수업총메모
                                       bool isSelected = doc['noteSelected'];
 
+                                      
+
                                       return GestureDetector(
-                                        key: valueKey,onHorizontalDragUpdate: (details) {
-                                        int sensitivity = 8;
-                                        if(details.delta.dx > sensitivity){
-                                          // right swipe
-                                          print("GestureDetector right swipe");
-                                          lessonActionList[index]['deleteSelected'] = true;
-                                        }else if(details.delta.dx < -sensitivity){
-                                          // left swipe
-                                          print("GestureDetector left swipe");
-                                          lessonActionList[index]['deleteSelected'] = false;
-                                        }
-                                      },
+                                        key: valueKey,
+                                        onHorizontalDragUpdate: (details) {
+                                          int sensitivity = 8;
+                                          if (details.delta.dx > sensitivity) {
+                                            // right swipe
+                                            print(
+                                                "GestureDetector right swipe");
+                                            lessonActionList[index]
+                                                ['deleteSelected'] = true;
+                                          } else if (details.delta.dx <
+                                              -sensitivity) {
+                                            // left swipe
+                                            print("GestureDetector left swipe");
+                                            lessonActionList[index]
+                                                ['deleteSelected'] = false;
+                                          }
+                                        },
                                         child: Row(
-                                          
                                           children: [
                                             Expanded(
-                                              
                                               child: LessonActionListTile(
-                                                  
                                                   actionName: actionName,
                                                   apparatus: apratusName,
                                                   position: getActionPosition(
                                                       apratusName,
                                                       actionName,
-                                                      globalVariables.actionList),
+                                                      globalVariables
+                                                          .actionList),
                                                   name: name,
                                                   phoneNumber: phoneNumber,
                                                   lessonDate: lessonDate,
@@ -1294,26 +1288,40 @@ class _LessonAddState extends State<LessonAdd> {
                                                   customFunctionOnTap: () {
                                                     doc['noteSelected'] =
                                                         !doc['noteSelected'];
+                                                    txtEdtCtrlrList[index]
+                                                        .text = totalNote;
+                                                    String tmp =
+                                                        txtEdtCtrlrList[index]
+                                                            .text;
                                                   }),
                                             ),
-                                                Offstage(
-                                                  offstage: lessonActionList[index]['deleteSelected'],
-                                                  child: IconButton(onPressed: (){
-                                                    // 노트편집 화면의 경우 기존 목록에서 동작을 삭제하는 경우 생길 수 있어서, 삭제이벤트 발생시 docId 수집
-                                                    getDeleteTargetDocId(index);
-                                                    lessonActionList.removeAt(index);
-                                                    int i = 0;
-                                                    lessonActionList.forEach((element) {
-                                                      element['pos'] = i;
-                                                      i++;
-                                                     });
-                                                     setState(() {
-                                                       
-                                                     });
-                                                  }, icon: Icon(Icons.delete, color: Palette.statusRed,),),),
+                                            Offstage(
+                                              offstage: lessonActionList[index]
+                                                  ['deleteSelected'],
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  // 노트편집 화면의 경우 기존 목록에서 동작을 삭제하는 경우 생길 수 있어서, 삭제이벤트 발생시 docId 수집
+                                                  getDeleteTargetDocId(index);
+                                                  lessonActionList
+                                                      .removeAt(index);
+                                                  int i = 0;
+                                                  lessonActionList
+                                                      .forEach((element) {
+                                                    element['pos'] = i;
+                                                    i++;
+                                                  });
+                                                  setState(() {});
+                                                },
+                                                icon: Icon(
+                                                  Icons.delete,
+                                                  color: Palette.statusRed,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       );
+                                      
                                     }),
 
                                 /* FutureBuilder<QuerySnapshot>(
@@ -2024,7 +2032,8 @@ class _LessonAddState extends State<LessonAdd> {
   }
 
   void getDeleteTargetDocId(int index) {
-    print("getDeleteTargetDocId - index : ${index}, lessonActionList[index]['docId'] : ${lessonActionList[index]['docId']}, lessonActionList[index]['id'] : ${lessonActionList[index]['id']}");
+    print(
+        "getDeleteTargetDocId - index : ${index}, lessonActionList[index]['docId'] : ${lessonActionList[index]['docId']}, lessonActionList[index]['id'] : ${lessonActionList[index]['id']}");
     deleteTargetDocIdLiet.add(lessonActionList[index]['id']);
   }
 
@@ -2035,20 +2044,18 @@ class _LessonAddState extends State<LessonAdd> {
       CustomUserInfo.UserInfo customUserInfo,
       DayLessonService dayLessonService) {
     for (int i = 0; i < lessonActionList.length; i++) {
-      print(
+      /* print(
           "llllllllllll -- lessonActionList.length : ${lessonActionList.length}");
-      print("llllllllllll -- lessonActionList[$i] : ${lessonActionList[i]}");
-      print(
-          "tllllllllllll -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
+      print("llllllllllll -- lessonActionList[$i] : ${lessonActionList[i]}"); */
+      /* print(
+          "tllllllllllll -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}"); */
       if (lessonActionList.isNotEmpty && lessonAddMode == "노트편집") {
         print(
             "tllllllllllll  자자자! 노트편집!!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
         print(
             "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}");
-        lessonActionList[i]['totalNote'] =
-            txtEdtCtrlrList[i].text == "특정값을 주어서 맞으면 삭제 된 칩으로 인식"
-                ? ""
-                : txtEdtCtrlrList[i].text;
+        lessonActionList[i]['totalNote'] = txtEdtCtrlrList[i].text;
+        String tmp = txtEdtCtrlrList[i].text;
 
         print(
             "lessonActionList[i]['id'] == null? : ${lessonActionList[i]['id'] == null}");
@@ -2081,12 +2088,6 @@ class _LessonAddState extends State<LessonAdd> {
               lessonActionList[i]['totalNote'],
               lessonActionList[i]['uid']);
         }
-
-        deleteTargetDocIdLiet.forEach((element) { 
-          print("deleted actions docId : element : ${element}");
-          lessonService.delete(docId: element, onSuccess: (){}, onError: (){});
-         });
-        
       } else if (lessonActionList.isNotEmpty && lessonAddMode == "노트 추가") {
         print(
             "tllllllllllll 자자자 노트 추가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
@@ -2108,6 +2109,10 @@ class _LessonAddState extends State<LessonAdd> {
             "tllllllllllll 자자자 그외 뭔가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
       }
     }
+    deleteTargetDocIdLiet.forEach((element) {
+      print("deleted actions docId : element : ${element}");
+      lessonService.delete(docId: element, onSuccess: () {}, onError: () {});
+    });
 
     // print("ppppppppp - todayNoteController.text.trim() : ${todayNoteController.text.trim()}, todayNoteView : ${todayNoteView}");
     if (todayNoteController.text.trim().isNotEmpty) {
@@ -2337,15 +2342,16 @@ class _DeleteButtonState extends State<DeleteButton> {
         final retvaldelte = await showAlertDialog(context, '정말로 삭제하시겠습니까?',
             '해당 노트의 전체 내용이 삭제됩니다. 삭제된 내용은 이후 복구가 불가능합니다.');
         if (retvaldelte == "OK") {
-          lessonActionList.forEach((element) { 
-            
-            widget.lessonService.delete(docId: element['id'], onSuccess: (){}, onError: (){});
-           });
+          lessonActionList.forEach((element) {
+            widget.lessonService
+                .delete(docId: element['id'], onSuccess: () {}, onError: () {});
+          });
 
-           dayLessonList.forEach((element) { 
-            widget.dayLessonService.delete(docId: element[0]['id'], onSuccess: (){}, onError: (){});
-            });
-          
+          dayLessonList.forEach((element) {
+            widget.dayLessonService.delete(
+                docId: element[0]['id'], onSuccess: () {}, onError: () {});
+          });
+
           /* if (widget.actionNullCheck) {
             print(
                 "전체삭제 - 오늘노트삭제 : actionNullCheck - ${widget.actionNullCheck} / ${todayNotedocId}");

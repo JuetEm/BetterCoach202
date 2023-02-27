@@ -631,8 +631,10 @@ class LessonService extends ChangeNotifier {
   }) async {
     // bucket 삭제
     await lessonCollection.doc(docId).delete();
-    notifyListeners();
+    
     // 화면 갱신
     onSuccess(); // 화면 갱신
+
+    notifyListeners();
   }
 }

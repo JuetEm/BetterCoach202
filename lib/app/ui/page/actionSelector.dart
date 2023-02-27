@@ -1742,6 +1742,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         content: Text("동작추가 성공"),
                                       ));
 
+                                      // actionSelected 값이 true 이면 tmpList 에 넣어서 반환한다.
                                       List tmpResultList = [];
                                       globalVariables.actionList
                                           .forEach((element) {
@@ -1749,6 +1750,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                           tmpResultList.add(element);
                                         }
                                       });
+                                      // actionSelected false 로 전부 초기화
                                       globalVariables.actionList
                                           .forEach((element) {
                                         if (element['actionSelected'] == true) {
