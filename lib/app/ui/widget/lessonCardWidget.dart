@@ -119,7 +119,7 @@ class LessonCardWidget extends StatelessWidget {
 
                         final doc = lessonActionList[index];
 
-                        print("bbbbbbbb - doc : ${doc}");
+                        // print("bbbbbbbb - doc : ${doc}");
 
                         String uid = doc['uid']; // 강사 고유번호
 
@@ -141,19 +141,17 @@ class LessonCardWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.only(left: 14),
                                   child: Chip(
                                     label: Text("$actionName"),
-                                    deleteIcon: Icon(
-                                      Icons.close_sharp,
-                                      size: 16,
-                                    ),
-                                    onDeleted: () {},
                                   )),
-                              Text(
-                                totalNote,
-                                style: TextStyle(
-                                    color: Palette.gray00, fontSize: 14),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(16, 4, 0, 10),
+                                child: Text(
+                                  totalNote,
+                                  style: TextStyle(
+                                      color: Palette.gray00, fontSize: 14),
+                                ),
                               )
                             ],
                           ),

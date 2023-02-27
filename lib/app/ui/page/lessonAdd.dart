@@ -820,8 +820,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                           lessonActionList[
                                                               index];
 
-                                                      print(
-                                                          "bbbbbbbb - doc : ${doc}");
+                                                      // print(
+                                                      //     "bbbbbbbb - doc : ${doc}");
 
                                                       String uid =
                                                           doc['uid']; // 강사 고유번호
@@ -1206,22 +1206,20 @@ class _LessonAddState extends State<LessonAdd> {
                                       lessonActionList.insert(
                                           newIndex, movedActionList); */
 
-                                          final movedActionList =
-                                              lessonActionList
-                                                  .removeAt(oldIndex);
-                                          lessonActionList.insert(
-                                              newIndex, movedActionList);
-                                       
+                                      final movedActionList =
+                                          lessonActionList.removeAt(oldIndex);
+                                      lessonActionList.insert(
+                                          newIndex, movedActionList);
                                     },
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: lessonActionList.length,
                                     itemBuilder: (context, index) {
                                       Key? valueKey;
-                                        
-                                        lessonActionList[index]['pos'] = index;
-                                        valueKey = ValueKey(index);
-                                      
+
+                                      lessonActionList[index]['pos'] = index;
+                                      valueKey = ValueKey(index);
+
                                       final doc = lessonActionList[index];
                                       print("동작 목록 리스트 - doc : ${doc}");
 
@@ -1241,8 +1239,6 @@ class _LessonAddState extends State<LessonAdd> {
                                           doc['totalNote']; //수업총메모
                                       int pos = doc['pos']; //수업총메모
                                       bool isSelected = doc['noteSelected'];
-
-                                      
 
                                       return GestureDetector(
                                         key: valueKey,
@@ -1321,7 +1317,6 @@ class _LessonAddState extends State<LessonAdd> {
                                           ],
                                         ),
                                       );
-                                      
                                     }),
 
                                 /* FutureBuilder<QuerySnapshot>(

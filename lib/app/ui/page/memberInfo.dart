@@ -185,8 +185,13 @@ class _MemberInfoState extends State<MemberInfo> {
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
-        
-        lessonService.readMemberActionNote(AuthService().currentUser()!.uid, userInfo.docId,).then((value) {
+
+        lessonService
+            .readMemberActionNote(
+          AuthService().currentUser()!.uid,
+          userInfo.docId,
+        )
+            .then((value) {
           memberActionNote.addAll(value);
         });
         return Scaffold(
@@ -699,7 +704,7 @@ class _MemberInfoState extends State<MemberInfo> {
                     } else {
                       // if (viewMode == "레슨노트") {
 
-                        // print("ㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑ - 여기가 울리나요?");
+                      // print("ㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑ - 여기가 울리나요?");
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -898,8 +903,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             ],
           ),
         ),
-        // 캘린더 시작
+        Container(
+          width: 10,
+          color: Palette.secondaryBackground,
+        ),
 
+        // 캘린더 시작
         Offstage(
           offstage: isNoteCalendarHided,
           child: TableCalendarWidget(selectedDate: "")
@@ -918,10 +927,13 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 print("ConnectionState.waiting : ${ConnectionState.waiting}");
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Palette.buttonOrange,
-                ));
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: Palette.buttonOrange,
+                  )),
+                );
               } else if (snapshot.connectionState == ConnectionState.done) {
                 print("ConnectionState.done : ${ConnectionState.done}");
                 final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
@@ -978,7 +990,14 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 }
               } else {
                 print("ConnectionState.else");
-                return CircularProgressIndicator();
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 120),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Palette.buttonOrange,
+                    ),
+                  ),
+                );
               }
             }),
 
