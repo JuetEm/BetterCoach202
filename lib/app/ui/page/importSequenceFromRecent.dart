@@ -4,6 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
+import 'package:web_project/app/data/provider/auth_service.dart';
+import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
@@ -11,7 +14,8 @@ import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/data/model/actionInfo.dart';
 
 class ImportSequenceFromRecent extends StatefulWidget {
-  const ImportSequenceFromRecent({super.key});
+  final actionList;
+  const ImportSequenceFromRecent({required this.actionList, super.key});
 
   @override
   State<ImportSequenceFromRecent> createState() =>
@@ -153,64 +157,68 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                 /// 리스트들이 뿌려지는 영역
                 Expanded(
                   child: ReorderableListView.builder(
-                    padding: EdgeInsets.only(bottom: 100),
-                    onReorder: (oldIndex, newIndex) {
-                      if (newIndex > oldIndex) {
-                        newIndex -= 1;
-                      }
-                      final movedActionList = actionList.removeAt(oldIndex);
-                      actionList.insert(newIndex, movedActionList);
-
-                      setState(() {});
-                    },
-                    physics: BouncingScrollPhysics(),
-                    itemCount: actionList.length,
-                    itemBuilder: (context, index) {
-                      Key? valueKey;
-                      actionList[index]['index'] = index;
-                      valueKey = ValueKey(actionList[index]['index']);
-
-                      return ActionListTile(
-                        key: valueKey,
-                        isSelectable: true,
-                        isSelected: actionList[index]['selected'],
-                        actionList: actionList,
-                        isDraggable: true,
-                        actionName: actionList[index]['actionName'],
-                        apparatus: actionList[index]['apparatus'],
-                        position: actionList[index]['position'],
-                        name: "",
-                        phoneNumber: "",
-                        lessonDate: "",
-                        grade: "",
-                        totalNote: "",
-                        docId: "",
-                        memberdocId: "",
-                        uid: "",
-                        pos: index,
-                        customFunctionOnTap: () {
-                          actionList[index]['selected'] =
-                              !actionList[index]['selected'];
-
-                          if (actionList[index]['selected']) {
-                            selectedCnt++;
-                          } else {
-                            selectedCnt--;
+                        padding: EdgeInsets.only(bottom: 100),
+                        onReorder: (oldIndex, newIndex) {
+                          if (newIndex > oldIndex) {
+                            newIndex -= 1;
                           }
-
-                          print('####여기부터 봐라####');
-                          print('seletedCnt: $selectedCnt');
-                          print('index: $index');
-                          print('actionList[index]: ${actionList[index]}');
-                          print('actionList: $actionList');
-                          print('selectedActionList: $selectedActionList');
-                          print('####여기까지 봐라####');
+                          final movedActionList = widget.actionList.removeAt(oldIndex);
+                          widget.actionList.insert(newIndex, movedActionList);
 
                           setState(() {});
                         },
-                      );
-                    },
-                  ),
+                        physics: BouncingScrollPhysics(),
+                        itemCount: widget.actionList.length,
+                        itemBuilder: (context, index) {
+                          
+                          Key? valueKey;
+                          widget.actionList[index]['pos'] = index;
+                          valueKey = ValueKey(widget.actionList[index]['pos']);
+
+                          
+
+
+                          return ActionListTile(
+                            key: valueKey,
+                            isSelectable: true,
+                            isSelected: widget.actionList[index]['noteSelected'],
+                            actionList: widget.actionList,
+                            isDraggable: true,
+                            actionName: widget.actionList[index]['actionName'],
+                            apparatus: widget.actionList[index]['apratusName'],
+                            position: widget.actionList[index]['pos'].toString(),
+                            name: "",
+                            phoneNumber: "",
+                            lessonDate: "",
+                            grade: "",
+                            totalNote: "",
+                            docId: "",
+                            memberdocId: "",
+                            uid: "",
+                            pos: index,
+                            customFunctionOnTap: () {
+                              widget.actionList[index]['noteSelected'] =
+                                  !widget.actionList[index]['noteSelected'];
+
+                              if (widget.actionList[index]['noteSelected']) {
+                                selectedCnt++;
+                              } else {
+                                selectedCnt--;
+                              }
+
+                              print('####여기부터 봐라####');
+                              print('seletedCnt: $selectedCnt');
+                              print('index: $index');
+                              print('widget.actionList[index]: ${widget.actionList[index]}');
+                              print('widget.actionList: $widget.actionList');
+                              print('selectedActionList: $selectedActionList');
+                              print('####여기까지 봐라####');
+
+                              setState(() {});
+                            },
+                          );
+                        },
+                      ),
                 )
               ],
             ),
@@ -228,9 +236,9 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                 child: ElevatedButton(
                   onPressed: () {
                     selectedActionList
-                        .addAll(actionList.where((item) => item['selected']));
+                        .addAll(actionList.where((item) => item['noteSelected']));
                     // selectedActionList.add(actionList.where((item) => item['selected']));
-                    print(actionList.where((item) => item['selected']));
+                    print(actionList.where((item) => item['noteSelected']));
                     print('selectedActionList: $selectedActionList');
                     print('@@@@@ 전송! @@@@@');
 

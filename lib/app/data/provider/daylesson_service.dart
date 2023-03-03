@@ -6,8 +6,21 @@ class DayLessonService extends ChangeNotifier {
       FirebaseFirestore.instance.collection('daylesson');
 
 
-      Future<List> readLessonDayNote(
+  Future<QuerySnapshot> readTodaynote(
     String uid,
+    String docId,
+  ) async {
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .orderBy("lessonDate", descending: true)
+        .get();
+  }
+
+  Future<List> readLessonDayNote(
+    String uid,
+    String memberId,
   ) async {
     final result;
     // 내 bucketList 가져오기
@@ -16,7 +29,10 @@ class DayLessonService extends ChangeNotifier {
 
     result = await daylessonCollection
         .where('uid', isEqualTo: uid)
-        .orderBy('docId', descending: false)
+        .where(
+          'docId', isEqualTo: memberId,
+        )
+        .orderBy('lessonDate', descending: true)
         .get();
 
     List resultList = [];
@@ -38,6 +54,28 @@ class DayLessonService extends ChangeNotifier {
     notifyListeners();
 
     return resultList;
+  }
+
+  Future<QuerySnapshot<Object?>>? readLessonDayNoteForFutureBuilder(
+    String uid,
+    String memberId,
+  ) async {
+    final result;
+    // 내 bucketList 가져오기
+    // throw UnimplementedError(); // return 값 미구현 에러
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+
+    result = await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where(
+          'docId', isEqualTo: memberId,
+        )
+        .orderBy('lessonDate', descending: true)
+        .get();
+
+    notifyListeners();
+
+    return result;
   }
 
   Future<List> readTodayNoteOflessonDate(
@@ -126,7 +164,7 @@ class DayLessonService extends ChangeNotifier {
   }
 
   creatDayNote(
-     String docId,
+    String docId,
     String lessonDate,
     String name,
     // Timestamp,
@@ -140,6 +178,45 @@ class DayLessonService extends ChangeNotifier {
       'timestamp': DateTime.now(),
       'todayNote': todayNote,
       'uid': uid,
+    });
+
+    notifyListeners();
+  }
+  
+  setLessonTodayNote(
+    String id,
+    String uid,
+    String memberId,
+    String lessonDate,
+    String name,
+    // Timestamp timestamp,
+    String todayNote,
+  ) {
+    // Update one field, creating the document if it does not already exist.
+    /* final data = {"capital": true};
+
+    db.collection("cities").doc("BJ").set(data, SetOptions(merge: true)); */
+    Map<String, dynamic> data = {
+      'id': id,
+      'uid': uid,
+      'docId': memberId,
+      'lessonDate': lessonDate,
+      'name': name,
+      'timestamp': DateTime.now(),
+      'todayNote': todayNote,
+      
+    };
+    daylessonCollection.doc(id).set(data, SetOptions(merge: true));
+  }
+
+  updateTicketUsedById(
+    String id,
+    bool ticketUsed,
+    String usedTicketId,
+  ) async {
+    await daylessonCollection.doc(id).update({
+      'ticketUsed': ticketUsed,
+      'usedTicketId': usedTicketId,
     });
 
     notifyListeners();

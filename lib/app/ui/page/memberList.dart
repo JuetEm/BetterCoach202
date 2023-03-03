@@ -11,7 +11,7 @@ import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
-import 'package:web_project/backup/lessonAdd.dart';
+import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/app/ui/page/report.dart';
 import 'package:web_project/app/ui/page/sequenceLibrary.dart';
 import 'package:web_project/app/ui/page/ticketLibraryManage.dart';
@@ -648,9 +648,9 @@ class _MemberListState extends State<MemberList> {
                                       /// 회원카드 선택 시 함수
                                       customFunctionOnTap: () async {
                                         // 회원 카드 선택시 MemberInfo로 이동
-                                        await memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId).then((value) {
+                                        /* await memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId).then((value) {
                                           globalVariables.lessonNoteGlobalList.addAll(value);
-                                        });
+                                        }); */
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(

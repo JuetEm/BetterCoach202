@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
-import 'package:web_project/backup/lessonAdd.dart';
+import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/main.dart';
 
@@ -137,17 +137,7 @@ class LessonService extends ChangeNotifier {
     return result;
   }
 
-  Future<QuerySnapshot> readTodaynote(
-    String uid,
-    String docId,
-  ) async {
-    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
-    return await todaylessonCollection
-        .where('uid', isEqualTo: uid)
-        .where('docId', isEqualTo: docId)
-        .orderBy("lessonDate", descending: true)
-        .get();
-  }
+  
 
   Future<int> countTodaynote(
     String uid,
@@ -287,6 +277,7 @@ class LessonService extends ChangeNotifier {
 
   Future<List> readDateMemberActionNote(
       String uid, String memberId, String date) async {
+        print("ㅠㄱㅈㅁㄷㄹㅁㅇㄴㄹㄴㅁ lessonActionList 초기화!!");
     List lessonActionResultList = [];
     var lessonActionResult = await lessonCollection
         .where('uid', isEqualTo: uid)
@@ -298,15 +289,14 @@ class LessonService extends ChangeNotifier {
     var docsALength = lessonActionResult.docs.length;
     var rstAObj = {};
     for (int i = 0; i < docsALength; i++) {
-      print(
-          "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      // print( "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
+      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
@@ -355,7 +345,7 @@ class LessonService extends ChangeNotifier {
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
+      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
@@ -406,7 +396,63 @@ class LessonService extends ChangeNotifier {
     List<DocumentSnapshot> docs = docRaw.docs;
     print('[LS] countPos 실행 - pos : ${docs.length}');
 
+    notifyListeners();
     return docs.length;
+  }
+
+  Future<int> countRecord(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    QuerySnapshot docRaw = await lessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .orderBy("pos", descending: true)
+        .get();
+    List<DocumentSnapshot> docs = docRaw.docs;
+    int result = docs.first.get('pos');
+
+    print('[LS] countRecord 실행 - pos : ${result}');
+
+    notifyListeners();
+    return result;
+  }
+
+  setLessonActionNote(
+    String id,
+    String uid,
+    String docId,
+    String actionName,
+    String apratusName,
+    String grade,
+    String lessonDate,
+    String name,
+    String phoneNumber,
+    int pos,
+    // Timestamp timestamp,
+    String totalNote,
+  ) {
+    // Update one field, creating the document if it does not already exist.
+    /* final data = {"capital": true};
+
+    db.collection("cities").doc("BJ").set(data, SetOptions(merge: true)); */
+    Map<String, dynamic> data = {
+      'uid': uid,
+      'docId': docId,
+      'actionName': actionName,
+      'apratusName': apratusName,
+      'grade': grade,
+      'lessonDate': lessonDate,
+      'name': name,
+      'phoneNumber': phoneNumber,
+      'pos': pos,
+      'timestamp': Timestamp.now(),
+      'totalNote': totalNote,
+    };
+    lessonCollection.doc(id).set(data, SetOptions(merge: true));
+    notifyListeners();
   }
 
   Future<void> update(
@@ -662,6 +708,7 @@ class LessonService extends ChangeNotifier {
   }) async {
     // bucket 삭제
     await lessonCollection.doc(docId).delete();
+    print("ewguyugifytr deleted!!! docId => ${docId}");
 
     // 화면 갱신
     onSuccess(); // 화면 갱신

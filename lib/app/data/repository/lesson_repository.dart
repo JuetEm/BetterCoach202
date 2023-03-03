@@ -16,9 +16,9 @@ class LessonRepository {
     return resultList;
   }
 
-  Future<List> getLessonDaynNote(String uid) async {
+  Future<List> getLessonDaynNote(String uid, String memberId) async {
     List resultList = [];
-    await dayLessonService.readLessonDayNote(uid).then((value){
+    await dayLessonService.readLessonDayNote(uid,memberId).then((value){
       resultList.addAll(value);
     });
     return resultList;

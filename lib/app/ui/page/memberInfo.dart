@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
+import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
@@ -26,7 +27,7 @@ import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'actionSelector.dart';
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
-import '../../../backup/lessonAdd.dart';
+import 'lessonAdd.dart';
 
 import 'lessonUpdate.dart';
 import 'memberAdd.dart';
@@ -89,6 +90,8 @@ class _MemberInfoState extends State<MemberInfo> {
 
     super.initState();
 
+    memberActionNote = [];
+
     if (widget.isQuickAdd) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Future.delayed(const Duration(milliseconds: 300), () async {
@@ -127,6 +130,7 @@ class _MemberInfoState extends State<MemberInfo> {
     // TODO: implement dispose
     initStateCheck = true;
     print("[MI] Dispose : initStateCheck ${initStateCheck} ");
+    memberActionNote = [];
     super.dispose();
   }
 
@@ -180,20 +184,21 @@ class _MemberInfoState extends State<MemberInfo> {
       print('error: $error');
     });
 
-    return Consumer2<LessonService, MemberService>(
-      builder: (context, lessonService, memberService, child) {
+    return Consumer3<LessonService, DayLessonService, MemberService>(
+      builder: (context, lessonService, dayLessonService, memberService, child) {
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
-
-        lessonService
+        
+        print("ajeiowjiopfjdsiaofpo userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
+        memberActionNote.isEmpty ? lessonService
             .readMemberActionNote(
           AuthService().currentUser()!.uid,
-          userInfo.docId,
+          userInfo.docId,// userInfo.docId,
         )
             .then((value) {
-          memberActionNote.addAll(value);
-        });
+          memberActionNote.isEmpty ? memberActionNote.addAll(value) : null;
+        }) : null;
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -511,6 +516,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                   : LessonNoteView(
                                       userInfo: userInfo,
                                       lessonService: lessonService,
+                                      dayLessonService: dayLessonService,
                                       //notifyParent: _refreshNoteCount,
                                     ),
 
@@ -773,11 +779,13 @@ class LessonNoteView extends StatefulWidget {
     Key? key,
     required this.userInfo,
     required this.lessonService,
+    required this.dayLessonService,
     //required this.notifyParent,
   }) : super(key: key);
 
   final UserInfo userInfo;
   final LessonService lessonService;
+  final DayLessonService dayLessonService;
   //final Function() notifyParent;
 
   @override
@@ -918,6 +926,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               .fadeOut(duration: 300.ms),
         ),
 
+        
+
         /// 새로운 레슨 노트 보기 리스트 시작
         FutureBuilder<QuerySnapshot>(
             future: widget.lessonService.read(
@@ -966,10 +976,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     );
                   } else {
                     // List<TmpLessonInfo> tmpLessonInfoList = [];
+                    // print("_NoteListDateCategoryState callel!!");
                     return NoteListDateCategory(
                       docs: doc,
                       userInfo: widget.userInfo,
                       lessonService: widget.lessonService,
+                      dayLessonService: widget.dayLessonService,
                       memberActionNote: memberActionNote,
                     );
                   }
@@ -980,10 +992,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                         docs: doc, userInfo: widget.userInfo);
                   } else {
                     // List<TmpLessonInfo> tmpLessonInfoList = [];
+                    // print("_NoteListDateCategoryState callel!!");
                     return NoteListDateCategory(
                       docs: doc,
                       userInfo: widget.userInfo,
                       lessonService: widget.lessonService,
+                      dayLessonService: widget.dayLessonService,
                       memberActionNote: memberActionNote,
                     );
                   }
@@ -1513,11 +1527,13 @@ class NoteListDateCategory extends StatefulWidget {
     required this.docs,
     required this.userInfo,
     required this.lessonService,
+    required this.dayLessonService,
     required this.memberActionNote,
   }) : super(key: key);
 
   final List<QueryDocumentSnapshot<Object?>> docs;
   final UserInfo userInfo;
+  final DayLessonService dayLessonService;
   final LessonService lessonService;
   final memberActionNote;
 
@@ -1526,6 +1542,7 @@ class NoteListDateCategory extends StatefulWidget {
 }
 
 class _NoteListDateCategoryState extends State<NoteListDateCategory> {
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -1534,27 +1551,30 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
           height: 16,
         ),
         FutureBuilder<QuerySnapshot>(
-          future: widget.lessonService.readTodaynote(
+          future: widget.dayLessonService.readTodaynote(
             widget.userInfo.uid,
             widget.userInfo.docId,
           ),
           builder: (context, snapshot) {
+            
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
 
             if (docs.isEmpty) {
-              return Center(child: Text(" "));
+              return Center(child: CircularProgressIndicator());
             }
             return ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: docs.length,
               itemBuilder: (BuildContext context, int index) {
+                
                 final doc = docs[index];
                 String memberId = widget.userInfo.docId;
                 String name = doc.get('name');
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
-
+                print("_NoteListDateCategoryState build called!!!");
+                // print("globalVariables.lessonNoteGlobalList : ${globalVariables.lessonNoteGlobalList}");
                 return InkWell(
                     onTap: () {
                       List<TmpLessonInfo> tmpLessonInfoList = [];
@@ -1586,16 +1606,8 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       memberId: memberId,
                       lessonDate: lessonDate,
                       todayNote: todayNote,
-                      lessonActionList: globalVariables.lessonNoteGlobalList,
+                      lessonActionList: widget.memberActionNote.where((element) => element['lessonDate'] == lessonDate).toList() // globalVariables.lessonNoteGlobalList,
                     ));
-
-                // return LessonCard(
-                //   userInfo: widget.userInfo,
-                //   memberId: memberId,
-                //   lessonDate: lessonDate,
-                //   todayNote: todayNote,
-                //   lessonService: widget.lessonService,
-                // );
               },
               separatorBuilder: ((context, index) => Container(
                     color: Palette.secondaryBackground,
