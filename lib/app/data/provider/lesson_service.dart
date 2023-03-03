@@ -349,7 +349,7 @@ class LessonService extends ChangeNotifier {
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
-
+    notifyListeners();
     return lessonActionResultList;
   }
 

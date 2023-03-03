@@ -35,6 +35,8 @@ import 'memberList.dart';
 import 'memberUpdate.dart';
 import '../../data/model/userInfo.dart';
 
+bool isPop = false;
+
 GlobalFunction globalFunction = GlobalFunction();
 
 Map<DateTime, dynamic> eventSource = {};
@@ -185,20 +187,30 @@ class _MemberInfoState extends State<MemberInfo> {
     });
 
     return Consumer3<LessonService, DayLessonService, MemberService>(
-      builder: (context, lessonService, dayLessonService, memberService, child) {
+      builder:
+          (context, lessonService, dayLessonService, memberService, child) {
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
-        
-        print("ajeiowjiopfjdsiaofpo userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
-        memberActionNote.isEmpty ? lessonService
-            .readMemberActionNote(
-          AuthService().currentUser()!.uid,
-          userInfo.docId,// userInfo.docId,
-        )
-            .then((value) {
-          memberActionNote.isEmpty ? memberActionNote.addAll(value) : null;
-        }) : null;
+
+        print(
+            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
+          
+        memberActionNote.isEmpty
+            ? lessonService
+                .readMemberActionNote(
+                AuthService().currentUser()!.uid,
+                userInfo.docId, // userInfo.docId,
+              )
+                .then((value) {
+                print("fdsavewfweas value.length : ${value.length}");
+                memberActionNote.isEmpty
+                    ? memberActionNote.addAll(value)
+                    : null;
+                print(
+                    "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+              })
+            : null;
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -736,7 +748,10 @@ class _MemberInfoState extends State<MemberInfo> {
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
-                      );
+                      ).then((value) {
+                        // 여기로 이동해 임마!
+                        memberActionNote = [];
+                      });
 
                       // } else {
                       //   //회원정보 보기에서 동작이 달라짐.
@@ -925,8 +940,6 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               .animate(target: isNoteCalendarHided ? 1 : 0)
               .fadeOut(duration: 300.ms),
         ),
-
-        
 
         /// 새로운 레슨 노트 보기 리스트 시작
         FutureBuilder<QuerySnapshot>(
@@ -1447,7 +1460,6 @@ class NoteListDateCategory extends StatefulWidget {
 }
 
 class _NoteListDateCategoryState extends State<NoteListDateCategory> {
-  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -1461,7 +1473,6 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
             widget.userInfo.docId,
           ),
           builder: (context, snapshot) {
-            
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
 
             if (docs.isEmpty) {
@@ -1472,7 +1483,6 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: docs.length,
               itemBuilder: (BuildContext context, int index) {
-                
                 final doc = docs[index];
                 String memberId = widget.userInfo.docId;
                 String name = doc.get('name');
@@ -1504,15 +1514,21 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
-                      );
+                      ).then((value){
+                        // 여기로 이동해 임마!
+                        memberActionNote = [];
+                      });
                     },
                     child: LessonCardWidget(
-                      userInfo: widget.userInfo,
-                      memberId: memberId,
-                      lessonDate: lessonDate,
-                      todayNote: todayNote,
-                      lessonActionList: widget.memberActionNote.where((element) => element['lessonDate'] == lessonDate).toList() // globalVariables.lessonNoteGlobalList,
-                    ));
+                        userInfo: widget.userInfo,
+                        memberId: memberId,
+                        lessonDate: lessonDate,
+                        todayNote: todayNote,
+                        lessonActionList: memberActionNote
+                            .where((element) =>
+                                element['lessonDate'] == lessonDate)
+                            .toList() // globalVariables.lessonNoteGlobalList,
+                        ));
               },
               separatorBuilder: ((context, index) => Container(
                     color: Palette.secondaryBackground,

@@ -153,7 +153,7 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                       String? grade = doc['grade']; //  lessonNoteInfo.grade; //수행도
                       String? totalNote = doc['totalNote']; //  lessonNoteInfo.totalNote; //수업총메모
                       int? pos = doc['pos']; //  lessonNoteInfo.pos; //수업총메모
-                      bool? isSelected = doc['noteSelected']; //  lessonNoteInfo.noteSelected;
+                      bool? isSelected = doc['totalNote'].isNotEmpty ? true : false; // doc['noteSelected']; //  lessonNoteInfo.noteSelected;
 
                       print('### $index & $isSelected');
 
