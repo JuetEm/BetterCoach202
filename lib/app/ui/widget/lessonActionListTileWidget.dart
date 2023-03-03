@@ -181,8 +181,8 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
             "apparatus : ${widget.apparatus}, position : ${widget.position}, actionName : ${widget.actionName}");
         // print(widget.actionList);
       },
-      selectedColor: Palette.gray33,
-      selectedTileColor: Palette.grayEE,
+      selectedColor: Palette.gray00,
+      selectedTileColor: Palette.titleOrange,
       shape: RoundedRectangleBorder(
           // side: BorderSide(color: Palette.grayEE, width: 1),
           ),

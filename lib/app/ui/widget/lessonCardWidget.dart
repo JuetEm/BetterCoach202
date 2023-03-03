@@ -131,6 +131,7 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                     itemCount: widget.lessonActionList.length,
                     itemBuilder: (context, index) {
                       print('###빌드는 하긴 하니?');
+                      print("fdmfwjeijkfghidjfd widget.lessonActionList.length : ${widget.lessonActionList.length}");
                       
                       final doc;
                       // 사용한 모델 객체를 선언해 리스트[index] 로 받음
@@ -171,7 +172,7 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                                     backgroundColor: totalNote == ""
                                         ? Palette.grayEE
                                         : Palette.titleOrange,
-                                    label: Text("${actionName} - ${lessonDate}",
+                                    label: Text("${actionName}",
                                         style: TextStyle(
                                             color: Palette.gray00,
                                             fontSize: 12)),

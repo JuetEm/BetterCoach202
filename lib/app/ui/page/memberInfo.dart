@@ -1354,67 +1354,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             ),
 
             SizedBox(height: 20),
-            /* Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    elevation: 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(36.0),
-                    ),
-                    color: Palette.grayB4,
-                  ),
-                  height: 40,
-                  width: 160,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "정보 수정",
-                        style: TextStyle(fontSize: 14, color: Palette.grayFF),
-                      ),
-                    ],
-                  ),
-                ),
-                onPressed: () async {
-                  print("회원수정");
-                  String memberAddMode = "수정";
-    
-                  List<dynamic> args = [
-                    memberAddMode,
-                    widget.userInfo,
-                  ];
-    
-                  await // 저장하기 성공시 Home로 이동
-                      Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MemberAdd(),
-                      // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                      settings: RouteSettings(
-                        arguments: args,
-                      ),
-                    ),
-                  ).then(
-                    (result) {
-                      if (result != null) {
-                        userInfo = result;
-                      } else {
-                        print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
-                        Navigator.pop(context);
-                      }
-                    },
-                  );
-    
-                  //userInfo = result;
-                  print("[MI]회원수정후 정보 받아오기 - userInfo / ${userInfo}");
-                },
-              ),
-            ), */
             SizedBox(height: 80),
           ],
         ),
@@ -1427,44 +1366,10 @@ class _MemberInfoViewState extends State<MemberInfoView> {
     resultChips = targetList
         .map((e) => Chip(
             label: Text(e),
-            // onSelected: ((value) {
-            //   setState(() {
-            //     targetList.remove(e);
-            //   });
-            //   print("value : ${value}");
-            // }),
-            // selected: targetList.contains(e),
             labelStyle: TextStyle(fontSize: 12, color: Palette.gray00),
-            // selectedColor: Palette.buttonOrange,
             backgroundColor: chipBackgroundColor,
-            // showCheckmark: false,
             side: BorderSide(color: Palette.grayFF)))
         .toList();
-    // .map((e) => Chip(
-    //     label: Row(
-    //       children: [
-    //         Text(e),
-    //         Icon(
-    //           Icons.close_outlined,
-    //           size: 14,
-    //           color:
-    //               targetList.contains(e) ? Palette.grayFF : Palette.gray99,
-    //         )
-    //       ],
-    //     ),
-    //     // onSelected: ((value) {
-    //     //   setState(() {
-    //     //     targetList.remove(e);
-    //     //   });
-    //     //   print("value : ${value}");
-    //     // }),
-    //     // selected: targetList.contains(e),
-    //     labelStyle: TextStyle(fontSize: 12, color: Palette.grayFF),
-    //     // selectedColor: Palette.buttonOrange,
-    //     backgroundColor: Palette.buttonOrange,
-    //     // showCheckmark: false,
-    //     side: BorderSide(color: Palette.grayB4)))
-    // .toList();
 
     print("[MI] makeChips : ${resultChips}");
     return resultChips;

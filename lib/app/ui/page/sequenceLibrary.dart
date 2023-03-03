@@ -89,9 +89,9 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                   sequenceController.getCustomSequenceFromRepository(AuthService().currentUser()!.uid, userInfo.docId).then((value){
                     customSequenceList.addAll(value);
                       print("fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
-                      setState(() {
-                        
-                      });
+                      if(this.mounted){
+                        setState(() {});
+                      }
                   }) : null;
                   return Container(
                     width: double.infinity,
@@ -148,8 +148,9 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                     ? sequenceController.getRecentSequenceFromRepository(AuthService().currentUser()!.uid,userInfo.docId).then((value){
                       print("value : ${value.length}");
                         recentSequenceList.addAll(value);
-                        
-                        setState(() {});
+                        if(this.mounted){
+                          setState(() {});
+                        }
                     }) : null;
                 return Container(
                   width: double.infinity,

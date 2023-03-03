@@ -29,11 +29,7 @@ import 'memberInfo.dart';
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-//TextEditingController nameController = TextEditingController();
-//TextEditingController apratusNameController = TextEditingController();
-//TextEditingController actionNameController = TextEditingController();
 TextEditingController lessonDateController = TextEditingController(text: now);
-//TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController todayNoteController = TextEditingController();
 
 /// 시퀀스 이름 컨트롤러
@@ -54,8 +50,6 @@ List<TextEditingController> totalNoteControllers = [];
 // 가변적으로 TextFields DocId 집합 (전체삭제시 필요)
 List<String> totalNoteTextFieldDocId = new List.empty(growable: true);
 List<TmpLessonInfo> tmpLessonInfoList = new List.empty(growable: true);
-
-//List<String> totalNotes = new List.empty(growable: true);
 
 GlobalFunction globalFunction = GlobalFunction();
 
@@ -257,8 +251,10 @@ class _LessonAddState extends State<LessonAdd> {
     //   keyboardOpenBefore = true;
     // }
 
-    return Consumer2<LessonService, DayLessonService>(
-      builder: (context, lessonService, dayLessonService, child) {
+    return Consumer4<LessonService, DayLessonService, SequenceRecentService,
+        SequenceCustomService>(
+      builder: (context, lessonService, dayLessonService, sequenceRecentService,
+          sequenceCustomService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
         if (lessonActionList.isEmpty && lessonAddMode == "노트편집") {
@@ -268,8 +264,11 @@ class _LessonAddState extends State<LessonAdd> {
               .then((value) {
             print("ppppppppp - value : ${value}");
             lessonActionList.addAll(value);
-            lessonActionList.isNotEmpty ? growthInth ++ : null;
-            lessonActionList.forEach((element) => element['totalNote'].isNotEmpty ? element['noteSelected'] = true : element['noteSelected'] = false);
+            lessonActionList.isNotEmpty ? growthInth++ : null;
+            lessonActionList.forEach((element) =>
+                element['totalNote'].isNotEmpty
+                    ? element['noteSelected'] = true
+                    : element['noteSelected'] = false);
 
             debugList(lessonActionList, "1");
 
@@ -350,9 +349,39 @@ class _LessonAddState extends State<LessonAdd> {
                       //일별 노트 저장
                       /* await todayNoteSave(
                           lessonService, customUserInfo, context); */
-
-                      saveMethod(lessonService, lessonDateArg, lessonAddMode,
-                          customUserInfo, dayLessonService, todayNoteView);
+                      saveRecentSequence(
+                        sequenceRecentService,
+                        userInfo.uid,
+                        userInfo.docId,
+                        todayNoteView,
+                        lessonActionList,
+                        false,
+                        0,
+                        Timestamp.now(),
+                        userInfo.name,
+                      );
+                      saveMethod(
+                        lessonService,
+                        lessonDateArg,
+                        lessonAddMode,
+                        customUserInfo,
+                        dayLessonService,
+                        todayNoteView,
+                      );
+                      isSequenceSaveChecked
+                          ? saveCustomSequnce(
+                              sequenceCustomService,
+                              userInfo.uid,
+                              userInfo.docId,
+                              todayNoteView,
+                              lessonActionList,
+                              false,
+                              0,
+                              Timestamp.now(),
+                              userInfo.name,
+                              sequenceNameController.text,
+                            )
+                          : null;
 
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
@@ -521,7 +550,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                         lessonDateController,
                                                         "수업일",
                                                         lessonDateController
-                                                            .text);
+                                                            .text)
+                                                    .then((value) {});
                                                 DateChangeMode = true;
                                                 checkInitState = true;
                                                 print(
@@ -705,8 +735,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                           doc['grade']; //수행도
                                                       String totalNote = doc[
                                                           'totalNote']; //수업총메모
-                                                      int pos =
-                                                          doc['pos'] ?? index; //수업총메모
+                                                      int pos = doc['pos'] ??
+                                                          index; //수업총메모
                                                       bool isSelected =
                                                           doc['noteSelected'];
 
@@ -728,14 +758,16 @@ class _LessonAddState extends State<LessonAdd> {
                                                               false;
                                                         }
                                                       }
-                                                      txtEdtCtrlrList[index]
-                                                              .selection =
-                                                          TextSelection.fromPosition(
-                                                              TextPosition(
-                                                                  offset: txtEdtCtrlrList[
-                                                                          index]
-                                                                      .text
-                                                                      .length));
+                                                      txtEdtCtrlrList != null
+                                                          ? txtEdtCtrlrList[index]
+                                                                  .selection =
+                                                              TextSelection.fromPosition(
+                                                                  TextPosition(
+                                                                      offset: txtEdtCtrlrList[
+                                                                              index]
+                                                                          .text
+                                                                          .length))
+                                                          : null;
 
                                                       return Offstage(
                                                         offstage: !isSelected,
@@ -750,6 +782,9 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         left:
                                                                             20),
                                                                 child: Chip(
+                                                                  backgroundColor: doc['noteSelected']
+                                                                  ?Palette.titleOrange
+                                                                  : Palette.grayEE,
                                                                   label: Text(
                                                                       "$actionName"),
                                                                   deleteIcon:
@@ -978,7 +1013,8 @@ class _LessonAddState extends State<LessonAdd> {
                                           var rElement = {
                                             'actionName': element['name'],
                                             'docId': customUserInfo.docId,
-                                            'pos': element['pos'],// lessonActionList.length,
+                                            'pos': element[
+                                                'pos'], // lessonActionList.length,
                                             'lessonDate': lessonDateArg,
                                             'totalNote': "",
                                             'grade': '50',
@@ -1146,14 +1182,23 @@ class _LessonAddState extends State<LessonAdd> {
                                                   isSelected: isSelected,
                                                   isSelectable: true,
                                                   isDraggable: true,
+                                                  // 커스텀 시퀀스 리스트의 onTap 이벤트를 처리하는 영역
                                                   customFunctionOnTap: () {
+                                                    print(
+                                                        "qowefiowefioewiofiowe called!!");
                                                     doc['noteSelected'] =
                                                         !doc['noteSelected'];
-                                                    txtEdtCtrlrList[index]
+
+                                                    !doc['noteSelected']
+                                                        ? txtEdtCtrlrList[index]
+                                                            .text = totalNote
+                                                        : txtEdtCtrlrList[index]
+                                                            .text = "";
+                                                    /* txtEdtCtrlrList[index]
                                                         .text = totalNote;
                                                     String tmp =
                                                         txtEdtCtrlrList[index]
-                                                            .text;
+                                                            .text; */
                                                   }),
                                             ),
                                             Offstage(
@@ -1164,8 +1209,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                   // 노트편집 화면의 경우 기존 목록에서 동작을 삭제하는 경우 생길 수 있어서, 삭제이벤트 발생시 docId 수집
                                                   getDeleteTargetDocId(index);
 
-                                                  
-                                                  if (growthInth > 0) {
+                                                  if (growthInth > 0 &&
+                                                      lessonActionList[index]
+                                                              ['id'] !=
+                                                          null) {
                                                     lessonService.delete(
                                                         docId: lessonActionList[
                                                             index]['id'],
@@ -1281,6 +1328,17 @@ class _LessonAddState extends State<LessonAdd> {
 
                                   print(
                                       "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                                  saveRecentSequence(
+                                    sequenceRecentService,
+                                    userInfo.uid,
+                                    userInfo.docId,
+                                    todayNoteView,
+                                    lessonActionList,
+                                    false,
+                                    0,
+                                    Timestamp.now(),
+                                    userInfo.name,
+                                  );
                                   saveMethod(
                                     lessonService,
                                     lessonDateArg,
@@ -1289,6 +1347,20 @@ class _LessonAddState extends State<LessonAdd> {
                                     dayLessonService,
                                     todayNoteView,
                                   );
+                                  isSequenceSaveChecked
+                                      ? saveCustomSequnce(
+                                          sequenceCustomService,
+                                          userInfo.uid,
+                                          userInfo.docId,
+                                          todayNoteView,
+                                          lessonActionList,
+                                          false,
+                                          0,
+                                          Timestamp.now(),
+                                          userInfo.name,
+                                          sequenceNameController.text,
+                                        )
+                                      : null;
 
                                   lessonService.notifyListeners();
                                   Navigator.pop(context);
@@ -1418,8 +1490,10 @@ class _LessonAddState extends State<LessonAdd> {
     if (growthInth > 0) {
       lessonActionList.forEach((element) {
         print("fdasewvref element : ${element}");
-        lessonService.delete(
-            docId: element['id'], onSuccess: () {}, onError: () {});
+        element['id'] != null
+            ? lessonService.delete(
+                docId: element['id'], onSuccess: () {}, onError: () {})
+            : null;
       });
     }
     for (int i = 0; i < lessonActionList.length; i++) {
@@ -1631,10 +1705,10 @@ void createControllers(length) {
 
 //Textfield 생성
 clearTotalNoteControllers() {
-  for (var i = 0; i < totalNoteControllers.length; ++i) {
-    totalNoteControllers[i].clear();
+  for (var i = 0; i < txtEdtCtrlrList.length; ++i) {
+    txtEdtCtrlrList[i].clear();
   }
-  totalNoteControllers.clear();
+  txtEdtCtrlrList.clear();
 }
 
 //Textfield 생성
@@ -1761,8 +1835,8 @@ void addTmpInfoList(
   }
 }
 
-debugList(List list, String mark){
-  list.forEach((element) { 
+debugList(List list, String mark) {
+  list.forEach((element) {
     print("${mark} - element : ${element}");
   });
 }
