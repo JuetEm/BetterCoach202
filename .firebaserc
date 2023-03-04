@@ -2,7 +2,8 @@
   "projects": {
     "default": "webproject-48ca4",
     "staging": "bettercoach-d6c79",
-    "stagin": "webproject-48ca4"
+    "stagin": "webproject-48ca4",
+    "renew": "better-coach-cf5a2"
   },
   "targets": {},
   "etags": {}
