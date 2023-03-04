@@ -24,6 +24,8 @@ import '../widget/globalWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
+    String screenName = "동작 검색";
+
 // tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
 var actionChips = [];
 
@@ -1591,6 +1593,15 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     searchController.clear();
                                     searchString = "";
                                   });
+                                },
+                                logFunction: (){
+                                  String event = "onTap";
+                        String value = "회원 목록 검색";
+                        analyticLog.sendAnalyticsEvent(
+                            screenName,
+                            "${event} : ${value}",
+                            "${value} 프로퍼티 인자1",
+                            "${value} 프로퍼티 인자2");
                                 },
                               ),
                               SizedBox(height: 5),

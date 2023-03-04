@@ -633,6 +633,7 @@ class BaseSearchTextField extends StatefulWidget {
     required this.showArrow,
     required this.customFunction,
     required this.clearfunction,
+    required this.logFunction,
   }) : super(key: key);
 
   final TextEditingController customController;
@@ -642,6 +643,7 @@ class BaseSearchTextField extends StatefulWidget {
   final showArrow;
   final Function customFunction;
   final Function clearfunction;
+  final Function logFunction;
 
   @override
   State<BaseSearchTextField> createState() => _BaseSearchTextFieldState();
@@ -664,6 +666,9 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
         onChanged: (text) {
           print("Input Text : ${text}");
           widget.customFunction();
+        },
+        onTap: (){
+          widget.logFunction();
         },
         controller: widget.customController,
         decoration: InputDecoration(
