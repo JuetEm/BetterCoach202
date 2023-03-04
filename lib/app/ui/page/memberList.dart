@@ -11,6 +11,7 @@ import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
+import 'package:web_project/app/ui/page/faq.dart';
 import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/app/ui/page/report.dart';
 import 'package:web_project/app/ui/page/sequenceLibrary.dart';
@@ -333,6 +334,23 @@ class _MemberListState extends State<MemberList> {
                   ),
                   ListTile(
                     leading: Icon(
+                      Icons.help_outline,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('자주 묻는 질문'),
+                    onTap: () {
+                      print('자주 묻는 질문 is clicked');
+                      Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Faq()))
+                          .then((value) {
+                        print("수강권 추가 result");
+                      });
+                      ;
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+                  ListTile(
+                    leading: Icon(
                       Icons.logout,
                       color: Palette.gray66,
                     ),
@@ -344,8 +362,7 @@ class _MemberListState extends State<MemberList> {
                       // 로그인 페이지로 이동
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
