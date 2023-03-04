@@ -16,7 +16,7 @@ class _FaqState extends State<Faq> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBarMethod(context, '자주 묻는 질문', () {}, null, null),
+      appBar: BaseAppBarMethod(context, '자주 묻는 질문', null, null, null),
       body: ListView(children: [
         FaqExpansionTile(
           title: '이거는 어떻게 할까요1?',

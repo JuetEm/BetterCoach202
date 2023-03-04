@@ -778,12 +778,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 child: InkWell(
                   onTap: () {
                     String event = "onTap";
-                      String value = "동작별 날짜별";
-                      analyticLog.sendAnalyticsEvent(
-                          screenName,
-                          "${event} : ${value}",
-                          "${value} : ${widget.userInfo!.name}",
-                          "${value} 프로퍼티 인자2");
+                    String value = "동작별 날짜별";
+                    analyticLog.sendAnalyticsEvent(
+                        screenName,
+                        "${event} : ${value}",
+                        "${value} : ${widget.userInfo!.name}",
+                        "${value} 프로퍼티 인자2");
                     if (listMode == "동작별") {
                       setState(() {
                         listMode = "날짜별";
@@ -1035,12 +1035,12 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       },
                       customFunctionOnTap: () async {
                         String event = "onTap";
-                      String value = "수강권";
-                      analyticLog.sendAnalyticsEvent(
-                          screenName,
-                          "${event} : ${value}",
-                          "${value} : ${widget.userInfo!.name}",
-                          "${value} 프로퍼티 인자2");
+                        String value = "수강권";
+                        analyticLog.sendAnalyticsEvent(
+                            screenName,
+                            "${event} : ${value}",
+                            "${value} : ${widget.userInfo!.name}",
+                            "${value} 프로퍼티 인자2");
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
                             Navigator.push(
@@ -1067,13 +1067,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       label: '수강권 선택하기',
                       addIcon: true,
                       customFunctionOnTap: () async {
-                        String event = "onTap";
-                      String value = "수강권 선택하기";
-                      analyticLog.sendAnalyticsEvent(
-                          screenName,
-                          "${event} : ${value}",
-                          "${value} : ${widget.userInfo!.name}",
-                          "${value} 프로퍼티 인자2");
+                        
                         // print("push globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                         // print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
@@ -1407,6 +1401,14 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 // print("globalVariables.lessonNoteGlobalList : ${globalVariables.lessonNoteGlobalList}");
                 return InkWell(
                     onTap: () {
+                      String event = "onTap";
+                        String value = "레슨노트";
+                        analyticLog.sendAnalyticsEvent(
+                            screenName,
+                            "${event} : ${value}",
+                            "${value} notedDate : ${lessonDate}",
+                            "${value} slelectdDate : ${DateFormat("yyyy-MM-dd").parse(DateTime.now().toString()).toString()}"); 
+
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
                       lessonAddMode = "노트편집";
@@ -1442,7 +1444,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         lessonActionList: memberActionNote
                             .where((element) =>
                                 element['lessonDate'] == lessonDate)
-                            .toList() // globalVariables.lessonNoteGlobalList,
+                            .toList() 
                         ));
               },
               separatorBuilder: ((context, index) => Container(
@@ -1505,7 +1507,6 @@ class LessonCard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => LessonAdd(),
-                    // GlobalWidgetDashboard(), //
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),
                   ),
@@ -1513,7 +1514,6 @@ class LessonCard extends StatelessWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  //color: Palette.grayEE
                   color: Colors.red.withOpacity(0),
                 ),
                 child: Padding(
@@ -1553,10 +1553,8 @@ class LessonCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   color: Palette.grayFF,
-                  //color: Palette.buttonOrange,
                   border: Border(
                       bottom: BorderSide(width: 1, color: Palette.grayEE))
-                  //color: Colors.red.withOpacity(0),
                   ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(14, 5, 14, 5),
@@ -1565,23 +1563,10 @@ class LessonCard extends StatelessWidget {
                     minHeight: 38,
                   ),
                   width: double.infinity,
-                  //height: 38,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Expanded(
-                      //   child: Text(
-                      //     todayNote,
-                      //     //overflow: TextOverflow.fade,
-                      //     maxLines: 3,
-                      //     softWrap: true,
-                      //     style:
-                      //         Theme.of(context).textTheme.bodyText1!.copyWith(
-                      //               fontSize: 14.0,
-                      //             ),
-                      //   ),
-                      // ),
                       Text(
                         "${todayNote}",
                         overflow: TextOverflow.fade,
@@ -1615,14 +1600,6 @@ class LessonCard extends StatelessWidget {
               ),
               builder: (context, snapshot) {
                 final lessonData = snapshot.data?.docs ?? []; // 문서들 가져오기
-                // if (lessonData.isEmpty) {
-                //   return Container(
-                //       decoration: BoxDecoration(
-                //         color: Palette.grayFF,
-                //         //color: Colors.red.withOpacity(0),
-                //       ),
-                //       child: Text("123"));
-                // }
                 return ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -1645,7 +1622,6 @@ class LessonCard extends StatelessWidget {
                     return Container(
                         decoration: BoxDecoration(
                           color: Palette.grayFF,
-                          //color: Colors.red.withOpacity(0),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -1665,12 +1641,6 @@ class LessonCard extends StatelessWidget {
                                     fontSize: 14,
                                     color: Palette.gray66,
                                   ),
-                                  // style: Theme.of(context)
-                                  //     .textTheme
-                                  //     .bodyText1!
-                                  //     .copyWith(
-                                  //       fontSize: 12.0,
-                                  //     ),
                                 ),
                                 const SizedBox(width: 10.0),
                                 Text(
@@ -1679,12 +1649,6 @@ class LessonCard extends StatelessWidget {
                                     fontSize: 14,
                                     color: Palette.gray66,
                                   ),
-                                  // style: Theme.of(context)
-                                  //     .textTheme
-                                  //     .bodyText1!
-                                  //     .copyWith(
-                                  //       fontSize: 12.0,
-                                  //     ),
                                 ),
                                 const SizedBox(width: 10.0),
                                 Expanded(
@@ -1706,10 +1670,6 @@ class LessonCard extends StatelessWidget {
                           ),
                         ));
                   },
-
-                  //   Text(
-                  //       "${pos.toString()}-${actionName}-${aparatusName}-${totalNote}");
-                  // },
                   separatorBuilder: ((context, index) => Divider(
                         height: 0,
                       )),

@@ -9,6 +9,9 @@ import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 import 'package:web_project/app/ui/page/lessonUpdate.dart';
 import 'package:web_project/app/ui/page/memberInfo.dart';
+import 'package:web_project/main.dart';
+
+String screenName = "레슨노트 목록";
 
 class LessonCardWidget extends StatefulWidget {
   LessonCardWidget({
@@ -33,7 +36,6 @@ class LessonCardWidget extends StatefulWidget {
 }
 
 class _LessonCardWidgetState extends State<LessonCardWidget> {
-
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,6 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-  
     return Container(
       color: Palette.mainBackground,
       child: Padding(
@@ -123,37 +124,48 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                   ],
                 ),
                 SizedBox(height: 10),
-                
+
                 /// 동작별 메모 한 묶음.
                 ListView.builder(
                     physics: BouncingScrollPhysics(),
-                    shrinkWrap: true, 
+                    shrinkWrap: true,
                     itemCount: widget.lessonActionList.length,
                     itemBuilder: (context, index) {
                       print('###빌드는 하긴 하니?');
-                      print("fdmfwjeijkfghidjfd widget.lessonActionList.length : ${widget.lessonActionList.length}");
-                      
+                      print(
+                          "fdmfwjeijkfghidjfd widget.lessonActionList.length : ${widget.lessonActionList.length}");
+
                       final doc;
                       // 사용한 모델 객체를 선언해 리스트[index] 로 받음
-                      print("vieojfvbhiasdfiodsafiu - id : ${widget.lessonActionList[index]['id']}, uid : ${widget.lessonActionList[index]['uid']}, docId : ${widget.lessonActionList[index]['docId']}, name : ${widget.lessonActionList[index]['name']}, lessonDate : ${widget.lessonActionList[index]['lessonDate']}");
-                          doc = widget.lessonActionList[index];
+                      print(
+                          "vieojfvbhiasdfiodsafiu - id : ${widget.lessonActionList[index]['id']}, uid : ${widget.lessonActionList[index]['uid']}, docId : ${widget.lessonActionList[index]['docId']}, name : ${widget.lessonActionList[index]['name']}, lessonDate : ${widget.lessonActionList[index]['lessonDate']}");
+                      doc = widget.lessonActionList[index];
                       Key? valueKey;
                       // 클래스에서 객체 꺼내 쓰는 방식
                       doc['pos'] = index;
                       valueKey = ValueKey(doc['pos']);
 
-                      String uid = doc['uid']; // lessonNoteInfo.uid; // doc['uid']; // 강사 고유번호
+                      String uid = doc[
+                          'uid']; // lessonNoteInfo.uid; // doc['uid']; // 강사 고유번호
 
                       String name = doc['name']; // lessonNoteInfo.name; //회원이름
-                      String phoneNumber = userInfo.phoneNumber; // lessonNoteInfo.phoneNumber
-                          // .toString(); // 회원 고유번호 (전화번호로 회원 식별)
-                      String? apratusName = doc['apratusName']; //  lessonNoteInfo.apratusName; //기구이름
-                      String? actionName = doc['actionName']; //  lessonNoteInfo.actionName; //동작이름
-                      String lessonDate = doc['lessonDate']; //  lessonNoteInfo.lessonDate; //수업날짜
-                      String? grade = doc['grade']; //  lessonNoteInfo.grade; //수행도
-                      String? totalNote = doc['totalNote']; //  lessonNoteInfo.totalNote; //수업총메모
+                      String phoneNumber =
+                          userInfo.phoneNumber; // lessonNoteInfo.phoneNumber
+                      // .toString(); // 회원 고유번호 (전화번호로 회원 식별)
+                      String? apratusName = doc[
+                          'apratusName']; //  lessonNoteInfo.apratusName; //기구이름
+                      String? actionName = doc[
+                          'actionName']; //  lessonNoteInfo.actionName; //동작이름
+                      String lessonDate = doc[
+                          'lessonDate']; //  lessonNoteInfo.lessonDate; //수업날짜
+                      String? grade =
+                          doc['grade']; //  lessonNoteInfo.grade; //수행도
+                      String? totalNote = doc[
+                          'totalNote']; //  lessonNoteInfo.totalNote; //수업총메모
                       int? pos = doc['pos']; //  lessonNoteInfo.pos; //수업총메모
-                      bool? isSelected = doc['totalNote'].isNotEmpty ? true : false; // doc['noteSelected']; //  lessonNoteInfo.noteSelected;
+                      bool? isSelected = doc['totalNote'].isNotEmpty
+                          ? true
+                          : false; // doc['noteSelected']; //  lessonNoteInfo.noteSelected;
 
                       print('### $index & $isSelected');
 
@@ -207,6 +219,13 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                       ? Icons.expand_less_outlined
                       : Icons.expand_more_outlined),
                   onPressed: () {
+                    String event = "onTap";
+                    String value = "수강권";
+                    analyticLog.sendAnalyticsEvent(
+                        screenName,
+                        "${event} : ${value}",
+                        "${value} : ${widget.userInfo!.name}",
+                        "${value} 프로퍼티 인자2");
                     widget.isExpanded = !widget.isExpanded;
                     setState(() {});
                   },
