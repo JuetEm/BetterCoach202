@@ -15,6 +15,7 @@ class DayLessonService extends ChangeNotifier {
         .where('uid', isEqualTo: uid)
         .where('docId', isEqualTo: docId)
         .orderBy("lessonDate", descending: true)
+        .orderBy("timestamp", descending: false)
         .get();
   }
 

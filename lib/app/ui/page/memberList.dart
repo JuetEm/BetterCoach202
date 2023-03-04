@@ -345,9 +345,7 @@ class _MemberListState extends State<MemberList> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => LoginPage(
-                                  analytics: MyApp.analytics,
-                                )),
+                            builder: (context) => LoginPage()),
                       );
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),

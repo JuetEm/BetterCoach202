@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:amplitude_flutter/identify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FB;
 import 'package:firebase_core/firebase_core.dart';
@@ -43,6 +44,7 @@ import 'app/ui/widget/globalWidget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
+import 'package:amplitude_flutter/amplitude.dart';
 
 MemberInfoController memberInfoController = MemberInfoController();
 
@@ -102,6 +104,7 @@ void main() async {
 
   String result = await KakaoSdk.origin;
   print("origin result : ${result}");
+
   // 카카오 소셜 로그인 init, void main 함수 맨 첫 줄에 선언하면 오류 발생, 아마도 async 문제 인 듯
   // 카카오 소셜 로그인 https://dalgoodori.tistory.com/46 참고
   // KakaoSdk.init(nativeAppKey: 'kakaob59deaa3a0ff4912ca55fc3d71ccd6aa');
@@ -208,7 +211,6 @@ void main() async {
             print("stackTrace : \r\n${stackTrace}");
           }).whenComplete(() {
             print("memberTicketList await init complete!");
-            
           });
         });
       });
@@ -224,9 +226,12 @@ void main() async {
             ChangeNotifierProvider(create: (context) => ReportService()),
             ChangeNotifierProvider(create: (context) => TicketLibraryService()),
             ChangeNotifierProvider(create: (context) => MemberTicketService()),
-            ChangeNotifierProvider(create: (context) => SequenceCustomService()),
-            ChangeNotifierProvider(create: (context) => SequenceCustomService()),
-            ChangeNotifierProvider(create: (context) => SequenceRecentService()),
+            ChangeNotifierProvider(
+                create: (context) => SequenceCustomService()),
+            ChangeNotifierProvider(
+                create: (context) => SequenceCustomService()),
+            ChangeNotifierProvider(
+                create: (context) => SequenceRecentService()),
           ],
           child: const MyApp(),
         ),
@@ -246,10 +251,8 @@ void main() async {
           ChangeNotifierProvider(create: (context) => ReportService()),
           ChangeNotifierProvider(create: (context) => TicketLibraryService()),
           ChangeNotifierProvider(create: (context) => MemberTicketService()),
-            ChangeNotifierProvider(create: (context) => SequenceCustomService()),
-            ChangeNotifierProvider(create: (context) => SequenceRecentService()),
-
-
+          ChangeNotifierProvider(create: (context) => SequenceCustomService()),
+          ChangeNotifierProvider(create: (context) => SequenceRecentService()),
         ],
         child: const MyApp(),
       ),
@@ -260,21 +263,18 @@ void main() async {
 class MyApp extends StatelessWidget {
   final maxWidth = 480.0;
 
-  const MyApp({Key? key}) : super(key: key);
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  const MyApp({Key? key}) : super(key: key);  
+
+  
 
   @override
   Widget build(BuildContext context) {
-    // print("resultList : ${resultList}\r\nactionList : ${actionList}");
     final user = context.read<AuthService>().currentUser();
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
 
-    /* resultList.every((element) {
-      print("elements : ${element.toString()}");
-      return true;
-    },);
-    print("resultList.toString() : ${resultList.toString()}"); */
+    analyticLog.analyticConfig(AuthService().currentUser()!.uid);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
@@ -283,7 +283,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // Google Analytics 설정
         navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
+          FirebaseAnalyticsObserver(analytics: AnalyticLog.analytics),
         ],
         theme: ThemeData(
             // appBarTheme: AppBarTheme(
@@ -294,7 +294,7 @@ class MyApp extends StatelessWidget {
         home:
             // LoginPage()
             user == null
-                ? LoginPage(analytics: analytics)
+                ? LoginPage()
                 /* : SignUp(), */ : MemberList.getMemberList(
                     globalVariables.resultList, globalVariables.actionList),
       ),
@@ -304,8 +304,7 @@ class MyApp extends StatelessWidget {
 
 /// 로그인 페이지
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.analytics}) : super(key: key);
-  final FirebaseAnalytics analytics;
+  const LoginPage({super.key});
   @override
   State<LoginPage> createState() => _LoginPageState();
 }

@@ -112,9 +112,7 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage(
-                    analytics: MyApp.analytics,
-                  )),
+              builder: (context) => LoginPage()),
         );
       },
       color: Palette.gray33,
