@@ -159,7 +159,7 @@ void main() async {
   }
 
   AuthService authService = AuthService();
-  FB.User? user = authService?.currentUser();
+  FB.User? user = authService.currentUser();
 
   user != null ? analyticLog.analyticConfig(user!.uid) : analyticLog.analyticConfig(null) ;
 

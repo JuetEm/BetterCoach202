@@ -20,6 +20,8 @@ class _FaqState extends State<Faq> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: ExpansionTile(
+              shape: Border.all(width: 1, color: Palette.grayEE),
+            collapsedShape: Border.all(width: 1, color: Palette.grayEE),
             collapsedBackgroundColor: Palette.mainBackground,
             backgroundColor: Palette.mainBackground,
             title: Text('이거는 어떻게 할까요1?'),
@@ -50,6 +52,8 @@ class _FaqState extends State<Faq> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: ExpansionTile(
+              shape: Border.all(width: 1, color: Palette.grayEE),
+            collapsedShape: Border.all(width: 1, color: Palette.grayEE),
             collapsedBackgroundColor: Palette.mainBackground,
             backgroundColor: Palette.mainBackground,
             title: Text('이거는 어떻게 할까요3?'),
@@ -64,6 +68,8 @@ class _FaqState extends State<Faq> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: ExpansionTile(
+              shape: Border.all(width: 1, color: Palette.grayEE),
+            collapsedShape: Border.all(width: 1, color: Palette.grayEE),
             collapsedBackgroundColor: Palette.mainBackground,
             backgroundColor: Palette.mainBackground,
             title: Text('이거는 어떻게 할까요4?'),
@@ -78,6 +84,8 @@ class _FaqState extends State<Faq> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: ExpansionTile(
+              shape: Border.all(width: 1, color: Palette.grayEE),
+            collapsedShape: Border.all(width: 1, color: Palette.grayEE),
             childrenPadding: EdgeInsets.all(20),
             collapsedBackgroundColor: Palette.mainBackground,
             backgroundColor: Palette.mainBackground,

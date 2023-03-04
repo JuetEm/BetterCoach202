@@ -35,6 +35,8 @@ import 'memberList.dart';
 import 'memberUpdate.dart';
 import '../../data/model/userInfo.dart';
 
+String screenName = "회원관리";
+
 bool isPop = false;
 
 GlobalFunction globalFunction = GlobalFunction();
@@ -88,6 +90,11 @@ class MemberInfo extends StatefulWidget {
 class _MemberInfoState extends State<MemberInfo> {
   @override
   void initState() {
+    String event = "PAGE";
+    String value = "회원관리";
+    analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+        "${value} : ${widget.userInfo!.name}", "${value} 프로퍼티 인자2");
+
     //처음에만 날짜 받아옴.
 
     super.initState();
@@ -195,7 +202,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
         print(
             "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
-          
+
         memberActionNote.isEmpty
             ? lessonService
                 .readMemberActionNote(
@@ -214,6 +221,10 @@ class _MemberInfoState extends State<MemberInfo> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
+            String event = "onPressed";
+            String value = "뒤로 가기";
+            analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+                "${value} : ${widget.userInfo!.name}", "${value} 프로퍼티 인자2");
             print(
                 "MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
             // print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
@@ -246,12 +257,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                           AsyncSnapshot snapshot) {
                                         //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
                                         if (snapshot.hasData == false) {
-                                          return IconButton(
-                                              icon: SvgPicture.asset(
-                                                "assets/icons/favoriteUnselected.svg",
-                                              ),
-                                              iconSize: 40,
-                                              onPressed: () {});
+                                          return CircularProgressIndicator();
                                         }
                                         //error가 발생하게 될 경우 반환하게 되는 부분
                                         else if (snapshot.hasError) {
@@ -277,6 +283,14 @@ class _MemberInfoState extends State<MemberInfo> {
                                               ),
                                               iconSize: 40,
                                               onPressed: () async {
+                                                String event = "onPressed";
+                                                String value = "즐겨찾기";
+                                                analyticLog.sendAnalyticsEvent(
+                                                    screenName,
+                                                    "${event} : ${value}",
+                                                    "${value} : ${widget.userInfo!.name}",
+                                                    "${value} 프로퍼티 인자2");
+
                                                 favoriteMember =
                                                     !favoriteMember;
 
@@ -307,17 +321,6 @@ class _MemberInfoState extends State<MemberInfo> {
 
                                                 print(
                                                     "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
-
-                                                // globalFunction.updatefavoriteMember();
-                                                //lessonService.notifyListeners();
-
-                                                //setState(() {});
-                                                // setState(() {
-                                                //   userInfo.isActive
-                                                //       ? favoriteMember = false
-                                                //       : favoriteMember = true;
-                                                // }
-                                                //);
                                               });
                                         }
                                       },
@@ -339,7 +342,9 @@ class _MemberInfoState extends State<MemberInfo> {
                                           ),
                                           const SizedBox(height: 4.0),
                                           Text(
-                                            '${userInfo.phoneNumber}',
+                                            userInfo.phoneNumber.isEmpty
+                                                ? '010-0000-0000'
+                                                : '${userInfo.phoneNumber}',
                                             style: TextStyle(
                                                 fontSize: 14.0,
                                                 //fontWeight: FontWeight.bold,
@@ -369,13 +374,6 @@ class _MemberInfoState extends State<MemberInfo> {
                                               color: Palette.gray99),
                                           textAlign: TextAlign.right,
                                         ),
-                                        // Text(
-                                        //   '남은횟수 : ${userInfo.registerType}',
-                                        //   style: TextStyle(
-                                        //       fontSize: 14.0,
-                                        //       //fontWeight: FontWeight.bold,
-                                        //       color: Palette.gray99),
-                                        // ),
                                       ],
                                     ),
                                   ],
@@ -384,7 +382,6 @@ class _MemberInfoState extends State<MemberInfo> {
                               SizedBox(
                                 height: 14,
                               ),
-
                               Container(
                                 width: double.infinity,
                                 decoration: BoxDecoration(
@@ -404,6 +401,13 @@ class _MemberInfoState extends State<MemberInfo> {
                                         color: Palette.mainBackground,
                                         child: InkWell(
                                           onTap: () {
+                                            String event = "onTap";
+                                            String value = "즐겨찾기";
+                                            analyticLog.sendAnalyticsEvent(
+                                                screenName,
+                                                "${event} : ${value}",
+                                                "${value} : ${widget.userInfo!.name}",
+                                                "${value} 프로퍼티 인자2");
                                             if (viewMode == "레슨노트") {
                                               setState(() {
                                                 viewMode = "기본정보";
@@ -449,6 +453,13 @@ class _MemberInfoState extends State<MemberInfo> {
                                         color: Palette.mainBackground,
                                         child: InkWell(
                                           onTap: () {
+                                            String event = "onTap";
+                                            String value = "즐겨찾기";
+                                            analyticLog.sendAnalyticsEvent(
+                                                screenName,
+                                                "${event} : ${value}",
+                                                "${value} : ${widget.userInfo!.name}",
+                                                "${value} 프로퍼티 인자2");
                                             if (viewMode == "기본정보") {
                                               setState(() {
                                                 viewMode = "레슨노트";
@@ -487,42 +498,10 @@ class _MemberInfoState extends State<MemberInfo> {
                                           ),
                                         ),
                                       ),
-                                    ), //   Spacer(),
-                                    //   InkWell(
-                                    //     onTap: () {
-                                    //       if (viewMode == "기본정보") {
-                                    //         setState(() {
-                                    //           viewMode = "레슨노트";
-                                    //         });
-                                    //       }
-                                    //       ;
-                                    //     },
-                                    //     child: SizedBox(
-                                    //       child: Row(
-                                    //         children: [
-                                    //           Icon(
-                                    //             Icons.sync,
-                                    //             color: Palette.gray99,
-                                    //             size: 15.0,
-                                    //           ),
-                                    //           SizedBox(
-                                    //             width: 5,
-                                    //           ),
-                                    //           Text(
-                                    //             "레슨노트",
-                                    //             style: TextStyle(
-                                    //               fontSize: 22,
-                                    //               color: Palette.gray66,
-                                    //             ),
-                                    //           ),
-                                    //         ],
-                                    //       ),
-                                    //     ),
-                                    //   ),
+                                    ),
                                   ],
                                 ),
                               ),
-                              //https://kibua20.tistory.com/232
                               viewMode == "기본정보"
                                   ? MemberInfoView(userInfo: userInfo)
                                   : LessonNoteView(
@@ -531,118 +510,12 @@ class _MemberInfoState extends State<MemberInfo> {
                                       dayLessonService: dayLessonService,
                                       //notifyParent: _refreshNoteCount,
                                     ),
-
-                              //SizedBox(height: 20),
                             ],
                           ),
                         ],
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   height: 14,
-                  // ),
-
-                  /// 추가버튼_이전
-                  // ElevatedButton(
-                  //     style: ElevatedButton.styleFrom(
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(30.0),
-                  //       ),
-                  //       elevation: 0,
-                  //       backgroundColor: Palette.buttonOrange,
-                  //     ),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.symmetric(
-                  //           vertical: 14, horizontal: 90),
-                  //       child: Text("노트추가", style: TextStyle(fontSize: 16)),
-                  //     ),
-                  //     onPressed: () {
-                  //       lessonDate =
-                  //           DateFormat("yyyy-MM-dd").format(DateTime.now());
-
-                  //       List<TmpLessonInfo> tmpLessonInfoList = [];
-                  //       eventList = [];
-                  //       lessonAddMode = "노트 추가";
-                  //       List<dynamic> args = [
-                  //         userInfo,
-                  //         lessonDate,
-                  //         eventList,
-                  //         lessonNoteId,
-                  //         lessonAddMode,
-                  //         tmpLessonInfoList,
-                  //       ];
-                  //       print(
-                  //           "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-                  //       // LessonAdd로 이동
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => LessonAdd(),
-                  //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                  //           settings: RouteSettings(arguments: args),
-                  //         ),
-                  //       );
-                  //     }),
-
-                  /// 추가 버튼
-                  // Padding(
-                  //   padding: const EdgeInsets.fromLTRB(5, 11, 5, 24),
-                  //   child: ElevatedButton(
-                  //     style: ElevatedButton.styleFrom(
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(30.0),
-                  //       ),
-                  //       backgroundColor: Colors.transparent,
-                  //       shadowColor: Colors.transparent,
-                  //     ),
-                  //     child: Container(
-                  //       decoration: BoxDecoration(
-                  //         color: Palette.buttonOrange,
-                  //       ),
-                  //       height: 60,
-                  //       width: double.infinity,
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         children: [
-                  //           Text(
-                  //             "노트 추가",
-                  //             style: TextStyle(fontSize: 18),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     onPressed: () {
-                  //       print("노트 추가");
-
-                  //       lessonDate =
-                  //           DateFormat("yyyy-MM-dd").format(DateTime.now());
-
-                  //       List<TmpLessonInfo> tmpLessonInfoList = [];
-                  //       eventList = [];
-                  //       lessonAddMode = "노트 추가";
-                  //       List<dynamic> args = [
-                  //         userInfo,
-                  //         lessonDate,
-                  //         eventList,
-                  //         lessonNoteId,
-                  //         lessonAddMode,
-                  //         tmpLessonInfoList,
-                  //       ];
-
-                  //       // LessonAdd로 이동
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => LessonAdd(),
-                  //           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                  //           settings: RouteSettings(arguments: args),
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -658,6 +531,13 @@ class _MemberInfoState extends State<MemberInfo> {
                 child: FloatingActionButton.extended(
                   onPressed: () async {
                     if (viewMode == "기본정보") {
+                      String event = "onPressed";
+                      String value = "정보수정";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} : ${widget.userInfo!.name}",
+                          "${value} 프로퍼티 인자2");
                       print("회원수정");
                       String memberAddMode = "수정";
                       //UserInfo userInfo = userInfo;
@@ -720,6 +600,13 @@ class _MemberInfoState extends State<MemberInfo> {
                       //   },
                       // );
                     } else {
+                      String event = "onPressed";
+                      String value = "노트추가";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} : ${widget.userInfo!.name}",
+                          "${value} 프로퍼티 인자2");
                       // if (viewMode == "레슨노트") {
 
                       // print("ㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑ - 여기가 울리나요?");
@@ -844,6 +731,13 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 child: Material(
                   child: InkWell(
                     onTap: () {
+                      String event = "onTap";
+                      String value = "캘린더";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} : ${widget.userInfo!.name}",
+                          "${value} 프로퍼티 인자2");
                       isNoteCalendarHided = !isNoteCalendarHided;
                       setState(() {});
                       print('Calender Button Clicked');
@@ -883,6 +777,13 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               Material(
                 child: InkWell(
                   onTap: () {
+                    String event = "onTap";
+                      String value = "동작별 날짜별";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} : ${widget.userInfo!.name}",
+                          "${value} 프로퍼티 인자2");
                     if (listMode == "동작별") {
                       setState(() {
                         listMode = "날짜별";
@@ -1133,6 +1034,13 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                         print("수강권 추가 onHover!!");
                       },
                       customFunctionOnTap: () async {
+                        String event = "onTap";
+                      String value = "수강권";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} : ${widget.userInfo!.name}",
+                          "${value} 프로퍼티 인자2");
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
                             Navigator.push(
@@ -1159,6 +1067,13 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       label: '수강권 선택하기',
                       addIcon: true,
                       customFunctionOnTap: () async {
+                        String event = "onTap";
+                      String value = "수강권 선택하기";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} : ${widget.userInfo!.name}",
+                          "${value} 프로퍼티 인자2");
                         // print("push globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                         // print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
@@ -1514,7 +1429,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
-                      ).then((value){
+                      ).then((value) {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
                       });
