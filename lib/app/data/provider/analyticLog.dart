@@ -17,7 +17,6 @@ class AnalyticLog {
     amplitude.init("210de2d03268aacc063d1bda33b8275a");
     amplitude.setUserId(uid);
 
-
     Map<String, dynamic> logInstances = {};
 
     logInstances['firebaseAnalytics'] = analytics;
@@ -27,8 +26,8 @@ class AnalyticLog {
     return logInstances;
   }
 
-  sendAnalyticsEvent(
-      String screenName, String EventName, String strArg, String testParam) async {
+  sendAnalyticsEvent(String screenName, String EventName, String strArg,
+      String testParam) async {
     Map<String, dynamic> mapInstance = {};
 
     // 화면 이름
@@ -45,9 +44,11 @@ class AnalyticLog {
 
     amplitude.trackingSessionEvents(true);
 
-    
-    amplitude.logEvent(EventName,
-        eventProperties: {'screenName': screenName, 'is_heavy_user': true});
+    amplitude.logEvent(EventName, eventProperties: {
+      'screenName': screenName,
+      'stirng': strArg,
+      'testParam': testParam,
+    });
 
     return mapInstance;
   }

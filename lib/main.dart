@@ -273,7 +273,7 @@ class MyApp extends StatelessWidget {
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
 
-    analyticLog.analyticConfig(AuthService().currentUser()!.uid);
+    analyticLog.analyticConfig(user!.uid);
 
     return GestureDetector(
       onTap: () {
@@ -835,36 +835,19 @@ class _LoginPageState extends State<LoginPage> {
                 /* print("lElement : ${lElement}"); */
 
                 resultList.add(lElement);
-                /* if (!lElement.toString().contains("전체")) {
-                  totalTownList.add(lElement);
-                } */
                 totalTownList.add(lElement);
               });
               resultMap[kElement] = resultList;
-              /* print(
-                    "jMap[jmKeyList.length-1] : ${resultMapList[resultMapList.length-1]}"); */
               if (resultMapList[resultMapList.length - 1] ==
                   kElement.toString()) {
-                /* print(
-                    "jmKeyList[jmKeyList.length-1] : ${resultMapList[resultMapList.length-1]}");
-                print("kElement : ${kElement}"); */
                 resultMap[jMap.keys.first] = totalTownList;
               }
-              // print("resultMap[${kElement}] : ${resultMap[kElement]}");
             });
           });
           resultObj.putIfAbsent(region, () => resultMap);
         });
       },
     );
-
-    /* resultObj.forEach((key, value) {
-      print("key : ${key}");
-      value.forEach((key, value) {
-        print("second key : ${key}");
-        print("value : ${value}");
-      });
-    }); */
 
     return resultObj;
   }
@@ -894,9 +877,6 @@ class _LoginPageState extends State<LoginPage> {
             print(
                 "resultFirstMemberList then is called!! value.length : ${value.length}");
             globalVariables.resultList.addAll(value);
-            /* for (int i = 0; i < value.length; i++) {
-              print("value[${i}] : ${value[i]}");
-            } */
           }).onError((error, stackTrace) {
             print("error : ${error}");
             print("stackTrace : \r\n${stackTrace}");
@@ -936,11 +916,6 @@ class _LoginPageState extends State<LoginPage> {
                     content: Text("로그인 성공"),
                   ));
                   // 로그인 성공시 Home로 이동
-                  /*  Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => MemberList()),
-              //MaterialPageRoute(builder: (_) => Mainpage()),
-            ); */
                   List<dynamic> args = [
                     globalVariables.resultList,
                     globalVariables.actionList
@@ -1025,9 +1000,6 @@ class _LoginPageState extends State<LoginPage> {
           "resultFirstMemberList then is called!! value.length : ${value.length}");
       globalVariables.resultList = [];
       globalVariables.resultList.addAll(value);
-      /* for (int i = 0; i < value.length; i++) {
-        print("value[${i}] : ${value[i]}");
-      } */
     }).onError((error, stackTrace) {
       print("error : ${error}");
       print("stackTrace : \r\n${stackTrace}");
@@ -1068,11 +1040,6 @@ class _LoginPageState extends State<LoginPage> {
               content: Text("로그인 성공"),
             ));
             // 로그인 성공시 Home로 이동
-            /*  Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => MemberList()),
-        //MaterialPageRoute(builder: (_) => Mainpage()),
-      ); */
             List<dynamic> args = [
               globalVariables.resultList,
               globalVariables.actionList
@@ -1094,127 +1061,3 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 }
-
-/* /// 홈페이지
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  TextEditingController jobController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    final authService = context.read<AuthService>();
-    final user = authService.currentUser()!;
-    return Consumer<BucketService>(
-      builder: (context, bucketService, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("버킷 리스트"),
-            actions: [
-              TextButton(
-                child: Text(
-                  "로그아웃",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {
-                  print("sign out");
-                  // 로그아웃
-                  context.read<AuthService>().signOut();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => LoginPage()),
-                  );
-                },
-              ),
-            ],
-          ),
-          body: Column(
-            children: [
-              /// 입력창
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    /// 텍스트 입력창
-                    Expanded(
-                      child: TextField(
-                        controller: jobController,
-                        decoration: InputDecoration(
-                          hintText: "하고 싶은 일을 입력해주세요.",
-                        ),
-                      ),
-                    ),
-
-                    /// 추가 버튼
-                    ElevatedButton(
-                      child: Icon(Icons.add),
-                      onPressed: () {
-                        // create bucket
-                        if (jobController.text.isNotEmpty) {
-                          print("create bucket");
-                          bucketService.create(jobController.text, user.uid);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Divider(height: 1),
-
-              /// 버킷 리스트
-              Expanded(
-                child: FutureBuilder<QuerySnapshot>(
-                    future: bucketService.read(user.uid),
-                    builder: (context, snapshot) {
-                      final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-                      if (docs.isEmpty) {
-                        return Center(child: Text("버킷 리스트를 작성해주세요."));
-                      }
-                      return ListView.builder(
-                        itemCount: docs.length,
-                        itemBuilder: (context, index) {
-                          final doc = docs[index];
-                          String job = doc.get('job');
-                          bool isDone = doc.get('isDone');
-                          return ListTile(
-                            title: Text(
-                              job,
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: isDone ? Colors.grey : Colors.black,
-                                decoration: isDone
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
-                              ),
-                            ),
-                            // 삭제 아이콘 버튼
-                            trailing: IconButton(
-                              icon: Icon(CupertinoIcons.delete),
-                              onPressed: () {
-                                // 삭제 버튼 클릭시
-                                bucketService.delete(doc.id);
-                              },
-                            ),
-                            onTap: () {
-                              // 아이템 클릭하여 isDone 업데이트
-                              bucketService.update(doc.id, !isDone);
-                            },
-                          );
-                        },
-                      );
-                    }),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-} */
