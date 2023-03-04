@@ -158,14 +158,10 @@ void main() async {
     }
   }
 
-  /* await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  ); */ // firebase 앱 시작
-
   AuthService authService = AuthService();
-  FB.User? user = authService.currentUser();
+  FB.User? user = authService?.currentUser();
 
-  analyticLog.analyticConfig(user!.uid);
+  user != null ? analyticLog.analyticConfig(user!.uid) : analyticLog.analyticConfig(null) ;
 
   print("user?.email : ${user?.email}");
   print("user?.photoURL : ${user?.photoURL}");

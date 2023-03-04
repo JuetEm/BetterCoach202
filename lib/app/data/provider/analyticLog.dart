@@ -13,9 +13,9 @@ class AnalyticLog {
 
   static Identify identify = Identify();
 
-  Map<String, dynamic> analyticConfig(String uid) {
+  Map<String, dynamic> analyticConfig(String? uid) {
     amplitude.init("210de2d03268aacc063d1bda33b8275a");
-    amplitude.setUserId(uid);
+    uid != null ? amplitude.setUserId(uid) : null;
 
     Map<String, dynamic> logInstances = {};
 
