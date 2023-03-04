@@ -164,6 +164,9 @@ void main() async {
 
   AuthService authService = AuthService();
   FB.User? user = authService.currentUser();
+
+  analyticLog.analyticConfig(user!.uid);
+
   print("user?.email : ${user?.email}");
   print("user?.photoURL : ${user?.photoURL}");
   print("user?.displayName : ${user?.displayName}");
@@ -272,8 +275,6 @@ class MyApp extends StatelessWidget {
     final user = context.read<AuthService>().currentUser();
     emailController = TextEditingController(text: userEmail);
     passwordController = TextEditingController(text: userPassword);
-
-    analyticLog.analyticConfig(user!.uid);
 
     return GestureDetector(
       onTap: () {
