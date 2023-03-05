@@ -5,7 +5,6 @@ class DayLessonService extends ChangeNotifier {
   final daylessonCollection =
       FirebaseFirestore.instance.collection('daylesson');
 
-
   Future<QuerySnapshot> readTodaynote(
     String uid,
     String docId,
@@ -17,6 +16,31 @@ class DayLessonService extends ChangeNotifier {
         .orderBy("lessonDate", descending: true)
         .orderBy("timestamp", descending: false)
         .get();
+  }
+
+  Future<List> readTodayNoteForCal(
+    String uid,
+    String docId,
+  ) async {
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    final result = await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .orderBy("lessonDate", descending: true)
+        .orderBy("timestamp", descending: false)
+        .get();
+
+    List resultList = [];
+    var docsLength = result.docs.length;
+    var rstObj = {};
+    for (int i = 0; i < result.docs.length; i++) {
+      rstObj = result.docs[i].data();
+      rstObj['id'] = result.docs[i].id;
+
+      resultList.add(rstObj);
+    }
+    notifyListeners();
+    return resultList;
   }
 
   Future<List> readLessonDayNote(
@@ -31,7 +55,8 @@ class DayLessonService extends ChangeNotifier {
     result = await daylessonCollection
         .where('uid', isEqualTo: uid)
         .where(
-          'docId', isEqualTo: memberId,
+          'docId',
+          isEqualTo: memberId,
         )
         .orderBy('lessonDate', descending: true)
         .get();
@@ -69,7 +94,8 @@ class DayLessonService extends ChangeNotifier {
     result = await daylessonCollection
         .where('uid', isEqualTo: uid)
         .where(
-          'docId', isEqualTo: memberId,
+          'docId',
+          isEqualTo: memberId,
         )
         .orderBy('lessonDate', descending: true)
         .get();
@@ -183,7 +209,7 @@ class DayLessonService extends ChangeNotifier {
 
     notifyListeners();
   }
-  
+
   setLessonTodayNote(
     String id,
     String uid,
@@ -205,7 +231,6 @@ class DayLessonService extends ChangeNotifier {
       'name': name,
       'timestamp': DateTime.now(),
       'todayNote': todayNote,
-      
     };
     daylessonCollection.doc(id).set(data, SetOptions(merge: true));
   }

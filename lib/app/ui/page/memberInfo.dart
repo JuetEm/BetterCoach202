@@ -7,6 +7,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:web_project/app/data/model/event.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
@@ -35,13 +36,15 @@ import 'memberList.dart';
 import 'memberUpdate.dart';
 import '../../data/model/userInfo.dart';
 
+Map<DateTime, dynamic> eventSource = {};
+
 String screenName = "회원관리";
 
 bool isPop = false;
 
 GlobalFunction globalFunction = GlobalFunction();
 
-Map<DateTime, dynamic> eventSource = {};
+
 List<DateTime> eventList = [];
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 String lessonDate = "";
@@ -93,11 +96,13 @@ class _MemberInfoState extends State<MemberInfo> {
     String event = "PAGE";
     String value = "회원관리";
     analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
-        "${value} : ${widget.userInfo!.name}", "${value} 프로퍼티 인자2");
+        "${value} : ${widget.userInfo!.name}", "${value} : ${viewMode}");
 
     //처음에만 날짜 받아옴.
 
     super.initState();
+
+    print("[MI] Init : 항상 울리나? ");
 
     memberActionNote = [];
 
@@ -223,12 +228,13 @@ class _MemberInfoState extends State<MemberInfo> {
           appBar: BaseAppBarMethod(context, "회원관리", () {
             String event = "onPressed";
             String value = "뒤로 가기";
-            analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
-                "${value} : ${widget.userInfo!.name}", "${value} 프로퍼티 인자2");
+            analyticLog.sendAnalyticsEvent(
+                screenName,
+                "${event} : ${value}",
+                "${value} : ${widget.userInfo!.name}",
+                "${value} : ${viewMode}");
             print(
                 "MemberInfo : BaseAppBarMethod : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
-            // print("MemberInfo : BaseAppBarMethod : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo!.selectedBodyAnalyzed}");
-            // Navigator.pop(context,tmpUserInfo);
             Navigator.pop(context, userInfo);
           }, null, null),
           body: CenterConstrainedBody(
@@ -289,7 +295,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                                     screenName,
                                                     "${event} : ${value}",
                                                     "${value} : ${widget.userInfo!.name}",
-                                                    "${value} 프로퍼티 인자2");
+                                                    "${value} : ${viewMode}");
 
                                                 favoriteMember =
                                                     !favoriteMember;
@@ -343,7 +349,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                           const SizedBox(height: 4.0),
                                           Text(
                                             userInfo.phoneNumber.isEmpty
-                                                ? '010-0000-0000'
+                                                ? '000-0000-0000'
                                                 : '${userInfo.phoneNumber}',
                                             style: TextStyle(
                                                 fontSize: 14.0,
@@ -407,7 +413,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 screenName,
                                                 "${event} : ${value}",
                                                 "${value} : ${widget.userInfo!.name}",
-                                                "${value} 프로퍼티 인자2");
+                                                "${value} : ${viewMode}");
                                             if (viewMode == "레슨노트") {
                                               setState(() {
                                                 viewMode = "기본정보";
@@ -459,7 +465,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 screenName,
                                                 "${event} : ${value}",
                                                 "${value} : ${widget.userInfo!.name}",
-                                                "${value} 프로퍼티 인자2");
+                                                "${value} : ${viewMode}");
                                             if (viewMode == "기본정보") {
                                               setState(() {
                                                 viewMode = "레슨노트";
@@ -479,9 +485,6 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 ),
                                               ),
                                             ),
-
-                                            //color: Colors.red.withOpacity(0),
-
                                             width: double.infinity,
                                             child: Center(
                                               child: Text(
@@ -520,7 +523,6 @@ class _MemberInfoState extends State<MemberInfo> {
               ),
             ),
           ),
-
           floatingActionButton: /* viewMode == "기본정보"? null :  */ Center(
             child: Container(
               alignment: Alignment.bottomRight,
@@ -537,7 +539,7 @@ class _MemberInfoState extends State<MemberInfo> {
                           screenName,
                           "${event} : ${value}",
                           "${value} : ${widget.userInfo!.name}",
-                          "${value} 프로퍼티 인자2");
+                          "${value} : ${viewMode}");
                       print("회원수정");
                       String memberAddMode = "수정";
                       //UserInfo userInfo = userInfo;
@@ -572,33 +574,15 @@ class _MemberInfoState extends State<MemberInfo> {
                         userInfo = tmpResult[0];
                         resultMemberList = tmpResult[1];
                         resultActionList = tmpResult[2];
-                        //initStateCheck = true;
                         globalFunction.updatefavoriteMember();
-                        //lessonService.notifyListeners();
                       } else {
                         print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
                         Navigator.pop(context);
                       }
-                      //userInfo = result;
                       print(
                           "[MI]회원수정후 정보 받아오기 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
                       print(
                           "[MI]회원수정전 정보 받아오기 - userInfo.goal / ${userInfo.goal}/${userInfo.bodyAnalyzed}/${userInfo.selectedBodyAnalyzed}/${userInfo.medicalHistories}/${userInfo.selectedMedicalHistories}");
-
-                      // ).then(
-                      //   (result) {
-                      //     if (result != null) {
-                      //       userInfo = result;
-                      //       lessonService.notifyListeners();
-                      //     } else {
-                      //       print("[MI]회원정보에서 수정후 삭제.. 연속닫기 - result / ${result}");
-                      //       Navigator.pop(context);
-                      //     }
-                      //     //userInfo = result;
-                      //     print(
-                      //         "[MI]회원수정후 정보 받아오기 - userInfo.selectedGoals / ${userInfo.selectedGoals}");
-                      //   },
-                      // );
                     } else {
                       String event = "onPressed";
                       String value = "노트추가";
@@ -606,10 +590,7 @@ class _MemberInfoState extends State<MemberInfo> {
                           screenName,
                           "${event} : ${value}",
                           "${value} : ${widget.userInfo!.name}",
-                          "${value} 프로퍼티 인자2");
-                      // if (viewMode == "레슨노트") {
-
-                      // print("ㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑㅡㅑ - 여기가 울리나요?");
+                          "${value} : ${viewMode}");
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -638,21 +619,8 @@ class _MemberInfoState extends State<MemberInfo> {
                       ).then((value) {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
+                        eventSource = {};
                       });
-
-                      // } else {
-                      //   //회원정보 보기에서 동작이 달라짐.
-                      //   // 회원 운동 카드 선택시 MemberInfo로 이동
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => MemberUpdate(),
-                      //       // GlobalWidgetDashboard(), //
-                      //       // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                      //       settings: RouteSettings(arguments: userInfo),
-                      //     ),
-                      //   );
-                      //}
                     }
                   },
                   label: Text(
@@ -667,9 +635,6 @@ class _MemberInfoState extends State<MemberInfo> {
               ),
             ),
           ),
-          // Figma 확인 해보면 '기본정보' 탭에는 BottomAppBar 없는데, '동작' 탬에는 있음
-          // 같은 화면인데 '기본정보' 탭에는 누락 된 듯하여 추가 BottomAppBar 함
-          //bottomNavigationBar: BaseBottomAppBar(),
         );
       },
     );
@@ -707,7 +672,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         ),
         color: Palette.mainBackground,
       ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      child:
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ///
         /// 헤딩 영역: 총 개수, 캘린더 버튼, 동작별/날짜별 버튼
         Padding(
@@ -737,10 +703,11 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                           screenName,
                           "${event} : ${value}",
                           "${value} : ${widget.userInfo!.name}",
-                          "${value} 프로퍼티 인자2");
+                          "${value} : ${viewMode}");
                       isNoteCalendarHided = !isNoteCalendarHided;
                       setState(() {});
                       print('Calender Button Clicked');
+                      eventSource = {};
                     },
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
@@ -783,7 +750,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                         screenName,
                         "${event} : ${value}",
                         "${value} : ${widget.userInfo!.name}",
-                        "${value} 프로퍼티 인자2");
+                        "${value} : ${viewMode}");
                     if (listMode == "동작별") {
                       setState(() {
                         listMode = "날짜별";
@@ -801,8 +768,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       color: Palette.grayF5,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 4),
                     child: Row(
                       children: [
                         Icon(
@@ -835,7 +802,10 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         // 캘린더 시작
         Offstage(
           offstage: isNoteCalendarHided,
-          child: TableCalendarWidget(selectedDate: "")
+          child: TableCalendarWidget(
+            selectedDate: "",
+            eventSource: eventSource,
+          )
               .animate(target: !isNoteCalendarHided ? 1 : 0)
               .fadeIn(duration: 300.ms)
               .animate(target: isNoteCalendarHided ? 1 : 0)
@@ -844,13 +814,14 @@ class _LessonNoteViewState extends State<LessonNoteView> {
 
         /// 새로운 레슨 노트 보기 리스트 시작
         FutureBuilder<QuerySnapshot>(
-            future: widget.lessonService.read(
+            future: widget.dayLessonService.readTodaynote(
               widget.userInfo.uid,
               widget.userInfo.docId,
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                print("ConnectionState.waiting : ${ConnectionState.waiting}");
+                print(
+                    "ConnectionState.waiting : ${ConnectionState.waiting}");
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: Center(
@@ -1005,31 +976,47 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             Container(
               alignment: Alignment.center,
               child: globalVariables.memberTicketList.where((element) {
-                // print("element : ${element}");
                 return (element['isSelected'] == true) &&
                     (element['memberId'] == userInfo.docId);
               }).isNotEmpty
                   ? TicketWidget(
-                      ticketTitle: globalVariables.memberTicketList[
-                          globalVariables.selectedTicketIndex]['ticketTitle'],
-                      ticketDescription: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketDescription'],
+                      ticketTitle: globalVariables.memberTicketList
+                          .where((element) =>
+                              element['isSelected'] == true &&
+                              element['memberId'] == userInfo.docId)
+                          .first['ticketTitle'],
+                      ticketDescription: globalVariables.memberTicketList
+                          .where((element) =>
+                              element['isSelected'] == true &&
+                              element['memberId'] == userInfo.docId)
+                          .first['ticketDescription'],
                       ticketStartDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[globalVariables
-                              .selectedTicketIndex]['ticketStartDate']),
+                          globalVariables.memberTicketList
+                              .where((element) =>
+                                  element['isSelected'] == true &&
+                                  element['memberId'] == userInfo.docId)
+                              .first['ticketStartDate']),
                       ticketEndDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[globalVariables
-                              .selectedTicketIndex]['ticketEndDate']),
-                      ticketDateLeft: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketDateLeft'],
-                      ticketCountAll: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketCountAll'],
-                      ticketCountLeft: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketCountLeft'],
+                          globalVariables.memberTicketList
+                              .where((element) =>
+                                  element['isSelected'] == true &&
+                                  element['memberId'] == userInfo.docId)
+                              .first['ticketEndDate']),
+                      ticketDateLeft: globalVariables.memberTicketList
+                          .where((element) =>
+                              element['isSelected'] == true &&
+                              element['memberId'] == userInfo.docId)
+                          .first['ticketDateLeft'],
+                      ticketCountAll: globalVariables.memberTicketList
+                          .where((element) =>
+                              element['isSelected'] == true &&
+                              element['memberId'] == userInfo.docId)
+                          .first['ticketCountAll'],
+                      ticketCountLeft: globalVariables.memberTicketList
+                          .where((element) =>
+                              element['isSelected'] == true &&
+                              element['memberId'] == userInfo.docId)
+                          .first['ticketCountLeft'],
                       customFunctionOnHover: () {
                         print("수강권 추가 onHover!!");
                       },
@@ -1040,7 +1027,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                             screenName,
                             "${event} : ${value}",
                             "${value} : ${widget.userInfo!.name}",
-                            "${value} 프로퍼티 인자2");
+                            "${value} : ${viewMode}");
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
                             Navigator.push(
@@ -1067,7 +1054,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       label: '수강권 선택하기',
                       addIcon: true,
                       customFunctionOnTap: () async {
-                        
                         // print("push globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
                         // print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
@@ -1323,11 +1309,6 @@ class _NoteListActionCategoryState extends State<NoteListActionCategory> {
       groupSeparatorBuilder: (String value) =>
           GroupActionContainer(actionName: value),
       itemBuilder: (BuildContext context, dynamic ddocs) {
-        // 달력기능 개발 중
-        // DateTime eventDate = DateTime.parse(
-        //     docs['lessonDate'].toString());
-        // eventList.add(eventDate);
-
         print("indexCheck : ${indexCheck}");
 
         print(
@@ -1387,27 +1368,30 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
             if (docs.isEmpty) {
               return Center(child: CircularProgressIndicator());
             }
+
             return ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: docs.length,
               itemBuilder: (BuildContext context, int index) {
                 final doc = docs[index];
+
                 String memberId = widget.userInfo.docId;
                 String name = doc.get('name');
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
                 print("_NoteListDateCategoryState build called!!!");
+
                 // print("globalVariables.lessonNoteGlobalList : ${globalVariables.lessonNoteGlobalList}");
                 return InkWell(
                     onTap: () {
                       String event = "onTap";
-                        String value = "레슨노트";
-                        analyticLog.sendAnalyticsEvent(
-                            screenName,
-                            "${event} : ${value}",
-                            "${value} notedDate : ${lessonDate}",
-                            "${value} slelectdDate : ${DateFormat("yyyy-MM-dd").parse(DateTime.now().toString()).toString()}"); 
+                      String value = "레슨노트";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} notedDate : ${lessonDate}",
+                          "${value} slelectdDate : ${DateFormat("yyyy-MM-dd").parse(DateTime.now().toString()).toString()}");
 
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
@@ -1434,6 +1418,9 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       ).then((value) {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
+                        eventSource = {};
+
+                        print("ewagbervfdyhsb eventSource : ${eventSource}");
                       });
                     },
                     child: LessonCardWidget(
@@ -1444,8 +1431,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         lessonActionList: memberActionNote
                             .where((element) =>
                                 element['lessonDate'] == lessonDate)
-                            .toList() 
-                        ));
+                            .toList()));
               },
               separatorBuilder: ((context, index) => Container(
                     color: Palette.secondaryBackground,
@@ -1554,8 +1540,7 @@ class LessonCard extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Palette.grayFF,
                   border: Border(
-                      bottom: BorderSide(width: 1, color: Palette.grayEE))
-                  ),
+                      bottom: BorderSide(width: 1, color: Palette.grayEE))),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(14, 5, 14, 5),
                 child: Container(

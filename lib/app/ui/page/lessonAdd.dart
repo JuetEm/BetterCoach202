@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +24,8 @@ import '../../data/model/color.dart';
 import '../../function/globalFunction.dart';
 import '../widget/globalWidget.dart';
 import 'memberInfo.dart';
+
+String screenName = "노트추가";
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
@@ -127,6 +127,10 @@ class _LessonAddState extends State<LessonAdd> {
   @override
   void initState() {
     super.initState();
+    String event = "PAGE";
+    String value = "노트추가";
+    analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+        "${value} : ${userInfo!.name}", "${value} : 프로퍼티 인자2");
 
     lessonActionList = [];
     txtEdtCtrlrList = [];
@@ -181,9 +185,6 @@ class _LessonAddState extends State<LessonAdd> {
     final user = authService.currentUser()!;
     final lessonService = context.read<LessonService>();
 
-    // TextEditController 재빌드시 초기화
-    // txtEdtCtrlrList = [];
-
     // 이전 화면에서 보낸 변수 받기
     final argsList =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
@@ -202,7 +203,6 @@ class _LessonAddState extends State<LessonAdd> {
 
     if (checkInitState) {
       print("INIT!!! : ${checkInitState}, DateChange:${DateChangeMode}");
-      //now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
       if (!DateChangeMode) {
         lessonDate = argsList[1];
@@ -242,14 +242,6 @@ class _LessonAddState extends State<LessonAdd> {
       print("INIT!!!변경 : ${checkInitState}");
     }
     print("재빌드시 init상태 : ${checkInitState}");
-    // if (MediaQuery.of(context).viewInsets.bottom == 0) {
-    //   if (keyboardOpenBefore) {
-    //     FocusManager.instance.primaryFocus?.unfocus(); // 키보드 닫기 이벤트
-    //     keyboardOpenBefore = false;
-    //   }
-    // } else {
-    //   keyboardOpenBefore = true;
-    // }
 
     return Consumer4<LessonService, DayLessonService, SequenceRecentService,
         SequenceCustomService>(
@@ -297,7 +289,6 @@ class _LessonAddState extends State<LessonAdd> {
             });
 
             setState(() {});
-            // lessonService.notifyListeners();
           });
         }
         print("aaaaaaaaa - lessonActionList.length ${lessonActionList.length}");
@@ -316,6 +307,12 @@ class _LessonAddState extends State<LessonAdd> {
           //resizeToAvoidBottomInset: false,
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, lessonAddMode, () {
+            String event = "onPressed";
+            String value = "뒤로가기";
+            analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+                "${value} : ${userInfo!.name}", "${value} : 프로퍼티 인자2");
+            print(
+                "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
           }, [
@@ -323,6 +320,13 @@ class _LessonAddState extends State<LessonAdd> {
               padding: EdgeInsets.only(right: 10),
               child: TextButton(
                   onPressed: () async {
+                    String event = "onPressed";
+                    String value = "완료";
+                    analyticLog.sendAnalyticsEvent(
+                        screenName,
+                        "${event} : ${value}",
+                        "${value} : ${userInfo!.name}",
+                        "${value} : 프로퍼티 인자2");
                     print(
                         "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
@@ -461,7 +465,31 @@ class _LessonAddState extends State<LessonAdd> {
                                             ),
                                             SizedBox(width: 4),
                                             Text(
-                                              isTicketCountChecked ? "7" : "8",
+                                              isTicketCountChecked
+                                                  ? (globalVariables
+                                                                  .memberTicketList
+                                                                  .where((element) =>
+                                                                      element['isSelected'] ==
+                                                                          true &&
+                                                                      element['memberId'] ==
+                                                                          userInfo
+                                                                              .docId)
+                                                                  .toList()
+                                                                  .first[
+                                                              'ticketCountLeft'] -
+                                                          1)
+                                                      .toString()
+                                                  : (globalVariables
+                                                          .memberTicketList
+                                                          .where((element) =>
+                                                              element['isSelected'] ==
+                                                                  true &&
+                                                              element['memberId'] ==
+                                                                  userInfo
+                                                                      .docId)
+                                                          .toList()
+                                                          .first['ticketCountLeft'])
+                                                      .toString(),
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -481,7 +509,15 @@ class _LessonAddState extends State<LessonAdd> {
                                               ),
                                             ),
                                             Text(
-                                              "10",
+                                              (globalVariables.memberTicketList
+                                                      .where((element) =>
+                                                          element['isSelected'] ==
+                                                              true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId)
+                                                      .toList()
+                                                      .first['ticketCountAll'])
+                                                  .toString(),
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -500,6 +536,14 @@ class _LessonAddState extends State<LessonAdd> {
                                             Checkbox(
                                               value: isTicketCountChecked,
                                               onChanged: (value) {
+                                                String event = "onChanged";
+                                                String value = "수강권 차감 여부";
+                                                analyticLog.sendAnalyticsEvent(
+                                                    screenName,
+                                                    "${event} : ${value}",
+                                                    "${value} : ${userInfo!.name}",
+                                                    "${value} :  : 프로퍼티 인자2");
+
                                                 /// 체크 토글
                                                 isTicketCountChecked =
                                                     !isTicketCountChecked;
@@ -544,6 +588,13 @@ class _LessonAddState extends State<LessonAdd> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               onTap: () async {
+                                                String event = "onTap";
+                                                String value = "수강권 차감 여부";
+                                                analyticLog.sendAnalyticsEvent(
+                                                    screenName,
+                                                    "${event} : ${value}",
+                                                    "${value} : ${userInfo!.name}",
+                                                    "${value} :  : 프로퍼티 인자2");
                                                 await globalFunction
                                                     .getDateFromCalendar(
                                                         context,
@@ -782,9 +833,12 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         left:
                                                                             20),
                                                                 child: Chip(
-                                                                  backgroundColor: doc['noteSelected']
-                                                                  ?Palette.titleOrange
-                                                                  : Palette.grayEE,
+                                                                  backgroundColor: doc[
+                                                                          'noteSelected']
+                                                                      ? Palette
+                                                                          .titleOrange
+                                                                      : Palette
+                                                                          .grayEE,
                                                                   label: Text(
                                                                       "$actionName"),
                                                                   deleteIcon:
@@ -1481,12 +1535,12 @@ class _LessonAddState extends State<LessonAdd> {
         userInfo.name,
         todayNoteController.text);
 
-    int result = 0;
+    /* int result = 0;
     lessonService
         .countRecord(userInfo.uid, userInfo.docId, lessonDate)
         .then((value) {
       result = value;
-    });
+    }); */
     if (growthInth > 0) {
       lessonActionList.forEach((element) {
         print("fdasewvref element : ${element}");
@@ -1779,6 +1833,13 @@ class _DeleteButtonState extends State<DeleteButton> {
                   lessonDate.toString(),
               onSuccess: () {},
               onError: () {});
+
+          memberActionNote = [];
+          eventSource = {};
+
+          setState(() {
+            
+          });
 
           // 삭제하기 성공시 MemberList로 이동
           widget.lessonService.notifyListeners(); // 화면 갱신

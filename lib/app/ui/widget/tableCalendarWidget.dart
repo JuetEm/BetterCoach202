@@ -1,15 +1,25 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:web_project/app/data/model/color.dart';
+import 'package:web_project/app/data/model/event.dart';
 import 'package:web_project/app/data/provider/calendar_service.dart';
+import 'package:web_project/app/data/provider/daylesson_service.dart';
+import 'package:web_project/app/ui/page/memberInfo.dart';
+
+List docForCal = [];
 
 class TableCalendarWidget extends StatefulWidget {
   TableCalendarWidget({
     Key? key,
     required this.selectedDate,
+    required this.eventSource,
   }) : super(key: key);
 
+  final Map<DateTime, dynamic> eventSource;
   final String selectedDate;
   @override
   State<TableCalendarWidget> createState() => _TableCalendarWidgetState();
@@ -53,13 +63,36 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CalendarService>(
-        builder: (context, calendarService, child) {
+    return Consumer2<CalendarService, DayLessonService>(
+        builder: (context, calendarService, dayLessonService, child) {
+      widget.eventSource.isEmpty
+          ? dayLessonService
+              .readTodayNoteForCal(userInfo.uid, userInfo.docId)
+              .then((value) {
+              // 잡았다 요놈!!
+              docForCal = [];
+              docForCal.addAll(value);
+              docForCal.forEach((element) {
+                // print("kliohuikutydfklgjhjyhrts - 0 - element['name'] : ${element['name']}, element['lessonDate'] : ${element['lessonDate']}");
+                var dt = DateTime.parse(element['lessonDate']);
+                widget.eventSource[DateTime(dt.year, dt.month, dt.day)] = [
+                  Event(element['name'], element['lessonDate'])
+                ];
+                // print("kliohuikutydfklgjhjyhrts - 0 - dt : ${dt}, eventSource : ${eventSource}");
+              });
+            })
+          : null;
       return TableCalendar(
         focusedDay: focusedDate,
         firstDay: DateTime.now().subtract(Duration(days: 365 * 10 + 2)),
         lastDay: DateTime.now().add(Duration(days: 365 * 10 + 2)),
         calendarFormat: calendarFormat,
+        calendarStyle: CalendarStyle(
+            markerSize: 10.0,
+            markerDecoration: BoxDecoration(
+              color: Palette.buttonOrange,
+              shape: BoxShape.circle,
+            )),
         onFormatChanged: ((format) {
           setState(() {
             calendarFormat = format;
@@ -83,8 +116,17 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
         selectedDayPredicate: (day) {
           return isSameDay(selectedDateIn, day);
         },
+        eventLoader: (day) {
+          return getEventFroDay(day,
+              widget.eventSource); // [{DateTime.now() : Event("고두심", DateTime.now().toString())}];//
+        },
         // calendarIsOffStaged = true;
       );
     });
   }
+}
+
+List<Event> getEventFroDay(DateTime day, Map<DateTime, dynamic> events) {
+  // print("kliohuikutydfklgjhjyhrts - 1 - events[${DateTime(day.year, day.month, day.day)}] : ${events[DateTime(day.year, day.month, day.day)]} , events : ${events}");
+  return events[DateTime(day.year, day.month, day.day)] ?? [];
 }

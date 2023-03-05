@@ -10,6 +10,7 @@ import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 import 'package:web_project/app/data/model/userInfo.dart';
+import 'package:web_project/main.dart';
 
 import 'actionSelector.dart';
 import '../../data/provider/auth_service.dart';
@@ -21,9 +22,11 @@ import 'memberInfo.dart';
 import 'memberList.dart';
 import 'membershipList.dart';
 
+String screenName = "회원등록";
+
 String memberAddMode = "추가";
 
-bool initState = true;
+bool initStateCheck = true;
 
 late CustomUserInfo.UserInfo? customUserInfo;
 
@@ -131,9 +134,18 @@ class _MemberAddState extends State<MemberAdd> {
     //selelctedAnalyzedList.clear();
     //selectedHistoryList.clear();
 
-    initState = true;
-    print("[MA] Dispose : initState ${initState} ");
+    initStateCheck = true;
+    print("[MA] Dispose : initStateCheck ${initStateCheck} ");
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    String event = "PAGE";
+    String value = "회원등록";
+    analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+        "${value} : ${userInfo!.name}", "${value} 프로퍼티 인자2");
   }
 
   Widget build(BuildContext context) {
@@ -145,10 +157,10 @@ class _MemberAddState extends State<MemberAdd> {
     memberAddMode = argsList[0];
 
     print(
-        "[MA]시작 : memberAddMode - ${memberAddMode} / initState - ${initState}");
+        "[MA]시작 : memberAddMode - ${memberAddMode} / initStateCheck - ${initStateCheck}");
     print("resultActionList : ${resultActionList}");
 
-    if (memberAddMode == "수정" && initState == true) {
+    if (memberAddMode == "수정" && initStateCheck == true) {
       // 이전 화면에서 보낸 변수 받기
       customUserInfo = argsList[1];
       print(
@@ -170,7 +182,7 @@ class _MemberAddState extends State<MemberAdd> {
         bodyAnalyzeController.text = customUserInfo!.bodyAnalyzed;
       });
 
-      initState = false;
+      initStateCheck = false;
       //에러 제어하기 위해 추가.https://github.com/flutter/flutter/issues/17647
 
       selectedGoals = customUserInfo!.selectedGoals;
@@ -179,7 +191,7 @@ class _MemberAddState extends State<MemberAdd> {
 
       print(
           "[MA]변수받아오기 : selectedGoals - ${customUserInfo!.selectedGoals} / ${customUserInfo!.selectedBodyAnalyzed} / ${customUserInfo!.selectedMedicalHistories}");
-    } else if (memberAddMode == "추가" && initState == true) {
+    } else if (memberAddMode == "추가" && initStateCheck == true) {
       resultMemberList = argsList[1];
       resultActionList = argsList[2];
       // 이전 화면에서 보낸 변수 받기
@@ -188,7 +200,7 @@ class _MemberAddState extends State<MemberAdd> {
       selectedGoals = [];
       selelctedAnalyzedList = [];
       selectedHistoryList = [];
-      initState = false;
+      initStateCheck = false;
     }
 
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -213,22 +225,39 @@ class _MemberAddState extends State<MemberAdd> {
     } else {
       pageTitle = "회원정보수정";
     }
+
+    /* print("fdsafewbterw memberAddMode : ${memberAddMode}");
+    print("fdsafewbterw userInfo.docId : ${userInfo.docId}");
+    globalVariables.memberTicketList.forEach((element) {
+      // print("fdsafewbterw element : ${element}");
+    });
+    globalVariables.memberTicketList
+        .where((element) =>
+            element['isSelected'] == true &&
+            element['memberId'] == userInfo.docId)
+        .toList()
+        .forEach((element) {
+      // print("fdsafewbterw element['isSelected'] : ${element}");
+    }); 
+    globalVariables.memberTicketList
+        .where((element) =>
+            memberAddMode == "수정" &&
+            element['memberId'] == userInfo.docId &&
+            element['isSelected'] == true)
+        .toList()
+        .forEach((element) {
+      print("fdsafewbterw element : ${element}");
+    });
+    */
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
-        // if (MediaQuery.of(context).viewInsets.bottom == 0) {
-        //   if (keyboardOpenBefore) {
-        //     FocusScopeNode currentFocus = FocusScope.of(context);
-        //     if (!currentFocus.hasPrimaryFocus) {
-        //       currentFocus.unfocus();
-        //     } // 키보드 닫기 이벤트
-        //     keyboardOpenBefore = false;
-        //   }
-        // } else {
-        //   keyboardOpenBefore = true;
-        // }
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, pageTitle, () {
+            String event = "onPressed";
+            String value = "뒤로가기";
+            analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+                "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
             if (memberAddMode == "수정") {
               List tmpResultList = [];
               tmpResultList.add(customUserInfo);
@@ -311,7 +340,15 @@ class _MemberAddState extends State<MemberAdd> {
                                     customFocusNode: nameFocusNode,
                                     hint: "회원명(9자 이하)",
                                     showArrow: false,
-                                    customFunction: () {},
+                                    customFunction: () {
+                                      String event = "onPressed";
+                                      String value = "회원명";
+                                      analyticLog.sendAnalyticsEvent(
+                                          screenName,
+                                          "${event} : ${value}",
+                                          "${value} : ${memberAddMode}",
+                                          "${value} : 프로퍼티 인자2");
+                                    },
                                   ),
                                 ),
                               ],
@@ -324,6 +361,13 @@ class _MemberAddState extends State<MemberAdd> {
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(10),
                                   onTap: () {
+                                    String event = "onTap";
+                                    String value = "등록일 선택하기";
+                                    analyticLog.sendAnalyticsEvent(
+                                        screenName,
+                                        "${event} : ${value}",
+                                        "${value} : ${memberAddMode}",
+                                        "${value} : 프로퍼티 인자2");
                                     globalFunction.getDateFromCalendar(
                                         context,
                                         registerDateController,
@@ -391,7 +435,15 @@ class _MemberAddState extends State<MemberAdd> {
                                     customFocusNode: phoneNumberFocusNode,
                                     hint: "전화번호",
                                     showArrow: false,
-                                    customFunction: () {},
+                                    customFunction: () {
+                                      String event = "onPressed";
+                                      String value = "전화번호";
+                                      analyticLog.sendAnalyticsEvent(
+                                          screenName,
+                                          "${event} : ${value}",
+                                          "${value} : ${memberAddMode}",
+                                          "${value} : 프로퍼티 인자2");
+                                    },
                                   ),
                                 ),
                               ],
@@ -423,14 +475,6 @@ class _MemberAddState extends State<MemberAdd> {
                                   ),
                                 ),
                                 Spacer(),
-                                // Text(
-                                //   '추가',
-                                //   style: TextStyle(
-                                //     fontSize: 14,
-                                //     color: Palette.gray00,
-                                //   ),
-                                // ),
-                                // SizedBox(width: 10)
                               ],
                             ),
 
@@ -444,40 +488,77 @@ class _MemberAddState extends State<MemberAdd> {
 
                               /// bool 수강권 유무 체크하는 변수 필요
                               /// is수강권있니? = false로 선언 되어야 함.
-                              child: false
+                              child: globalVariables.memberTicketList
+                                      .where((element) =>
+                                          memberAddMode == "수정" &&
+                                          element['memberId'] ==
+                                              userInfo.docId &&
+                                          element['isSelected'] == true)
+                                      .isNotEmpty
                                   ? TicketWidget(
-                                      ticketTitle: "재등록 수강권",
-                                      ticketDescription:
-                                          "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
-                                      ticketStartDate: "2023.01.14",
-                                      ticketEndDate: "2023.02.13",
-                                      ticketDateLeft: 7,
-                                      ticketCountAll: 20,
-                                      ticketCountLeft: 13,
+                                      ticketTitle: globalVariables
+                                          .memberTicketList
+                                          .where((element) =>
+                                              element['memberId'] ==
+                                                  userInfo.docId &&
+                                              element['isSelected'] == true)
+                                          .toList()
+                                          .first['ticketTitle'],
+                                      ticketDescription: globalVariables
+                                          .memberTicketList
+                                          .where((element) =>
+                                              element['memberId'] ==
+                                                  userInfo.docId &&
+                                              element['isSelected'] == true)
+                                          .toList()[0]['ticketDescription'],
+                                      ticketStartDate: globalFunction
+                                          .getDateFromTimeStamp(globalVariables
+                                              .memberTicketList
+                                              .where((element) =>
+                                                  element['memberId'] ==
+                                                      userInfo.docId &&
+                                                  element['isSelected'] == true)
+                                              .toList()[0]['ticketStartDate']),
+                                      ticketEndDate: globalFunction
+                                          .getDateFromTimeStamp(globalVariables
+                                              .memberTicketList
+                                              .where((element) =>
+                                                  element['memberId'] ==
+                                                      userInfo.docId &&
+                                                  element['isSelected'] == true)
+                                              .toList()[0]['ticketEndDate']),
+                                      ticketDateLeft: globalVariables
+                                          .memberTicketList
+                                          .where((element) =>
+                                              element['memberId'] ==
+                                                  userInfo.docId &&
+                                              element['isSelected'] == true)
+                                          .toList()[0]['ticketDateLeft'],
+                                      ticketCountAll: globalVariables
+                                          .memberTicketList
+                                          .where((element) =>
+                                              element['memberId'] ==
+                                                  userInfo.docId &&
+                                              element['isSelected'] == true)
+                                          .toList()[0]['ticketCountAll'],
+                                      ticketCountLeft: globalVariables
+                                          .memberTicketList
+                                          .where((element) =>
+                                              element['memberId'] ==
+                                                  userInfo.docId &&
+                                              element['isSelected'] == true)
+                                          .toList()[0]['ticketDateLeft'],
                                       customFunctionOnHover: () {},
                                       // function OnTap 기능을 붙여주세요
-                                      customFunctionOnTap: () {},
-                                      // customFunctionOnTap: () async {
-                                      //   print("수강권 추가 onTap!!");
-                                      //   var result = await // 저장하기 성공시 Home로 이동
-                                      //       Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //             TicketManage.getUserInfo(
-                                      //                 userInfo)),
-                                      //   ).then((value) {
-                                      //     print("수강권 추가 result");
-                                      //     setState(() {
-                                      //       print(
-                                      //           "memberInfo then setState called!");
-                                      //     });
-                                      //     parent?.setState(() {
-                                      //       print(
-                                      //           "memberInfo then parent setState called!");
-                                      //     });
-                                      //   });
-                                      // },
+                                      customFunctionOnTap: () {
+                                        String event = "onTap";
+                                        String value = "수강정보";
+                                        analyticLog.sendAnalyticsEvent(
+                                            screenName,
+                                            "${event} : ${value}",
+                                            "${value} : ${memberAddMode}",
+                                            "${value} : 프로퍼티 인자2");
+                                      },
                                     )
                                   : Container(
                                       alignment: Alignment.center,
@@ -493,30 +574,16 @@ class _MemberAddState extends State<MemberAdd> {
                                             print("수강권 추가 onHover!!");
                                           },
                                           onTap: () {
+                                            String event = "onTap";
+                                            String value = "수강정보";
+                                            analyticLog.sendAnalyticsEvent(
+                                                screenName,
+                                                "${event} : ${value}",
+                                                "${value} : ${memberAddMode}",
+                                                "${value} : 프로퍼티 인자2");
+
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
                                           },
-                                          // onTap: () async {
-                                          //   print("수강권 추가 onTap!!");
-                                          //   var result =
-                                          //       await // 저장하기 성공시 Home로 이동
-                                          //       Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             TicketManage.getUserInfo(
-                                          //                 userInfo)),
-                                          //   ).then((value) {
-                                          //     print("수강권 추가 result");
-                                          //     setState(() {
-                                          //       print(
-                                          //           "memberInfo then setState called!");
-                                          //     });
-                                          //     parent?.setState(() {
-                                          //       print(
-                                          //           "memberInfo then parent setState called!");
-                                          //     });
-                                          //   });
-                                          // },
                                           child: Container(
                                             width: 280,
                                             height: 140,
@@ -550,154 +617,6 @@ class _MemberAddState extends State<MemberAdd> {
                       ),
                     ),
                     SizedBox(height: 10),
-
-                    /// ### 이전 수강정보 부분은 나중에 삭제하는걸루 ###
-
-                    /*
-                    /// 입력창_수강정보
-                    Container(
-                      color: Palette.mainBackground,
-                      padding: const EdgeInsets.all(20),
-                      child: IntrinsicHeight(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            /// Title
-          
-                            Row(
-                              children: [
-                                Text(
-                                  '수강정보',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Palette.gray00,
-                                  ),
-                                ),
-                                Spacer(),
-                                // Text(
-                                //   '추가',
-                                //   style: TextStyle(
-                                //     fontSize: 14,
-                                //     color: Palette.gray00,
-                                //   ),
-                                // ),
-                                // SizedBox(width: 10)
-                              ],
-                            ),
-          
-                            SizedBox(height: 10),
-                            Divider(height: 1),
-                            SizedBox(height: 10),
-          
-                            /// 등록횟수입력창
-                            BaseTextField(
-                              customController: registerTypeController,
-                              customFocusNode: registerTypeFocusNode,
-                              hint: "등록횟수입력",
-                              showArrow: true,
-                              customFunction: () {
-                                String lessonCount = registerTypeController.text;
-                                showModalBottomSheet<void>(
-                                  isScrollControlled: true,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  backgroundColor: Colors.white,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      padding: const EdgeInsets.all(30),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: MediaQuery.of(context)
-                                                .viewInsets
-                                                .bottom),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Container(
-                                                width: double.infinity,
-                                                alignment: Alignment.topLeft,
-                                                child: const Text(
-                                                  '수강일을 입력해주세요.',
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Palette.gray00,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )),
-                                            SizedBox(height: 10),
-          
-                                            BaseTextField(
-                                              customController:
-                                                  membershipController,
-                                              customFocusNode:
-                                                  memberShipFocusNode,
-                                              hint: "횟수입력",
-                                              showArrow: false,
-                                              customFunction: () {},
-                                            ),
-          
-                                            SizedBox(height: 10),
-          
-                                            /// 수강권 선택 버튼
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(30.0),
-                                                ),
-                                                elevation: 0,
-                                                backgroundColor:
-                                                    Palette.buttonOrange,
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 14,
-                                                        horizontal: 90),
-                                                child: Text("확인",
-                                                    style:
-                                                        TextStyle(fontSize: 16)),
-                                              ),
-                                              onPressed: () {
-                                                final authService =
-                                                    context.read<AuthService>();
-                                                final user =
-                                                    authService.currentUser()!;
-                                                print("확인 버튼");
-                                                // create bucket
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  content: Text("횟수 입력 성공"),
-                                                ));
-                                                // 저장하기 성공시 Home로 이동
-                                                Navigator.pop(context,
-                                                    membershipController.text);
-          
-                                                registerTypeController.text =
-                                                    membershipController.text;
-          
-                                                membershipController.text = "";
-                                              },
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-          
-                                // _getMembership(context, lessonCount);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    */
 
                     /// 입력창_운동목표
                     Container(
@@ -749,7 +668,15 @@ class _MemberAddState extends State<MemberAdd> {
                               customFocusNode: goalFocusNode,
                               hint: "기타 특이사항이 있다면 작성해주세요.",
                               showArrow: false,
-                              customFunction: () {},
+                              customFunction: () {
+                                String event = "onPressed";
+                                String value = "운동목표 특이사항";
+                                analyticLog.sendAnalyticsEvent(
+                                    screenName,
+                                    "${event} : ${value}",
+                                    "${value} : ${memberAddMode}",
+                                    "${value} : 프로퍼티 인자2");
+                              },
                             ),
                             SizedBox(height: 10),
                           ],
@@ -810,7 +737,15 @@ class _MemberAddState extends State<MemberAdd> {
                               customFocusNode: bodyAnalyzeFocusNode,
                               hint: "기타 특이사항이 있다면 작성해주세요.",
                               showArrow: false,
-                              customFunction: () {},
+                              customFunction: () {
+                                String event = "onPressed";
+                                String value = "체형분석 특이사항";
+                                analyticLog.sendAnalyticsEvent(
+                                    screenName,
+                                    "${event} : ${value}",
+                                    "${value} : ${memberAddMode}",
+                                    "${value} : 프로퍼티 인자2");
+                              },
                             ),
                           ],
                         ),
@@ -867,7 +802,15 @@ class _MemberAddState extends State<MemberAdd> {
                               customFocusNode: medicalHistoryFocusNode,
                               hint: "기타 특이사항이 있다면 작성해주세요.",
                               showArrow: false,
-                              customFunction: () {},
+                              customFunction: () {
+                                String event = "onPressed";
+                                String value = "통증/상해/병력 특이사항";
+                                analyticLog.sendAnalyticsEvent(
+                                    screenName,
+                                    "${event} : ${value}",
+                                    "${value} : ${memberAddMode}",
+                                    "${value} : 프로퍼티 인자2");
+                              },
                             ),
                           ],
                         ),
@@ -909,7 +852,15 @@ class _MemberAddState extends State<MemberAdd> {
                               customFocusNode: commentFocusNode,
                               hint: "회원님의 특이사항을 입력하세요",
                               showArrow: false,
-                              customFunction: () {},
+                              customFunction: () {
+                                String event = "onPressed";
+                                String value = "특이사항";
+                                analyticLog.sendAnalyticsEvent(
+                                    screenName,
+                                    "${event} : ${value}",
+                                    "${value} : ${memberAddMode}",
+                                    "${value} : 프로퍼티 인자2");
+                              },
                             ),
                           ],
                         ),
@@ -932,24 +883,19 @@ class _MemberAddState extends State<MemberAdd> {
                         child: Text("저장하기", style: TextStyle(fontSize: 16)),
                       ),
                       onPressed: () async {
+                        String event = "onPressed";
+                        String value = "저장하기";
+                        analyticLog.sendAnalyticsEvent(
+                            screenName,
+                            "${event} : ${value}",
+                            "${value} : ${memberAddMode}",
+                            "${value} : 프로퍼티 인자2");
                         if (memberAddMode == "추가") {
                           print("추가 버튼");
                           // create bucket
                           if (globalFunction.textNullCheck(
                               context, nameController, "이름")) {
                             customUserInfo = null;
-                            // globalFunction.textNullCheck(
-                            //     context, registerDateController, "등록일") &&
-                            // globalFunction.textNullCheck(
-                            //     context, phoneNumberController, "전화번호") &&
-                            // globalFunction.textNullCheck(
-                            //     context, registerTypeController, "등록횟수입력") &&
-                            // globalFunction.textNullCheck(
-                            //     context, goalController, "운동목표") &&
-                            // globalFunction.textNullCheck(
-                            //     context, infoController, "통증/상해/병력") &&
-                            // globalFunction.textNullCheck(
-                            //     context, noteController, "체형분석")) {
                             var docId = await memberService
                                 .create(
                                     name: nameController.text,
@@ -1060,9 +1006,6 @@ class _MemberAddState extends State<MemberAdd> {
                                     content: Text("저장하기 성공"),
                                   ));
 
-                                  //userinfoupdate.mid = nameController.text;
-
-                                  //List<UserInfo> userupdateInfo
                                   UserInfo userInfouUpdate = UserInfo(
                                       customUserInfo!.docId,
                                       customUserInfo!.uid,
@@ -1082,7 +1025,6 @@ class _MemberAddState extends State<MemberAdd> {
                                       true,
                                       false);
 
-                                  //memberInfo.notifyListeners();
                                   // 저장하기 성공시 MemberInfo로 이동
                                   List tmpResultList = [];
                                   List updatedList = [];
@@ -1094,15 +1036,7 @@ class _MemberAddState extends State<MemberAdd> {
                                   tmpResultList.add(userInfouUpdate);
                                   tmpResultList.add(updatedList);
                                   tmpResultList.add(resultActionList);
-                                  Navigator.pop(context, tmpResultList
-                                      // MaterialPageRoute(
-                                      //   builder: (context) => MemberInfo(),
-                                      //   // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                      //   settings: RouteSettings(
-                                      //     arguments: userInfouUpdate,
-                                      //   ),
-                                      // ),
-                                      );
+                                  Navigator.pop(context, tmpResultList);
 
                                   globalFunction.clearTextEditController([
                                     nameController,
@@ -1146,6 +1080,13 @@ class _MemberAddState extends State<MemberAdd> {
                                       fontSize: 16, color: Palette.textRed)),
                             ),
                             onPressed: () async {
+                              String event = "onPressed";
+                              String value = "삭제하기";
+                              analyticLog.sendAnalyticsEvent(
+                                  screenName,
+                                  "${event} : ${value}",
+                                  "${value} : ${memberAddMode}",
+                                  "${value} : 프로퍼티 인자2");
                               print("${customUserInfo!.docId}");
                               // create bucket
                               final retvaldelte =
@@ -1160,18 +1101,9 @@ class _MemberAddState extends State<MemberAdd> {
                                         content: Text("삭제하기 성공"),
                                       ));
 
-                                      //userinfoupdate.mid = nameController.text;
 
                                       // 삭제하기 성공시 MemberList로 이동
                                       Navigator.pop(context);
-                                      //Navigator.of(context)
-                                      //    .popUntil((route) => route.isFirst);
-
-                                      // Navigator.pushReplacement(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => MemberList()),
-                                      // );
 
                                       globalFunction.clearTextEditController([
                                         nameController,
@@ -1208,6 +1140,14 @@ class _MemberAddState extends State<MemberAdd> {
                             textStyle:
                                 TextStyle(fontWeight: FontWeight.normal)),
                         onPressed: () {
+                          String event = "onPressed";
+                              String value = "취소하고 나가기";
+                              analyticLog.sendAnalyticsEvent(
+                                  screenName,
+                                  "${event} : ${value}",
+                                  "${value} : ${memberAddMode}",
+                                  "${value} : 프로퍼티 인자2");
+                              print("${customUserInfo!.docId}");
                           /// Pop 함수 입력
                           if (memberAddMode == "수정") {
                             print(
@@ -1239,7 +1179,6 @@ class _MemberAddState extends State<MemberAdd> {
               ),
             ),
           ),
-          //bottomNavigationBar: BaseBottomAppBar(),
         );
       },
     );
@@ -1312,6 +1251,10 @@ class _MemberAddState extends State<MemberAdd> {
         Spacer(),
         IconButton(
             onPressed: () async {
+              String event = "onPressed";
+              String value = bigTitle;
+              analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+                  "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
               print("신규 동작 추가");
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
@@ -1346,6 +1289,13 @@ class _MemberAddState extends State<MemberAdd> {
                                   ),
                                   TextButton(
                                     onPressed: () {
+                                      String event = "onPressed";
+                                      String value = "${bigTitle} 선택완료";
+                                      analyticLog.sendAnalyticsEvent(
+                                          screenName,
+                                          "${event} : ${value}",
+                                          "${value} : ${memberAddMode}",
+                                          "${value} : 프로퍼티 인자2");
                                       print(
                                           "resultObjectList : ${resultObjectList}");
                                       // String goalsSum = "";
@@ -1687,6 +1637,10 @@ class _MemberAddState extends State<MemberAdd> {
         Spacer(),
         IconButton(
             onPressed: () async {
+              String event = "onTap";
+              String value = bigTitle;
+              analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+                  "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
               print("신규 동작 추가");
               // Bottom Sheet 함수 작성
               showModalBottomSheet(
@@ -1722,20 +1676,15 @@ class _MemberAddState extends State<MemberAdd> {
                                   ),
                                   TextButton(
                                     onPressed: () {
+                                      String event = "onTap";
+                                      String value = "${bigTitle} 선택완료";
+                                      analyticLog.sendAnalyticsEvent(
+                                          screenName,
+                                          "${event} : ${value}",
+                                          "${value} : ${memberAddMode}",
+                                          "${value} : 프로퍼티 인자2");
                                       print(
                                           "resultObjectList : ${resultObjectList}");
-                                      // String goalsSum = "";
-                                      // for (int i = 0;
-                                      //     i < resultObjectList.length;
-                                      //     i++) {
-                                      //   if (i == resultObjectList.length - 1) {
-                                      //     goalsSum += resultObjectList[i];
-                                      //   } else {
-                                      //     goalsSum +=
-                                      //         resultObjectList[i] + ", ";
-                                      //   }
-                                      // }
-                                      // customController.text = goalsSum;
                                       customTileColorList.clear();
                                       customBorderColorList.clear();
                                       Navigator.pop(context);
@@ -2052,6 +2001,10 @@ class _MemberAddState extends State<MemberAdd> {
         Spacer(),
         IconButton(
             onPressed: () async {
+              String event = "onPressed";
+              String value = bigTitle;
+              analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+                  "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
               print("신규 동작 추가");
               // Bottom Sheet 함수 작성
               showModalBottomSheet(
@@ -2087,20 +2040,15 @@ class _MemberAddState extends State<MemberAdd> {
                                   ),
                                   TextButton(
                                     onPressed: () {
+                                      String event = "onPressed";
+                                      String value = "${bigTitle} 선택완료";
+                                      analyticLog.sendAnalyticsEvent(
+                                          screenName,
+                                          "${event} : ${value}",
+                                          "${value} : ${memberAddMode}",
+                                          "${value} : 프로퍼티 인자2");
                                       print(
                                           "resultObjectList : ${resultObjectList}");
-                                      // String goalsSum = "";
-                                      // for (int i = 0;
-                                      //     i < resultObjectList.length;
-                                      //     i++) {
-                                      //   if (i == resultObjectList.length - 1) {
-                                      //     goalsSum += resultObjectList[i];
-                                      //   } else {
-                                      //     goalsSum +=
-                                      //         resultObjectList[i] + ", ";
-                                      //   }
-                                      // }
-                                      // customController.text = goalsSum;
                                       customTileColorList.clear();
                                       customBorderColorList.clear();
                                       Navigator.pop(context);
