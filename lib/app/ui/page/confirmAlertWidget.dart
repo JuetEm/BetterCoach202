@@ -26,6 +26,8 @@ class ConfirmAlertWidget extends StatelessWidget {
   /// 텍스트 버튼 컬러
   final Color confirmButtonColor;
   final Color cancelButtonColor;
+
+  /// 클릭 시 함수
   final Function onConfirm;
   final Function onCancel;
 
