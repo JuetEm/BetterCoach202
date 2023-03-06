@@ -548,7 +548,7 @@ class _MemberAddState extends State<MemberAdd> {
                                               element['memberId'] ==
                                                   userInfo.docId &&
                                               element['isSelected'] == true)
-                                          .toList()[0]['ticketDateLeft'],
+                                          .toList()[0]['ticketCountLeft'],
                                       customFunctionOnHover: () {},
                                       // function OnTap 기능을 붙여주세요
                                       customFunctionOnTap: () {
@@ -584,21 +584,25 @@ class _MemberAddState extends State<MemberAdd> {
                                                 "${value} : 프로퍼티 인자2");
 
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
-                                            
-                                            String memberName = "";
-                                            nameController.text.isEmpty ? ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text("이름을 입력해주세요."),
-                                      )) : memberName = nameController.text;
 
-                                      
-                                      // UserInfo userInfo = UserInfo(docId, uid, name, registerDate, phoneNumber, registerType, goal, selectedGoals, bodyAnalyzed, selectedBodyAnalyzed, medicalHistories, selectedMedicalHistories, info, note, comment, isActive, isFavorite)
+                                            String memberName = "";
+                                            nameController.text.isEmpty
+                                                ? ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text("이름을 입력해주세요."),
+                                                  ))
+                                                : memberName =
+                                                    nameController.text;
+
+                                            // UserInfo userInfo = UserInfo(docId, uid, name, registerDate, phoneNumber, registerType, goal, selectedGoals, bodyAnalyzed, selectedBodyAnalyzed, medicalHistories, selectedMedicalHistories, info, note, comment, isActive, isFavorite)
                                             /// var result = await // 저장하기 성공시 Home로 이동
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MemberTicketMake(userInfo,null)),
+                                                      MemberTicketMake(
+                                                          userInfo, null)),
                                             ).then((value) {
                                               print("수강권 추가 result");
                                             });
