@@ -331,6 +331,28 @@ class _MemberListState extends State<MemberList> {
                   ),
                   ListTile(
                     leading: Icon(
+                      Icons.wallet_giftcard_outlined,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('스타벅스 기프티콘 받기!'),
+                    onTap: () {
+                      String event = "onTap";
+                      String value = "스타벅스 기프티콘";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} 프로퍼티 인자1",
+                          "${value} 프로퍼티 인자2");
+                      print('서비스 이용약관 is clicked');
+
+                      /// URL 추후에 구글설문으로 바꿔야함
+                      launchUrl(Uri.parse(
+                          'https://huslxl.notion.site/cd976583216f4046ab695312ef471a4c'));
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+                  ListTile(
+                    leading: Icon(
                       Icons.logout,
                       color: Palette.gray66,
                     ),
@@ -656,7 +678,7 @@ class _MemberListState extends State<MemberList> {
                                         analyticLog.sendAnalyticsEvent(
                                             screenName,
                                             "${event} : ${value}",
-                                            "${value} : ${userInfo.name}", 
+                                            "${value} : ${userInfo.name}",
                                             "${value} 프로퍼티 인자2");
                                         // 회원 카드 선택시 MemberInfo로 이동
                                         /* await memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId).then((value) {
@@ -695,7 +717,7 @@ class _MemberListState extends State<MemberList> {
                                         analyticLog.sendAnalyticsEvent(
                                             screenName,
                                             "${event} : ${value}",
-                                            "${value} : ${userInfo.name}", 
+                                            "${value} : ${userInfo.name}",
                                             "${value} 프로퍼티 인자2");
                                         print('노트 추가 버튼 클릭!');
 
