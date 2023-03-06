@@ -347,7 +347,8 @@ class _MemberListState extends State<MemberList> {
 
                       /// URL 추후에 구글설문으로 바꿔야함
                       launchUrl(Uri.parse(
-                          'https://huslxl.notion.site/cd976583216f4046ab695312ef471a4c'));
+                          // 'https://huslxl.notion.site/cd976583216f4046ab695312ef471a4c'
+                          'https://bit.ly/bettercoachbeta2'));
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
@@ -356,7 +357,7 @@ class _MemberListState extends State<MemberList> {
                       Icons.people_outline,
                       color: Palette.gray66,
                     ),
-                    title: Text('사용자모임 오픈체팅방'),
+                    title: Text('사용자모임 오픈채팅방'),
                     onTap: () {
                       String event = "onTap";
                       String value = "사용자모임 오픈채팅방";

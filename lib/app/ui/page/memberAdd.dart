@@ -1094,16 +1094,21 @@ class _MemberAddState extends State<MemberAdd> {
                               if (retvaldelte == "OK") {
                                 memberService.delete(
                                     docId: customUserInfo!.docId,
-                                    onSuccess: () {
+                                    onSuccess: () async {
                                       // 삭제하기 성공
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: Text("삭제하기 성공"),
                                       ));
 
-
                                       // 삭제하기 성공시 MemberList로 이동
-                                      Navigator.pop(context);
+                                      // Navigator.pop(context);
+                                      final result =
+                                          await Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => MemberList()),
+                                      );
 
                                       globalFunction.clearTextEditController([
                                         nameController,
@@ -1141,13 +1146,14 @@ class _MemberAddState extends State<MemberAdd> {
                                 TextStyle(fontWeight: FontWeight.normal)),
                         onPressed: () {
                           String event = "onPressed";
-                              String value = "취소하고 나가기";
-                              analyticLog.sendAnalyticsEvent(
-                                  screenName,
-                                  "${event} : ${value}",
-                                  "${value} : ${memberAddMode}",
-                                  "${value} : 프로퍼티 인자2");
-                              print("${customUserInfo!.docId}");
+                          String value = "취소하고 나가기";
+                          analyticLog.sendAnalyticsEvent(
+                              screenName,
+                              "${event} : ${value}",
+                              "${value} : ${memberAddMode}",
+                              "${value} : 프로퍼티 인자2");
+                          print("${customUserInfo!.docId}");
+
                           /// Pop 함수 입력
                           if (memberAddMode == "수정") {
                             print(
