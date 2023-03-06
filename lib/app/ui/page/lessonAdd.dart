@@ -459,9 +459,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                   ? Icons.confirmation_num
                                                   : Icons
                                                       .confirmation_num_outlined,
-                                              color: isTicketCountChecked
+                                              color: globalVariables.memberTicketList
+                                                      .where((element) =>
+                                                          element['isSelected'] ==
+                                                              true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId) == true ? (isTicketCountChecked
                                                   ? Palette.buttonOrange
-                                                  : Palette.gray99,
+                                                  : Palette.gray99) : Palette.gray99,
                                             ),
                                             SizedBox(width: 4),
                                             Text(
@@ -496,7 +501,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                       .docId)
                                                           .toList()
                                                           .first['ticketCountLeft'])
-                                                      .toString()) : "등록된 수강권이 없습니다.",
+                                                      .toString()) : "수강권 없음",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -506,7 +511,12 @@ class _LessonAddState extends State<LessonAdd> {
                                               ),
                                             ),
                                             Text(
-                                              "/",
+                                              globalVariables.memberTicketList
+                                                      .where((element) =>
+                                                          element['isSelected'] ==
+                                                              true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId) == true ? "/" : "",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -516,7 +526,12 @@ class _LessonAddState extends State<LessonAdd> {
                                               ),
                                             ),
                                             Text(
-                                              (globalVariables.memberTicketList
+                                              globalVariables.memberTicketList
+                                                      .where((element) =>
+                                                          element['isSelected'] ==
+                                                              true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId) == true ?((globalVariables.memberTicketList
                                                       .where((element) =>
                                                           element['isSelected'] ==
                                                               true &&
@@ -524,7 +539,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                               userInfo.docId)
                                                       .toList()
                                                       .first['ticketCountAll'])
-                                                  .toString(),
+                                                  .toString()) : "",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
