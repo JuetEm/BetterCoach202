@@ -74,6 +74,8 @@ bool isNoteCalendarHided = true;
 // 회원 동작별 노트
 List memberActionNote = [];
 
+bool isValueReturend = true;
+
 class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
   List tmpResultActionList = [];
@@ -105,6 +107,7 @@ class _MemberInfoState extends State<MemberInfo> {
     print("[MI] Init : 항상 울리나? ");
 
     memberActionNote = [];
+    isValueReturend = true;
 
     if (widget.isQuickAdd) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -208,7 +211,7 @@ class _MemberInfoState extends State<MemberInfo> {
         print(
             "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
 
-        memberActionNote.isEmpty
+        memberActionNote.isEmpty && isValueReturend
             ? lessonService
                 .readMemberActionNote(
                 AuthService().currentUser()!.uid,
@@ -216,7 +219,8 @@ class _MemberInfoState extends State<MemberInfo> {
               )
                 .then((value) {
                 print("fdsavewfweas value.length : ${value.length}");
-                memberActionNote.isEmpty
+                value.isNotEmpty ? isValueReturend = true : isValueReturend = false;
+                value.isNotEmpty
                     ? memberActionNote.addAll(value)
                     : null;
                 print(

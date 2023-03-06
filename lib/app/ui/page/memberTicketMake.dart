@@ -222,7 +222,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
     } else {
       for (var ticketVal in globalVariables.ticketLibraryList) {
         // print("ticketVal : $ticketVal");
-        if (ticketVal['uid'] == widget.userInfo!.uid) {
+        if (ticketVal['uid'] == AuthService().currentUser()!.uid) {
           var model = DropDownValueModel(
               name: ticketVal['ticketTitle'],
               value: userInfo.docId,

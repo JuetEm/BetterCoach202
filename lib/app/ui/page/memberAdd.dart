@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
+import 'package:web_project/app/ui/page/memberTicketMake.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
@@ -144,10 +145,8 @@ class _MemberAddState extends State<MemberAdd> {
     super.initState();
     String event = "PAGE";
     String value = "회원등록";
-    userInfo != null ? analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
-        "${value} : ${userInfo!.name}", "${value} 프로퍼티 인자2") : analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
-        "${value} : 신규회원 추가/수정", "${value} 프로퍼티 인자2")
-        ;
+    analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+        "${value} : 프로퍼티 인자1", "${value} 프로퍼티 인자2");
   }
 
   Widget build(BuildContext context) {
@@ -585,6 +584,24 @@ class _MemberAddState extends State<MemberAdd> {
                                                 "${value} : 프로퍼티 인자2");
 
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
+                                            
+                                            String memberName = "";
+                                            nameController.text.isEmpty ? ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("이름을 입력해주세요."),
+                                      )) : memberName = nameController.text;
+
+                                      
+                                      // UserInfo userInfo = UserInfo(docId, uid, name, registerDate, phoneNumber, registerType, goal, selectedGoals, bodyAnalyzed, selectedBodyAnalyzed, medicalHistories, selectedMedicalHistories, info, note, comment, isActive, isFavorite)
+                                            /// var result = await // 저장하기 성공시 Home로 이동
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MemberTicketMake(userInfo,null)),
+                                            ).then((value) {
+                                              print("수강권 추가 result");
+                                            });
                                           },
                                           child: Container(
                                             width: 280,
