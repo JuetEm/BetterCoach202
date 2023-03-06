@@ -120,6 +120,8 @@ bool keyboardOpenBefore = false;
 List resultMemberList = [];
 List resultActionList = [];
 
+Map<String, dynamic> ticketWidgetResultMap = {};
+
 class MemberAdd extends StatefulWidget {
   const MemberAdd({super.key});
 
@@ -148,6 +150,8 @@ class _MemberAddState extends State<MemberAdd> {
     analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
         "${value} : 프로퍼티 인자1", "${value} 프로퍼티 인자2");
   }
+
+  
 
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
@@ -584,26 +588,47 @@ class _MemberAddState extends State<MemberAdd> {
                                                 "${value} : 프로퍼티 인자2");
 
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
-                                            
-                                            String memberName = "";
-                                            nameController.text.isEmpty ? ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text("이름을 입력해주세요."),
-                                      )) : memberName = nameController.text;
 
-                                      
-                                      // UserInfo userInfo = UserInfo(docId, uid, name, registerDate, phoneNumber, registerType, goal, selectedGoals, bodyAnalyzed, selectedBodyAnalyzed, medicalHistories, selectedMedicalHistories, info, note, comment, isActive, isFavorite)
+                                            String memberName = "";
+                                            nameController.text.isEmpty
+                                                ? ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text("이름을 입력해주세요."),
+                                                  ))
+                                                : memberName =
+                                                    nameController.text;
+
+                                            String name = nameController.text;
+                                            String registerDate =
+                                                registerDateController.text;
+                                            String phoneNumber =
+                                                phoneNumberController.text;
+                                            String registerType =
+                                                registerTypeController.text;
+                                            String goal = goalController.text;
+                                            String info = infoController.text;
+                                            String note = noteController.text;
+                                            String comment =
+                                                commentController.text;
+                                            String medicalHistories =
+                                                medicalHistoryController.text;
+                                            String bodyAnalyzed =
+                                                bodyAnalyzeController.text;
+
+                                            UserInfo userInfo = UserInfo("", AuthService().currentUser()!.uid, name, registerDate, phoneNumber, registerType, goal, selectedGoals, bodyAnalyzed, selelctedAnalyzedList, medicalHistories, selectedHistoryList, info, note, comment, true, false);
                                             /// var result = await // 저장하기 성공시 Home로 이동
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MemberTicketMake(userInfo,null)),
+                                                      MemberTicketMake.getNewMemberTicket(userInfo,"newMemberTicket")),
                                             ).then((value) {
                                               print("수강권 추가 result");
+                                              ticketWidgetResultMap = value;
                                             });
                                           },
-                                          child: Container(
+                                          child: ticketWidgetResultMap.isNotEmpty ? TicketWidget(ticketCountLeft: ticketWidgetResultMap['ticketCountLeft'], ticketCountAll: ticketWidgetResultMap['ticketCountAll'], ticketTitle: ticketWidgetResultMap['ticketTitle'], ticketDescription: ticketWidgetResultMap['ticketDescription'], ticketStartDate: ticketWidgetResultMap['ticketStartDate'], ticketEndDate: ticketWidgetResultMap['ticketEndDate'], ticketDateLeft: ticketWidgetResultMap['ticketDateLeft'], customFunctionOnTap: (){}) : Container(
                                             width: 280,
                                             height: 140,
                                             child: Row(
