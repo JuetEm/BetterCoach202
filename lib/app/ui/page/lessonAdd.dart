@@ -465,7 +465,14 @@ class _LessonAddState extends State<LessonAdd> {
                                             ),
                                             SizedBox(width: 4),
                                             Text(
-                                              isTicketCountChecked
+                                              globalVariables
+                                                                  .memberTicketList
+                                                                  .where((element) =>
+                                                                      element['isSelected'] ==
+                                                                          true &&
+                                                                      element['memberId'] ==
+                                                                          userInfo
+                                                                              .docId) == true ? (isTicketCountChecked
                                                   ? (globalVariables
                                                                   .memberTicketList
                                                                   .where((element) =>
@@ -489,7 +496,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                       .docId)
                                                           .toList()
                                                           .first['ticketCountLeft'])
-                                                      .toString(),
+                                                      .toString()) : "등록된 수강권이 없습니다.",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -1837,9 +1844,7 @@ class _DeleteButtonState extends State<DeleteButton> {
           memberActionNote = [];
           eventSource = {};
 
-          setState(() {
-            
-          });
+          setState(() {});
 
           // 삭제하기 성공시 MemberList로 이동
           widget.lessonService.notifyListeners(); // 화면 갱신
