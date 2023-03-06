@@ -343,11 +343,53 @@ class _MemberListState extends State<MemberList> {
                           "${event} : ${value}",
                           "${value} 프로퍼티 인자1",
                           "${value} 프로퍼티 인자2");
-                      print('서비스 이용약관 is clicked');
+                      print('스타벅스 기프티콘 is clicked');
 
                       /// URL 추후에 구글설문으로 바꿔야함
                       launchUrl(Uri.parse(
                           'https://huslxl.notion.site/cd976583216f4046ab695312ef471a4c'));
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.people_outline,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('사용자모임 오픈체팅방'),
+                    onTap: () {
+                      String event = "onTap";
+                      String value = "사용자모임 오픈채팅방";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} 프로퍼티 인자1",
+                          "${value} 프로퍼티 인자2");
+                      print('사용자모임 오픈채팅방 is clicked');
+
+                      /// URL 추후에 구글설문으로 바꿔야함
+                      launchUrl(Uri.parse('https://open.kakao.com/o/gmnc5j6e'));
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.question_answer_outlined,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('1:1 문의'),
+                    onTap: () {
+                      String event = "onTap";
+                      String value = "1:1 오픈챗 문의";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} 프로퍼티 인자1",
+                          "${value} 프로퍼티 인자2");
+                      print('1:1 문의 is clicked');
+
+                      /// URL 추후에 구글설문으로 바꿔야함
+                      launchUrl(Uri.parse('https://open.kakao.com/o/s8bbKj6e'));
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
