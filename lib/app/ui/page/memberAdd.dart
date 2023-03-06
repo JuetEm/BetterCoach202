@@ -552,7 +552,7 @@ class _MemberAddState extends State<MemberAdd> {
                                               element['memberId'] ==
                                                   userInfo.docId &&
                                               element['isSelected'] == true)
-                                          .toList()[0]['ticketDateLeft'],
+                                          .toList()[0]['ticketCountLeft'],
                                       customFunctionOnHover: () {},
                                       // function OnTap 기능을 붙여주세요
                                       customFunctionOnTap: () {
@@ -589,7 +589,16 @@ class _MemberAddState extends State<MemberAdd> {
 
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
 
+
                                             String memberName = "";
+                                            nameController.text.isEmpty
+                                                ? ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text("이름을 입력해주세요."),
+                                                  ))
+                                                : memberName =
+                                                    nameController.text;
                                             nameController.text.isEmpty
                                                 ? ScaffoldMessenger.of(context)
                                                     .showSnackBar(SnackBar(

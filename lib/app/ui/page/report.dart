@@ -111,28 +111,38 @@ class _ReportState extends State<Report> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-              onPressed: () {
-                content = errorContents.text;
-                AuthService authService = AuthService();
-                var user = authService.currentUser();
-                ReportService reportService = ReportService();
-                reportService
-                    .create(
-                        user!.uid,
-                        user.displayName,
-                        user.phoneNumber,
-                        user.email,
-                        selectedPageName,
-                        content,
-                        DateTime.now(),
-                        'N',
-                        null)
-                    .then((value) {
-                  Navigator.pop(context);
-                });
-              },
-              icon: Icon(Icons.send_rounded)),
+          TextButton(
+              onPressed: errorContents.text == ""
+                  ? null
+                  : () {
+                      content = errorContents.text;
+                      AuthService authService = AuthService();
+                      var user = authService.currentUser();
+                      ReportService reportService = ReportService();
+                      reportService
+                          .create(
+                              user!.uid,
+                              user.displayName,
+                              user.phoneNumber,
+                              user.email,
+                              selectedPageName,
+                              content,
+                              DateTime.now(),
+                              'N',
+                              null)
+                          .then((value) {
+                        Navigator.pop(context);
+                      });
+                    },
+              child: Text(
+                '보내기',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: errorContents.text == ""
+                      ? Palette.gray99
+                      : Palette.textBlue,
+                ),
+              )),
           SizedBox(
             width: 10,
           )
@@ -236,6 +246,9 @@ class _ReportState extends State<Report> {
                   constraints:
                       BoxConstraints(minHeight: 300, minWidth: double.infinity),
                   child: TextFormField(
+                    onChanged: (value) {
+                      setState(() {});
+                    },
                     enabled: true,
                     maxLines: null,
                     controller: errorContents,
@@ -257,58 +270,58 @@ class _ReportState extends State<Report> {
                 SizedBox(
                   height: 20,
                 ),
-                Align(
-                  alignment: AlignmentDirectional(0, -0.05),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            // 로그인 페이지로 이동
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 80,
-                            height: 50,
-                            child: Text("취소",
-                                style: TextStyle(
-                                    color: Palette.textRed, fontSize: 16)),
-                          )),
-                      TextButton(
-                          onPressed: () {
-                            content = errorContents.text;
-                            AuthService authService = AuthService();
-                            var user = authService.currentUser();
-                            ReportService reportService = ReportService();
-                            reportService
-                                .create(
-                                    user!.uid,
-                                    user.displayName,
-                                    user.phoneNumber,
-                                    user.email,
-                                    selectedPageName,
-                                    content,
-                                    DateTime.now(),
-                                    'N',
-                                    null)
-                                .then((value) {
-                              Navigator.pop(context);
-                            });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 80,
-                            height: 50,
-                            child: Text("제출",
-                                style: TextStyle(
-                                    color: Palette.textBlue, fontSize: 16)),
-                          )),
-                    ],
-                  ),
-                ),
-                
+                // Align(
+                //   alignment: AlignmentDirectional(0, -0.05),
+                //   child: Row(
+                //     mainAxisSize: MainAxisSize.max,
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       TextButton(
+                //           onPressed: () {
+                //             // 로그인 페이지로 이동
+                //             Navigator.pop(context);
+                //           },
+                //           child: Container(
+                //             alignment: Alignment.center,
+                //             width: 80,
+                //             height: 50,
+                //             child: Text("취소",
+                //                 style: TextStyle(
+                //                     color: Palette.textRed, fontSize: 16)),
+                //           )),
+                //       TextButton(
+                //           onPressed: () {
+                //             content = errorContents.text;
+                //             AuthService authService = AuthService();
+                //             var user = authService.currentUser();
+                //             ReportService reportService = ReportService();
+                //             reportService
+                //                 .create(
+                //                     user!.uid,
+                //                     user.displayName,
+                //                     user.phoneNumber,
+                //                     user.email,
+                //                     selectedPageName,
+                //                     content,
+                //                     DateTime.now(),
+                //                     'N',
+                //                     null)
+                //                 .then((value) {
+                //               Navigator.pop(context);
+                //             });
+                //           },
+                //           child: Container(
+                //             alignment: Alignment.center,
+                //             width: 80,
+                //             height: 50,
+                //             child: Text("제출",
+                //                 style: TextStyle(
+                //                     color: Palette.textBlue, fontSize: 16)),
+                //           )),
+                //     ],
+                //   ),
+                // ),
+
                 /*##################FontWeight 실험실####################*/
                 // Row(
                 //   children: [

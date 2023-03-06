@@ -319,62 +319,45 @@ class _LessonAddState extends State<LessonAdd> {
             Padding(
               padding: EdgeInsets.only(right: 10),
               child: TextButton(
-                  onPressed: () async {
-                    String event = "onPressed";
-                    String value = "완료";
-                    analyticLog.sendAnalyticsEvent(
-                        screenName,
-                        "${event} : ${value}",
-                        "${value} : ${userInfo!.name}",
-                        "${value} : 프로퍼티 인자2");
-                    print(
-                        "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
+                  onPressed: todayNoteController.text == ""
+                      ? null
+                      : () async {
+                          String event = "onPressed";
+                          String value = "완료";
+                          analyticLog.sendAnalyticsEvent(
+                              screenName,
+                              "${event} : ${value}",
+                              "${value} : ${userInfo!.name}",
+                              "${value} : 프로퍼티 인자2");
+                          print(
+                              "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
-                    // 오늘의 레슨 종합 레슨 기록이 비어있고, 개별 기록도 없다면 안내 메세지 보여줌
-                    // 뭐 든 하나라도 있다면 저장
-                    if ((todayNoteController.text.trim().isEmpty) &&
-                        lessonActionList
-                            .where((element) => element['noteSelected'])
-                            .isEmpty) {
-                      //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                      //await todayNoteSave(
-                      //    lessonService, customUserInfo, context);
+                          // 오늘의 레슨 종합 레슨 기록이 비어있고, 개별 기록도 없다면 안내 메세지 보여줌
+                          // 뭐 든 하나라도 있다면 저장
+                          if ((todayNoteController.text.trim().isEmpty) &&
+                              lessonActionList
+                                  .where((element) => element['noteSelected'])
+                                  .isEmpty) {
+                            //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
+                            //await todayNoteSave(
+                            //    lessonService, customUserInfo, context);
 
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
-                      ));
-                    } else {
-                      print(
-                          "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / checkInitState : ${checkInitState}");
-                      DateChangeMode = false;
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
+                            ));
+                          } else {
+                            print(
+                                "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / checkInitState : ${checkInitState}");
+                            DateChangeMode = false;
 
-                      print("[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                            print(
+                                "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
 
-                      //일별 노트 저장
-                      /* await todayNoteSave(
+                            //일별 노트 저장
+                            /* await todayNoteSave(
                           lessonService, customUserInfo, context); */
-                      saveRecentSequence(
-                        sequenceRecentService,
-                        userInfo.uid,
-                        userInfo.docId,
-                        todayNoteView,
-                        lessonActionList,
-                        false,
-                        0,
-                        Timestamp.now(),
-                        userInfo.name,
-                      );
-                      saveMethod(
-                        lessonService,
-                        lessonDateArg,
-                        lessonAddMode,
-                        customUserInfo,
-                        dayLessonService,
-                        todayNoteView,
-                      );
-                      isSequenceSaveChecked
-                          ? saveCustomSequnce(
-                              sequenceCustomService,
+                            saveRecentSequence(
+                              sequenceRecentService,
                               userInfo.uid,
                               userInfo.docId,
                               todayNoteView,
@@ -383,21 +366,43 @@ class _LessonAddState extends State<LessonAdd> {
                               0,
                               Timestamp.now(),
                               userInfo.name,
-                              sequenceNameController.text,
-                            )
-                          : null;
+                            );
+                            saveMethod(
+                              lessonService,
+                              lessonDateArg,
+                              lessonAddMode,
+                              customUserInfo,
+                              dayLessonService,
+                              todayNoteView,
+                            );
+                            isSequenceSaveChecked
+                                ? saveCustomSequnce(
+                                    sequenceCustomService,
+                                    userInfo.uid,
+                                    userInfo.docId,
+                                    todayNoteView,
+                                    lessonActionList,
+                                    false,
+                                    0,
+                                    Timestamp.now(),
+                                    userInfo.name,
+                                    sequenceNameController.text,
+                                  )
+                                : null;
 
-                      // await totalNoteSave(
-                      //     lessonService, customUserInfo, context);
+                            // await totalNoteSave(
+                            //     lessonService, customUserInfo, context);
 
-                      lessonService.notifyListeners();
-                      Navigator.pop(context);
-                    }
-                  },
+                            lessonService.notifyListeners();
+                            Navigator.pop(context);
+                          }
+                        },
                   child: Text(
                     '완료',
                     style: TextStyle(
-                      color: Palette.textBlue,
+                      color: todayNoteController.text == ""
+                          ? Palette.gray99
+                          : Palette.textBlue,
                       fontSize: 16,
                     ),
                   )),
@@ -456,48 +461,98 @@ class _LessonAddState extends State<LessonAdd> {
                                           children: [
                                             Icon(
                                               globalVariables.memberTicketList
-                                                      .where((element) =>
-                                                          element['isSelected'] ==
-                                                              true &&
-                                                          element['memberId'] ==
-                                                              userInfo.docId) == true ? (isTicketCountChecked
-                                                  ? Icons.confirmation_num
+                                                          .where((element) =>
+                                                              element['isSelected'] ==
+                                                                  true &&
+                                                              element['memberId'] ==
+                                                                  userInfo
+                                                                      .docId) ==
+                                                      true
+                                                  ? (isTicketCountChecked
+                                                      ? Icons.confirmation_num
+                                                      : Icons
+                                                          .confirmation_num_outlined)
                                                   : Icons
-                                                      .confirmation_num_outlined) : Icons
                                                       .confirmation_num_outlined,
-                                              color: globalVariables.memberTicketList
-                                                      .where((element) =>
-                                                          element['isSelected'] ==
-                                                              true &&
-                                                          element['memberId'] ==
-                                                              userInfo.docId) == true ? (isTicketCountChecked
-                                                  ? Palette.buttonOrange
-                                                  : Palette.gray99) : Palette.gray99,
+                                              color: globalVariables
+                                                          .memberTicketList
+                                                          .where((element) =>
+                                                              element['isSelected'] ==
+                                                                  true &&
+                                                              element['memberId'] ==
+                                                                  userInfo
+                                                                      .docId) ==
+                                                      true
+                                                  ? (isTicketCountChecked
+                                                      ? Palette.buttonOrange
+                                                      : Palette.gray99)
+                                                  : Palette.gray99,
                                             ),
                                             SizedBox(width: 4),
                                             Text(
-                                              globalVariables
-                                                                  .memberTicketList
-                                                                  .where((element) =>
-                                                                      element['isSelected'] ==
-                                                                          true &&
-                                                                      element['memberId'] ==
-                                                                          userInfo
-                                                                              .docId) == true ? (isTicketCountChecked
-                                                  ? (globalVariables
-                                                                  .memberTicketList
-                                                                  .where((element) =>
-                                                                      element['isSelected'] ==
-                                                                          true &&
-                                                                      element['memberId'] ==
-                                                                          userInfo
-                                                                              .docId)
-                                                                  .toList()
-                                                                  .first[
-                                                              'ticketCountLeft'] -
-                                                          1)
-                                                      .toString()
-                                                  : (globalVariables
+                                              globalVariables.memberTicketList.where((element) =>
+                                                          element['isSelected'] == true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId) ==
+                                                      true
+                                                  ? (isTicketCountChecked
+                                                      ? (globalVariables.memberTicketList
+                                                                      .where((element) =>
+                                                                          element['isSelected'] == true &&
+                                                                          element['memberId'] ==
+                                                                              userInfo
+                                                                                  .docId)
+                                                                      .toList()
+                                                                      .first[
+                                                                  'ticketCountLeft'] -
+                                                              1)
+                                                          .toString()
+                                                      : (globalVariables
+                                                              .memberTicketList
+                                                              .where((element) =>
+                                                                  element['isSelected'] == true &&
+                                                                  element['memberId'] == userInfo.docId)
+                                                              .toList()
+                                                              .first['ticketCountLeft'])
+                                                          .toString())
+                                                  : "수강권 없음",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: isTicketCountChecked
+                                                    ? Palette.gray00
+                                                    : Palette.gray99,
+                                              ),
+                                            ),
+                                            Text(
+                                              globalVariables.memberTicketList
+                                                          .where((element) =>
+                                                              element['isSelected'] ==
+                                                                  true &&
+                                                              element['memberId'] ==
+                                                                  userInfo
+                                                                      .docId) ==
+                                                      true
+                                                  ? "/"
+                                                  : "",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: isTicketCountChecked
+                                                    ? Palette.gray00
+                                                    : Palette.gray99,
+                                              ),
+                                            ),
+                                            Text(
+                                              globalVariables.memberTicketList
+                                                          .where((element) =>
+                                                              element['isSelected'] ==
+                                                                  true &&
+                                                              element['memberId'] ==
+                                                                  userInfo
+                                                                      .docId) ==
+                                                      true
+                                                  ? ((globalVariables
                                                           .memberTicketList
                                                           .where((element) =>
                                                               element['isSelected'] ==
@@ -506,46 +561,9 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   userInfo
                                                                       .docId)
                                                           .toList()
-                                                          .first['ticketCountLeft'])
-                                                      .toString()) : "수강권 없음",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: isTicketCountChecked
-                                                    ? Palette.gray00
-                                                    : Palette.gray99,
-                                              ),
-                                            ),
-                                            Text(
-                                              globalVariables.memberTicketList
-                                                      .where((element) =>
-                                                          element['isSelected'] ==
-                                                              true &&
-                                                          element['memberId'] ==
-                                                              userInfo.docId) == true ? "/" : "",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: isTicketCountChecked
-                                                    ? Palette.gray00
-                                                    : Palette.gray99,
-                                              ),
-                                            ),
-                                            Text(
-                                              globalVariables.memberTicketList
-                                                      .where((element) =>
-                                                          element['isSelected'] ==
-                                                              true &&
-                                                          element['memberId'] ==
-                                                              userInfo.docId) == true ?((globalVariables.memberTicketList
-                                                      .where((element) =>
-                                                          element['isSelected'] ==
-                                                              true &&
-                                                          element['memberId'] ==
-                                                              userInfo.docId)
-                                                      .toList()
-                                                      .first['ticketCountAll'])
-                                                  .toString()) : "",
+                                                          .first['ticketCountAll'])
+                                                      .toString())
+                                                  : "",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -562,29 +580,35 @@ class _LessonAddState extends State<LessonAdd> {
                                           children: [
                                             Text("수강권 차감 여부"),
                                             Checkbox(
-                                              
                                               value: isTicketCountChecked,
-                                              onChanged: globalVariables.memberTicketList
-                                                      .where((element) =>
-                                                          element['isSelected'] ==
-                                                              true &&
-                                                          element['memberId'] ==
-                                                              userInfo.docId) == true ? (value) {
-                                                String event = "onChanged";
-                                                String value = "수강권 차감 여부";
-                                                analyticLog.sendAnalyticsEvent(
-                                                    screenName,
-                                                    "${event} : ${value}",
-                                                    "${value} : ${userInfo!.name}",
-                                                    "${value} :  : 프로퍼티 인자2");
+                                              onChanged: globalVariables
+                                                          .memberTicketList
+                                                          .where((element) =>
+                                                              element['isSelected'] ==
+                                                                  true &&
+                                                              element['memberId'] ==
+                                                                  userInfo
+                                                                      .docId) ==
+                                                      true
+                                                  ? (value) {
+                                                      String event =
+                                                          "onChanged";
+                                                      String value =
+                                                          "수강권 차감 여부";
+                                                      analyticLog.sendAnalyticsEvent(
+                                                          screenName,
+                                                          "${event} : ${value}",
+                                                          "${value} : ${userInfo!.name}",
+                                                          "${value} :  : 프로퍼티 인자2");
 
-                                                /// 체크 토글
-                                                isTicketCountChecked =
-                                                    !isTicketCountChecked;
+                                                      /// 체크 토글
+                                                      isTicketCountChecked =
+                                                          !isTicketCountChecked;
 
-                                                /// 화면 재빌드
-                                                setState(() {});
-                                              } : null,
+                                                      /// 화면 재빌드
+                                                      setState(() {});
+                                                    }
+                                                  : null,
                                             )
                                           ],
                                         )
@@ -1115,7 +1139,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             'id': null,
                                             'noteSelected': false,
                                             'position': element['name'],
-                                            'deleteSelected': true,
+                                            'deleteSelected': false,
                                           };
                                           print("rElement : ${rElement}");
                                           lessonActionList.add(rElement);
@@ -1379,82 +1403,82 @@ class _LessonAddState extends State<LessonAdd> {
                             ),
 
                             /// 저장버튼 추가버튼 UI 수정
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                elevation: 0,
-                                backgroundColor: Palette.buttonOrange,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 14, horizontal: 90),
-                                child: Text("저장하기",
-                                    style: TextStyle(fontSize: 16)),
-                              ),
-                              onPressed: () async {
-                                print(
-                                    "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
+                            // ElevatedButton(
+                            //   style: ElevatedButton.styleFrom(
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(30.0),
+                            //     ),
+                            //     elevation: 0,
+                            //     backgroundColor: Palette.buttonOrange,
+                            //   ),
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.symmetric(
+                            //         vertical: 14, horizontal: 90),
+                            //     child: Text("저장하기",
+                            //         style: TextStyle(fontSize: 16)),
+                            //   ),
+                            //   onPressed: () async {
+                            //     print(
+                            //         "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
-                                // 수업일, 동작선택, 필수 입력
-                                if ((todayNoteController.text.trim().isEmpty) &&
-                                    lessonActionList
-                                        .where((element) =>
-                                            element['noteSelected'])
-                                        .isEmpty) {
-                                  //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content:
-                                        Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
-                                  ));
-                                } else {
-                                  print(
-                                      "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / checkInitState : ${checkInitState}");
-                                  DateChangeMode = false;
+                            //     // 수업일, 동작선택, 필수 입력
+                            //     if ((todayNoteController.text.trim().isEmpty) &&
+                            //         lessonActionList
+                            //             .where((element) =>
+                            //                 element['noteSelected'])
+                            //             .isEmpty) {
+                            //       //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
+                            //       ScaffoldMessenger.of(context)
+                            //           .showSnackBar(SnackBar(
+                            //         content:
+                            //             Text("일별노트 또는 동작선택중 하나는 필수입력해주세요."),
+                            //       ));
+                            //     } else {
+                            //       print(
+                            //           "[LA] 노트저장 DateChangeMode : ${DateChangeMode}/todayNoteView : ${todayNoteView} / checkInitState : ${checkInitState}");
+                            //       DateChangeMode = false;
 
-                                  print(
-                                      "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
-                                  saveRecentSequence(
-                                    sequenceRecentService,
-                                    userInfo.uid,
-                                    userInfo.docId,
-                                    todayNoteView,
-                                    lessonActionList,
-                                    false,
-                                    0,
-                                    Timestamp.now(),
-                                    userInfo.name,
-                                  );
-                                  saveMethod(
-                                    lessonService,
-                                    lessonDateArg,
-                                    lessonAddMode,
-                                    customUserInfo,
-                                    dayLessonService,
-                                    todayNoteView,
-                                  );
-                                  isSequenceSaveChecked
-                                      ? saveCustomSequnce(
-                                          sequenceCustomService,
-                                          userInfo.uid,
-                                          userInfo.docId,
-                                          todayNoteView,
-                                          lessonActionList,
-                                          false,
-                                          0,
-                                          Timestamp.now(),
-                                          userInfo.name,
-                                          sequenceNameController.text,
-                                        )
-                                      : null;
+                            //       print(
+                            //           "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
+                            //       saveRecentSequence(
+                            //         sequenceRecentService,
+                            //         userInfo.uid,
+                            //         userInfo.docId,
+                            //         todayNoteView,
+                            //         lessonActionList,
+                            //         false,
+                            //         0,
+                            //         Timestamp.now(),
+                            //         userInfo.name,
+                            //       );
+                            //       saveMethod(
+                            //         lessonService,
+                            //         lessonDateArg,
+                            //         lessonAddMode,
+                            //         customUserInfo,
+                            //         dayLessonService,
+                            //         todayNoteView,
+                            //       );
+                            //       isSequenceSaveChecked
+                            //           ? saveCustomSequnce(
+                            //               sequenceCustomService,
+                            //               userInfo.uid,
+                            //               userInfo.docId,
+                            //               todayNoteView,
+                            //               lessonActionList,
+                            //               false,
+                            //               0,
+                            //               Timestamp.now(),
+                            //               userInfo.name,
+                            //               sequenceNameController.text,
+                            //             )
+                            //           : null;
 
-                                  lessonService.notifyListeners();
-                                  Navigator.pop(context);
-                                }
-                              },
-                            ),
+                            //       lessonService.notifyListeners();
+                            //       Navigator.pop(context);
+                            //     }
+                            //   },
+                            // ),
 
                             const SizedBox(height: 10),
                             lessonAddMode == "노트편집"
