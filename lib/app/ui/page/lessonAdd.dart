@@ -110,6 +110,8 @@ List<TextEditingController> txtEdtCtrlrList = [];
 
 int growthInth = 0;
 
+bool isReturnIsNotEmpty = true;
+
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});
 
@@ -139,6 +141,9 @@ class _LessonAddState extends State<LessonAdd> {
 
     initStateCheck = true;
     growthInth = 0;
+
+    print("globalVariables.memberTicketList.where((element) => element['isSelected'] == true && element['memberId'] == userInfo.docId) : ${globalVariables.memberTicketList.where((element) => element['isSelected'] == true && element['memberId'] == userInfo.docId)}");
+    
   }
 
   @override
@@ -249,12 +254,16 @@ class _LessonAddState extends State<LessonAdd> {
           sequenceCustomService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
-        if (lessonActionList.isEmpty && lessonAddMode == "노트편집") {
+        if(!isReturnIsNotEmpty){
+          return Center(child: Text("레슨 노트를 추가해 보세요."),);
+        }
+        if (isReturnIsNotEmpty && lessonActionList.isEmpty && lessonAddMode == "노트편집") {
           lessonService
               .readDateMemberActionNote(
                   customUserInfo.uid, customUserInfo.docId, lessonDateArg)
               .then((value) {
             print("ppppppppp - value : ${value}");
+            value.length == 0 ? isReturnIsNotEmpty = false : isReturnIsNotEmpty = true;
             lessonActionList.addAll(value);
             lessonActionList.isNotEmpty ? growthInth++ : null;
             lessonActionList.forEach((element) =>
