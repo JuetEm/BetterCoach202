@@ -144,8 +144,10 @@ class _MemberAddState extends State<MemberAdd> {
     super.initState();
     String event = "PAGE";
     String value = "회원등록";
-    analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
-        "${value} : ${userInfo!.name}", "${value} 프로퍼티 인자2");
+    userInfo != null ? analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+        "${value} : ${userInfo!.name}", "${value} 프로퍼티 인자2") : analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
+        "${value} : 신규회원 추가/수정", "${value} 프로퍼티 인자2")
+        ;
   }
 
   Widget build(BuildContext context) {

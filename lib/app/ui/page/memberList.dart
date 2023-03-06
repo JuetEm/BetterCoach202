@@ -620,12 +620,14 @@ class _MemberListState extends State<MemberList> {
                               } else {
                                 globalVariables.sortList();
                                 docs = globalVariables.resultList; // 문서들 가져오기
-                                print('docs = ${docs[0]}');
+                                // print('docs = ${docs[0]}');
                               }
 
                               // 위 refreshMemberCount 아래에 있어야 회원 목록 없을 때 총 0 명 리턴
                               if (docs.isEmpty) {
-                                return Center(child: Text("회원 목록을 준비 중입니다."));
+                                return Container(
+                                  height: MediaQuery.of(context).size.height*0.7,
+                                  child: Center(child: Text("새로운 회원을 추가해보세요.")));
                               }
 
                               return NotificationListener(
