@@ -455,9 +455,15 @@ class _LessonAddState extends State<LessonAdd> {
                                         Row(
                                           children: [
                                             Icon(
-                                              isTicketCountChecked
+                                              globalVariables.memberTicketList
+                                                      .where((element) =>
+                                                          element['isSelected'] ==
+                                                              true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId) == true ? (isTicketCountChecked
                                                   ? Icons.confirmation_num
                                                   : Icons
+                                                      .confirmation_num_outlined) : Icons
                                                       .confirmation_num_outlined,
                                               color: globalVariables.memberTicketList
                                                       .where((element) =>
@@ -556,8 +562,14 @@ class _LessonAddState extends State<LessonAdd> {
                                           children: [
                                             Text("수강권 차감 여부"),
                                             Checkbox(
+                                              
                                               value: isTicketCountChecked,
-                                              onChanged: (value) {
+                                              onChanged: globalVariables.memberTicketList
+                                                      .where((element) =>
+                                                          element['isSelected'] ==
+                                                              true &&
+                                                          element['memberId'] ==
+                                                              userInfo.docId) == true ? (value) {
                                                 String event = "onChanged";
                                                 String value = "수강권 차감 여부";
                                                 analyticLog.sendAnalyticsEvent(
@@ -572,7 +584,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                                 /// 화면 재빌드
                                                 setState(() {});
-                                              },
+                                              } : null,
                                             )
                                           ],
                                         )
