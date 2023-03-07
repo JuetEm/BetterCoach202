@@ -56,9 +56,15 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
         },
             [
               PopupMenuButton(
+                onSelected: (value) {
+                  print("it's onSelected!!!");
+                },
+                onOpened: () {
+                  print("It's Opened!!!");
+                },
                 itemBuilder: (context) => [
                   CheckedPopupMenuItem(
-                    checked: false,
+                    checked: true,
                     child: Text("이 회원만 보기"),
                   ),
                 ],
