@@ -248,6 +248,20 @@ class DayLessonService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<int> countTodaynote(
+    String uid,
+    String docId,
+  ) async {
+    QuerySnapshot docRaw = await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .get();
+    List<DocumentSnapshot> docs = docRaw.docs;
+    print('pos : ${docs.length}');
+
+    return docs.length;
+  }
+
   void delete({
     required String docId,
     required Function onSuccess,

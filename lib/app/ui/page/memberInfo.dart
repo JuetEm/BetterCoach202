@@ -183,9 +183,9 @@ class _MemberInfoState extends State<MemberInfo> {
       nameFirst = userInfo.name.substring(0, 1);
     }
 
-    final lessonService = context.read<LessonService>();
+    final dayLessonService = context.read<DayLessonService>();
 
-    Future<int> daylessonCnt = lessonService.countTodaynote(
+    Future<int> daylessonCnt = dayLessonService.countTodaynote(
       userInfo.uid,
       userInfo.docId,
     );
@@ -841,6 +841,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 print(
                     "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
                 if (doc.isEmpty && dayNotelessonCnt == 0) {
+                  print("ConnectionState.done - 1 - dayNotelessonCnt : ${dayNotelessonCnt}");
                   return Column(
                     children: [
                       SizedBox(
@@ -852,6 +853,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     ],
                   );
                 } else if (doc.isEmpty && dayNotelessonCnt > 0) {
+                  print("ConnectionState.done - 2 - dayNotelessonCnt : ${dayNotelessonCnt}");
                   print("동작은 없는데, 일별노트는 있는 경우");
                   if (listMode == "동작별") {
                     return Column(
