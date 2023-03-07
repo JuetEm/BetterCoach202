@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -13,6 +14,7 @@ import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
+import 'package:web_project/app/ui/page/actionChartView.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
@@ -921,6 +923,10 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 } else {
                   print("왜가리지?");
                   if (listMode == "동작별") {
+                    // 연구중인 차트 뷰
+                    // return ActionChartView(
+                    //     docs: doc, userInfo: widget.userInfo);
+
                     return NoteListActionCategory(
                         docs: doc, userInfo: widget.userInfo);
                   } else {
@@ -1375,6 +1381,8 @@ class _NoteListActionCategoryState extends State<NoteListActionCategory> {
   @override
   Widget build(BuildContext context) {
     return GroupedListView(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(horizontal: 20),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       elements: widget.docs,
