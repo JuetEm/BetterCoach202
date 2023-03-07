@@ -21,6 +21,7 @@ import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/ui/page/locationAdd.dart';
 import 'package:web_project/app/ui/widget/lessonCardWidget.dart';
+import 'package:web_project/app/ui/widget/notReadyAlertWidget.dart';
 import 'package:web_project/app/ui/widget/tableCalendarWidget.dart';
 import 'package:web_project/main.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
@@ -741,7 +742,11 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       setState(() {});
                       print('Calender Button Clicked');
                       eventSource = {};
-                      isNoteCalendarHided ? lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString() : lessonDate = miSelectedDate;
+                      isNoteCalendarHided
+                          ? lessonDate = DateFormat("yyyy-MM-dd")
+                              .format(DateTime.now())
+                              .toString()
+                          : lessonDate = miSelectedDate;
                     },
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
@@ -852,7 +857,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               lessonDate,
             ),
             builder: (context, snapshot) {
-              print("fdsaerbtrbrytgerv - memberInfo - lessonDate : ${lessonDate}");
+              print(
+                  "fdsaerbtrbrytgerv - memberInfo - lessonDate : ${lessonDate}");
               /* if (snapshot.connectionState == ConnectionState.waiting) {
                 print("ConnectionState.waiting : ${ConnectionState.waiting}");
                 return Padding(
@@ -862,7 +868,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     color: Palette.buttonOrange,
                   )),
                 );
-              } else */ if (snapshot.connectionState == ConnectionState.done) {
+              } else */
+              if (snapshot.connectionState == ConnectionState.done) {
                 print("ConnectionState.done : ${ConnectionState.done}");
                 final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
 
@@ -873,7 +880,6 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       "ConnectionState.done - 1 - dayNotelessonCnt : ${dayNotelessonCnt}");
                   return Column(
                     children: [
-                      
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 120),
                         child: Center(
@@ -1014,10 +1020,31 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             ),
             const SizedBox(height: 10),
 
-            /// 티켓모양 수강권
+            /// 수강권 보류로 인해 임시 영역 업데이트 시 삭제
+            /// ###### 임시영역 시작 #####
             Container(
               alignment: Alignment.center,
+              child: AddTicketWidget(
+                  customFunctionOnTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return NotReadyAlertWidget(featureName: '수강권');
+                      },
+                    );
+                  },
+                  label: '수강권 추가하기',
+                  addIcon: true),
+            ),
+
+            /// ###### 임시영역 끝 #####
+
+            /// 수강권 임시 비활성화
+            /// 티켓모양 수강권
+            /* Container(
+              alignment: Alignment.center,
               child: globalVariables.memberTicketList.where((element) {
+                
                 return (element['isSelected'] == true) &&
                     (element['memberId'] == userInfo.docId);
               }).isNotEmpty
@@ -1118,7 +1145,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                         });
                       },
                     ),
-            ),
+            ), */
             SizedBox(
               height: 20,
             ),
@@ -1405,13 +1432,11 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
         ),
         FutureBuilder<QuerySnapshot>(
           future: widget.dayLessonService.readCalSelectedNote(
-            widget.userInfo.uid,
-            widget.userInfo.docId,
-            lessonDate
-          ),
+              widget.userInfo.uid, widget.userInfo.docId, lessonDate),
           builder: (context, snapshot) {
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-            print("fdsaerbtrbrytgerv - 2 - memberInfo - lessonDate : ${lessonDate}");
+            print(
+                "fdsaerbtrbrytgerv - 2 - memberInfo - lessonDate : ${lessonDate}");
 
             if (docs.isEmpty) {
               return Padding(
