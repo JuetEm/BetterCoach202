@@ -1,27 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:web_project/app/data/model/event.dart';
-import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
-import 'package:web_project/app/ui/page/actionChartView.dart';
-import 'package:web_project/app/ui/page/memberTicketManage.dart';
-import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
-import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
-import 'package:web_project/app/ui/page/locationAdd.dart';
 import 'package:web_project/app/ui/widget/lessonCardWidget.dart';
 import 'package:web_project/app/ui/widget/notReadyAlertWidget.dart';
 import 'package:web_project/app/ui/widget/tableCalendarWidget.dart';
@@ -33,10 +23,7 @@ import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
 import 'lessonAdd.dart';
 
-import 'lessonUpdate.dart';
 import 'memberAdd.dart';
-import 'memberList.dart';
-import 'memberUpdate.dart';
 import '../../data/model/userInfo.dart';
 
 Map<DateTime, dynamic> eventSource = {};
@@ -159,12 +146,6 @@ class _MemberInfoState extends State<MemberInfo> {
     memberActionNote = [];
     super.dispose();
   }
-
-  void _refreshMemberInfo() {
-    setState(() {});
-  }
-
-  //setState(() {});
 
   @override
   Widget build(BuildContext context) {

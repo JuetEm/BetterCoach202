@@ -412,6 +412,7 @@ class _LessonAddState extends State<LessonAdd> {
                             // await totalNoteSave(
                             //     lessonService, customUserInfo, context);
 
+                            memberActionNote = [];
                             // lessonService.notifyListeners();
                             Navigator.pop(context);
                           }
@@ -941,8 +942,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                     print(
                                                                         "txtEdtCtrlrList[index].text : ${txtEdtCtrlrList[index].text}");
 
-                                                                    setState(
-                                                                        () {});
+                                                                    setState(() {});
                                                                   },
                                                                 )),
                                                             TextFormField(
@@ -1214,7 +1214,10 @@ class _LessonAddState extends State<LessonAdd> {
                                     print(
                                         "동작추가시노트아이디:${totalNoteTextFieldDocId}");
 
-                                    lessonService.notifyListeners();
+                                    // lessonService.notifyListeners();
+                                    setState(() {
+                                      
+                                    });
                                   },
                                 ),
                                 const SizedBox(height: 20),
@@ -1982,7 +1985,7 @@ void initInpuWidget({
   print(
       "[LA] 수업일변경 - initInpuWidget/재생성 totalNoteControllers${totalNoteControllers} / totalNoteTextFieldDocId${totalNoteTextFieldDocId} / tmpLessonInfoList${tmpLessonInfoList})");
   print("[LA] 수업일변경 - notifyListeners / ${checkInitState}");
-  lessonService.notifyListeners();
+  // lessonService.notifyListeners();
 }
 
 void addTmpInfoList(

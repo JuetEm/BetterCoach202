@@ -148,7 +148,7 @@ class MemberService extends ChangeNotifier {
       'isActive': true, // 회원권 활성화 여부
     });
     print("result.id : ${result.id}");
-    notifyListeners(); // 화면 갱신
+    // notifyListeners(); // 화면 갱신
     onSuccess();
 
     return result.id;
@@ -192,7 +192,7 @@ class MemberService extends ChangeNotifier {
       'isActive': true, // 회원권 활성화 여부
     });
 
-    notifyListeners();
+    // notifyListeners();
     onSuccess(); // 화면 갱신
   }
 
@@ -220,7 +220,7 @@ class MemberService extends ChangeNotifier {
       'isActive': isActive, // 회원권 활성화 여부
     });
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   Future<void> updateIsFavorite(
@@ -232,7 +232,10 @@ class MemberService extends ChangeNotifier {
       'isFavorite': isFavorite, // 회원 좋아요 여부
     });
 
-    notifyListeners();
+
+    // 멤버인포 화면과 상관 있는지 없는지 모르겠음, 있을 가능성 높음
+    // // notifyListeners();
+    
   }
 
   Future<void> updateMemberTicket(
@@ -260,7 +263,7 @@ class MemberService extends ChangeNotifier {
       'ticketCreatedDate': ticketCreatedDate, // 수강권 생성일
     });
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   void delete({
@@ -270,7 +273,7 @@ class MemberService extends ChangeNotifier {
   }) async {
     // bucket 삭제
     await memberCollection.doc(docId).delete();
-    notifyListeners();
+    // notifyListeners();
     // 화면 갱신
     onSuccess(); // 화면 갱신
   }
