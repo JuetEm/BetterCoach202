@@ -92,7 +92,6 @@ class _LocationAddState extends State<LocationAdd> {
     townOnTapIndex = 0;
 
     currentDistrict = [];
-    
   }
 
   @override
@@ -358,7 +357,8 @@ class _LocationAddState extends State<LocationAdd> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
-                                  child: Text(townList[index],
+                                  child: Text(
+                                townList[index],
                                 style: TextStyle(
                                   color: townSelected
                                       ? selectedColor
@@ -410,7 +410,7 @@ class _LocationAddState extends State<LocationAdd> {
                   print("선택 버튼");
                   // create action
                   if (resultList.isNotEmpty) {
-                    // 신규 동작 추가 성공시 actionSelect로 이동
+                    // 새로운 동작 추가 성공시 actionSelect로 이동
                     Navigator.pop(context, resultList);
                   } else {
                     // 빈 값 있을 때

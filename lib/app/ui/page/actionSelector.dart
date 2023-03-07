@@ -1611,9 +1611,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                                   children: [
                                     SizedBox(height: 5),
                                     GrayInkwellButton(
-                                      label: '신규 동작 추가',
+                                      label: '새로운 동작 추가',
                                       customFunctionOnTap: () async {
-                                        print("신규 동작 추가");
+                                        print("새로운 동작 추가");
                                         // LessonAdd로 이동
                                         final result = await showDialog(
                                           context: context,
@@ -1807,7 +1807,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                 horizontal: 20, vertical: 20),
                             child: ElevatedButton(
                               onPressed: () {
-                                print("신규 동작추가 확인");
+                                print("새로운 동작추가 확인");
                                 setState(() {
                                   searchString = "";
                                   searchController.clear();

@@ -138,7 +138,7 @@ class _ActionAddState extends State<ActionAdd> {
                 Container(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    '신규 동작 생성',
+                    '새로운 동작 생성',
                     style: TextStyle(
                         color: Palette.gray00,
                         fontSize: 16,
@@ -419,7 +419,7 @@ class _ActionAddState extends State<ActionAdd> {
 
                       tmpResultList.add(actionName);
                       tmpResultList.add(resultActionList);
-                      // 신규 동작 추가 성공시 actionSelector로 이동
+                      // 새로운 동작 추가 성공시 actionSelector로 이동
                       Navigator.pop(context, tmpResultList);
                     } else {
                       // 빈 값 있을 때
