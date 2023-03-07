@@ -92,7 +92,7 @@ bool isKakaoInstalled = false;
 
 bool isEmailLoginDeactivated = true;
 
-AnalyticLog analyticLog = AnalyticLog();
+ AnalyticLog analyticLog = AnalyticLog();
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -125,42 +125,43 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    analyticLog.sendAnalyticsEvent(
-        screenName, "플랫폼체크", "웹으로 접속 스트링", "웹으로 접속 파라미터");
+    print("it's WEB!!!");
+    /* analyticLog.sendAnalyticsEvent(
+        screenName, "플랫폼체크", "웹으로 접속 스트링", "웹으로 접속 파라미터"); */
     // WebView.platform = WebWebViewPlatform();
   } else {
     if (Platform.isAndroid) {
       print("Platform.isAndroid");
       await Firebase.initializeApp();
-      analyticLog.sendAnalyticsEvent(
-          screenName, "플랫폼체크", "Android 접속 스트링", "Android 접속 파라미터");
+      /* analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "Android 접속 스트링", "Android 접속 파라미터"); */
     } else if (Platform.isIOS) {
       print("Platform.isIOS");
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      analyticLog.sendAnalyticsEvent(
-          screenName, "플랫폼체크", "IOS 접속 스트링", "IOS 접속 파라미터");
+      /* analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "IOS 접속 스트링", "IOS 접속 파라미터"); */
     } else if (Platform.isMacOS) {
       print("Platform.isMacOS");
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      analyticLog.sendAnalyticsEvent(
-          screenName, "플랫폼체크", "MACOS 접속 스트링", "MACOS 접속 파라미터");
+      /* analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "MACOS 접속 스트링", "MACOS 접속 파라미터"); */
     } else if (Platform.isWindows) {
       print("Platform.isWindows");
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      analyticLog.sendAnalyticsEvent(
-          screenName, "플랫폼체크", "WINDOWS 접속 스트링", "WINDOWS 접속 파라미터");
+      /* analyticLog.sendAnalyticsEvent(
+          screenName, "플랫폼체크", "WINDOWS 접속 스트링", "WINDOWS 접속 파라미터"); */
     }
   }
 
   AuthService authService = AuthService();
   FB.User? user = authService.currentUser();
-
+ 
   user != null ? analyticLog.analyticConfig(user!.uid) : analyticLog.analyticConfig(null) ;
 
   print("user?.email : ${user?.email}");

@@ -9,7 +9,7 @@ class AnalyticLog {
   // GA analytics
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   // Amplitude analytics
-  static Amplitude amplitude = Amplitude.getInstance();
+  static Amplitude amplitude = Amplitude.getInstance(instanceName: "BetterCoach");
 
   static Identify identify = Identify();
 

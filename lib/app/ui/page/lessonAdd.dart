@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
+import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
@@ -248,10 +249,10 @@ class _LessonAddState extends State<LessonAdd> {
     }
     print("재빌드시 init상태 : ${checkInitState}");
 
-    return Consumer4<LessonService, DayLessonService, SequenceRecentService,
-        SequenceCustomService>(
+    return Consumer5<LessonService, DayLessonService, SequenceRecentService,
+        SequenceCustomService, MemberTicketService>(
       builder: (context, lessonService, dayLessonService, sequenceRecentService,
-          sequenceCustomService, child) {
+          sequenceCustomService, memberTicketService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
         if (!isReturnIsNotEmpty) {
@@ -481,8 +482,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   true &&
                                                               element['memberId'] ==
                                                                   userInfo
-                                                                      .docId) ==
-                                                      true
+                                                                      .docId).isNotEmpty
                                                   ? (isTicketCountChecked
                                                       ? Icons.confirmation_num
                                                       : Icons
@@ -496,8 +496,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   true &&
                                                               element['memberId'] ==
                                                                   userInfo
-                                                                      .docId) ==
-                                                      true
+                                                                      .docId).isNotEmpty
                                                   ? (isTicketCountChecked
                                                       ? Palette.buttonOrange
                                                       : Palette.gray99)
@@ -508,8 +507,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               globalVariables.memberTicketList.where((element) =>
                                                           element['isSelected'] == true &&
                                                           element['memberId'] ==
-                                                              userInfo.docId) ==
-                                                      true
+                                                              userInfo.docId).isNotEmpty
                                                   ? (isTicketCountChecked
                                                       ? (globalVariables.memberTicketList
                                                                       .where((element) =>
@@ -546,8 +544,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   true &&
                                                               element['memberId'] ==
                                                                   userInfo
-                                                                      .docId) ==
-                                                      true
+                                                                      .docId).isNotEmpty
                                                   ? "/"
                                                   : "",
                                               style: TextStyle(
@@ -565,8 +562,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   true &&
                                                               element['memberId'] ==
                                                                   userInfo
-                                                                      .docId) ==
-                                                      true
+                                                                      .docId).isNotEmpty
                                                   ? ((globalVariables
                                                           .memberTicketList
                                                           .where((element) =>
@@ -599,12 +595,11 @@ class _LessonAddState extends State<LessonAdd> {
                                               onChanged: globalVariables
                                                           .memberTicketList
                                                           .where((element) =>
-                                                              element['noteSelected'] ==
+                                                              element['isSelected'] ==
                                                                   true &&
                                                               element['memberId'] ==
                                                                   userInfo
-                                                                      .docId) ==
-                                                      true
+                                                                      .docId).isNotEmpty
                                                   ? (value) {
                                                       String event =
                                                           "onChanged";
@@ -1580,7 +1575,11 @@ class _LessonAddState extends State<LessonAdd> {
       String lessonAddMode,
       CustomUserInfo.UserInfo customUserInfo,
       DayLessonService dayLessonService,
-      String todayNote) async {
+      // MemberTicketService memberTicketService,
+      String todayNote,
+      // String selectedTicketId,
+      // bool isTicketCountChecked,
+      ) async {
     print("asdfsdfsfsgfdg - saveMethod CALLED!! => ${i}");
     lessonActionList.forEach((element) {
       print("asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
@@ -1610,7 +1609,10 @@ class _LessonAddState extends State<LessonAdd> {
         userInfo.docId,
         lessonDateArg,
         userInfo.name,
-        todayNoteController.text);
+        todayNoteController.text,
+        // selectedTicketId,
+        // isTicketCountChecked
+        );
 
     /* int result = 0;
     lessonService
@@ -1682,22 +1684,12 @@ class _LessonAddState extends State<LessonAdd> {
 
     lessonActionList = [];
 
-    String ticketId = "";
-    globalVariables.memberTicketList
-            .where((element) => element['isSelect'] == true)
-            .isNotEmpty
-        ? globalVariables.memberTicketList.forEach((element) {
-            if (element['isSelected'] == true &&
-                element['memberId'] == userInfo.docId) {
-              ticketId = element['id'];
-            }
-          })
-        : ticketId = "";
+    /* String ticketId = globalVariables.memberTicketList
+            .where((element) => element['isSelect'] == true && element['memberId'] == userInfo.docId).toList().first['id'];
 
-    ticketId != ""
-        ? dayLessonService.updateTicketUsedById(
-            dayLessonList[0][0]['id'], isTicketCountChecked, ticketId)
-        : null;
+    ticketId.isNotEmpty
+        ? memberTicketService.
+        : null; */
   }
 
   Future<void> totalNoteSave(LessonService lessonService,

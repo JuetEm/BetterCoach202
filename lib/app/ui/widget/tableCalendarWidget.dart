@@ -27,7 +27,7 @@ class TableCalendarWidget extends StatefulWidget {
 
 class _TableCalendarWidgetState extends State<TableCalendarWidget> {
   // 달력 보여주는 형식
-  CalendarFormat calendarFormat = CalendarFormat.month;
+  CalendarFormat calendarFormat = CalendarFormat.week;
   // 선택된 날짜
   DateTime selectedDateIn = DateTime(
     DateTime.now().year,

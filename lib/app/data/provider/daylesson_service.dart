@@ -219,6 +219,8 @@ class DayLessonService extends ChangeNotifier {
     String name,
     // Timestamp timestamp,
     String todayNote,
+    // String ticketId,
+    // bool isTicketUsed,
   ) {
     // Update one field, creating the document if it does not already exist.
     /* final data = {"capital": true};
@@ -232,6 +234,8 @@ class DayLessonService extends ChangeNotifier {
       'name': name,
       'timestamp': DateTime.now(),
       'todayNote': todayNote,
+      // 'ticketId': ticketId,
+      // 'isTicketUsed': isTicketUsed,
     };
     daylessonCollection.doc(id).set(data, SetOptions(merge: true));
   }
