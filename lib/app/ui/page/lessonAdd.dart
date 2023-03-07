@@ -469,7 +469,9 @@ class _LessonAddState extends State<LessonAdd> {
                                       ],
                                     ),
                                     Spacer(),
-                                    Column(
+
+                                    /// 수강권 관련 컬럼 -> 보류로 인해 임시 비활성화
+                                    /* Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
@@ -623,7 +625,7 @@ class _LessonAddState extends State<LessonAdd> {
                                           ],
                                         )
                                       ],
-                                    ),
+                                    ), */
                                   ],
                                 ),
                               ),
@@ -1570,16 +1572,16 @@ class _LessonAddState extends State<LessonAdd> {
 
   int i = 0;
   Future<void> saveMethod(
-      LessonService lessonService,
-      String lessonDateArg,
-      String lessonAddMode,
-      CustomUserInfo.UserInfo customUserInfo,
-      DayLessonService dayLessonService,
-      // MemberTicketService memberTicketService,
-      String todayNote,
-      // String selectedTicketId,
-      // bool isTicketCountChecked,
-      ) async {
+    LessonService lessonService,
+    String lessonDateArg,
+    String lessonAddMode,
+    CustomUserInfo.UserInfo customUserInfo,
+    DayLessonService dayLessonService,
+    // MemberTicketService memberTicketService,
+    String todayNote,
+    // String selectedTicketId,
+    // bool isTicketCountChecked,
+  ) async {
     print("asdfsdfsfsgfdg - saveMethod CALLED!! => ${i}");
     lessonActionList.forEach((element) {
       print("asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
@@ -1604,15 +1606,15 @@ class _LessonAddState extends State<LessonAdd> {
         ", " +
         todayNote);
     await dayLessonService.setLessonTodayNote(
-        userInfo.uid + "_" + userInfo.docId + "_" + lessonDateArg,
-        userInfo.uid,
-        userInfo.docId,
-        lessonDateArg,
-        userInfo.name,
-        todayNoteController.text,
-        // selectedTicketId,
-        // isTicketCountChecked
-        );
+      userInfo.uid + "_" + userInfo.docId + "_" + lessonDateArg,
+      userInfo.uid,
+      userInfo.docId,
+      lessonDateArg,
+      userInfo.name,
+      todayNoteController.text,
+      // selectedTicketId,
+      // isTicketCountChecked
+    );
 
     /* int result = 0;
     lessonService
