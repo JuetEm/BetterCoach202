@@ -1381,7 +1381,7 @@ class _NoteListActionCategoryState extends State<NoteListActionCategory> {
   @override
   Widget build(BuildContext context) {
     return GroupedListView(
-      scrollDirection: Axis.horizontal,
+      // scrollDirection: Axis.horizontal,
       padding: EdgeInsets.symmetric(horizontal: 20),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
