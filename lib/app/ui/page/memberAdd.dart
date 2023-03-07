@@ -151,8 +151,6 @@ class _MemberAddState extends State<MemberAdd> {
         "${value} : 프로퍼티 인자1", "${value} 프로퍼티 인자2");
   }
 
-  
-
   Widget build(BuildContext context) {
     final authService = context.read<AuthService>();
     final user = authService.currentUser()!;
@@ -589,7 +587,6 @@ class _MemberAddState extends State<MemberAdd> {
 
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
 
-
                                             String memberName = "";
                                             nameController.text.isEmpty
                                                 ? ScaffoldMessenger.of(context)
@@ -625,42 +622,94 @@ class _MemberAddState extends State<MemberAdd> {
                                             String bodyAnalyzed =
                                                 bodyAnalyzeController.text;
 
-                                            UserInfo userInfo = UserInfo("", AuthService().currentUser()!.uid, name, registerDate, phoneNumber, registerType, goal, selectedGoals, bodyAnalyzed, selelctedAnalyzedList, medicalHistories, selectedHistoryList, info, note, comment, true, false);
+                                            UserInfo userInfo = UserInfo(
+                                                "",
+                                                AuthService()
+                                                    .currentUser()!
+                                                    .uid,
+                                                name,
+                                                registerDate,
+                                                phoneNumber,
+                                                registerType,
+                                                goal,
+                                                selectedGoals,
+                                                bodyAnalyzed,
+                                                selelctedAnalyzedList,
+                                                medicalHistories,
+                                                selectedHistoryList,
+                                                info,
+                                                note,
+                                                comment,
+                                                true,
+                                                false);
+
                                             /// var result = await // 저장하기 성공시 Home로 이동
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MemberTicketMake.getNewMemberTicket(userInfo,"newMemberTicket")),
+                                                      MemberTicketMake
+                                                          .getNewMemberTicket(
+                                                              userInfo,
+                                                              "newMemberTicket")),
                                             ).then((value) {
                                               print("수강권 추가 result");
                                               ticketWidgetResultMap = value;
                                             });
                                           },
-                                          child: ticketWidgetResultMap.isNotEmpty ? TicketWidget(ticketCountLeft: ticketWidgetResultMap['ticketCountLeft'], ticketCountAll: ticketWidgetResultMap['ticketCountAll'], ticketTitle: ticketWidgetResultMap['ticketTitle'], ticketDescription: ticketWidgetResultMap['ticketDescription'], ticketStartDate: ticketWidgetResultMap['ticketStartDate'], ticketEndDate: ticketWidgetResultMap['ticketEndDate'], ticketDateLeft: ticketWidgetResultMap['ticketDateLeft'], customFunctionOnTap: (){}) : Container(
-                                            width: 280,
-                                            height: 140,
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "수강권 추가하기",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Palette.gray99),
+                                          child: ticketWidgetResultMap
+                                                  .isNotEmpty
+                                              ? TicketWidget(
+                                                  ticketCountLeft:
+                                                      ticketWidgetResultMap[
+                                                          'ticketCountLeft'],
+                                                  ticketCountAll:
+                                                      ticketWidgetResultMap[
+                                                          'ticketCountAll'],
+                                                  ticketTitle:
+                                                      ticketWidgetResultMap[
+                                                          'ticketTitle'],
+                                                  ticketDescription:
+                                                      ticketWidgetResultMap[
+                                                          'ticketDescription'],
+                                                  ticketStartDate:
+                                                      ticketWidgetResultMap[
+                                                          'ticketStartDate'],
+                                                  ticketEndDate:
+                                                      ticketWidgetResultMap[
+                                                          'ticketEndDate'],
+                                                  ticketDateLeft:
+                                                      ticketWidgetResultMap[
+                                                          'ticketDateLeft'],
+                                                  customFunctionOnTap: () {})
+                                              : Container(
+                                                  width: 280,
+                                                  height: 140,
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "수강권 추가하기",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Palette.gray99),
+                                                      ),
+                                                      Icon(
+                                                        Icons
+                                                            .add_circle_outline,
+                                                        color: Palette.gray99,
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                                Icon(
-                                                  Icons.add_circle_outline,
-                                                  color: Palette.gray99,
-                                                )
-                                              ],
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),
@@ -1314,7 +1363,7 @@ class _MemberAddState extends State<MemberAdd> {
               String value = bigTitle;
               analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
                   "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
-              print("신규 동작 추가");
+              print("새로운 동작 추가");
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -1520,7 +1569,7 @@ class _MemberAddState extends State<MemberAdd> {
             ),
           ),
           onPressed: () async {
-            print("신규 동작 추가");
+            print("새로운 동작 추가");
             showModalBottomSheet(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -1700,7 +1749,7 @@ class _MemberAddState extends State<MemberAdd> {
               String value = bigTitle;
               analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
                   "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
-              print("신규 동작 추가");
+              print("새로운 동작 추가");
               // Bottom Sheet 함수 작성
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
@@ -1889,7 +1938,7 @@ class _MemberAddState extends State<MemberAdd> {
             ),
           ),
           onPressed: () async {
-            print("신규 동작 추가");
+            print("새로운 동작 추가");
             // Bottom Sheet 함수 작성
             showModalBottomSheet(
                 shape: RoundedRectangleBorder(
@@ -2064,7 +2113,7 @@ class _MemberAddState extends State<MemberAdd> {
               String value = bigTitle;
               analyticLog.sendAnalyticsEvent(screenName, "${event} : ${value}",
                   "${value} : ${memberAddMode}", "${value} : 프로퍼티 인자2");
-              print("신규 동작 추가");
+              print("새로운 동작 추가");
               // Bottom Sheet 함수 작성
               showModalBottomSheet(
                   shape: RoundedRectangleBorder(
@@ -2259,7 +2308,7 @@ class _MemberAddState extends State<MemberAdd> {
             ),
           ),
           onPressed: () async {
-            print("신규 동작 추가");
+            print("새로운 동작 추가");
             // Bottom Sheet 함수 작성
             showModalBottomSheet(
                 shape: RoundedRectangleBorder(
