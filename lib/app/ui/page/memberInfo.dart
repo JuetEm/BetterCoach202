@@ -221,7 +221,9 @@ class _MemberInfoState extends State<MemberInfo> {
                 value.isEmpty
                     ? isValueNotEmpty = false
                     : isValueNotEmpty = true;
-                value.isNotEmpty ? memberActionNote.addAll(value) : memberActionNote = [];
+                value.isNotEmpty
+                    ? memberActionNote.addAll(value)
+                    : memberActionNote = [];
                 print(
                     "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
               })
@@ -266,83 +268,82 @@ class _MemberInfoState extends State<MemberInfo> {
                                           AsyncSnapshot snapshot) {
                                         /* if (snapshot.connectionState ==
                                             ConnectionState.done) { */
-                                          //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
-                                          if (snapshot.hasData == false) {
-                                            return IconButton(
-                                                    onPressed: null,
-                                                    iconSize: 40,
-                                                    icon: SvgPicture.asset(
-                                                        "assets/icons/favoriteUnselected.svg"))
-                                                .animate()
-                                                .fadeIn(duration: 1200.ms);
-                                                /* print("[MI] isFavorite snapshot.hasData == false");
+                                        //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
+                                        if (snapshot.hasData == false) {
+                                          return IconButton(
+                                                  onPressed: null,
+                                                  iconSize: 40,
+                                                  icon: SvgPicture.asset(
+                                                      "assets/icons/favoriteUnselected.svg"))
+                                              .animate()
+                                              .fadeIn(duration: 1200.ms);
+                                          /* print("[MI] isFavorite snapshot.hasData == false");
                                                 return SizedBox.shrink(); */
-                                          }
-                                          //error가 발생하게 될 경우 반환하게 되는 부분
-                                          else if (snapshot.hasError) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'Error: ${snapshot.error}', // 에러명을 텍스트에 뿌려줌
-                                                style: TextStyle(fontSize: 15),
+                                        }
+                                        //error가 발생하게 될 경우 반환하게 되는 부분
+                                        else if (snapshot.hasError) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              'Error: ${snapshot.error}', // 에러명을 텍스트에 뿌려줌
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          );
+                                        }
+
+                                        // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 부분
+                                        else {
+                                          print(
+                                              "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo.docId}");
+                                          favoriteMember = snapshot.data;
+                                          return IconButton(
+                                              icon: SvgPicture.asset(
+                                                favoriteMember
+                                                    ? "assets/icons/favoriteSelected.svg"
+                                                    : "assets/icons/favoriteUnselected.svg",
                                               ),
-                                            );
-                                          }
+                                              iconSize: 40,
+                                              onPressed: () async {
+                                                String event = "onPressed";
+                                                String value = "즐겨찾기";
+                                                analyticLog.sendAnalyticsEvent(
+                                                    screenName,
+                                                    "${event} : ${value}",
+                                                    "${value} : ${widget.userInfo!.name}",
+                                                    "${value} : ${viewMode}");
 
-                                          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 부분
-                                          else {
-                                            print(
-                                                "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo.docId}");
-                                            favoriteMember = snapshot.data;
-                                            return IconButton(
-                                                icon: SvgPicture.asset(
-                                                  favoriteMember
-                                                      ? "assets/icons/favoriteSelected.svg"
-                                                      : "assets/icons/favoriteUnselected.svg",
-                                                ),
-                                                iconSize: 40,
-                                                onPressed: () async {
-                                                  String event = "onPressed";
-                                                  String value = "즐겨찾기";
-                                                  analyticLog.sendAnalyticsEvent(
-                                                      screenName,
-                                                      "${event} : ${value}",
-                                                      "${value} : ${widget.userInfo!.name}",
-                                                      "${value} : ${viewMode}");
+                                                favoriteMember =
+                                                    !favoriteMember;
 
-                                                  favoriteMember =
-                                                      !favoriteMember;
-
-                                                  await memberService
-                                                      .updateIsFavorite(
-                                                          userInfo.docId,
-                                                          favoriteMember);
-                                                  int rstLnth = globalVariables
-                                                      .resultList.length;
-                                                  for (int i = 0;
-                                                      i < rstLnth;
-                                                      i++) {
-                                                    if (userInfo.docId ==
-                                                        globalVariables
-                                                                .resultList[i]
-                                                            ['id']) {
-                                                      print(
-                                                          "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
+                                                await memberService
+                                                    .updateIsFavorite(
+                                                        userInfo.docId,
+                                                        favoriteMember);
+                                                int rstLnth = globalVariables
+                                                    .resultList.length;
+                                                for (int i = 0;
+                                                    i < rstLnth;
+                                                    i++) {
+                                                  if (userInfo.docId ==
                                                       globalVariables
-                                                                  .resultList[i]
-                                                              ['isFavorite'] =
-                                                          !globalVariables
-                                                                  .resultList[i]
-                                                              ['isFavorite'];
-                                                      break;
-                                                    }
+                                                              .resultList[i]
+                                                          ['id']) {
+                                                    print(
+                                                        "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
+                                                    globalVariables
+                                                                .resultList[i]
+                                                            ['isFavorite'] =
+                                                        !globalVariables
+                                                                .resultList[i]
+                                                            ['isFavorite'];
+                                                    break;
                                                   }
+                                                }
 
-                                                  print(
-                                                      "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
-                                                });
-                                          }
+                                                print(
+                                                    "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+                                              });
+                                        }
                                         /* }else{
                                           /* return IconButton(
                                                     onPressed: null,
@@ -862,11 +863,15 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 if (doc.isEmpty && dayNotelessonCnt == 0) {
                   print(
                       "ConnectionState.done - 1 - dayNotelessonCnt : ${dayNotelessonCnt}");
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 120),
-                    child: Center(
-                      child: Text("첫번째 노트를 작성해보세요!"),
-                    ),
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                        child: Text("첫번째 노트를 작성해보세요!"),
+                      ),
+                    ],
                   );
                 } else if (doc.isEmpty && dayNotelessonCnt > 0) {
                   print(
