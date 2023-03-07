@@ -114,8 +114,9 @@ int growthInth = 0;
 bool isReturnIsNotEmpty = true;
 
 class LessonAdd extends StatefulWidget {
-  const LessonAdd({super.key});
-
+  LessonAdd(this.customFunction, {super.key});
+  LessonAdd.getCustomFunction(this.customFunction,{super.key});
+  Function customFunction;
   @override
   State<LessonAdd> createState() => _LessonAddState();
 }
@@ -413,7 +414,13 @@ class _LessonAddState extends State<LessonAdd> {
                             //     lessonService, customUserInfo, context);
 
                             memberActionNote = [];
+                            isReturnIsNotEmpty = true;
+
+                            print("여기가 맞긴 합니까?!");
+                            
                             // lessonService.notifyListeners();
+                            widget.customFunction();
+                            lessonService.nofiFunction();
                             Navigator.pop(context);
                           }
                         },
@@ -1722,7 +1729,7 @@ class _LessonAddState extends State<LessonAdd> {
     }
 
     lessonActionList = [];
-
+    // lessonService.notifyListeners();
     /* String ticketId = globalVariables.memberTicketList
             .where((element) => element['isSelect'] == true && element['memberId'] == userInfo.docId).toList().first['id'];
 

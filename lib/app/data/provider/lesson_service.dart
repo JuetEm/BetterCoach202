@@ -14,6 +14,10 @@ class LessonService extends ChangeNotifier {
 
   GlobalFunction globalFunction = GlobalFunction();
 
+  nofiFunction(){
+    notifyListeners();
+  }
+
   updateLessonActionNote(
     String id,
     String docId,
@@ -436,7 +440,7 @@ class LessonService extends ChangeNotifier {
     int pos,
     // Timestamp timestamp,
     String totalNote,
-  ) {
+  ) async {
     // Update one field, creating the document if it does not already exist.
     /* final data = {"capital": true};
 
@@ -454,7 +458,7 @@ class LessonService extends ChangeNotifier {
       'timestamp': Timestamp.now(),
       'totalNote': totalNote,
     };
-    lessonCollection.doc(id).set(data, SetOptions(merge: true));
+    await lessonCollection.doc(id).set(data, SetOptions(merge: true));
     notifyListeners();
   }
 

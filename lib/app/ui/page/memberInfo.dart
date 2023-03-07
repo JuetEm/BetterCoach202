@@ -128,7 +128,7 @@ class _MemberInfoState extends State<MemberInfo> {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonAdd(),
+              builder: (context) => LessonAdd((){}),
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
             ),
@@ -200,7 +200,7 @@ class _MemberInfoState extends State<MemberInfo> {
         // ignore: dead_code
 
         print(
-            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}, isValueNotEmpty : ${isValueNotEmpty}");
+            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}, isValueNotEmpty : ${isValueNotEmpty}, memberActionNote.isEmpty : ${memberActionNote.isEmpty }");
 
         memberActionNote.isEmpty && isValueNotEmpty
             ? lessonService
@@ -226,7 +226,7 @@ class _MemberInfoState extends State<MemberInfo> {
                     memberActionNote= [];
                   }
                   // value[1];
-                print("1 - fdsavewfweas value.length : ${value[0].length}");
+                print("1 - c value.length : ${value[0].length}");
                 value[0].isNotEmpty
                     ? isValueNotEmpty = true
                     : isValueNotEmpty = false;
@@ -656,14 +656,24 @@ class _MemberInfoState extends State<MemberInfo> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
+                          builder: (context) => LessonAdd.getCustomFunction((){
+                            (){
+                            print("floatingButton LessonAdd is called!");
+                            setState(() {
+                              
+                            });
+                          };
+                          }),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
                       ).then((value) {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
+                        isValueNotEmpty = true;
+                        print("memberActionNote : ${memberActionNote} , isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
                         eventSource = {};
+                        
                       });
                     }
                   },
@@ -1508,7 +1518,12 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
+                          builder: (context) => LessonAdd.getCustomFunction((){
+                            print("LessonAdd.getCustomFunction is called!!");
+                            setState(() {
+                              
+                            });
+                          }),
                           // GlobalWidgetDashboard(), //
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
@@ -1516,8 +1531,9 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       ).then((value) {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
+                        isValueNotEmpty = true;
+                        print("memberActionNote : ${memberActionNote} , isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
                         eventSource = {};
-
                         print("ewagbervfdyhsb eventSource : ${eventSource}");
                       });
                     },
@@ -1590,7 +1606,7 @@ class LessonCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LessonAdd(),
+                    builder: (context) => LessonAdd((){}),
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),
                   ),
