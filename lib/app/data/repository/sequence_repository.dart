@@ -17,9 +17,28 @@ SequenceCustomService sequenceCustomService = SequenceCustomService();
     return resultLit;
   }
 
+  Future<List> getRecentSequenceWithMemberIdFromService(String uid, String memberId) async{
+    List resultLit = [];
+    await sequenceRecentService.readWithMemberId(uid, memberId).then((value){
+      resultLit.addAll(value);
+    });
+
+    return resultLit;
+  }
+
+
   Future<List> getCustomSequenceFromService(String uid, String memberId) async {
     List resultList = [];
     await sequenceCustomService.read(uid, memberId).then((value){
+      resultList.addAll(value);
+    });
+
+    return resultList;
+  }
+
+  Future<List> getCustomSequenceWithMemberIdFromService(String uid, String memberId) async {
+    List resultList = [];
+    await sequenceCustomService.readWithMemeberId(uid, memberId).then((value){
       resultList.addAll(value);
     });
 

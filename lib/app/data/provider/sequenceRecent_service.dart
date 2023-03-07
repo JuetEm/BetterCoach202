@@ -13,6 +13,32 @@ class SequenceRecentService extends ChangeNotifier {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
     var result = await sequenceRecentCollection
         .where('uid', isEqualTo: uid)
+        // .where('memberId',isEqualTo: memberId)
+        // .orderBy('sequenceTitle', descending: false)
+        .orderBy('timeStamp',descending: true)
+        .get();
+
+    List resultList = [];
+
+    var docsLength = result.docs.length;
+    var rstObj = {};
+
+    for (int i = 0; i < docsLength; i++) {
+      // print("result.docs[i].data() : ${result.docs[i].data()}");
+      rstObj = result.docs[i].data();
+      // 문서 id는 없으므로 붙여줌
+      rstObj['id'] = result.docs[i].id;
+      print("fdsabmioenroifaenf rstObj : ${rstObj}");
+      resultList.add(rstObj);
+    }
+    notifyListeners();
+    return resultList;
+  }
+
+  Future<List> readWithMemberId(String uid, String memberId) async {
+    // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
+    var result = await sequenceRecentCollection
+        .where('uid', isEqualTo: uid)
         .where('memberId',isEqualTo: memberId)
         // .orderBy('sequenceTitle', descending: false)
         .orderBy('timeStamp',descending: true)

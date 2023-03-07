@@ -13,6 +13,8 @@ import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 
+bool isPopUpValSelected = false;
+
 SequenceController sequenceController = SequenceController();
 
 // 최근 시퀀스 리스트
@@ -55,17 +57,23 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
           Navigator.pop(context);
         },
             [
-              PopupMenuButton(
-                onSelected: (value) {
-                  print("it's onSelected!!!");
+              PopupMenuButton<String>(
+                icon: Icon(Icons.more_vert),
+                onSelected: (val) {
+                  print("print it damn it!!");
+                  isPopUpValSelected = !isPopUpValSelected;
+                  recentSequenceList = [];
+                  customSequenceList = [];
+                  if (this.mounted) {
+                    setState(() {});
+                  }
                 },
-                onOpened: () {
-                  print("It's Opened!!!");
-                },
-                itemBuilder: (context) => [
-                  CheckedPopupMenuItem(
-                    checked: true,
-                    child: Text("이 회원만 보기"),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  CheckedPopupMenuItem<String>(
+                    value: "이 회뭔만 보기 발류",
+                    checked: isPopUpValSelected,
+                    child: Text("이 회원만 보기",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ),
                 ],
               ),
@@ -105,7 +113,18 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
               Consumer<SequenceCustomService>(
                 builder: (context, sequenceCustomService, child) {
                   customSequenceList.isEmpty
-                      ? sequenceController
+                      ? (isPopUpValSelected
+                        ? sequenceController
+                          .getCustomSequenceWithMemberIdFromRepository(
+                              AuthService().currentUser()!.uid, userInfo.docId)
+                          .then((value) {
+                          customSequenceList.addAll(value);
+                          print(
+                              "fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
+                          if (this.mounted) {
+                            setState(() {});
+                          }
+                        }) : sequenceController
                           .getCustomSequenceFromRepository(
                               AuthService().currentUser()!.uid, userInfo.docId)
                           .then((value) {
@@ -115,7 +134,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                           if (this.mounted) {
                             setState(() {});
                           }
-                        })
+                        }))
                       : null;
                   return Container(
                     width: double.infinity,
@@ -172,16 +191,29 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
               Consumer<SequenceRecentService>(
                   builder: (context, sequenceRecentService, child) {
                 recentSequenceList.isEmpty
-                    ? sequenceController
-                        .getRecentSequenceFromRepository(
-                            AuthService().currentUser()!.uid, userInfo.docId)
-                        .then((value) {
-                        print("value : ${value.length}");
-                        recentSequenceList.addAll(value);
-                        if (this.mounted) {
-                          setState(() {});
-                        }
-                      })
+                    ? (isPopUpValSelected
+                        ? sequenceController
+                            .getRecentSequenceWithMemberIdFromRepository(
+                                AuthService().currentUser()!.uid,
+                                userInfo.docId)
+                            .then((value) {
+                            print("value : ${value.length}");
+                            recentSequenceList.addAll(value);
+                            if (this.mounted) {
+                              setState(() {});
+                            }
+                          })
+                        : sequenceController
+                            .getRecentSequenceFromRepository(
+                                AuthService().currentUser()!.uid,
+                                userInfo.docId)
+                            .then((value) {
+                            print("value : ${value.length}");
+                            recentSequenceList.addAll(value);
+                            if (this.mounted) {
+                              setState(() {});
+                            }
+                          }))
                     : null;
                 return Container(
                   width: double.infinity,

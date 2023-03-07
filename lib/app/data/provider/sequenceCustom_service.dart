@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 
 class SequenceCustomService extends ChangeNotifier {
-  CollectionReference<Map<String, dynamic>> sequenceRecentCollection =
+  CollectionReference<Map<String, dynamic>> sequenceCustomCollection =
       FirebaseFirestore.instance.collection('sequenceCustom');
 
   GlobalFunction globalFunction = GlobalFunction();
@@ -13,7 +13,7 @@ class SequenceCustomService extends ChangeNotifier {
 // 읽어오는 함수
   Future<List> read(String uid, String memberId) async {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
-    var result = await sequenceRecentCollection
+    var result = await sequenceCustomCollection
         .where('uid', isEqualTo: uid)
         // 시퀀스를 저장/관리하는 단위는 강사(uid) 기준이므로, 회원 아이디(memberId/docId)는 쿼리 조건에서 뺀다
         // .where('memberId',isEqualTo: memberId)
@@ -39,9 +39,37 @@ class SequenceCustomService extends ChangeNotifier {
     return resultList;
   }
 
+  Future<List> readWithMemeberId(String uid, String memberId) async {
+    // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
+    var result = await sequenceCustomCollection
+        .where('uid', isEqualTo: uid)
+        // 시퀀스를 저장/관리하는 단위는 강사(uid) 기준이므로, 회원 아이디(memberId/docId)는 쿼리 조건에서 뺀다
+        .where('memberId',isEqualTo: memberId)
+        // 저장된 시퀀스 불러오는 순서 최신순 부터로 변경
+        .orderBy('timeStamp', descending: true)
+        // .orderBy('sequenceTitle', descending: true)
+        .get();
+
+    List resultList = [];
+
+    var docsLength = result.docs.length;
+    var rstObj = {};
+
+    for (int i = 0; i < docsLength; i++) {
+      // print("result.docs[i].data() : ${result.docs[i].data()}");
+      rstObj = result.docs[i].data();
+      // 문서 id는 없으므로 붙여줌
+      rstObj['id'] = result.docs[i].id;
+
+      resultList.add(rstObj);
+    }
+    notifyListeners(); // 화면 갱신
+    return resultList;
+  }
+
   readCustomSequenceTopNum(String uid) {
     var result;
-    sequenceRecentCollection
+    sequenceCustomCollection
         .where('uid', isEqualTo: uid)
         .orderBy('num', descending: true)
         .limit(1).get().then((value){
@@ -68,7 +96,7 @@ class SequenceCustomService extends ChangeNotifier {
     String id = "";
 
     var result;
-    await sequenceRecentCollection.add({
+    await sequenceCustomCollection.add({
       'uid': uid, // 작성자 uid
       'memberId': memberId, // 회원 docId
       'todayNote': todayNote,
@@ -104,7 +132,7 @@ class SequenceCustomService extends ChangeNotifier {
     // print("id : $id"); // id는 고유값
 
     String id = "";
-    await sequenceRecentCollection.doc(id).update({
+    await sequenceCustomCollection.doc(id).update({
       'uid': uid,
       'memberId': memberId,
       'actionList': actionList,
@@ -128,7 +156,7 @@ class SequenceCustomService extends ChangeNotifier {
     Function? onError,
   }) async {
     // bucket 삭제
-    await sequenceRecentCollection.doc(id).delete();
+    await sequenceCustomCollection.doc(id).delete();
     notifyListeners();
     // 화면 갱신
     onSuccess!(); // 성공시

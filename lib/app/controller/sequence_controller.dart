@@ -17,9 +17,27 @@ class SequenceController {
     return resultList;
   }
 
+  Future<List> getRecentSequenceWithMemberIdFromRepository(String uid, String memberId) async {
+    List resultList = [];
+    await sequenceRepository.getRecentSequenceWithMemberIdFromService(uid, memberId).then((value){
+      resultList.addAll(value);
+    });
+
+    return resultList;
+  }
+
   Future<List> getCustomSequenceFromRepository(String uid, String memberId) async {
     List resultList = [];
     await sequenceRepository.getCustomSequenceFromService(uid, memberId).then((value){
+      resultList.addAll(value);
+    });
+
+    return resultList;
+  }
+
+  Future<List> getCustomSequenceWithMemberIdFromRepository(String uid, String memberId) async {
+    List resultList = [];
+    await sequenceRepository.getCustomSequenceWithMemberIdFromService(uid, memberId).then((value){
       resultList.addAll(value);
     });
 
