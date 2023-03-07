@@ -39,7 +39,8 @@ class DayLessonService extends ChangeNotifier {
 
       resultList.add(rstObj);
     }
-    notifyListeners();
+    // 레슨 노트 consumer3 이하 무한 재빌드 문제 발생시키는 nofityListeners(); 주석 처리
+    // notifyListeners();
     return resultList;
   }
 

@@ -638,9 +638,9 @@ class _MemberListState extends State<MemberList> {
                                   return false;
                                 },
                                 child: ListView.separated(
-                                  physics: PageScrollPhysics(),
+                                  physics: BouncingScrollPhysics(),
                                   controller: scrollController,
-                                  scrollDirection: Axis.vertical,
+                                  // scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: docs.length,
                                   itemBuilder:

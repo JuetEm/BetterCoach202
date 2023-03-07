@@ -73,7 +73,7 @@ bool isNoteCalendarHided = true;
 // 회원 동작별 노트
 List memberActionNote = [];
 
-bool isValueReturend = true;
+bool isValueNotEmpty = true;
 
 class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
@@ -106,7 +106,7 @@ class _MemberInfoState extends State<MemberInfo> {
     print("[MI] Init : 항상 울리나? ");
 
     memberActionNote = [];
-    isValueReturend = true;
+    isValueNotEmpty = true;
 
     if (widget.isQuickAdd) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -210,22 +210,24 @@ class _MemberInfoState extends State<MemberInfo> {
         print(
             "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
 
-        // memberActionNote.isEmpty && isValueReturend
-        //     ? lessonService
-        //         .readMemberActionNote(
-        //         AuthService().currentUser()!.uid,
-        //         userInfo.docId, // userInfo.docId,
-        //       )
-        //         .then((value) {
-        //         print("fdsavewfweas value.length : ${value.length}");
-        //         value.isNotEmpty
-        //             ? isValueReturend = true
-        //             : isValueReturend = false;
-        //         value.isNotEmpty ? memberActionNote.addAll(value) : null;
-        //         print(
-        //             "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
-        //       })
-        //     : null;
+        memberActionNote.isEmpty && isValueNotEmpty
+            ? lessonService
+                .readMemberActionNote(
+                AuthService().currentUser()!.uid,
+                userInfo.docId, // userInfo.docId,
+              )
+                .then((value) {
+                print("fdsavewfweas value.length : ${value.length}");
+                value.isEmpty
+                    ? isValueNotEmpty = false
+                    : isValueNotEmpty = true;
+                value.isNotEmpty
+                    ? memberActionNote.addAll(value)
+                    : memberActionNote = [];
+                print(
+                    "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+              })
+            : null;
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -264,6 +266,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                           userInfo.uid, userInfo.docId),
                                       builder: (BuildContext context,
                                           AsyncSnapshot snapshot) {
+                                        /* if (snapshot.connectionState ==
+                                            ConnectionState.done) { */
                                         //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
                                         if (snapshot.hasData == false) {
                                           return IconButton(
@@ -273,6 +277,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                                       "assets/icons/favoriteUnselected.svg"))
                                               .animate()
                                               .fadeIn(duration: 1200.ms);
+                                          /* print("[MI] isFavorite snapshot.hasData == false");
+                                                return SizedBox.shrink(); */
                                         }
                                         //error가 발생하게 될 경우 반환하게 되는 부분
                                         else if (snapshot.hasError) {
@@ -338,9 +344,23 @@ class _MemberInfoState extends State<MemberInfo> {
                                                     "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
                                               });
                                         }
+                                        /* }else{
+                                          /* return IconButton(
+                                                    onPressed: null,
+                                                    iconSize: 40,
+                                                    icon: SvgPicture.asset(
+                                                        "assets/icons/favoriteUnselected.svg"))
+                                                .animate()
+                                                .fadeIn(duration: 1200.ms); */
+                                          return IconButton(
+                                                    onPressed: null,
+                                                    iconSize: 40,
+                                                    color: Palette.gray99,
+                                                    icon: SvgPicture.asset(
+                                                        "assets/icons/favoriteUnselected.svg"));
+                                        } */
                                       },
                                     ),
-
                                     Container(
                                       constraints:
                                           BoxConstraints(maxWidth: 150),
@@ -828,7 +848,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 print("ConnectionState.waiting : ${ConnectionState.waiting}");
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  padding: const EdgeInsets.symmetric(vertical: 120),
                   child: Center(
                       child: CircularProgressIndicator(
                     color: Palette.buttonOrange,
@@ -896,7 +916,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     );
                   }
                 }
-              } else {
+              } /* else {
                 print("ConnectionState.else");
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 120),
@@ -906,6 +926,10 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     ),
                   ),
                 );
+              } */
+              else {
+                print("else");
+                return SizedBox.shrink();
               }
             }),
 

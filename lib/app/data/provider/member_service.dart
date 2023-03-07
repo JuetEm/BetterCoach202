@@ -86,7 +86,7 @@ class MemberService extends ChangeNotifier {
 
     await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
-      print('[MS] readisActive 실행 - readisActive : ${data['isFavorite']}');
+      print('[MS] isFavorite 실행 - readisActive : ${data['isFavorite']}');
       result = data['isFavorite'] ?? false;
     });
 
