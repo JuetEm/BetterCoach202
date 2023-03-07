@@ -24,7 +24,7 @@ class _GrayInkwellButtonState extends State<GrayInkwellButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 50,
       width: double.infinity,
       child: Material(
         borderRadius: BorderRadius.circular(10),
