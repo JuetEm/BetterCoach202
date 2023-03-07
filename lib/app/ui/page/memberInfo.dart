@@ -844,7 +844,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
               widget.userInfo.docId,
             ),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+              /* if (snapshot.connectionState == ConnectionState.waiting) {
                 print("ConnectionState.waiting : ${ConnectionState.waiting}");
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 120),
@@ -853,7 +853,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     color: Palette.buttonOrange,
                   )),
                 );
-              } else if (snapshot.connectionState == ConnectionState.done) {
+              } else */ if (snapshot.connectionState == ConnectionState.done) {
                 print("ConnectionState.done : ${ConnectionState.done}");
                 final doc = snapshot.data?.docs ?? []; // 문서들 가져오기
 
@@ -911,7 +911,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     );
                   }
                 }
-              } /* else {
+              } else {
                 print("ConnectionState.else");
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 120),
@@ -921,11 +921,11 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     ),
                   ),
                 );
-              } */
-              else{
+              }
+              /* else{
                 print("else");
                 return SizedBox.shrink();
-              }
+              } */
             }),
 
         SizedBox(

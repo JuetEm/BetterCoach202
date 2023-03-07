@@ -15,9 +15,11 @@ class SequenceCustomService extends ChangeNotifier {
     // .orderBy("name") // orderBy 기능을 사용하기 위해서는 console.cloud.google.com
     var result = await sequenceRecentCollection
         .where('uid', isEqualTo: uid)
-        .where('memberId',isEqualTo: memberId)
+        // 시퀀스를 저장/관리하는 단위는 강사(uid) 기준이므로, 회원 아이디(memberId/docId)는 쿼리 조건에서 뺀다
+        // .where('memberId',isEqualTo: memberId)
         // 저장된 시퀀스 불러오는 순서 최신순 부터로 변경
-        .orderBy('sequenceTitle', descending: true)
+        .orderBy('timeStamp', descending: true)
+        // .orderBy('sequenceTitle', descending: true)
         .get();
 
     List resultList = [];

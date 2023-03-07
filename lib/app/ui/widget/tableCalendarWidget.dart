@@ -78,6 +78,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
                 widget.eventSource[DateTime(dt.year, dt.month, dt.day)] = [
                   Event(element['name'], element['lessonDate'])
                 ];
+                dayLessonService.notifyListeners();
                 // print("kliohuikutydfklgjhjyhrts - 0 - dt : ${dt}, eventSource : ${eventSource}");
               });
             })
