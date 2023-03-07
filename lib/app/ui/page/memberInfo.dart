@@ -751,17 +751,19 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Palette.grayF5,
+                        color: isNoteCalendarHided
+                            ? Palette.grayF5
+                            : Palette.titleOrange,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.calendar_month,
-                            color: Palette.gray99,
-                          ),
+                          Icon(Icons.calendar_month,
+                              color: isNoteCalendarHided
+                                  ? Palette.gray99
+                                  : Palette.buttonOrange),
                           SizedBox(
                             width: 5,
                           ),
@@ -769,7 +771,9 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                             '캘린더',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Palette.gray33,
+                              color: isNoteCalendarHided
+                                  ? Palette.gray33
+                                  : Palette.gray00,
                             ),
                           ),
                         ],
