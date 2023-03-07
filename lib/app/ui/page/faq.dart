@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/color.dart';
+import 'package:web_project/app/data/provider/auth_service.dart';
+import 'package:web_project/app/data/provider/deletedUser_service.dart';
 import 'package:web_project/app/ui/page/confirmAlertWidget.dart';
 import 'package:web_project/app/ui/widget/FaqExpansionTile.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
+import 'package:web_project/main.dart';
+
+String screenName = "자주 묻는 질문";
 
 class Faq extends StatefulWidget {
   const Faq({super.key});
@@ -54,10 +60,39 @@ class _FaqState extends State<Faq> {
                   confirmButtonColor: Palette.textRed,
                   cancelButtonColor: Palette.gray00,
                   onConfirm: () {
+                    String event = "onConfirm";
+                    String value = "회원탈퇴";
+                    analyticLog.sendAnalyticsEvent(
+                        screenName,
+                        "${event} : ${value}",
+                        "${value} 프로퍼티 인자1",
+                        "${value} 프로퍼티 인자2");
+
                     /// 탈퇴버튼 클릭 시 작동할 함수
+                    final deletedUserCollection =
+                        context.read<DeletedUserService>();
+                    final dUserDate = {
+                      'uid': AuthService().currentUser()!.uid,
+                      'displayName': AuthService().currentUser()!.displayName,
+                      'email': AuthService().currentUser()!.email,
+                      'phoneNumber': AuthService().currentUser()!.phoneNumber,
+                      'photoURL': AuthService().currentUser()!.photoURL
+                    };
+
+                    deletedUserCollection
+                        .logDeletedUserInfo(dUserDate)
+                        .then((value) {
+                      AuthService().currentUser()!.delete().then((value) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      });
+                    });
                   },
                   onCancel: () {
                     /// 취소버튼 클릭 시 작동할 함수
+                    Navigator.pop(context);
                   },
                 );
               },

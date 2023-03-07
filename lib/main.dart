@@ -15,6 +15,7 @@ import 'package:web_project/app/controller/member_info_controller.dart';
 import 'package:web_project/app/data/provider/analyticLog.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
+import 'package:web_project/app/data/provider/deletedUser_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
@@ -226,6 +227,7 @@ void main() async {
             ChangeNotifierProvider(create: (context) => ReportService()),
             ChangeNotifierProvider(create: (context) => TicketLibraryService()),
             ChangeNotifierProvider(create: (context) => MemberTicketService()),
+            ChangeNotifierProvider(create: (context) => DeletedUserService()),
             ChangeNotifierProvider(
                 create: (context) => SequenceCustomService()),
             ChangeNotifierProvider(
@@ -253,6 +255,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => MemberTicketService()),
           ChangeNotifierProvider(create: (context) => SequenceCustomService()),
           ChangeNotifierProvider(create: (context) => SequenceRecentService()),
+          ChangeNotifierProvider(create: (context) => DeletedUserService()),
         ],
         child: const MyApp(),
       ),
@@ -779,8 +782,10 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text,
         onSuccess: () {
-          AuthService authService = AuthService();
+          authService = AuthService();
           var cUser = authService.currentUser();
+          // print("신규 사용자 로그인 : authService.signIn - cUser!.uid : ${cUser!.uid}");
+          // print("신규 사용자 로그인 : authService.signIn - cUser!.email : ${cUser!.email}");
           Future<List> resultFirstMemberList =
               memberService.readMemberListAtFirstTime(cUser!.uid);
 

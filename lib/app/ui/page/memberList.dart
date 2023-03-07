@@ -239,9 +239,17 @@ class _MemberListState extends State<MemberList> {
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 40),
-                    child: SizedBox(
-                        width: 190,
-                        child: Image.asset("assets/images/logo.png")),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: 190,
+                              child: Image.asset("assets/images/logo.png")),
+                        ),
+                            Center(child: Text(AuthService().currentUser()!.email.toString())),
+                      ],
+                    ),
                   ),
                   ListTile(
                     leading: Icon(
@@ -420,8 +428,9 @@ class _MemberListState extends State<MemberList> {
                           "${value} 프로퍼티 인자1",
                           "${value} 프로퍼티 인자2");
                       print('signOut');
-                      AuthService authService = AuthService();
+                     
                       authService.signOut();
+                      
                       // 로그인 페이지로 이동
                       Navigator.pushReplacement(
                         context,
