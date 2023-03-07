@@ -801,6 +801,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     } else {
                       setState(() {
                         listMode = "동작별";
+                        isNoteCalendarHided = true;
                       });
                     }
                     ;
