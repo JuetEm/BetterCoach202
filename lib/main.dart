@@ -33,7 +33,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'dart:io' show HttpHeaders, Platform;
 import 'package:http/http.dart' as http;
-import 'package:web_project/firebase_options.dart';
+import 'package:web_project/app/config/firebase_options.dart';
 
 import 'app/data/provider/auth_service.dart';
 import 'app/data/provider/calendar_service.dart';
