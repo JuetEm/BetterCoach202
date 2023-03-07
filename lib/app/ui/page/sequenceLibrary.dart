@@ -48,7 +48,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: BaseAppBarMethod(context, "시퀀스 관리", () {
+        appBar: BaseAppBarMethod(context, "시퀀스 보관함", () {
           Navigator.pop(context);
         },
             null,
@@ -85,14 +85,19 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
               /// 저장된 시퀀스 탭 내용
               Consumer<SequenceCustomService>(
                 builder: (context, sequenceCustomService, child) {
-                  customSequenceList.isEmpty ?
-                  sequenceController.getCustomSequenceFromRepository(AuthService().currentUser()!.uid, userInfo.docId).then((value){
-                    customSequenceList.addAll(value);
-                      print("fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
-                      if(this.mounted){
-                        setState(() {});
-                      }
-                  }) : null;
+                  customSequenceList.isEmpty
+                      ? sequenceController
+                          .getCustomSequenceFromRepository(
+                              AuthService().currentUser()!.uid, userInfo.docId)
+                          .then((value) {
+                          customSequenceList.addAll(value);
+                          print(
+                              "fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
+                          if (this.mounted) {
+                            setState(() {});
+                          }
+                        })
+                      : null;
                   return Container(
                     width: double.infinity,
                     child: ListView.builder(
@@ -104,9 +109,10 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      ImportSequenceFromSaved(actionList : customSequenceList[index]['actionList'])),
-                            ).then((value){});
+                                  builder: (context) => ImportSequenceFromSaved(
+                                      actionList: customSequenceList[index]
+                                          ['actionList'])),
+                            ).then((value) {});
                           },
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 6, horizontal: 20),
@@ -143,15 +149,18 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
               /// 최근 시퀀스 탭 내용
               Consumer<SequenceRecentService>(
                   builder: (context, sequenceRecentService, child) {
-                
                 recentSequenceList.isEmpty
-                    ? sequenceController.getRecentSequenceFromRepository(AuthService().currentUser()!.uid,userInfo.docId).then((value){
-                      print("value : ${value.length}");
+                    ? sequenceController
+                        .getRecentSequenceFromRepository(
+                            AuthService().currentUser()!.uid, userInfo.docId)
+                        .then((value) {
+                        print("value : ${value.length}");
                         recentSequenceList.addAll(value);
-                        if(this.mounted){
+                        if (this.mounted) {
                           setState(() {});
                         }
-                    }) : null;
+                      })
+                    : null;
                 return Container(
                   width: double.infinity,
                   child: ListView.builder(

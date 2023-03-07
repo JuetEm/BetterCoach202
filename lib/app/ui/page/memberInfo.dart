@@ -44,7 +44,6 @@ bool isPop = false;
 
 GlobalFunction globalFunction = GlobalFunction();
 
-
 List<DateTime> eventList = [];
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 String lessonDate = "";
@@ -219,10 +218,10 @@ class _MemberInfoState extends State<MemberInfo> {
               )
                 .then((value) {
                 print("fdsavewfweas value.length : ${value.length}");
-                value.isNotEmpty ? isValueReturend = true : isValueReturend = false;
                 value.isNotEmpty
-                    ? memberActionNote.addAll(value)
-                    : null;
+                    ? isValueReturend = true
+                    : isValueReturend = false;
+                value.isNotEmpty ? memberActionNote.addAll(value) : null;
                 print(
                     "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
               })
@@ -267,7 +266,13 @@ class _MemberInfoState extends State<MemberInfo> {
                                           AsyncSnapshot snapshot) {
                                         //해당 부분은 data를 아직 받아 오지 못했을 때 실행되는 부분
                                         if (snapshot.hasData == false) {
-                                          return CircularProgressIndicator();
+                                          return IconButton(
+                                                  onPressed: null,
+                                                  iconSize: 40,
+                                                  icon: SvgPicture.asset(
+                                                      "assets/icons/favoriteUnselected.svg"))
+                                              .animate()
+                                              .fadeIn(duration: 1200.ms);
                                         }
                                         //error가 발생하게 될 경우 반환하게 되는 부분
                                         else if (snapshot.hasError) {
@@ -676,8 +681,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         ),
         color: Palette.mainBackground,
       ),
-      child:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ///
         /// 헤딩 영역: 총 개수, 캘린더 버튼, 동작별/날짜별 버튼
         Padding(
@@ -772,8 +776,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       color: Palette.grayF5,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: Row(
                       children: [
                         Icon(
@@ -824,8 +828,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                print(
-                    "ConnectionState.waiting : ${ConnectionState.waiting}");
+                print("ConnectionState.waiting : ${ConnectionState.waiting}");
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
                   child: Center(
@@ -1361,6 +1364,10 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
         SizedBox(
           height: 16,
         ),
+        Container(
+          color: Palette.secondaryBackground,
+          height: 10,
+        ),
         FutureBuilder<QuerySnapshot>(
           future: widget.dayLessonService.readTodaynote(
             widget.userInfo.uid,
@@ -1370,7 +1377,13 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
 
             if (docs.isEmpty) {
-              return Center(child: CircularProgressIndicator());
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 120),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Palette.buttonOrange,
+                )),
+              );
             }
 
             return ListView.separated(

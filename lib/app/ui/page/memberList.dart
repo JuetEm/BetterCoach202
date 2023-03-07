@@ -247,16 +247,16 @@ class _MemberListState extends State<MemberList> {
                       Icons.confirmation_number_outlined,
                       color: Palette.gray66,
                     ),
-                    title: Text('수강권 라이브러리'),
+                    title: Text('수강권 보관함'),
                     onTap: () async {
                       String event = "onTap";
-                      String value = "수강권 라이브러리";
+                      String value = "수강권 보관함";
                       analyticLog.sendAnalyticsEvent(
                           screenName,
                           "${event} : ${value}",
                           "${value} 프로퍼티 인자1",
                           "${value} 프로퍼티 인자2");
-                      print('수강권 라이브러리 is clicked');
+                      print('수강권 보관함 is clicked');
                       var result = await // 저장하기 성공시 Home로 이동
                           Navigator.push(
                         context,
@@ -626,8 +626,10 @@ class _MemberListState extends State<MemberList> {
                               // 위 refreshMemberCount 아래에 있어야 회원 목록 없을 때 총 0 명 리턴
                               if (docs.isEmpty) {
                                 return Container(
-                                  height: MediaQuery.of(context).size.height*0.7,
-                                  child: Center(child: Text("새로운 회원을 추가해보세요.")));
+                                    height: MediaQuery.of(context).size.height *
+                                        0.7,
+                                    child:
+                                        Center(child: Text("새로운 회원을 추가해보세요.")));
                               }
 
                               return NotificationListener(

@@ -19,7 +19,7 @@ import 'package:web_project/main.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 
-String screenName = "수강권 추가";
+String screenName = "수강권 등록/수정";
 
 String calendarName = "";
 
@@ -160,7 +160,9 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
     if (widget.ticketTitle != null) {
       for (int i = 0; i < globalVariables.ticketLibraryList.length; i++) {
         if (widget.ticketTitle ==
-            globalVariables.ticketLibraryList[i]['ticketTitle'] && globalVariables.ticketLibraryList[i]['uid'] == AuthService().currentUser()!.uid) {
+                globalVariables.ticketLibraryList[i]['ticketTitle'] &&
+            globalVariables.ticketLibraryList[i]['uid'] ==
+                AuthService().currentUser()!.uid) {
           var model = DropDownValueModel(
               name: globalVariables.ticketLibraryList[i]['ticketTitle'],
               value: globalVariables.ticketLibraryList[i]['id'],
@@ -187,7 +189,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
     return Consumer<TicketLibraryService>(
       builder: (context, ticketLibraryService, child) {
         return Scaffold(
-          appBar: BaseAppBarMethod(context, "수강권 추가", () {
+          appBar: BaseAppBarMethod(context, "수강권 등록/수정", () {
             Navigator.pop(context, widget.userInfo);
           }, [
             TextButton(
@@ -332,9 +334,10 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
           ], null),
           body: CenterConstrainedBody(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
                       /// 수강권 명 입력

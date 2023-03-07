@@ -56,7 +56,7 @@ class _ReportState extends State<Report> {
     DropDownValueModel(name: "수강권추가", value: '수강권추가', toolTipMsg: "수강권추가"),
     DropDownValueModel(name: "수강권관리", value: '수강권관리', toolTipMsg: "수강권관리"),
     DropDownValueModel(
-        name: "수강권 라이브러리", value: '수강권 라이브러리', toolTipMsg: "수강권 라이브러리"),
+        name: "수강권 보관함", value: '수강권 보관함', toolTipMsg: "수강권 보관함"),
     DropDownValueModel(
         name: "로그인/회원가입", value: '로그인/회원가입', toolTipMsg: "로그인/회원가입"),
   ];
