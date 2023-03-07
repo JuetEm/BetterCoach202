@@ -47,6 +47,7 @@ GlobalFunction globalFunction = GlobalFunction();
 List<DateTime> eventList = [];
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 String lessonDate = "";
+String miSelectedDate = "";
 
 String lessonNoteId = "";
 String lessonAddMode = "";
@@ -103,7 +104,9 @@ class _MemberInfoState extends State<MemberInfo> {
 
     super.initState();
 
+    // 캘린더 날짜 반영해서 레슨노트 뿌려주는 변수들 오늘 날짜로 초기화
     lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    miSelectedDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
     print("[MI] Init : 항상 울리나? ");
 
@@ -738,6 +741,7 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       setState(() {});
                       print('Calender Button Clicked');
                       eventSource = {};
+                      isNoteCalendarHided ? lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString() : lessonDate = miSelectedDate;
                     },
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
@@ -1400,12 +1404,14 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
           height: 10,
         ),
         FutureBuilder<QuerySnapshot>(
-          future: widget.dayLessonService.readTodaynote(
+          future: widget.dayLessonService.readCalSelectedNote(
             widget.userInfo.uid,
             widget.userInfo.docId,
+            lessonDate
           ),
           builder: (context, snapshot) {
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+            print("fdsaerbtrbrytgerv - 2 - memberInfo - lessonDate : ${lessonDate}");
 
             if (docs.isEmpty) {
               return Padding(
