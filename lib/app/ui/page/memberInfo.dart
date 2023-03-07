@@ -210,22 +210,22 @@ class _MemberInfoState extends State<MemberInfo> {
         print(
             "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
 
-        memberActionNote.isEmpty && isValueReturend
-            ? lessonService
-                .readMemberActionNote(
-                AuthService().currentUser()!.uid,
-                userInfo.docId, // userInfo.docId,
-              )
-                .then((value) {
-                print("fdsavewfweas value.length : ${value.length}");
-                value.isNotEmpty
-                    ? isValueReturend = true
-                    : isValueReturend = false;
-                value.isNotEmpty ? memberActionNote.addAll(value) : null;
-                print(
-                    "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
-              })
-            : null;
+        // memberActionNote.isEmpty && isValueReturend
+        //     ? lessonService
+        //         .readMemberActionNote(
+        //         AuthService().currentUser()!.uid,
+        //         userInfo.docId, // userInfo.docId,
+        //       )
+        //         .then((value) {
+        //         print("fdsavewfweas value.length : ${value.length}");
+        //         value.isNotEmpty
+        //             ? isValueReturend = true
+        //             : isValueReturend = false;
+        //         value.isNotEmpty ? memberActionNote.addAll(value) : null;
+        //         print(
+        //             "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+        //       })
+        //     : null;
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -841,7 +841,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                 print(
                     "[MI] 노트 유무 체크 - doc:${doc.length}/${widget.userInfo.uid}/${widget.userInfo.docId}");
                 if (doc.isEmpty && dayNotelessonCnt == 0) {
-                  print("ConnectionState.done - 1 - dayNotelessonCnt : ${dayNotelessonCnt}");
+                  print(
+                      "ConnectionState.done - 1 - dayNotelessonCnt : ${dayNotelessonCnt}");
                   return Column(
                     children: [
                       SizedBox(
@@ -853,7 +854,8 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                     ],
                   );
                 } else if (doc.isEmpty && dayNotelessonCnt > 0) {
-                  print("ConnectionState.done - 2 - dayNotelessonCnt : ${dayNotelessonCnt}");
+                  print(
+                      "ConnectionState.done - 2 - dayNotelessonCnt : ${dayNotelessonCnt}");
                   print("동작은 없는데, 일별노트는 있는 경우");
                   if (listMode == "동작별") {
                     return Column(
