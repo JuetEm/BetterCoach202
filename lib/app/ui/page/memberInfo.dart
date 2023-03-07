@@ -865,11 +865,12 @@ class _LessonNoteViewState extends State<LessonNoteView> {
                       "ConnectionState.done - 1 - dayNotelessonCnt : ${dayNotelessonCnt}");
                   return Column(
                     children: [
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Center(
-                        child: Text("첫번째 노트를 작성해보세요!"),
+                      
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 120),
+                        child: Center(
+                          child: Text("첫번째 노트를 작성해보세요!"),
+                        ),
                       ),
                     ],
                   );

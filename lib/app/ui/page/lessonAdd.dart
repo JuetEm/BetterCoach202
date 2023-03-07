@@ -599,7 +599,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               onChanged: globalVariables
                                                           .memberTicketList
                                                           .where((element) =>
-                                                              element['isSelected'] ==
+                                                              element['noteSelected'] ==
                                                                   true &&
                                                               element['memberId'] ==
                                                                   userInfo
