@@ -33,11 +33,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'dart:io' show HttpHeaders, Platform;
 import 'package:http/http.dart' as http;
+import 'package:web_project/firebase_options.dart';
 
 import 'app/data/provider/auth_service.dart';
 import 'app/data/provider/calendar_service.dart';
 import 'app/data/model/color.dart';
-import 'app/config/firebase_options.dart';
 import 'app/function/globalFunction.dart';
 import 'app/ui/page/lessonDetail.dart';
 import 'app/ui/page/memberList.dart';
