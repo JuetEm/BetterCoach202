@@ -1051,7 +1051,30 @@ class _LessonAddState extends State<LessonAdd> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     SequenceLibrary()),
-                                          );
+                                          ).then((value) {
+                                            lessonActionList = [];
+                                            lessonActionList = value;
+                                            lessonActionList.forEach(
+                                                (element) => element[
+                                                            'totalNote']
+                                                        .isNotEmpty
+                                                    ? element['noteSelected'] =
+                                                        true
+                                                    : element['noteSelected'] =
+                                                        false);
+
+                                            debugList(lessonActionList, "1");
+
+                                            // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
+                                            txtEdtCtrlrList = [];
+                                            lessonActionList.forEach((element) {
+                                              txtEdtCtrlrList.add(
+                                                  new TextEditingController());
+                                            });
+                                            if (this.mounted) {
+                                              setState(() {});
+                                            }
+                                          });
                                         },
                                         child: Row(
                                           children: [

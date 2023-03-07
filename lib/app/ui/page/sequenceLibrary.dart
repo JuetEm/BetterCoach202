@@ -156,7 +156,13 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                                   builder: (context) => ImportSequenceFromSaved(
                                       actionList: customSequenceList[index]
                                           ['actionList'])),
-                            ).then((value) {});
+                            ).then((value) {
+                              print("from ImportSequenceFromSaved - value : ${value}");
+                              if(value != null){
+                                Navigator.pop(context,value);
+                              }
+                              
+                            });
                           },
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 6, horizontal: 20),
@@ -242,7 +248,12 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                                       actionList: recentSequenceList[index]
                                           ['actionList'],
                                     )),
-                          ).then((value) {});
+                          ).then((value) {
+                            print("from ImportSequenceFromSaved - value : ${value}");
+                              if(value != null){
+                                Navigator.pop(context,value);
+                              }
+                          });
                         },
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 6, horizontal: 20),

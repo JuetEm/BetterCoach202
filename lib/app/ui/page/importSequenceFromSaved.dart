@@ -234,14 +234,16 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                 /// 불러오기 버튼
                 child: ElevatedButton(
                   onPressed: () {
-                    selectedActionList
+                    /* selectedActionList
                         .addAll(actionList.where((item) => item['selected']));
                     // selectedActionList.add(actionList.where((item) => item['selected']));
-                    print(actionList.where((item) => item['selected']));
+                    print(actionList.where((item) => item['selected'])); */
+
                     print('selectedActionList: $selectedActionList');
+                    print('widget.actionList: ${widget.actionList}');
                     print('@@@@@ 전송! @@@@@');
 
-                    Navigator.pop(context);
+                    Navigator.pop(context,widget.actionList);
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
