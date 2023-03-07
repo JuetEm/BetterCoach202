@@ -183,7 +183,7 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                             widget.actionList[index]['actionName'] ?? "",
                         apparatus: widget.actionList[index]['apparatus'] ?? "",
                         position:
-                            widget.actionList[index]['pos'].toString() ?? "",
+                            widget.actionList[index]['position'].toString() ?? "",
                         name: "",
                         phoneNumber: "",
                         lessonDate: "",

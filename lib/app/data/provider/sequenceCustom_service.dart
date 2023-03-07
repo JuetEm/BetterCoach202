@@ -16,6 +16,7 @@ class SequenceCustomService extends ChangeNotifier {
     var result = await sequenceRecentCollection
         .where('uid', isEqualTo: uid)
         .where('memberId',isEqualTo: memberId)
+        // 저장된 시퀀스 불러오는 순서 최신순 부터로 변경
         .orderBy('sequenceTitle', descending: true)
         .get();
 
