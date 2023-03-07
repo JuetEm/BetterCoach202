@@ -14,7 +14,8 @@ class SequenceRecentService extends ChangeNotifier {
     var result = await sequenceRecentCollection
         .where('uid', isEqualTo: uid)
         .where('memberId',isEqualTo: memberId)
-        .orderBy('sequenceTitle', descending: false)
+        // .orderBy('sequenceTitle', descending: false)
+        .orderBy('timeStamp',descending: true)
         .get();
 
     List resultList = [];

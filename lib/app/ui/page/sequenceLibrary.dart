@@ -104,6 +104,9 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                       physics: BouncingScrollPhysics(),
                       itemCount: customSequenceList.length,
                       itemBuilder: (context, index) {
+                        List actionList =
+                            customSequenceList[index]['actionList'];
+                        int actionListlength = actionList.length;
                         return ListTile(
                           onTap: () {
                             Navigator.push(
@@ -129,7 +132,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                                     border: Border.all(
                                         color: Palette.gray99, width: 1)),
                                 child: Text(
-                                  '${2 * index}',
+                                  '${actionListlength}',
                                   style: TextStyle(fontSize: 12),
                                 ),
                               )
@@ -167,6 +170,8 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                     physics: BouncingScrollPhysics(),
                     itemCount: recentSequenceList.length,
                     itemBuilder: (context, index) {
+                      List actionList = recentSequenceList[index]['actionList'];
+                      int actionListLength = actionList.length;
                       print(
                           "hfduosanoirwnvioenroiger - ${recentSequenceList[index]}");
                       return ListTile(
@@ -195,7 +200,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                                   border: Border.all(
                                       color: Palette.gray99, width: 1)),
                               child: Text(
-                                '40',
+                                '${actionListLength}',
                                 style: TextStyle(fontSize: 12),
                               ),
                             )
