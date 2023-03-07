@@ -17,6 +17,7 @@ import 'package:web_project/app/ui/page/report.dart';
 import 'package:web_project/app/ui/page/sequenceLibrary.dart';
 import 'package:web_project/app/ui/page/ticketLibraryManage.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
+import 'package:web_project/app/ui/widget/notReadyAlertWidget.dart';
 
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
@@ -248,26 +249,36 @@ class _MemberListState extends State<MemberList> {
                       color: Palette.gray66,
                     ),
                     title: Text('수강권 보관함'),
-                    onTap: () async {
-                      String event = "onTap";
-                      String value = "수강권 보관함";
-                      analyticLog.sendAnalyticsEvent(
-                          screenName,
-                          "${event} : ${value}",
-                          "${value} 프로퍼티 인자1",
-                          "${value} 프로퍼티 인자2");
-                      print('수강권 보관함 is clicked');
-                      var result = await // 저장하기 성공시 Home로 이동
-                          Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TicketLibraryManage(
-                                  TicketLibraryManageList:
-                                      globalVariables.ticketLibraryList,
-                                )),
-                      ).then((value) {
-                        print("수강권 추가 result");
-                      });
+                    // onTap: () async {
+                    //   String event = "onTap";
+                    //   String value = "수강권 보관함";
+                    //   analyticLog.sendAnalyticsEvent(
+                    //       screenName,
+                    //       "${event} : ${value}",
+                    //       "${value} 프로퍼티 인자1",
+                    //       "${value} 프로퍼티 인자2");
+                    //   print('수강권 보관함 is clicked');
+                    //   var result = await // 저장하기 성공시 Home로 이동
+                    //       Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => TicketLibraryManage(
+                    //               TicketLibraryManageList:
+                    //                   globalVariables.ticketLibraryList,
+                    //             )),
+                    //   ).then((value) {
+                    //     print("수강권 추가 result");
+                    //   });
+                    // },
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return NotReadyAlertWidget(
+                            featureName: '수강권',
+                          );
+                        },
+                      );
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),

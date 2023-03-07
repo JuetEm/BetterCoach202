@@ -7,6 +7,7 @@ import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/page/memberTicketMake.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
+import 'package:web_project/app/ui/widget/notReadyAlertWidget.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
@@ -489,9 +490,25 @@ class _MemberAddState extends State<MemberAdd> {
                             Container(
                               alignment: Alignment.center,
 
+                              /// 수강권 기능 보류로 인해 임시로 걸어놓은 위젯,
+                              child: AddTicketWidget(
+                                  customFunctionOnTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return NotReadyAlertWidget(
+                                          featureName: '수강권',
+                                        );
+                                      },
+                                    );
+                                  },
+                                  label: '수강권 추가하기',
+                                  addIcon: true),
+
                               /// bool 수강권 유무 체크하는 변수 필요
                               /// is수강권있니? = false로 선언 되어야 함.
-                              child: globalVariables.memberTicketList
+                              /// #### 수강권 영역 임시 비활성화 -> 추후 업데이트 예정 #####
+                              /* child: globalVariables.memberTicketList
                                       .where((element) =>
                                           memberAddMode == "수정" &&
                                           element['memberId'] ==
@@ -712,7 +729,7 @@ class _MemberAddState extends State<MemberAdd> {
                                                 ),
                                         ),
                                       ),
-                                    ),
+                                    ), */
                             )
                           ],
                         ),
