@@ -1701,11 +1701,11 @@ class _ActionSelectorState extends State<ActionSelector> {
                         Offstage(
                           offstage: searchString.isNotEmpty,
                           child: Container(
-                            padding: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.only(bottom: 20),
                             color: tmpLessonInfoList.isEmpty
                                 ? Palette.gray00.withOpacity(0)
                                 : Palette.gray00.withOpacity(0.3),
-                            height: 100,
+                            height: 120,
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -1732,7 +1732,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(height: 10),
 
                                 /// 동작 추가 버튼
                                 ElevatedButton(

@@ -114,27 +114,30 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                 builder: (context, sequenceCustomService, child) {
                   customSequenceList.isEmpty
                       ? (isPopUpValSelected
-                        ? sequenceController
-                          .getCustomSequenceWithMemberIdFromRepository(
-                              AuthService().currentUser()!.uid, userInfo.docId)
-                          .then((value) {
-                          customSequenceList.addAll(value);
-                          print(
-                              "fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
-                          if (this.mounted) {
-                            setState(() {});
-                          }
-                        }) : sequenceController
-                          .getCustomSequenceFromRepository(
-                              AuthService().currentUser()!.uid, userInfo.docId)
-                          .then((value) {
-                          customSequenceList.addAll(value);
-                          print(
-                              "fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
-                          if (this.mounted) {
-                            setState(() {});
-                          }
-                        }))
+                          ? sequenceController
+                              .getCustomSequenceWithMemberIdFromRepository(
+                                  AuthService().currentUser()!.uid,
+                                  userInfo.docId)
+                              .then((value) {
+                              customSequenceList.addAll(value);
+                              print(
+                                  "fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
+                              if (this.mounted) {
+                                setState(() {});
+                              }
+                            })
+                          : sequenceController
+                              .getCustomSequenceFromRepository(
+                                  AuthService().currentUser()!.uid,
+                                  userInfo.docId)
+                              .then((value) {
+                              customSequenceList.addAll(value);
+                              print(
+                                  "fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
+                              if (this.mounted) {
+                                setState(() {});
+                              }
+                            }))
                       : null;
                   return Container(
                     width: double.infinity,
@@ -160,8 +163,6 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                           tileColor: Palette.mainBackground,
                           title: Row(
                             children: [
-                              Text(customSequenceList[index]['sequenceTitle']),
-                              SizedBox(width: 10),
                               Container(
                                 padding: EdgeInsets.symmetric(
                                     vertical: 2, horizontal: 6),
@@ -173,7 +174,14 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                                   '${actionListlength}',
                                   style: TextStyle(fontSize: 12),
                                 ),
-                              )
+                              ),
+                              SizedBox(width: 10),
+                              Container(
+                                  constraints: BoxConstraints(maxWidth: 320),
+                                  width:
+                                      MediaQuery.of(context).size.width - 112,
+                                  child: Text(customSequenceList[index]
+                                      ['sequenceTitle'])),
                             ],
                           ),
                           trailing: Icon(
@@ -241,8 +249,6 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                         tileColor: Palette.mainBackground,
                         title: Row(
                           children: [
-                            Text(recentSequenceList[index]['sequenceTitle']),
-                            SizedBox(width: 10),
                             Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 2, horizontal: 6),
@@ -253,8 +259,15 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                               child: Text(
                                 '${actionListLength}',
                                 style: TextStyle(fontSize: 12),
+                                maxLines: null,
                               ),
-                            )
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                                constraints: BoxConstraints(maxHeight: 320),
+                                width: MediaQuery.of(context).size.width - 112,
+                                child: Text(recentSequenceList[index]
+                                    ['sequenceTitle'])),
                           ],
                         ),
                         trailing: Icon(
