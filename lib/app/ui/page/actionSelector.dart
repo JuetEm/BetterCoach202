@@ -1574,7 +1574,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                         Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                           color: Palette.secondaryBackground,
-                          height: searchString.isEmpty ? 190 : 60,
+                          height: searchString.isEmpty ? 200 : 60,
                           child: Column(
                             children: [
                               BaseSearchTextField(

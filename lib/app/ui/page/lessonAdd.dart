@@ -1192,7 +1192,9 @@ class _LessonAddState extends State<LessonAdd> {
 
                                 // 손재형 재정렬 가능한 리스트 시작 => 동작 목록 리스트
                                 ReorderableListView.builder(
-                                    padding: EdgeInsets.only(bottom: 100),
+                                    padding: lessonAddMode == "노트편집"
+                                        ? EdgeInsets.only(bottom: 40)
+                                        : EdgeInsets.only(bottom: 100),
                                     onReorder: (oldIndex, newIndex) {
                                       // print("fsdadfewgree before - oldIndex : ${oldIndex} <=> newIndex : ${newIndex}");
                                       if (newIndex > oldIndex) {
@@ -1408,7 +1410,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                   setState(() {});
                                                 },
                                                 icon: Icon(
-                                                  Icons.delete,
+                                                  Icons.remove_circle,
                                                   color: Palette.statusRed,
                                                 ),
                                               ),
@@ -1498,7 +1500,6 @@ class _LessonAddState extends State<LessonAdd> {
                             //   },
                             // ),
 
-                            const SizedBox(height: 10),
                             lessonAddMode == "노트편집"
                                 ? DeleteButton(
                                     actionNullCheck: actionNullCheck,
@@ -1878,15 +1879,16 @@ class _DeleteButtonState extends State<DeleteButton> {
   Widget build(BuildContext context) {
     return TextButton(
       style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Palette.backgroundPink),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
       ),
       child: Container(
           alignment: Alignment.center,
-          width: 260,
+          width: 200,
           height: 50,
-          child: Text("삭제하기",
-              style: TextStyle(fontSize: 16, color: Palette.textRed))),
+          child: Text("노트 삭제하기",
+              style: TextStyle(fontSize: 14, color: Palette.textRed))),
       onPressed: () async {
         // create bucket
         final retvaldelte = await showAlertDialog(context, '정말로 삭제하시겠습니까?',
