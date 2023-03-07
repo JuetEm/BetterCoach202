@@ -24,7 +24,7 @@ import '../widget/globalWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart'
     as CustomUserInfo; // 다른 페키지와 클래스 명이 겹치는 경우 alias 선언해서 사용
 
-    String screenName = "동작 검색";
+String screenName = "동작 검색";
 
 // tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
 var actionChips = [];
@@ -350,14 +350,14 @@ class _ActionSelectorState extends State<ActionSelector> {
     if (tmpLessonInfoList.isNotEmpty) {
       actionChips = tmpLessonInfoList
           .map((e) => FilterChip(
-                padding: EdgeInsets.only(bottom: 3),
+                padding: EdgeInsets.only(bottom: 0),
                 label: Row(
                   children: [
                     Text(e.actionName),
                     Icon(
                       Icons.close_outlined,
                       size: 14,
-                      color: e.isSelected ? Palette.grayFF : Palette.gray99,
+                      color: e.isSelected ? Palette.gray33 : Palette.gray99,
                     )
                   ],
                 ),
@@ -388,8 +388,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                 selected: e.isSelected,
                 labelStyle: TextStyle(
                     fontSize: 12,
-                    color: e.isSelected ? Palette.grayFF : Palette.gray99),
-                selectedColor: Palette.buttonOrange,
+                    color: e.isSelected ? Palette.gray33 : Palette.gray99),
+                selectedColor: Palette.grayEE,
                 backgroundColor: Colors.transparent,
                 showCheckmark: false,
                 side: e.isSelected
@@ -404,7 +404,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     final apparatusChips = [
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isMatSelected ? Palette.grayFF : Palette.gray99),
@@ -431,7 +431,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isReformerSelected ? Palette.grayFF : Palette.gray99),
@@ -459,7 +459,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isCadillacSelected ? Palette.grayFF : Palette.gray99),
@@ -488,7 +488,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isChairSelected ? Palette.grayFF : Palette.gray99),
@@ -516,7 +516,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isLadderBarrelSelected ? Palette.grayFF : Palette.gray99),
@@ -544,7 +544,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSpringBoardSelected ? Palette.grayFF : Palette.gray99),
@@ -572,7 +572,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSpineCorrectorSelected ? Palette.grayFF : Palette.gray99),
@@ -600,7 +600,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isOthersApparatusSelected ? Palette.grayFF : Palette.gray99),
@@ -632,7 +632,7 @@ class _ActionSelectorState extends State<ActionSelector> {
 
     final positionChips = [
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSupineSelected ? Palette.grayFF : Palette.gray99),
@@ -660,7 +660,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isProneSelected ? Palette.grayFF : Palette.gray99),
@@ -688,7 +688,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSittingSelected ? Palette.grayFF : Palette.gray99),
@@ -716,7 +716,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isStandingSelected ? Palette.grayFF : Palette.gray99),
@@ -744,7 +744,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isKneelingSelected ? Palette.grayFF : Palette.gray99),
@@ -772,7 +772,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isSideLyingSelected ? Palette.grayFF : Palette.gray99),
@@ -800,7 +800,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isQuadrupedSelected ? Palette.grayFF : Palette.gray99),
@@ -828,7 +828,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isPlankSelected ? Palette.grayFF : Palette.gray99),
@@ -856,7 +856,7 @@ class _ActionSelectorState extends State<ActionSelector> {
         },
       ),
       FilterChip(
-        padding: EdgeInsets.only(bottom: 3),
+        padding: EdgeInsets.only(bottom: 0),
         labelStyle: TextStyle(
             fontSize: 12,
             color: isOthersPositionSelected ? Palette.grayFF : Palette.gray99),
@@ -1594,14 +1594,14 @@ class _ActionSelectorState extends State<ActionSelector> {
                                     searchString = "";
                                   });
                                 },
-                                logFunction: (){
+                                logFunction: () {
                                   String event = "onTap";
-                        String value = "회원 목록 검색";
-                        analyticLog.sendAnalyticsEvent(
-                            screenName,
-                            "${event} : ${value}",
-                            "${value} 프로퍼티 인자1",
-                            "${value} 프로퍼티 인자2");
+                                  String value = "회원 목록 검색";
+                                  analyticLog.sendAnalyticsEvent(
+                                      screenName,
+                                      "${event} : ${value}",
+                                      "${value} 프로퍼티 인자1",
+                                      "${value} 프로퍼티 인자2");
                                 },
                               ),
                               SizedBox(height: 5),
@@ -1723,7 +1723,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                                             for (final chip in actionChips)
                                               Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    horizontal: 4),
+                                                    horizontal: 6),
                                                 child: chip,
                                               ),
                                           ],
@@ -1835,6 +1835,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                       ],
                     ),
                   )
+                      .animate(target: !isFullScreen ? 1 : 0)
+                      .fadeIn(duration: 300.ms)
+                      .scaleXY(begin: 0.9, duration: 300.ms),
                 ],
               ),
             ),

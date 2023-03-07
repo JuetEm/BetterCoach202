@@ -159,7 +159,8 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                       if (newIndex > oldIndex) {
                         newIndex -= 1;
                       }
-                      final movedActionList = widget.actionList.removeAt(oldIndex);
+                      final movedActionList =
+                          widget.actionList.removeAt(oldIndex);
                       widget.actionList.insert(newIndex, movedActionList);
 
                       setState(() {});
@@ -173,13 +174,16 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
 
                       return ActionListTile(
                         key: valueKey,
-                        isSelectable: true,
-                        isSelected: widget.actionList[index]['noteSelected'] ?? false,
+                        isSelectable: false,
+                        isSelected:
+                            widget.actionList[index]['noteSelected'] ?? false,
                         actionList: widget.actionList,
                         isDraggable: true,
-                        actionName: widget.actionList[index]['actionName'] ?? "",
+                        actionName:
+                            widget.actionList[index]['actionName'] ?? "",
                         apparatus: widget.actionList[index]['apparatus'] ?? "",
-                        position: widget.actionList[index]['pos'].toString() ?? "",
+                        position:
+                            widget.actionList[index]['pos'].toString() ?? "",
                         name: "",
                         phoneNumber: "",
                         lessonDate: "",
@@ -193,7 +197,8 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                           widget.actionList[index]['noteSelected'] =
                               !widget.actionList[index]['noteSelected'];
 
-                          if (widget.actionList[index]['noteSelected'] ?? false) {
+                          if (widget.actionList[index]['noteSelected'] ??
+                              false) {
                             selectedCnt++;
                           } else {
                             selectedCnt--;
@@ -202,7 +207,8 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                           print('####여기부터 봐라####');
                           print('seletedCnt: $selectedCnt');
                           print('index: $index');
-                          print('widget.actionList[index]: ${widget.actionList[index]}');
+                          print(
+                              'widget.actionList[index]: ${widget.actionList[index]}');
                           print('widget.actionList: $widget.actionList');
                           print('selectedActionList: $selectedActionList');
                           print('####여기까지 봐라####');

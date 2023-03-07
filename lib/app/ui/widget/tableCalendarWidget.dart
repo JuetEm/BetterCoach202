@@ -88,6 +88,14 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
         lastDay: DateTime.now().add(Duration(days: 365 * 10 + 2)),
         calendarFormat: calendarFormat,
         calendarStyle: CalendarStyle(
+            todayDecoration: BoxDecoration(
+              color: Palette.titleOrange,
+              shape: BoxShape.circle,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: Palette.buttonOrange,
+              shape: BoxShape.circle,
+            ),
             markerSize: 10.0,
             markerDecoration: BoxDecoration(
               color: Palette.buttonOrange,
@@ -117,8 +125,10 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
           return isSameDay(selectedDateIn, day);
         },
         eventLoader: (day) {
-          return getEventFroDay(day,
-              widget.eventSource); // [{DateTime.now() : Event("고두심", DateTime.now().toString())}];//
+          return getEventFroDay(
+              day,
+              widget
+                  .eventSource); // [{DateTime.now() : Event("고두심", DateTime.now().toString())}];//
         },
         // calendarIsOffStaged = true;
       );

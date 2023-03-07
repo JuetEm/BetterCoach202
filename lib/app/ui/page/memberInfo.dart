@@ -809,16 +809,14 @@ class _LessonNoteViewState extends State<LessonNoteView> {
 
         // 캘린더 시작
         Offstage(
-          offstage: isNoteCalendarHided,
-          child: TableCalendarWidget(
-            selectedDate: "",
-            eventSource: eventSource,
-          )
-              .animate(target: !isNoteCalendarHided ? 1 : 0)
-              .fadeIn(duration: 300.ms)
-              .animate(target: isNoteCalendarHided ? 1 : 0)
-              .fadeOut(duration: 300.ms),
-        ),
+            offstage: isNoteCalendarHided,
+            child: TableCalendarWidget(
+              selectedDate: "",
+              eventSource: eventSource,
+            )
+                .animate(target: !isNoteCalendarHided ? 1 : 0)
+                .fadeIn(duration: 300.ms)
+                .scaleXY(begin: 0.9, duration: 300.ms)),
 
         /// 새로운 레슨 노트 보기 리스트 시작
         FutureBuilder<QuerySnapshot>(
