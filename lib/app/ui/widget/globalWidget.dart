@@ -111,8 +111,7 @@ AppBar MainAppBarMethod(BuildContext context, String pageName) {
         // 로그인 페이지로 이동
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => LoginPage()),
         );
       },
       color: Palette.gray33,
@@ -667,7 +666,7 @@ class _BaseSearchTextFieldState extends State<BaseSearchTextField> {
           print("Input Text : ${text}");
           widget.customFunction();
         },
-        onTap: (){
+        onTap: () {
           widget.logFunction();
         },
         controller: widget.customController,
@@ -1257,6 +1256,14 @@ class GroupActionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(top: 10),
+      child: Chip(
+        label: Text(actionName),
+      ),
+    );
+
     return Column(
       children: [
         SizedBox(

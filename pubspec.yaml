@@ -80,6 +80,7 @@ dependencies:
   # Amplitude Analysis
   amplitude_flutter: ^3.13.0
   flutter_slidable: ^2.0.0
+  fl_chart: ^0.61.0
 
 dev_dependencies:
   flutter_test:
