@@ -18,6 +18,22 @@ class DayLessonService extends ChangeNotifier {
         .get();
   }
 
+  Future<QuerySnapshot> readCalSelectedNote(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    print("eawgraetgtrgdf - readCalSelectedNote - uid : ${uid}, docId : ${docId}, lessonDate : ${lessonDate}");
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+    return await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isLessThanOrEqualTo: lessonDate)
+        .orderBy("lessonDate", descending: true)
+        .orderBy("timestamp", descending: false)
+        .get();
+  }
+
   Future<List> readTodayNoteForCal(
     String uid,
     String docId,

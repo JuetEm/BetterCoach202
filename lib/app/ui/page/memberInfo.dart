@@ -103,6 +103,8 @@ class _MemberInfoState extends State<MemberInfo> {
 
     super.initState();
 
+    lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
     print("[MI] Init : 항상 울리나? ");
 
     memberActionNote = [];
@@ -840,11 +842,13 @@ class _LessonNoteViewState extends State<LessonNoteView> {
 
         /// 새로운 레슨 노트 보기 리스트 시작
         FutureBuilder<QuerySnapshot>(
-            future: widget.dayLessonService.readTodaynote(
+            future: widget.dayLessonService.readCalSelectedNote(
               widget.userInfo.uid,
               widget.userInfo.docId,
+              lessonDate,
             ),
             builder: (context, snapshot) {
+              print("fdsaerbtrbrytgerv - memberInfo - lessonDate : ${lessonDate}");
               /* if (snapshot.connectionState == ConnectionState.waiting) {
                 print("ConnectionState.waiting : ${ConnectionState.waiting}");
                 return Padding(

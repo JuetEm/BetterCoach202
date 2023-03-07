@@ -111,6 +111,9 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
           setState(() {
             selectedDateIn = selectedDay;
             focusedDate = focusedDay;
+            lessonDate = DateFormat("yyyy-MM-dd").format(selectedDay).toString();
+            print("fdsaerbtrbrytgerv onDaySelected called!!");
+            dayLessonService.notifyListeners();
           });
           calendarService.setDate(
             DateTime(
