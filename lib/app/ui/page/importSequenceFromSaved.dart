@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:web_project/app/ui/page/memberInfo.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
@@ -242,6 +243,13 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                     print('selectedActionList: $selectedActionList');
                     print('widget.actionList: ${widget.actionList}');
                     print('@@@@@ 전송! @@@@@');
+
+                    List tmpList = widget.actionList;
+                    for(var i in tmpList){
+                      i['name'] = userInfo.name;
+                      i['phoneNumber'] = userInfo.phoneNumber;
+                      // i['noteSelected'] = false;
+                    }
 
                     Navigator.pop(context,widget.actionList);
                   },

@@ -1059,7 +1059,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                             'totalNote']
                                                         .isNotEmpty
                                                     ? element['noteSelected'] =
-                                                        true
+                                                        false // true
                                                     : element['noteSelected'] =
                                                         false);
 
