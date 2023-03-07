@@ -137,8 +137,6 @@ class LessonService extends ChangeNotifier {
     return result;
   }
 
-  
-
   Future<int> countTodaynote(
     String uid,
     String docId,
@@ -277,7 +275,7 @@ class LessonService extends ChangeNotifier {
 
   Future<List> readDateMemberActionNote(
       String uid, String memberId, String date) async {
-        print("ㅠㄱㅈㅁㄷㄹㅁㅇㄴㄹㄴㅁ lessonActionList 초기화!!");
+    print("ㅠㄱㅈㅁㄷㄹㅁㅇㄴㄹㄴㅁ lessonActionList 초기화!!");
     List lessonActionResultList = [];
     var lessonActionResult = await lessonCollection
         .where('uid', isEqualTo: uid)
@@ -296,8 +294,10 @@ class LessonService extends ChangeNotifier {
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
-          rstAObj['actionName'], globalVariables.actionList);
+      rstAObj['position'] = globalFunction.getActionPosition(
+          rstAObj['apratusName'],
+          rstAObj['actionName'],
+          globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
 
@@ -345,8 +345,10 @@ class LessonService extends ChangeNotifier {
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
-          rstAObj['actionName'], globalVariables.actionList);
+      rstAObj['position'] = globalFunction.getActionPosition(
+          rstAObj['apratusName'],
+          rstAObj['actionName'],
+          globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
     notifyListeners();
