@@ -246,7 +246,7 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                     for(var i in tmpList){
                       i['name'] = userInfo.name;
                       i['phoneNumber'] = userInfo.phoneNumber;
-                      // i['noteSelected'] = false;
+                      i['noteSelected'] = false;
                     }
                     Navigator.pop(context,widget.actionList);
                   },

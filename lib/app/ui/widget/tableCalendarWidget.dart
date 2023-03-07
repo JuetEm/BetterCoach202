@@ -69,18 +69,19 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
           ? dayLessonService
               .readTodayNoteForCal(userInfo.uid, userInfo.docId)
               .then((value) {
+                print("kliohuikutydfklgjhjyhrts - value : ${value}");
               // 잡았다 요놈!!
               docForCal = [];
               docForCal.addAll(value);
-              docForCal.forEach((element) {
-                // print("kliohuikutydfklgjhjyhrts - 0 - element['name'] : ${element['name']}, element['lessonDate'] : ${element['lessonDate']}");
+              docForCal.isNotEmpty ? docForCal.forEach((element) {
+                print("kliohuikutydfklgjhjyhrts - 0 - element['name'] : ${element['name']}, element['lessonDate'] : ${element['lessonDate']}");
                 var dt = DateTime.parse(element['lessonDate']);
                 widget.eventSource[DateTime(dt.year, dt.month, dt.day)] = [
                   Event(element['name'], element['lessonDate'])
                 ];
-                dayLessonService.notifyListeners();
+                 dayLessonService.notifyListeners();
                 // print("kliohuikutydfklgjhjyhrts - 0 - dt : ${dt}, eventSource : ${eventSource}");
-              });
+              }) : null;
             })
           : null;
       return TableCalendar(

@@ -194,6 +194,7 @@ class _MemberInfoState extends State<MemberInfo> {
     return Consumer3<LessonService, DayLessonService, MemberService>(
       builder:
           (context, lessonService, dayLessonService, memberService, child) {
+            
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
@@ -208,7 +209,23 @@ class _MemberInfoState extends State<MemberInfo> {
                 userInfo.docId, // userInfo.docId,
               )
                 .then((value) {
-                  value[1];
+                  if(value[0].isEmpty){
+                    setState(() {
+                      
+                    });
+                    print("fdasbrebsdfvdavadf 1");
+                  }else if(value[1] == 0){
+                    print("fdasbrebsdfvdavadf 2");
+                  }else if(value.isEmpty){
+                    print("fdasbrebsdfvdavadf 3");
+                  }else{
+                    print("fdasbrebsdfvdavadf 4 value => ${value}");
+                  }
+                  print("0 - fdsavewfweas value.length : ${value[0].length}, memberActionNote.length : ${memberActionNote.length}");
+                  if(value[0].length <= memberActionNote.length){
+                    memberActionNote= [];
+                  }
+                  // value[1];
                 print("1 - fdsavewfweas value.length : ${value[0].length}");
                 value[0].isNotEmpty
                     ? isValueNotEmpty = true

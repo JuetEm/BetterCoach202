@@ -279,6 +279,7 @@ class DayLessonService extends ChangeNotifier {
         .get();
     List<DocumentSnapshot> docs = docRaw.docs;
     print('pos : ${docs.length}');
+    print("uid : ${uid}");
 
     return docs.length;
   }

@@ -221,7 +221,7 @@ class _LessonAddState extends State<LessonAdd> {
       }
       print("Date : ${lessonDate}");
 
-      Future<int> lenssonData = lessonService.countPos(
+      /* Future<int> lenssonData = lessonService.countPos(
         user.uid,
         customUserInfo.docId,
         lessonDateController.text,
@@ -240,7 +240,7 @@ class _LessonAddState extends State<LessonAdd> {
       }).catchError((error) {
         // error가 해당 에러를 출력
         print('error: $error');
-      });
+      }); */
 
       print("초기화시컨트롤러:${totalNoteControllers}");
       print("초기화시노트아이디:${totalNoteTextFieldDocId}");
@@ -262,7 +262,7 @@ class _LessonAddState extends State<LessonAdd> {
             child: Text("레슨 노트를 추가해 보세요."),
           );
         } */
-        
+
         if (isReturnIsNotEmpty &&
             lessonActionList.isEmpty &&
             lessonAddMode == "노트편집") {
@@ -942,7 +942,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                                     print(
                                                                         "txtEdtCtrlrList[index].text : ${txtEdtCtrlrList[index].text}");
 
-                                                                    setState(() {});
+                                                                    setState(
+                                                                        () {});
                                                                   },
                                                                 )),
                                                             TextFormField(
@@ -1057,26 +1058,29 @@ class _LessonAddState extends State<LessonAdd> {
                                           ).then((value) {
                                             // lessonActionList = [];
                                             List valList = value;
-                                            for(var v in valList){
+                                            for (var v in valList) {
                                               lessonActionList.add(v);
                                             }
-                                            
-                                            lessonActionList.forEach(
+
+                                            /* lessonActionList.forEach(
                                                 (element) => element[
                                                             'totalNote']
                                                         .isNotEmpty
                                                     ? element['noteSelected'] =
                                                         false // true
                                                     : element['noteSelected'] =
-                                                        false);
-                                                        lessonActionList.forEach((element) {
-                                                          element['deleteSelected'] = false;
-                                                        },);
+                                                        false); */
+                                            lessonActionList.forEach(
+                                              (element) {
+                                                element['deleteSelected'] =
+                                                    false;
+                                              },
+                                            );
                                             debugList(lessonActionList, "1");
 
                                             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
-                                            txtEdtCtrlrList = [];
-                                            lessonActionList.forEach((element) {
+                                            // txtEdtCtrlrList = [];
+                                            valList.forEach((element) {
                                               txtEdtCtrlrList.add(
                                                   new TextEditingController());
                                             });
@@ -1215,9 +1219,7 @@ class _LessonAddState extends State<LessonAdd> {
                                         "동작추가시노트아이디:${totalNoteTextFieldDocId}");
 
                                     // lessonService.notifyListeners();
-                                    setState(() {
-                                      
-                                    });
+                                    setState(() {});
                                   },
                                 ),
                                 const SizedBox(height: 20),

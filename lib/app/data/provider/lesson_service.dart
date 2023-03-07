@@ -398,7 +398,8 @@ class LessonService extends ChangeNotifier {
     List<DocumentSnapshot> docs = docRaw.docs;
     print('[LS] countPos 실행 - pos : ${docs.length}');
 
-    notifyListeners();
+    // 아래 notifyListeners(); 주석 처리하면 memberInfo.dart 가 lessonAdd.dart 진입 시 재빌드 되지 않음
+    // notifyListeners();
     return docs.length;
   }
 
