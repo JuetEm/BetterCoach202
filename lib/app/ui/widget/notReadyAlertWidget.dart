@@ -13,7 +13,7 @@ class NotReadyAlertWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(featureName),
-      content: Text('$featureName 기능은 준비중입니다.'),
+      content: Text('$featureName 기능은 곧 업데이트 예정입니다.'),
       actions: [
         TextButton(
           onPressed: () {
