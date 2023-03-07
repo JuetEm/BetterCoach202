@@ -851,10 +851,9 @@ class _LessonNoteViewState extends State<LessonNoteView> {
 
         /// 새로운 레슨 노트 보기 리스트 시작
         FutureBuilder<QuerySnapshot>(
-            future: widget.dayLessonService.readCalSelectedNote(
+            future: widget.lessonService.read(
               widget.userInfo.uid,
               widget.userInfo.docId,
-              lessonDate,
             ),
             builder: (context, snapshot) {
               print(
