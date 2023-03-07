@@ -16,7 +16,7 @@ class SequenceCustomService extends ChangeNotifier {
     var result = await sequenceRecentCollection
         .where('uid', isEqualTo: uid)
         .where('memberId',isEqualTo: memberId)
-        .orderBy('sequenceTitle', descending: false)
+        .orderBy('sequenceTitle', descending: true)
         .get();
 
     List resultList = [];
