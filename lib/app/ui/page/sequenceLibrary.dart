@@ -23,6 +23,9 @@ List rctSqcList = [];
 List customSequenceList = [];
 List ctmSqcList = [];
 
+///
+bool isMemberSequence = false;
+
 class SequenceLibrary extends StatefulWidget {
   const SequenceLibrary({super.key});
 
@@ -51,7 +54,17 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
         appBar: BaseAppBarMethod(context, "시퀀스 보관함", () {
           Navigator.pop(context);
         },
-            null,
+            [
+              PopupMenuButton(
+                itemBuilder: (context) => [
+                  CheckedPopupMenuItem(
+                    checked: false,
+                    child: Text("이 회원만 보기"),
+                  ),
+                ],
+              ),
+              SizedBox(width: 10),
+            ],
 
             /// 탭바
             TabBar(
