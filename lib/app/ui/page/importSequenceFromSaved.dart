@@ -143,11 +143,11 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                           fontWeight: FontWeight.bold),
                     ),
                     Spacer(),
-                    Text('편집',
+                    /* Text('편집',
                         style: TextStyle(
                           fontSize: 16,
                           color: Palette.textBlue,
-                        ))
+                        )) */
                   ]),
                 ),
 

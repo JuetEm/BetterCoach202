@@ -146,11 +146,11 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                           fontWeight: FontWeight.bold),
                     ),
                     Spacer(),
-                    Text('편집',
+                    /* Text('편집',
                         style: TextStyle(
                           fontSize: 16,
                           color: Palette.textBlue,
-                        ))
+                        )) */
                   ]),
                 ),
 
