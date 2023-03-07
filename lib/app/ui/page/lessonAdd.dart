@@ -143,6 +143,8 @@ class _LessonAddState extends State<LessonAdd> {
     initStateCheck = true;
     growthInth = 0;
 
+    isReturnIsNotEmpty = true;
+
     print(
         "globalVariables.memberTicketList.where((element) => element['isSelected'] == true && element['memberId'] == userInfo.docId) : ${globalVariables.memberTicketList.where((element) => element['isSelected'] == true && element['memberId'] == userInfo.docId)}");
   }
@@ -255,11 +257,12 @@ class _LessonAddState extends State<LessonAdd> {
           sequenceCustomService, memberTicketService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
-        if (!isReturnIsNotEmpty) {
+        /* if (!isReturnIsNotEmpty) {
           return Center(
             child: Text("레슨 노트를 추가해 보세요."),
           );
-        }
+        } */
+        
         if (isReturnIsNotEmpty &&
             lessonActionList.isEmpty &&
             lessonAddMode == "노트편집") {
@@ -409,7 +412,7 @@ class _LessonAddState extends State<LessonAdd> {
                             // await totalNoteSave(
                             //     lessonService, customUserInfo, context);
 
-                            lessonService.notifyListeners();
+                            // lessonService.notifyListeners();
                             Navigator.pop(context);
                           }
                         },
@@ -1052,8 +1055,12 @@ class _LessonAddState extends State<LessonAdd> {
                                                 builder: (context) =>
                                                     SequenceLibrary()),
                                           ).then((value) {
-                                            lessonActionList = [];
-                                            lessonActionList = value;
+                                            // lessonActionList = [];
+                                            List valList = value;
+                                            for(var v in valList){
+                                              lessonActionList.add(v);
+                                            }
+                                            
                                             lessonActionList.forEach(
                                                 (element) => element[
                                                             'totalNote']
@@ -1062,7 +1069,9 @@ class _LessonAddState extends State<LessonAdd> {
                                                         false // true
                                                     : element['noteSelected'] =
                                                         false);
-
+                                                        lessonActionList.forEach((element) {
+                                                          element['deleteSelected'] = false;
+                                                        },);
                                             debugList(lessonActionList, "1");
 
                                             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);

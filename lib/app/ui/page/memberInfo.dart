@@ -79,6 +79,8 @@ List memberActionNote = [];
 
 bool isValueNotEmpty = true;
 
+int debugCnt = 0;
+
 class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
   List tmpResultActionList = [];
@@ -216,7 +218,7 @@ class _MemberInfoState extends State<MemberInfo> {
         // ignore: dead_code
 
         print(
-            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}");
+            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}, isValueNotEmpty : ${isValueNotEmpty}");
 
         memberActionNote.isEmpty && isValueNotEmpty
             ? lessonService
@@ -225,15 +227,22 @@ class _MemberInfoState extends State<MemberInfo> {
                 userInfo.docId, // userInfo.docId,
               )
                 .then((value) {
-                print("fdsavewfweas value.length : ${value.length}");
-                value.isEmpty
-                    ? isValueNotEmpty = false
-                    : isValueNotEmpty = true;
-                value.isNotEmpty
-                    ? memberActionNote.addAll(value)
+                  value[1];
+                print("1 - fdsavewfweas value.length : ${value[0].length}");
+                value[0].isNotEmpty
+                    ? isValueNotEmpty = true
+                    : isValueNotEmpty = false;
+                    print("2 - fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+                value[0].isNotEmpty
+                    ? memberActionNote.addAll(value[0])
                     : memberActionNote = [];
                 print(
-                    "fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+                    "3 - ${debugCnt} - fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+                    debugCnt++;
+                    if(debugCnt == value[1]){
+
+                    }
+                    
               })
             : null;
         return Scaffold(

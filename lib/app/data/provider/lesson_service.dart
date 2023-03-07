@@ -351,8 +351,8 @@ class LessonService extends ChangeNotifier {
           globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
-    notifyListeners();
-    return lessonActionResultList;
+    // notifyListeners();
+    return [lessonActionResultList,docsALength];
   }
 
   Future<QuerySnapshot> readNotesOflessonDate(

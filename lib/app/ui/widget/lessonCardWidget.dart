@@ -39,6 +39,8 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
   @override
   void initState() {
     super.initState();
+
+    // print("daifepowfgbeiruoijfsbdoiosjk - widget.lessonActionList : ${widget.lessonActionList}");
   }
 
   @override
