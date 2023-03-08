@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:417922293739:android:8a0a38908d1de53de103ae",
         "android_client_info": {
-          "package_name": "com.example.web_project"
+          "package_name": "com.moley.web_project"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "417922293739-u2a892q9iip44gobrqt8d4rqa3vref58.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.webProject"
+                "bundle_id": "com.moley.webProject"
               }
             }
           ]

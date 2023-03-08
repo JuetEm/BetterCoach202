@@ -1,4 +1,4 @@
-package com.example.web_project
+package com.squat.bettercoach.dev
 
 import io.flutter.embedding.android.FlutterActivity
 
