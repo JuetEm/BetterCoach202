@@ -107,7 +107,7 @@ class _MemberInfoState extends State<MemberInfo> {
 
     if (widget.isQuickAdd) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Future.delayed(const Duration(milliseconds: 300), () async {
+        Future.delayed(const Duration(milliseconds: 100), () async {
           lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
           List<TmpLessonInfo> tmpLessonInfoList = [];

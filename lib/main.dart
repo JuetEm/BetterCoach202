@@ -23,6 +23,7 @@ import 'package:web_project/app/data/provider/report_service.dart';
 import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
+import 'package:web_project/app/ui/page/loginSplash.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/widget/globalWidgetDashboard.dart';
@@ -93,7 +94,7 @@ bool isKakaoInstalled = false;
 
 bool isEmailLoginDeactivated = true;
 
- AnalyticLog analyticLog = AnalyticLog();
+AnalyticLog analyticLog = AnalyticLog();
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -162,8 +163,10 @@ void main() async {
 
   AuthService authService = AuthService();
   FB.User? user = authService.currentUser();
- 
-  user != null ? analyticLog.analyticConfig(user!.uid) : analyticLog.analyticConfig(null) ;
+
+  user != null
+      ? analyticLog.analyticConfig(user!.uid)
+      : analyticLog.analyticConfig(null);
 
   print("user?.email : ${user?.email}");
   print("user?.photoURL : ${user?.photoURL}");
@@ -266,9 +269,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final maxWidth = 480.0;
 
-  const MyApp({Key? key}) : super(key: key);  
-
-  
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -499,14 +500,15 @@ class _LoginPageState extends State<LoginPage> {
                         if (kIsWeb) {
                           // web 방식 로그인 구현
                           print("JAVASCRIPT - 카카오톡으로 로그인 시작");
-                          loginController.kakaoSignIn().then((value) {
+                          loginController.kakaoSignIn(context).then((value) {
+                            
                             print("value : ${value}");
                             loginWithCurrentUser(value, context);
                           });
                         } else {
                           // Navtive App 방식 로그인 구현
                           print("NATIVE - 카카오톡으로 로그인 시작");
-                          loginController.kakaoSignIn().then((value) {
+                          loginController.kakaoSignIn(context).then((value) {
                             print("value : ${value}");
                             loginWithCurrentUser(value, context);
                           });
@@ -615,7 +617,7 @@ class _LoginPageState extends State<LoginPage> {
                       try {
                         // if (Platform.isIOS || Platform.isAndroid) {
 
-                        loginController.googleSignIn().then((value) {
+                        loginController.googleSignIn(context).then((value) {
                           print("value : ${value}");
                           loginWithCurrentUser(value, context);
                         });
@@ -960,6 +962,8 @@ class _LoginPageState extends State<LoginPage> {
               globalVariables.resultList,
               globalVariables.actionList
             ];
+
+            
             Navigator.push(
               context,
               MaterialPageRoute(

@@ -3,7 +3,8 @@
     "default": "webproject-48ca4",
     "staging": "better-coach-cf5a2",
     "stagin": "webproject-48ca4",
-    "renew": "better-coach-cf5a2"
+    "renew": "better-coach-cf5a2",
+    "renew202": "better-coach-cf5a2"
   },
   "targets": {},
   "etags": {}
