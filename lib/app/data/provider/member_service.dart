@@ -234,7 +234,7 @@ class MemberService extends ChangeNotifier {
 
 
     // 멤버인포 화면과 상관 있는지 없는지 모르겠음, 있을 가능성 높음
-    // // notifyListeners();
+    notifyListeners();
     
   }
 
