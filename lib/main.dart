@@ -501,7 +501,6 @@ class _LoginPageState extends State<LoginPage> {
                           // web 방식 로그인 구현
                           print("JAVASCRIPT - 카카오톡으로 로그인 시작");
                           loginController.kakaoSignIn(context).then((value) {
-                            
                             print("value : ${value}");
                             loginWithCurrentUser(value, context);
                           });
@@ -910,8 +909,25 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void loginWithCurrentUser(FB.User? cUser, BuildContext context) {
+    /// uid 수동 맵핑 테스트, Firebase User 객체에는 setter 가 없어서, 직접 맵핑은 어려움.
+    /// 최초에 불러올 때 수동 맵핑으로 회원 목록 등 기존 정보를 불러 올 수는 있으나,
+    /// 이후 저장하고 수정하는 등 향후 데이터 관리가 어려움 <= 항상 uid 를 기준으로 데이터를 처리하므로 중간에 꼬일 가능성 큼
+    /// 다른 방법 검토, 기존 정보를 불러오는 것만 가능하다는 한계 확인
+    String cUid = "";
+    switch (cUser!.uid) {
+      /// 정규호의 카카오 아이디로 로그인 했을 때의 uid,
+      /// 확인되면 demo@demo.com의 uid로 변경 테스트
+      case "kakao:2626773646":
+        cUid = cUser.uid;
+        /// cUid = "RSlQoHFnBOZO3tggCVuh06sjgFJ2";
+        break;
+      default:
+        cUid = cUser.uid;
+        break;
+    }
+
     Future<List> resultFirstMemberList =
-        memberService.readMemberListAtFirstTime(cUser!.uid);
+        memberService.readMemberListAtFirstTime(cUid);
 
     resultFirstMemberList.then((value) {
       print(
@@ -925,7 +941,7 @@ class _LoginPageState extends State<LoginPage> {
       print("memberList await init complete!");
 
       Future<List> resultFirstActionList =
-          actionService.readActionListAtFirstTime(cUser.uid);
+          actionService.readActionListAtFirstTime(cUid);
 
       resultFirstActionList.then((value) {
         print(
@@ -938,7 +954,7 @@ class _LoginPageState extends State<LoginPage> {
       }).whenComplete(() async {
         print("actionList await init complete!");
 
-        await ticketLibraryService.read(cUser.uid).then((value) {
+        await ticketLibraryService.read(cUid).then((value) {
           globalVariables.ticketLibraryList.addAll(value);
         }).onError((error, stackTrace) {
           print("error : ${error}");
@@ -946,7 +962,7 @@ class _LoginPageState extends State<LoginPage> {
         }).whenComplete(() async {
           print("ticketLibraryList await init complete!");
 
-          await memberTicketService.read(cUser.uid).then((value) {
+          await memberTicketService.read(cUid).then((value) {
             globalVariables.memberTicketList.addAll(value);
           }).onError((error, stackTrace) {
             print("error : ${error}");
@@ -963,7 +979,6 @@ class _LoginPageState extends State<LoginPage> {
               globalVariables.actionList
             ];
 
-            
             Navigator.push(
               context,
               MaterialPageRoute(
