@@ -115,7 +115,7 @@ bool isReturnIsNotEmpty = true;
 
 class LessonAdd extends StatefulWidget {
   LessonAdd(this.customFunction, {super.key});
-  LessonAdd.getCustomFunction(this.customFunction,{super.key});
+  LessonAdd.getCustomFunction(this.customFunction, {super.key});
   Function customFunction;
   @override
   State<LessonAdd> createState() => _LessonAddState();
@@ -417,7 +417,7 @@ class _LessonAddState extends State<LessonAdd> {
                             isReturnIsNotEmpty = true;
 
                             print("여기가 맞긴 합니까?!");
-                            
+
                             // lessonService.notifyListeners();
                             widget.customFunction();
                             lessonService.nofiFunction();
@@ -1267,7 +1267,13 @@ class _LessonAddState extends State<LessonAdd> {
                                         // print("fsdadfewgree 1 - element['actionName'] : ${element['actionName']}, element['pos'] : ${element['pos']}, element['id'] : ${element['id']},");
                                         if (growthInth > 0) {
                                           lessonService.setLessonActionNote(
-                                              element['id'],
+                                              element['id'] ?? customUserInfo.uid +
+            "_" +
+            customUserInfo.docId +
+            "_" +
+            lessonDateArg +
+            "_" +
+            (Timestamp.now()).toString(),
                                               element['uid'],
                                               element['docId'],
                                               element['actionName'],
@@ -1414,38 +1420,40 @@ class _LessonAddState extends State<LessonAdd> {
                                                     int k = 0;
                                                     lessonActionList
                                                         .forEach((element) {
-                                                      lessonService
-                                                          .setLessonActionNote(
-                                                              lessonActionList[k]
-                                                                  ['id'],
-                                                              lessonActionList[k]
-                                                                  ['uid'],
-                                                              lessonActionList[
-                                                                  k]['docId'],
-                                                              lessonActionList[
-                                                                      k][
-                                                                  'actionName'],
-                                                              lessonActionList[
-                                                                      k]
-                                                                  [
-                                                                  'apratusName'],
-                                                              lessonActionList[
-                                                                  k]['grade'],
-                                                              lessonActionList[
-                                                                      k]
-                                                                  [
-                                                                  'lessonDate'],
-                                                              lessonActionList[
-                                                                  k]['name'],
-                                                              lessonActionList[
-                                                                      k]
-                                                                  [
-                                                                  'phoneNumber'],
-                                                              lessonActionList[
-                                                                  k]['pos'],
-                                                              lessonActionList[
-                                                                      k][
-                                                                  'totalNote']);
+                                                      lessonService.setLessonActionNote(
+                                                          lessonActionList[k]
+                                                                  ['id'] ??
+                                                              customUserInfo
+                                                                      .uid +
+                                                                  "_" +
+                                                                  customUserInfo
+                                                                      .docId +
+                                                                  "_" +
+                                                                  lessonDateArg +
+                                                                  "_" +
+                                                                  (DateTime
+                                                                          .now())
+                                                                      .toString(),
+                                                          lessonActionList[k]
+                                                              ['uid'],
+                                                          lessonActionList[k]
+                                                              ['docId'],
+                                                          lessonActionList[k]
+                                                              ['actionName'],
+                                                          lessonActionList[k]
+                                                              ['apratusName'],
+                                                          lessonActionList[k]
+                                                              ['grade'],
+                                                          lessonActionList[k]
+                                                              ['lessonDate'],
+                                                          lessonActionList[k]
+                                                              ['name'],
+                                                          lessonActionList[k]
+                                                              ['phoneNumber'],
+                                                          lessonActionList[k]
+                                                              ['pos'],
+                                                          lessonActionList[k]
+                                                              ['totalNote']);
                                                     });
                                                   }
                                                   setState(() {});
@@ -1668,14 +1676,58 @@ class _LessonAddState extends State<LessonAdd> {
     }); */
     if (growthInth > 0) {
       lessonActionList.forEach((element) {
-        print("fdasewvref element : ${element}");
+        print("fdasewvref 0 element : ${element}");
         element['id'] != null
             ? lessonService.delete(
                 docId: element['id'], onSuccess: () {}, onError: () {})
             : null;
+            print("fdasewvref 1 element : ${element}");
       });
     }
-    for (int i = 0; i < lessonActionList.length; i++) {
+
+    // int teclIndex = 0;
+    String recordId = "";
+    lessonActionList.forEach((element) async {
+      recordId = customUserInfo.uid +
+            "_" +
+            customUserInfo.docId +
+            "_" +
+            lessonDateArg +
+            "_" +
+            (Timestamp.now()).toString();
+      print("asdfsdfsfsgfdg gks qjs qhqtlek. : "
+      +"recordId : "+recordId
+      +"customUserInfo.uid : "+customUserInfo.uid
+      +"customUserInfo.docId, : "+customUserInfo.docId
+      +"element['actionName'] : "+element['actionName']
+      +"element['apratusName'] : "+element['apratusName']
+      +"element['grade'] : "+element['grade']
+      +"lessonDateArg : "+lessonDateArg
+      +"element['name'] : "+element['name']
+      +"element['phoneNumber'] : "+element['phoneNumber']
+      +"element['pos'] : "+element['pos'].toString()
+      +"txtEdtCtrlrList[$element['pos']].text.trim() : "+txtEdtCtrlrList[element['pos']].text.trim());
+      await lessonService.setLessonActionNote(
+        recordId,
+        customUserInfo.uid,
+        customUserInfo.docId,
+        element['actionName'],
+        element['apratusName'],
+        element['grade'],
+        lessonDateArg,
+        element['name'],
+        element['phoneNumber'],
+        element['pos'],
+        txtEdtCtrlrList[element['pos']].text.trim(),
+      );
+      // teclIndex ++;
+      recordId = "";
+      // .dart 파일이 시작 종료 될 때만 0으로 초기화, 계속 1씩 늘어나기만 하는 정수
+      growthInth++;
+     });
+    // teclIndex = 0;
+
+   /*  for (int i = 0; i < lessonActionList.length; i++) {
       print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
           customUserInfo.uid +
           "_" +
@@ -1683,7 +1735,7 @@ class _LessonAddState extends State<LessonAdd> {
           "_" +
           lessonDateArg +
           "_" +
-          growthInth.toString() +
+          DateTime.now().toString() +
           "' " +
           customUserInfo.uid +
           "' " +
@@ -1711,7 +1763,7 @@ class _LessonAddState extends State<LessonAdd> {
             "_" +
             lessonDateArg +
             "_" +
-            (growthInth).toString(),
+            (DateTime.now()).toString(),
         customUserInfo.uid,
         customUserInfo.docId,
         lessonActionList[i]['actionName'],
@@ -1726,7 +1778,7 @@ class _LessonAddState extends State<LessonAdd> {
 
       // .dart 파일이 시작 종료 될 때만 0으로 초기화, 계속 1씩 늘어나기만 하는 정수
       growthInth++;
-    }
+    } */
 
     lessonActionList = [];
     // lessonService.notifyListeners();

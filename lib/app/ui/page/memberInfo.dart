@@ -128,7 +128,7 @@ class _MemberInfoState extends State<MemberInfo> {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonAdd((){}),
+              builder: (context) => LessonAdd(() {}),
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
             ),
@@ -194,13 +194,12 @@ class _MemberInfoState extends State<MemberInfo> {
     return Consumer3<LessonService, DayLessonService, MemberService>(
       builder:
           (context, lessonService, dayLessonService, memberService, child) {
-            
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
 
         print(
-            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}, isValueNotEmpty : ${isValueNotEmpty}, memberActionNote.isEmpty : ${memberActionNote.isEmpty }");
+            "fdsavewfweas userInfo.name : ${userInfo.name}, userInfo.docId : ${userInfo.docId}, isValueNotEmpty : ${isValueNotEmpty}, memberActionNote.isEmpty : ${memberActionNote.isEmpty}");
 
         memberActionNote.isEmpty && isValueNotEmpty
             ? lessonService
@@ -209,38 +208,35 @@ class _MemberInfoState extends State<MemberInfo> {
                 userInfo.docId, // userInfo.docId,
               )
                 .then((value) {
-                  if(value[0].isEmpty){
-                    setState(() {
-                      
-                    });
-                    print("fdasbrebsdfvdavadf 1");
-                  }else if(value[1] == 0){
-                    print("fdasbrebsdfvdavadf 2");
-                  }else if(value.isEmpty){
-                    print("fdasbrebsdfvdavadf 3");
-                  }else{
-                    print("fdasbrebsdfvdavadf 4 value => ${value}");
-                  }
-                  print("0 - fdsavewfweas value.length : ${value[0].length}, memberActionNote.length : ${memberActionNote.length}");
-                  if(value[0].length <= memberActionNote.length){
-                    memberActionNote= [];
-                  }
-                  // value[1];
+                if (value[0].isEmpty) {
+                  setState(() {});
+                  print("fdasbrebsdfvdavadf 1");
+                } else if (value[1] == 0) {
+                  print("fdasbrebsdfvdavadf 2");
+                } else if (value.isEmpty) {
+                  print("fdasbrebsdfvdavadf 3");
+                } else {
+                  print("fdasbrebsdfvdavadf 4 value => ${value}");
+                }
+                print(
+                    "0 - fdsavewfweas value.length : ${value[0].length}, memberActionNote.length : ${memberActionNote.length}");
+                if (value[0].length <= memberActionNote.length) {
+                  memberActionNote = [];
+                }
+                // value[1];
                 print("1 - c value.length : ${value[0].length}");
                 value[0].isNotEmpty
                     ? isValueNotEmpty = true
                     : isValueNotEmpty = false;
-                    print("2 - fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
+                print(
+                    "2 - fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
                 value[0].isNotEmpty
                     ? memberActionNote.addAll(value[0])
                     : memberActionNote = [];
                 print(
                     "3 - ${debugCnt} - fdsavewfweas memberActionNote.length : ${memberActionNote.length}");
-                    debugCnt++;
-                    if(debugCnt == value[1]){
-
-                    }
-                    
+                debugCnt++;
+                if (debugCnt == value[1]) {}
               })
             : null;
         return Scaffold(
@@ -656,13 +652,11 @@ class _MemberInfoState extends State<MemberInfo> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd.getCustomFunction((){
-                            (){
-                            print("floatingButton LessonAdd is called!");
-                            setState(() {
-                              
-                            });
-                          };
+                          builder: (context) => LessonAdd.getCustomFunction(() {
+                            () {
+                              print("floatingButton LessonAdd is called!");
+                              setState(() {});
+                            };
                           }),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
@@ -671,9 +665,9 @@ class _MemberInfoState extends State<MemberInfo> {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
                         isValueNotEmpty = true;
-                        print("memberActionNote : ${memberActionNote} , isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
+                        print(
+                            "memberActionNote : ${memberActionNote} , isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
                         eventSource = {};
-                        
                       });
                     }
                   },
@@ -1518,11 +1512,11 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd.getCustomFunction((){
+                          builder: (context) => LessonAdd.getCustomFunction(() {
                             print("LessonAdd.getCustomFunction is called!!");
-                            setState(() {
-                              
-                            });
+                            if (this.mounted) {
+                              setState(() {});
+                            }
                           }),
                           // GlobalWidgetDashboard(), //
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
@@ -1532,7 +1526,8 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         // 여기로 이동해 임마!
                         memberActionNote = [];
                         isValueNotEmpty = true;
-                        print("memberActionNote : ${memberActionNote} , isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
+                        print(
+                            "memberActionNote : ${memberActionNote} , isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
                         eventSource = {};
                         print("ewagbervfdyhsb eventSource : ${eventSource}");
                       });
@@ -1606,7 +1601,7 @@ class LessonCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LessonAdd((){}),
+                    builder: (context) => LessonAdd(() {}),
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),
                   ),
