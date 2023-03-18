@@ -929,7 +929,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                   isFullScreen = !isFullScreen;
                   setState(() {});
                 },
-                icon: Icon(Icons.open_in_full))
+                icon: !isFullScreen ? Icon(Icons.open_in_full) : Icon(Icons.close_fullscreen, color: Palette.buttonOrange,))
           ], null),
           body: CenterConstrainedBody(
             child: SafeArea(

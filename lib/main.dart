@@ -23,6 +23,7 @@ import 'package:web_project/app/data/provider/report_service.dart';
 import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
+import 'package:web_project/app/ui/effect/bouncing_button.dart';
 import 'package:web_project/app/ui/page/loginSplash.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
@@ -483,6 +484,17 @@ class _LoginPageState extends State<LoginPage> {
                     ]),
                   ),
 
+                  /* TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BouncingButton(),
+                          ),
+                        );
+                      },
+                      child: Text("Animation Button")), */
+
                   // 카카오톡으로 로그인 버튼
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -919,6 +931,7 @@ class _LoginPageState extends State<LoginPage> {
       /// 확인되면 demo@demo.com의 uid로 변경 테스트
       case "kakao:2626773646":
         cUid = cUser.uid;
+
         /// cUid = "RSlQoHFnBOZO3tggCVuh06sjgFJ2";
         break;
       default:
