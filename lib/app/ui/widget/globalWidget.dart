@@ -7,6 +7,7 @@ import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/function/globalFunction.dart';
+import 'package:web_project/app/ui/animation/likeButtonExample.dart';
 import '../../data/provider/auth_service.dart';
 import 'baseTableCalendar.dart';
 import '../../../main.dart';
@@ -908,65 +909,114 @@ class _BaseContainerState extends State<BaseContainer> {
                                           width: 1, color: Palette.grayF5))),
                               height: 88 - 20,
                               width: 60,
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  widget.isFavorite //svg파일이 firebase에서 안보이는 경우
-                                      //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
-                                      ? "assets/icons/favoriteSelected.svg"
-                                      : "assets/icons/favoriteUnselected.svg",
-                                ),
-                                iconSize: 40,
-                                onPressed: () async {
-                                  // favoriteMember = !widget.isFavorite;
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  LikeButtonExample(isFavorite: widget.isFavorite, size: 40, onTap: () async {
+                                    print("엄?!");
+                                    int rstLnth = widget.resultMemberList.length;
+                                      for (int i = 0; i < rstLnth; i++) {
+                                        if (widget.docId ==
+                                            widget.resultMemberList[i]['id']) {
+                                          print(
+                                              "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
+                                          if (widget.resultMemberList[i]
+                                                  ['isFavorite'] ==
+                                              null) {
+                                            widget.resultMemberList[i]
+                                                ['isFavorite'] = true;
+                                            print(
+                                                "widget.resultMemberList[i]['isFavorite'] is null!!");
+                                          } else {
+                                            widget.resultMemberList[i]
+                                                    ['isFavorite'] =
+                                                !widget.resultMemberList[i]
+                                                    ['isFavorite'];
+                                            print(
+                                                "widget.resultMemberList[i]['isFavorite'] is not null!!");
+                                          }
 
-                                  //                   for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
-                                  //   await lessonService.updateTotalNote(
-                                  //     totalNoteTextFieldDocId[idx],
-                                  //     totalNoteControllers[idx].text,
-                                  //   );
-                                  // }
-
-                                  int rstLnth = widget.resultMemberList.length;
-                                  for (int i = 0; i < rstLnth; i++) {
-                                    if (widget.docId ==
-                                        widget.resultMemberList[i]['id']) {
-                                      print(
-                                          "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
-                                      if (widget.resultMemberList[i]
-                                              ['isFavorite'] ==
-                                          null) {
-                                        widget.resultMemberList[i]
-                                            ['isFavorite'] = true;
-                                        print(
-                                            "widget.resultMemberList[i]['isFavorite'] is null!!");
-                                      } else {
-                                        widget.resultMemberList[i]
-                                                ['isFavorite'] =
-                                            !widget.resultMemberList[i]
-                                                ['isFavorite'];
-                                        print(
-                                            "widget.resultMemberList[i]['isFavorite'] is not null!!");
+                                          break;
+                                        }
                                       }
 
-                                      break;
-                                    }
-                                  }
+                                      print("favoriteMember : ${favoriteMember}");
 
-                                  print("favoriteMember : ${favoriteMember}");
+                                      await widget.memberService.updateIsFavorite(
+                                          widget.docId, !widget.isFavorite);
+                                      // setState(() {
+                                      //   widget.isActive
+                                      //       ? favoriteMember = false
+                                      //       : favoriteMember = true;
+                                      // });
 
-                                  await widget.memberService.updateIsFavorite(
-                                      widget.docId, !widget.isFavorite);
-                                  // setState(() {
-                                  //   widget.isActive
-                                  //       ? favoriteMember = false
-                                  //       : favoriteMember = true;
-                                  // });
+                                      // setState(() {});
 
-                                  // setState(() {});
+                                      globalVariables.sortList();
+                                      setState(() {});
+                                  }),
+                                  /* IconButton(
+                                    icon: SvgPicture.asset(
+                                      widget.isFavorite //svg파일이 firebase에서 안보이는 경우
+                                          //https://stackoverflow.com/questions/72604523/flutter-web-svg-image-will-not-be-displayed-after-firebase-hosting
+                                          ? "assets/icons/favoriteSelected.svg"
+                                          : "assets/icons/favoriteUnselected.svg",
+                                    ),
+                                    iconSize: 40,
+                                    onPressed: () async {
+                                      // favoriteMember = !widget.isFavorite;
 
-                                  globalVariables.sortList();
-                                  setState(() {});
-                                },
+                                      //                   for (int idx = 0; idx < totalNoteTextFieldDocId.length; idx++) {
+                                      //   await lessonService.updateTotalNote(
+                                      //     totalNoteTextFieldDocId[idx],
+                                      //     totalNoteControllers[idx].text,
+                                      //   );
+                                      // }
+
+                                      int rstLnth = widget.resultMemberList.length;
+                                      for (int i = 0; i < rstLnth; i++) {
+                                        if (widget.docId ==
+                                            widget.resultMemberList[i]['id']) {
+                                          print(
+                                              "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
+                                          if (widget.resultMemberList[i]
+                                                  ['isFavorite'] ==
+                                              null) {
+                                            widget.resultMemberList[i]
+                                                ['isFavorite'] = true;
+                                            print(
+                                                "widget.resultMemberList[i]['isFavorite'] is null!!");
+                                          } else {
+                                            widget.resultMemberList[i]
+                                                    ['isFavorite'] =
+                                                !widget.resultMemberList[i]
+                                                    ['isFavorite'];
+                                            print(
+                                                "widget.resultMemberList[i]['isFavorite'] is not null!!");
+                                          }
+
+                                          break;
+                                        }
+                                      }
+
+                                      print("favoriteMember : ${favoriteMember}");
+
+                                      await widget.memberService.updateIsFavorite(
+                                          widget.docId, !widget.isFavorite);
+                                      // setState(() {
+                                      //   widget.isActive
+                                      //       ? favoriteMember = false
+                                      //       : favoriteMember = true;
+                                      // });
+
+                                      // setState(() {});
+
+                                      globalVariables.sortList();
+                                      setState(() {});
+                                    },
+                                  ), */
+                                ],
                               ),
                               // child: Image.asset(
                               //     true

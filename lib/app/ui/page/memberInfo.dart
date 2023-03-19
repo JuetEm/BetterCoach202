@@ -9,6 +9,7 @@ import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
+import 'package:web_project/app/ui/animation/likeButtonExample.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
@@ -307,53 +308,104 @@ class _MemberInfoState extends State<MemberInfo> {
                                           print(
                                               "[MI] 즐겨찾기 로딩후 : ${snapshot.data} / ${userInfo.docId}");
                                           favoriteMember = snapshot.data;
-                                          return IconButton(
-                                              icon: SvgPicture.asset(
-                                                favoriteMember
-                                                    ? "assets/icons/favoriteSelected.svg"
-                                                    : "assets/icons/favoriteUnselected.svg",
+                                          return Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.fromLTRB(6, 8, 7, 8),
+                                                child: LikeButtonExample(isFavorite: favoriteMember, size: 40, onTap: () async {
+                                                  
+                                                      String event = "onPressed";
+                                                      String value = "즐겨찾기";
+                                                      analyticLog.sendAnalyticsEvent(
+                                                          screenName,
+                                                          "${event} : ${value}",
+                                                          "${value} : ${widget.userInfo!.name}",
+                                                          "${value} : ${viewMode}");
+                                              
+                                                      favoriteMember =
+                                                          !favoriteMember;
+                                              
+                                                      await memberService
+                                                          .updateIsFavorite(
+                                                              userInfo.docId,
+                                                              favoriteMember);
+                                                      int rstLnth = globalVariables
+                                                          .resultList.length;
+                                                      for (int i = 0;
+                                                          i < rstLnth;
+                                                          i++) {
+                                                        if (userInfo.docId ==
+                                                            globalVariables
+                                                                    .resultList[i]
+                                                                ['id']) {
+                                                          print(
+                                                              "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
+                                                          globalVariables
+                                                                      .resultList[i]
+                                                                  ['isFavorite'] =
+                                                              !globalVariables
+                                                                      .resultList[i]
+                                                                  ['isFavorite'];
+                                                          break;
+                                                        }
+                                                      }
+                                              
+                                                      print(
+                                                          "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+                                                    
+                                                }),
                                               ),
-                                              iconSize: 40,
-                                              onPressed: () async {
-                                                String event = "onPressed";
-                                                String value = "즐겨찾기";
-                                                analyticLog.sendAnalyticsEvent(
-                                                    screenName,
-                                                    "${event} : ${value}",
-                                                    "${value} : ${widget.userInfo!.name}",
-                                                    "${value} : ${viewMode}");
+                                              /* IconButton(
+                                                  icon: SvgPicture.asset(
+                                                    favoriteMember
+                                                        ? "assets/icons/favoriteSelected.svg"
+                                                        : "assets/icons/favoriteUnselected.svg",
+                                                  ),
+                                                  iconSize: 40,
+                                                  onPressed: () async {
+                                                    String event = "onPressed";
+                                                    String value = "즐겨찾기";
+                                                    analyticLog.sendAnalyticsEvent(
+                                                        screenName,
+                                                        "${event} : ${value}",
+                                                        "${value} : ${widget.userInfo!.name}",
+                                                        "${value} : ${viewMode}");
 
-                                                favoriteMember =
-                                                    !favoriteMember;
+                                                    favoriteMember =
+                                                        !favoriteMember;
 
-                                                await memberService
-                                                    .updateIsFavorite(
-                                                        userInfo.docId,
-                                                        favoriteMember);
-                                                int rstLnth = globalVariables
-                                                    .resultList.length;
-                                                for (int i = 0;
-                                                    i < rstLnth;
-                                                    i++) {
-                                                  if (userInfo.docId ==
-                                                      globalVariables
-                                                              .resultList[i]
-                                                          ['id']) {
+                                                    await memberService
+                                                        .updateIsFavorite(
+                                                            userInfo.docId,
+                                                            favoriteMember);
+                                                    int rstLnth = globalVariables
+                                                        .resultList.length;
+                                                    for (int i = 0;
+                                                        i < rstLnth;
+                                                        i++) {
+                                                      if (userInfo.docId ==
+                                                          globalVariables
+                                                                  .resultList[i]
+                                                              ['id']) {
+                                                        print(
+                                                            "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
+                                                        globalVariables
+                                                                    .resultList[i]
+                                                                ['isFavorite'] =
+                                                            !globalVariables
+                                                                    .resultList[i]
+                                                                ['isFavorite'];
+                                                        break;
+                                                      }
+                                                    }
+
                                                     print(
-                                                        "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
-                                                    globalVariables
-                                                                .resultList[i]
-                                                            ['isFavorite'] =
-                                                        !globalVariables
-                                                                .resultList[i]
-                                                            ['isFavorite'];
-                                                    break;
-                                                  }
-                                                }
-
-                                                print(
-                                                    "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
-                                              });
+                                                        "[MI] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${userInfo.docId}");
+                                                  }), */
+                                            ],
+                                          );
                                         }
                                         /* }else{
                                           /* return IconButton(

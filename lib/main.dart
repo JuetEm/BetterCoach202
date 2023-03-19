@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_project/app/controller/member_info_controller.dart';
@@ -485,16 +486,16 @@ class _LoginPageState extends State<LoginPage> {
                     ]),
                   ),
 
-                  /* TextButton(
+                  TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LiveIconButtonExample(),
+                            builder: (context) => GlobalWidgetDashboard(),
                           ),
                         );
                       },
-                      child: Text("Animation Button")), */
+                      child: Text("Animation Button")),
 
                   // 카카오톡으로 로그인 버튼
                   ElevatedButton(
