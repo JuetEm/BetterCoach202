@@ -1532,7 +1532,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
 
                 String memberId = widget.userInfo.docId;
                 String name = doc.get('name');
-                String lessonDate = doc.get('lessonDate');
+                String lessonDateDoc = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
                 print("_NoteListDateCategoryState build called!!!");
 
@@ -1544,7 +1544,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       analyticLog.sendAnalyticsEvent(
                           screenName,
                           "${event} : ${value}",
-                          "${value} notedDate : ${lessonDate}",
+                          "${value} notedDate : ${lessonDateDoc}",
                           "${value} slelectdDate : ${DateFormat("yyyy-MM-dd").parse(DateTime.now().toString()).toString()}");
 
                       List<TmpLessonInfo> tmpLessonInfoList = [];
@@ -1552,7 +1552,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       lessonAddMode = "노트편집";
                       List<dynamic> args = [
                         userInfo,
-                        lessonDate,
+                        lessonDateDoc,
                         eventList,
                         lessonNoteId,
                         lessonAddMode,
@@ -1560,7 +1560,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         resultActionList,
                       ];
                       print("args.length : ${args.length}");
-                      print("[MI]LessonCard-lessonDate : ${lessonDate}");
+                      print("[MI]LessonCard-lessonDateDoc : ${lessonDateDoc}");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -1587,11 +1587,11 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                     child: LessonCardWidget(
                         userInfo: widget.userInfo,
                         memberId: memberId,
-                        lessonDate: lessonDate,
+                        lessonDate: lessonDateDoc,
                         todayNote: todayNote,
                         lessonActionList: memberActionNote
                             .where((element) =>
-                                element['lessonDate'] == lessonDate)
+                                element['lessonDate'] == lessonDateDoc)
                             .toList()));
               },
               separatorBuilder: ((context, index) => Container(

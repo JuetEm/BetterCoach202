@@ -486,7 +486,7 @@ class _LoginPageState extends State<LoginPage> {
                     ]),
                   ),
 
-                  TextButton(
+                  /* TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -495,7 +495,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       },
-                      child: Text("Animation Button")),
+                      child: Text("Widget Dashboard Button")), */
 
                   // 카카오톡으로 로그인 버튼
                   ElevatedButton(

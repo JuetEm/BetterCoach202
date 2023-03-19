@@ -30,7 +30,7 @@ String screenName = "노트추가";
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-TextEditingController lessonDateController = TextEditingController(text: now);
+TextEditingController lessonDateController = TextEditingController();
 TextEditingController todayNoteController = TextEditingController();
 
 /// 시퀀스 이름 컨트롤러
@@ -61,12 +61,12 @@ bool actionSelectMode = false;
 bool checkInitState = true;
 
 //날짜 변경할 경우 데이터 다시 불러오기에 활용.
-bool DateChangeMode = false;
+bool DateChangeMode = true;
 
 //totalNoteControllers,totalNoteTextFieldDocId index 에러 방지
 bool flagIndexErr = true;
 
-String lessonDate = now;
+String lessonDate = "";
 int additionalActionlength = 0;
 
 String selectedDropdown = '기구';
@@ -164,7 +164,7 @@ class _LessonAddState extends State<LessonAdd> {
 
     //deleteControllers();
     checkInitState = true;
-    DateChangeMode = false;
+    DateChangeMode = true;
     print("[LA] Dispose : checkInitState ${checkInitState} ");
     super.dispose();
 
@@ -213,11 +213,14 @@ class _LessonAddState extends State<LessonAdd> {
     if (checkInitState) {
       print("INIT!!! : ${checkInitState}, DateChange:${DateChangeMode}");
 
-      if (!DateChangeMode) {
-        lessonDate = argsList[1];
+      if (DateChangeMode) {
+        print("ㄷㅎㄷㄱㅅㄱㅅ 날짜 초기화는 어디인가요? - 1");
+        lessonDate == "" ? lessonDate = argsList[1] : lessonDate = lessonDateController.text;
         lessonDateController.text = lessonDate;
+        DateChangeMode = false;
       } else {
-        lessonDate = lessonDateController.text;
+        print("ㄷㅎㄷㄱㅅㄱㅅ 날짜 초기화는 어디인가요? - 2");
+        lessonDate = now; // lessonDateController.text;
         DateChangeMode = false;
       }
       print("Date : ${lessonDate}");
@@ -269,7 +272,7 @@ class _LessonAddState extends State<LessonAdd> {
             lessonAddMode == "노트편집") {
           lessonService
               .readDateMemberActionNote(
-                  customUserInfo.uid, customUserInfo.docId, lessonDateArg)
+                  customUserInfo.uid, customUserInfo.docId, lessonDate.isEmpty ? lessonDateArg : lessonDate)
               .then((value) {
             print("ppppppppp - value : ${value}");
             value.length == 0
@@ -285,7 +288,7 @@ class _LessonAddState extends State<LessonAdd> {
             debugList(lessonActionList, "1");
 
             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
-
+            txtEdtCtrlrList = [];
             lessonActionList.forEach((element) {
               txtEdtCtrlrList.add(new TextEditingController());
             });
@@ -302,7 +305,11 @@ class _LessonAddState extends State<LessonAdd> {
               .readTodayNoteOflessonDate(
                   customUserInfo.uid, customUserInfo.docId, lessonDateArg)
               .then((value) {
+            
+            print("fdsahrebr value : ${value}");
+            
             dayLessonList.add(value);
+            print("fdsahrebr dayLessonList : ${dayLessonList}");
             dayLessonList.forEach((element) {
               print("ppppppppp - dayLessonList - element : ${element}");
               todayNoteController.text = element[0]['todayNote'];
@@ -389,7 +396,7 @@ class _LessonAddState extends State<LessonAdd> {
                             );
                             saveMethod(
                               lessonService,
-                              lessonDateArg,
+                              lessonDate.isEmpty ? lessonDateArg : lessonDate,
                               lessonAddMode,
                               customUserInfo,
                               dayLessonService,
@@ -669,6 +676,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               onTap: () async {
+                                                print("여기가 맞습니다!");
                                                 String event = "onTap";
                                                 String value = "수강권 차감 여부";
                                                 analyticLog.sendAnalyticsEvent(
@@ -683,16 +691,41 @@ class _LessonAddState extends State<LessonAdd> {
                                                         "수업일",
                                                         lessonDateController
                                                             .text)
-                                                    .then((value) {});
+                                                    .then((value) async {
+                                                      print("ewagerefw 여기가 then 입니다!! lessonDateController.text : ${lessonDateController.text}");
+                                                      lessonDate = lessonDateController.text;
+                                                      print("ewagerefw lessonDate : ${lessonDate}");
+                                                      await lessonService.readDateMemberActionNote(customUserInfo.uid, customUserInfo.docId, lessonDate).then((value){
+                                                        lessonActionList = [];
+                                                        lessonActionList.addAll(value);
+                                                        print("ewagerefw lessonActionList : ${lessonActionList}");
+                                                        txtEdtCtrlrList = [];
+                                                        lessonActionList.forEach((element) {
+                                                          txtEdtCtrlrList.add(TextEditingController());
+                                                        });
+                                                        print("ewagerefw txtEdtCtrlrList.length : ${txtEdtCtrlrList.length}");
+                                                        txtEdtCtrlrList.length > 0 ? print("ewagerefw txtEdtCtrlrList[0] : ${txtEdtCtrlrList[0]}") : null;
+                                                      });
+                                                      await dayLessonService.readCalSelectedDateNote(customUserInfo.uid
+                                                      , customUserInfo.docId
+                                                      , lessonDate).then((value){
+                                                        print("ewagerefw value : ${value}");
+                                                        print("ewagerefw value.isEmpty : ${value.isEmpty}");
+                                                        value.isEmpty ?  todayNoteController.text = "" : todayNoteController.text = value[0]['todayNote'];
+                                                      });
+                                                    });
+                                                    setState(() {
+                                                      lessonDate = lessonDateController.text;
+                                                    });
                                                 DateChangeMode = true;
                                                 checkInitState = true;
                                                 print(
                                                     "[LA] 수업일변경 : lessonDateController ${lessonDateController.text} / todayNoteController ${todayNoteController.text} / DateChangeMode ${DateChangeMode}");
-                                                initInpuWidget(
+                                                /* initInpuWidget(
                                                     uid: user.uid,
                                                     docId: customUserInfo.docId,
                                                     lessonService:
-                                                        lessonService);
+                                                        lessonService); */
                                               },
                                               child: Padding(
                                                 padding: EdgeInsets.fromLTRB(
@@ -891,6 +924,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                               false;
                                                         }
                                                       }
+                                                      print("ewagerefw index : ${index}");
                                                       txtEdtCtrlrList != null
                                                           ? txtEdtCtrlrList[index]
                                                                   .selection =
@@ -1185,7 +1219,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             'docId': customUserInfo.docId,
                                             'pos': element[
                                                 'pos'], // lessonActionList.length,
-                                            'lessonDate': lessonDateArg,
+                                            'lessonDate': lessonDate.isEmpty ? lessonDateArg : lessonDate,
                                             'totalNote': "",
                                             'grade': '50',
                                             'uid': customUserInfo.uid,
@@ -1271,7 +1305,7 @@ class _LessonAddState extends State<LessonAdd> {
             "_" +
             customUserInfo.docId +
             "_" +
-            lessonDateArg +
+            (lessonDate.isEmpty ? lessonDateArg : lessonDate) +
             "_" +
             (Timestamp.now()).toString(),
                                               element['uid'],
@@ -1429,7 +1463,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   customUserInfo
                                                                       .docId +
                                                                   "_" +
-                                                                  lessonDateArg +
+                                                                  (lessonDate.isEmpty ? lessonDateArg : lessonDate) +
                                                                   "_" +
                                                                   (DateTime
                                                                           .now())
@@ -1625,7 +1659,7 @@ class _LessonAddState extends State<LessonAdd> {
   int i = 0;
   Future<void> saveMethod(
     LessonService lessonService,
-    String lessonDateArg,
+    String lessonDateTmp,
     String lessonAddMode,
     CustomUserInfo.UserInfo customUserInfo,
     DayLessonService dayLessonService,
@@ -1643,14 +1677,14 @@ class _LessonAddState extends State<LessonAdd> {
         "_" +
         userInfo.docId +
         "_" +
-        lessonDateArg +
+        lessonDateTmp +
         ", " +
         ", " +
         userInfo.uid +
         ", " +
         userInfo.docId +
         ", " +
-        lessonDateArg +
+        lessonDateTmp +
         ", " +
         userInfo.uid +
         ", " +
@@ -1658,10 +1692,10 @@ class _LessonAddState extends State<LessonAdd> {
         ", " +
         todayNote);
     await dayLessonService.setLessonTodayNote(
-      userInfo.uid + "_" + userInfo.docId + "_" + lessonDateArg,
+      userInfo.uid + "_" + userInfo.docId + "_" + lessonDateTmp,
       userInfo.uid,
       userInfo.docId,
-      lessonDateArg,
+      lessonDateTmp,
       userInfo.name,
       todayNoteController.text,
       // selectedTicketId,
@@ -1692,7 +1726,7 @@ class _LessonAddState extends State<LessonAdd> {
             "_" +
             customUserInfo.docId +
             "_" +
-            lessonDateArg +
+            lessonDateTmp +
             "_" +
             (Timestamp.now()).toString();
       print("asdfsdfsfsgfdg gks qjs qhqtlek. : "
@@ -1702,7 +1736,7 @@ class _LessonAddState extends State<LessonAdd> {
       +"element['actionName'] : "+element['actionName']
       +"element['apratusName'] : "+element['apratusName']
       +"element['grade'] : "+element['grade']
-      +"lessonDateArg : "+lessonDateArg
+      +"lessonDateArg : "+lessonDateTmp
       +"element['name'] : "+element['name']
       +"element['phoneNumber'] : "+element['phoneNumber']
       +"element['pos'] : "+element['pos'].toString()
@@ -1714,7 +1748,7 @@ class _LessonAddState extends State<LessonAdd> {
         element['actionName'],
         element['apratusName'],
         element['grade'],
-        lessonDateArg,
+        lessonDateTmp,
         element['name'],
         element['phoneNumber'],
         element['pos'],

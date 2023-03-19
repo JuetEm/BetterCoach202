@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_project/app/data/model/globalVariables.dart';
+import 'package:web_project/app/function/globalFunction.dart';
 
 class DayLessonService extends ChangeNotifier {
   final daylessonCollection =
       FirebaseFirestore.instance.collection('daylesson');
+
+      GlobalFunction globalFunction = GlobalFunction();
+      GlobalVariables globalVariables = GlobalVariables();
 
   Future<QuerySnapshot> readTodaynote(
     String uid,
@@ -32,6 +37,42 @@ class DayLessonService extends ChangeNotifier {
         .orderBy("lessonDate", descending: true)
         .orderBy("timestamp", descending: false)
         .get();
+  }
+
+  Future<List> readCalSelectedDateNote(
+    String uid,
+    String docId,
+    String lessonDate,
+  ) async {
+    print("ewagerefw - readCalSelectedNote - uid : ${uid}, docId : ${docId}, lessonDate : ${lessonDate}");
+    // uid가 현재 로그인된 유저의 uid와 일치하는 문서만 가져온다.
+
+    List resultList = [];
+    var dayLessonResult;
+
+    dayLessonResult = await daylessonCollection
+        .where('uid', isEqualTo: uid)
+        .where('docId', isEqualTo: docId)
+        .where('lessonDate', isEqualTo: lessonDate)
+        .orderBy("timestamp", descending: false)
+        .get();
+
+        var docsALength = dayLessonResult.docs.length;
+    var rstAObj = {};
+    for (int i = 0; i < docsALength; i++) {
+      // print( "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      rstAObj = dayLessonResult.docs[i].data();
+      rstAObj['id'] = dayLessonResult.docs[i].id;
+      rstAObj['docId'] = dayLessonResult.docs[i]['docId'];
+      rstAObj['id'] = dayLessonResult.docs[i]['id'];
+      rstAObj['lessonDate'] = dayLessonResult.docs[i]['lessonDate'];
+      rstAObj['name'] = dayLessonResult.docs[i]['name'];
+      rstAObj['todayNote'] = dayLessonResult.docs[i]['todayNote'];
+      rstAObj['uid'] = dayLessonResult.docs[i]['uid'];
+      resultList.add(rstAObj);
+    }
+
+    return resultList;
   }
 
   Future<List> readTodayNoteForCal(
@@ -127,6 +168,7 @@ class DayLessonService extends ChangeNotifier {
     String docId,
     String lessonDate,
   ) async {
+    print("fdsahrebr uid : ${uid}, docId : ${docId}, lessonDate : ${lessonDate}");
     final result;
     // 내 bucketList 가져오기
     // throw UnimplementedError(); // return 값 미구현 에러

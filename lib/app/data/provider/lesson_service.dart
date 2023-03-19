@@ -279,7 +279,7 @@ class LessonService extends ChangeNotifier {
 
   Future<List> readDateMemberActionNote(
       String uid, String memberId, String date) async {
-    print("ㅠㄱㅈㅁㄷㄹㅁㅇㄴㄹㄴㅁ lessonActionList 초기화!!");
+    print("ewagerefw lessonActionList 초기화!! uid : ${uid}, memberId : ${memberId}, date : ${date}");
     List lessonActionResultList = [];
     var lessonActionResult = await lessonCollection
         .where('uid', isEqualTo: uid)
