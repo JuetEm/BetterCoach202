@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
+import 'package:web_project/app/ui/animation/animationContainer_iconButton.dart';
+import 'package:web_project/app/ui/animation/bouncing_iconButton.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/data/model/lessonInfo.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
@@ -925,11 +927,14 @@ class _ActionSelectorState extends State<ActionSelector> {
             Navigator.pop(context);
           }, [
             IconButton(
-                onPressed: () {
-                  isFullScreen = !isFullScreen;
-                  setState(() {});
-                },
-                icon: !isFullScreen ? Icon(Icons.open_in_full) : Icon(Icons.close_fullscreen, color: Palette.buttonOrange,))
+              onPressed: () {
+                isFullScreen = !isFullScreen;
+                setState(() {});
+              },
+              icon: !isFullScreen
+                  ? Icon(Icons.open_in_full)
+                  : Icon(Icons.close_fullscreen),
+            ),
           ], null),
           body: CenterConstrainedBody(
             child: SafeArea(
