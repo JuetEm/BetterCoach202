@@ -146,6 +146,10 @@ class _LessonAddState extends State<LessonAdd> {
 
     isReturnIsNotEmpty = true;
 
+    lessonDate = "";
+    DateChangeMode = true;
+    checkInitState = true;
+
     print(
         "globalVariables.memberTicketList.where((element) => element['isSelected'] == true && element['memberId'] == userInfo.docId) : ${globalVariables.memberTicketList.where((element) => element['isSelected'] == true && element['memberId'] == userInfo.docId)}");
   }
@@ -177,6 +181,9 @@ class _LessonAddState extends State<LessonAdd> {
 
     initStateCheck = true;
     growthInth = 0;
+
+    lessonDate = "";
+    DateChangeMode = true;
   }
 
   @override
@@ -214,8 +221,10 @@ class _LessonAddState extends State<LessonAdd> {
       print("INIT!!! : ${checkInitState}, DateChange:${DateChangeMode}");
 
       if (DateChangeMode) {
-        print("ㄷㅎㄷㄱㅅㄱㅅ 날짜 초기화는 어디인가요? - 1");
-        lessonDate == "" ? lessonDate = argsList[1] : lessonDate = lessonDateController.text;
+        print("ㄷㅎㄷㄱㅅㄱㅅ 날짜 초기화는 어디인가요? - 1 lessonDate : ${lessonDate}");
+        lessonDate == ""
+            ? lessonDate = argsList[1]
+            : lessonDate = lessonDateController.text;
         lessonDateController.text = lessonDate;
         DateChangeMode = false;
       } else {
@@ -272,7 +281,9 @@ class _LessonAddState extends State<LessonAdd> {
             lessonAddMode == "노트편집") {
           lessonService
               .readDateMemberActionNote(
-                  customUserInfo.uid, customUserInfo.docId, lessonDate.isEmpty ? lessonDateArg : lessonDate)
+                  customUserInfo.uid,
+                  customUserInfo.docId,
+                  lessonDate.isEmpty ? lessonDateArg : lessonDate)
               .then((value) {
             print("ppppppppp - value : ${value}");
             value.length == 0
@@ -305,9 +316,8 @@ class _LessonAddState extends State<LessonAdd> {
               .readTodayNoteOflessonDate(
                   customUserInfo.uid, customUserInfo.docId, lessonDateArg)
               .then((value) {
-            
             print("fdsahrebr value : ${value}");
-            
+
             dayLessonList.add(value);
             print("fdsahrebr dayLessonList : ${dayLessonList}");
             dayLessonList.forEach((element) {
@@ -340,6 +350,9 @@ class _LessonAddState extends State<LessonAdd> {
                 "${value} : ${userInfo!.name}", "${value} : 프로퍼티 인자2");
             print(
                 "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
+            lessonDate = "";
+            DateChangeMode = true;
+            checkInitState = true;
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
           }, [
@@ -692,31 +705,59 @@ class _LessonAddState extends State<LessonAdd> {
                                                         lessonDateController
                                                             .text)
                                                     .then((value) async {
-                                                      print("ewagerefw 여기가 then 입니다!! lessonDateController.text : ${lessonDateController.text}");
-                                                      lessonDate = lessonDateController.text;
-                                                      print("ewagerefw lessonDate : ${lessonDate}");
-                                                      await lessonService.readDateMemberActionNote(customUserInfo.uid, customUserInfo.docId, lessonDate).then((value){
-                                                        lessonActionList = [];
-                                                        lessonActionList.addAll(value);
-                                                        print("ewagerefw lessonActionList : ${lessonActionList}");
-                                                        txtEdtCtrlrList = [];
-                                                        lessonActionList.forEach((element) {
-                                                          txtEdtCtrlrList.add(TextEditingController());
-                                                        });
-                                                        print("ewagerefw txtEdtCtrlrList.length : ${txtEdtCtrlrList.length}");
-                                                        txtEdtCtrlrList.length > 0 ? print("ewagerefw txtEdtCtrlrList[0] : ${txtEdtCtrlrList[0]}") : null;
-                                                      });
-                                                      await dayLessonService.readCalSelectedDateNote(customUserInfo.uid
-                                                      , customUserInfo.docId
-                                                      , lessonDate).then((value){
-                                                        print("ewagerefw value : ${value}");
-                                                        print("ewagerefw value.isEmpty : ${value.isEmpty}");
-                                                        value.isEmpty ?  todayNoteController.text = "" : todayNoteController.text = value[0]['todayNote'];
-                                                      });
+                                                  print(
+                                                      "ewagerefw 여기가 then 입니다!! lessonDateController.text : ${lessonDateController.text}");
+                                                  lessonDate =
+                                                      lessonDateController.text;
+                                                  print(
+                                                      "ewagerefw lessonDate : ${lessonDate}");
+                                                  await lessonService
+                                                      .readDateMemberActionNote(
+                                                          customUserInfo.uid,
+                                                          customUserInfo.docId,
+                                                          lessonDate)
+                                                      .then((value) {
+                                                    lessonActionList = [];
+                                                    lessonActionList
+                                                        .addAll(value);
+                                                    print(
+                                                        "ewagerefw lessonActionList : ${lessonActionList}");
+                                                    txtEdtCtrlrList = [];
+                                                    lessonActionList
+                                                        .forEach((element) {
+                                                      txtEdtCtrlrList.add(
+                                                          TextEditingController());
                                                     });
-                                                    setState(() {
-                                                      lessonDate = lessonDateController.text;
-                                                    });
+                                                    print(
+                                                        "ewagerefw txtEdtCtrlrList.length : ${txtEdtCtrlrList.length}");
+                                                    txtEdtCtrlrList.length > 0
+                                                        ? print(
+                                                            "ewagerefw txtEdtCtrlrList[0] : ${txtEdtCtrlrList[0]}")
+                                                        : null;
+                                                  });
+                                                  await dayLessonService
+                                                      .readCalSelectedDateNote(
+                                                          customUserInfo.uid,
+                                                          customUserInfo.docId,
+                                                          lessonDate)
+                                                      .then((value) {
+                                                    print(
+                                                        "ewagerefw value : ${value}");
+                                                    print(
+                                                        "ewagerefw value.isEmpty : ${value.isEmpty}");
+                                                    value.isEmpty
+                                                        ? todayNoteController
+                                                            .text = ""
+                                                        : todayNoteController
+                                                                .text =
+                                                            value[0]
+                                                                ['todayNote'];
+                                                  });
+                                                });
+                                                setState(() {
+                                                  lessonDate =
+                                                      lessonDateController.text;
+                                                });
                                                 DateChangeMode = true;
                                                 checkInitState = true;
                                                 print(
@@ -924,7 +965,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                               false;
                                                         }
                                                       }
-                                                      print("ewagerefw index : ${index}");
+                                                      print(
+                                                          "ewagerefw index : ${index}");
                                                       txtEdtCtrlrList != null
                                                           ? txtEdtCtrlrList[index]
                                                                   .selection =
@@ -1219,7 +1261,9 @@ class _LessonAddState extends State<LessonAdd> {
                                             'docId': customUserInfo.docId,
                                             'pos': element[
                                                 'pos'], // lessonActionList.length,
-                                            'lessonDate': lessonDate.isEmpty ? lessonDateArg : lessonDate,
+                                            'lessonDate': lessonDate.isEmpty
+                                                ? lessonDateArg
+                                                : lessonDate,
                                             'totalNote': "",
                                             'grade': '50',
                                             'uid': customUserInfo.uid,
@@ -1301,13 +1345,17 @@ class _LessonAddState extends State<LessonAdd> {
                                         // print("fsdadfewgree 1 - element['actionName'] : ${element['actionName']}, element['pos'] : ${element['pos']}, element['id'] : ${element['id']},");
                                         if (growthInth > 0) {
                                           lessonService.setLessonActionNote(
-                                              element['id'] ?? customUserInfo.uid +
-            "_" +
-            customUserInfo.docId +
-            "_" +
-            (lessonDate.isEmpty ? lessonDateArg : lessonDate) +
-            "_" +
-            (Timestamp.now()).toString(),
+                                              element['id'] ??
+                                                  customUserInfo.uid +
+                                                      "_" +
+                                                      customUserInfo.docId +
+                                                      "_" +
+                                                      (lessonDate.isEmpty
+                                                          ? lessonDateArg
+                                                          : lessonDate) +
+                                                      "_" +
+                                                      (Timestamp.now())
+                                                          .toString(),
                                               element['uid'],
                                               element['docId'],
                                               element['actionName'],
@@ -1463,7 +1511,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                                   customUserInfo
                                                                       .docId +
                                                                   "_" +
-                                                                  (lessonDate.isEmpty ? lessonDateArg : lessonDate) +
+                                                                  (lessonDate
+                                                                          .isEmpty
+                                                                      ? lessonDateArg
+                                                                      : lessonDate) +
                                                                   "_" +
                                                                   (DateTime
                                                                           .now())
@@ -1715,7 +1766,7 @@ class _LessonAddState extends State<LessonAdd> {
             ? lessonService.delete(
                 docId: element['id'], onSuccess: () {}, onError: () {})
             : null;
-            print("fdasewvref 1 element : ${element}");
+        print("fdasewvref 1 element : ${element}");
       });
     }
 
@@ -1723,24 +1774,35 @@ class _LessonAddState extends State<LessonAdd> {
     String recordId = "";
     lessonActionList.forEach((element) async {
       recordId = customUserInfo.uid +
-            "_" +
-            customUserInfo.docId +
-            "_" +
-            lessonDateTmp +
-            "_" +
-            (Timestamp.now()).toString();
-      print("asdfsdfsfsgfdg gks qjs qhqtlek. : "
-      +"recordId : "+recordId
-      +"customUserInfo.uid : "+customUserInfo.uid
-      +"customUserInfo.docId, : "+customUserInfo.docId
-      +"element['actionName'] : "+element['actionName']
-      +"element['apratusName'] : "+element['apratusName']
-      +"element['grade'] : "+element['grade']
-      +"lessonDateArg : "+lessonDateTmp
-      +"element['name'] : "+element['name']
-      +"element['phoneNumber'] : "+element['phoneNumber']
-      +"element['pos'] : "+element['pos'].toString()
-      +"txtEdtCtrlrList[$element['pos']].text.trim() : "+txtEdtCtrlrList[element['pos']].text.trim());
+          "_" +
+          customUserInfo.docId +
+          "_" +
+          lessonDateTmp +
+          "_" +
+          (Timestamp.now()).toString();
+      print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
+          "recordId : " +
+          recordId +
+          "customUserInfo.uid : " +
+          customUserInfo.uid +
+          "customUserInfo.docId, : " +
+          customUserInfo.docId +
+          "element['actionName'] : " +
+          element['actionName'] +
+          "element['apratusName'] : " +
+          element['apratusName'] +
+          "element['grade'] : " +
+          element['grade'] +
+          "lessonDateArg : " +
+          lessonDateTmp +
+          "element['name'] : " +
+          element['name'] +
+          "element['phoneNumber'] : " +
+          element['phoneNumber'] +
+          "element['pos'] : " +
+          element['pos'].toString() +
+          "txtEdtCtrlrList[$element['pos']].text.trim() : " +
+          txtEdtCtrlrList[element['pos']].text.trim());
       await lessonService.setLessonActionNote(
         recordId,
         customUserInfo.uid,
@@ -1758,10 +1820,10 @@ class _LessonAddState extends State<LessonAdd> {
       recordId = "";
       // .dart 파일이 시작 종료 될 때만 0으로 초기화, 계속 1씩 늘어나기만 하는 정수
       growthInth++;
-     });
+    });
     // teclIndex = 0;
 
-   /*  for (int i = 0; i < lessonActionList.length; i++) {
+    /*  for (int i = 0; i < lessonActionList.length; i++) {
       print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
           customUserInfo.uid +
           "_" +

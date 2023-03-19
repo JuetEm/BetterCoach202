@@ -64,7 +64,7 @@ class DayLessonService extends ChangeNotifier {
       rstAObj = dayLessonResult.docs[i].data();
       rstAObj['id'] = dayLessonResult.docs[i].id;
       rstAObj['docId'] = dayLessonResult.docs[i]['docId'];
-      rstAObj['id'] = dayLessonResult.docs[i]['id'];
+      rstAObj['id'] = dayLessonResult.docs[i]['id'] ?? null;
       rstAObj['lessonDate'] = dayLessonResult.docs[i]['lessonDate'];
       rstAObj['name'] = dayLessonResult.docs[i]['name'];
       rstAObj['todayNote'] = dayLessonResult.docs[i]['todayNote'];
