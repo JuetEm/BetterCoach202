@@ -797,6 +797,8 @@ class _LoginPageState extends State<LoginPage> {
         onSuccess: () {
           authService = AuthService();
           var cUser = authService.currentUser();
+
+          showLoginSplash(context);
           // print("신규 사용자 로그인 : authService.signIn - cUser!.uid : ${cUser!.uid}");
           // print("신규 사용자 로그인 : authService.signIn - cUser!.email : ${cUser!.email}");
           Future<List> resultFirstMemberList =
