@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:animated_icon_button/animated_icon_button.dart';
+import 'package:auto_animated/auto_animated.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -926,7 +928,7 @@ class _ActionSelectorState extends State<ActionSelector> {
             searchString = "";
             Navigator.pop(context);
           }, [
-            IconButton(
+            /* IconButton(
               onPressed: () {
                 isFullScreen = !isFullScreen;
                 setState(() {});
@@ -934,6 +936,23 @@ class _ActionSelectorState extends State<ActionSelector> {
               icon: !isFullScreen
                   ? Icon(Icons.open_in_full)
                   : Icon(Icons.close_fullscreen),
+            ), */
+            AnimatedIconButton(
+              size: 25,
+              onPressed: (){
+                isFullScreen = !isFullScreen;
+                setState(() {
+                  
+                });
+                print('all icons pressed');},
+              icons: const <AnimatedIconItem>[
+                AnimatedIconItem(
+                  icon: Icon(Icons.open_in_full, color: Palette.gray00,),
+                ),
+                AnimatedIconItem(
+                  icon: Icon(Icons.close_fullscreen, color: Palette.gray00),
+                ),
+              ],
             ),
           ], null),
           body: CenterConstrainedBody(

@@ -24,6 +24,7 @@ import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/animation/bouncing_button.dart';
+import 'package:web_project/app/ui/animation/liveIconButtonExample.dart';
 import 'package:web_project/app/ui/page/loginSplash.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
@@ -489,7 +490,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BouncingButton(),
+                            builder: (context) => LiveIconButtonExample(),
                           ),
                         );
                       },
