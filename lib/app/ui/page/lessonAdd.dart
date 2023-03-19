@@ -224,7 +224,7 @@ class _LessonAddState extends State<LessonAdd> {
         print("ㄷㅎㄷㄱㅅㄱㅅ 날짜 초기화는 어디인가요? - 1 lessonDate : ${lessonDate}");
         lessonDate == ""
             ? lessonDate = argsList[1]
-            : lessonDate = lessonDateController.text;
+            : (lessonDateController.text.isEmpty ? lessonDate = argsList[1] : lessonDate = lessonDateController.text);
         lessonDateController.text = lessonDate;
         DateChangeMode = false;
       } else {
