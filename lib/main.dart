@@ -900,6 +900,7 @@ class _LoginPageState extends State<LoginPage> {
         onSuccess: () {
           AuthService authService = AuthService();
           var cUser = authService.currentUser();
+          showLoginSplash(context);
           loginWithCurrentUser(cUser, context);
         },
         onError: (err) {
