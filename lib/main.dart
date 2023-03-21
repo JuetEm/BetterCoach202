@@ -933,11 +933,11 @@ class _LoginPageState extends State<LoginPage> {
     switch (cUser!.uid) {
       /// 정규호의 카카오 아이디로 로그인 했을 때의 uid,
       /// 확인되면 demo@demo.com의 uid로 변경 테스트
-      case "kakao:2626773646":
+      /* case "kakao:2626773646":
         cUid = cUser.uid;
 
         /// cUid = "RSlQoHFnBOZO3tggCVuh06sjgFJ2";
-        break;
+        break; */
       default:
         cUid = cUser.uid;
         break;
