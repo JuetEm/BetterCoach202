@@ -380,6 +380,27 @@ class _MemberListState extends State<MemberList> {
                   ),
                   ListTile(
                     leading: Icon(
+                      Icons.videocam_outlined,
+                      color: Palette.gray66,
+                    ),
+                    title: Text('베러코치 유튜브 채널'),
+                    onTap: () {
+                      String event = "onTap";
+                      String value = "베러코치 유튜브 채널";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${value}",
+                          "${value} 프로퍼티 인자1",
+                          "${value} 프로퍼티 인자2");
+                      print('베러코치 유튜브 채널 is clicked');
+
+                      /// Youtube Channel URL
+                      launchUrl(Uri.parse('https://www.youtube.com/@bettercoach'));
+                    },
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+                  ListTile(
+                    leading: Icon(
                       Icons.people_outline,
                       color: Palette.gray66,
                     ),
