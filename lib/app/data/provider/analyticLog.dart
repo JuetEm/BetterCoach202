@@ -40,9 +40,11 @@ class AnalyticLog {
       'testParam': testParam
     });
 
-    /* if (kIsWeb) {
+    if (kIsWeb) {
       /// 웹 앱으로 빌드하는 경우 Amplitude 인스턴스 생성하지 않는다.
-    } else { */
+      /// Amplitude 관련 에러인 듯,
+      /// 웹의 경우 Amplitude가 어떻게 관리하는지 확인 필요함
+    } else {
       identify.set('sign_up_date', '2015-08-24');
 
       Amplitude.getInstance().identify(identify!);
@@ -54,7 +56,7 @@ class AnalyticLog {
         'stirng': strArg,
         'testParam': testParam,
       });
-    // }
+    }
 
     return mapInstance;
   }
