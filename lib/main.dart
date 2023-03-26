@@ -122,8 +122,8 @@ void main() async {
   userEmail = prefs.getString("userEmail");
   userPassword = prefs.getString("userPassword");
   print("prefs check isLogInActiveChecked : ${isLogInActiveChecked}");
-  print("prefs check userEmail : ${userEmail}");
-  print("prefs check userPassword : ${userPassword}");
+  // print("prefs check userEmail : ${userEmail}");
+  // print("prefs check userPassword : ${userPassword}");
 
   if (kIsWeb) {
     print("Platform.kIsWeb");
