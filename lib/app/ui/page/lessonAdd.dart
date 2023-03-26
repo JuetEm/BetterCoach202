@@ -727,8 +727,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                     lessonActionList
                                                         .forEach((element) {
                                                       txtEdtCtrlrList.add(
-                                                          TextEditingController());
+                                                          /// 날짜 노트 읽어 올 때 동작 별 메모 남긴 경우 그대로 반영해서 읽어 오도록 처리
+                                                          TextEditingController(text: element['totalNote'].toString()));
                                                     });
+                                                    
                                                     print(
                                                         "ewagerefw txtEdtCtrlrList.length : ${txtEdtCtrlrList.length}");
                                                     txtEdtCtrlrList.length > 0
