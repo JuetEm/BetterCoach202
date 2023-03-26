@@ -1211,27 +1211,20 @@ class _MemberAddState extends State<MemberAdd> {
                               final retvaldelte =
                                   await showAlertDialog(context);
                               if (retvaldelte == "OK") {
-                                /* final delMemb = globalVariables.resultList.where((element) => element['uid'] == userInfo.uid && element['id'] == userInfo.docId);
-                                delMemb.forEach((element) {
-                                  print("wevasdfasd element : ${element}");
-                                }); */
-                                globalVariables.resultList.removeWhere((element) => element['uid'] == userInfo.uid && element['id'] == userInfo.docId);
+                                /// 회원 삭제시 로컬에 들고 있는 리스트에서도 지워주도록 처리 removeWhere로 uid, id 검사해서 해당 멤버 지움
+                                globalVariables.resultList.removeWhere(
+                                    (element) =>
+                                        element['uid'] == userInfo.uid &&
+                                        element['id'] == userInfo.docId);
                                 memberService.delete(
                                     docId: customUserInfo!.docId,
                                     onSuccess: () async {
-                                      // 삭제하기 성공
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text("삭제하기 성공"),
-                                      ));
-
                                       // 삭제하기 성공시 MemberList로 이동
-                                      // Navigator.pop(context);
-                                      final result =
-                                          await Navigator.pushReplacement(
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (_) => MemberList()),
+                                          builder: (context) => MemberList(),
+                                        ),
                                       );
 
                                       globalFunction.clearTextEditController([
@@ -1246,6 +1239,12 @@ class _MemberAddState extends State<MemberAdd> {
                                         noteController,
                                         commentController,
                                       ]);
+
+                                      // 삭제하기 성공
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("삭제하기 성공"),
+                                      ));
                                     },
                                     onError: () {
                                       print("삭제하기 ERROR");
@@ -2519,9 +2518,12 @@ showAlertDialog(BuildContext context) async {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: Palette.buttonOrange,
+              backgroundColor: Colors.transparent,
             ),
-            child: Text('취소'),
+            child: Text(
+              '취소',
+              style: TextStyle(color: Colors.black),
+            ),
             onPressed: () {
               Navigator.pop(context, "Cancel");
             },
@@ -2529,9 +2531,12 @@ showAlertDialog(BuildContext context) async {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: Palette.buttonOrange,
+              backgroundColor: Colors.transparent,
             ),
-            child: Text('확인'),
+            child: Text(
+              '확인',
+              style: TextStyle(color: Palette.statusRed),
+            ),
             onPressed: () {
               Navigator.pop(context, "OK");
             },
