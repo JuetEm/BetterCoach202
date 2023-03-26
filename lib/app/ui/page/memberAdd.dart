@@ -1211,6 +1211,11 @@ class _MemberAddState extends State<MemberAdd> {
                               final retvaldelte =
                                   await showAlertDialog(context);
                               if (retvaldelte == "OK") {
+                                /* final delMemb = globalVariables.resultList.where((element) => element['uid'] == userInfo.uid && element['id'] == userInfo.docId);
+                                delMemb.forEach((element) {
+                                  print("wevasdfasd element : ${element}");
+                                }); */
+                                globalVariables.resultList.removeWhere((element) => element['uid'] == userInfo.uid && element['id'] == userInfo.docId);
                                 memberService.delete(
                                     docId: customUserInfo!.docId,
                                     onSuccess: () async {
