@@ -25,29 +25,29 @@ class _FaqState extends State<Faq> {
     return Scaffold(
       appBar: BaseAppBarMethod(context, '자주 묻는 질문', null, null, null),
       body: ListView(children: [
-        FaqExpansionTile(
+        /* FaqExpansionTile(
           title: '이거는 어떻게 할까요1?',
-          childText: '만족을 드리지 못해 죄송합니다. 더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
+          childText: '더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
           isButtonDisabled: true,
         ),
         FaqExpansionTile(
           title: '이거는 어떻게 할까요2?',
-          childText: '만족을 드리지 못해 죄송합니다. 더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
+          childText: '더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
           isButtonDisabled: true,
         ),
         FaqExpansionTile(
           title: '이거는 어떻게 할까요3?',
-          childText: '만족을 드리지 못해 죄송합니다. 더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
+          childText: '더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
           isButtonDisabled: true,
         ),
         FaqExpansionTile(
           title: '이거는 어떻게 할까요4?',
-          childText: '만족을 드리지 못해 죄송합니다. 더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
+          childText: '더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
           isButtonDisabled: true,
-        ),
+        ), */
         FaqExpansionTile(
           title: '탈퇴는 어떻게 하나요?',
-          childText: '만족을 드리지 못해 죄송합니다. 더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
+          childText: '탈퇴를 원하시면 아래 탈퇴 버튼을 클릭해주세요. 더 나은 서비스를 제공하기위해 최선을 다해 노력하겠습니다.',
           isButtonDisabled: false,
           customFunctionOnPressed: () {
             showDialog(

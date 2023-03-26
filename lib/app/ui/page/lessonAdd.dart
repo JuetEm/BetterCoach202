@@ -107,6 +107,7 @@ List notedActionWidget = [];
 List<String> notedActionsList = [];
 List deleteTargetDocIdLiet = [];
 
+/// 텍스트 에딧 컨트롤러 동적 생성 관리 
 List<TextEditingController> txtEdtCtrlrList = [];
 
 int growthInth = 0;
@@ -931,7 +932,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                       String name =
                                                           doc['name']; //회원이름
                                                       String phoneNumber = doc[
-                                                          'phoneNumber']; // 회원 고유번호 (전화번호로 회원 식별)
+                                                          'phoneNumber']; // 회원 고유번호 ()
                                                       String apratusName = doc[
                                                           'apratusName']; //기구이름
                                                       String actionName = doc[
@@ -1023,7 +1024,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                             .text;
 
                                                                     print(
-                                                                        "txtEdtCtrlrList[index].text : ${txtEdtCtrlrList[index].text}");
+                                                                        "ewagerefw txtEdtCtrlrList[index].text : ${txtEdtCtrlrList[index].text}");
 
                                                                     setState(
                                                                         () {});
@@ -1280,7 +1281,7 @@ class _LessonAddState extends State<LessonAdd> {
                                           print("rElement : ${rElement}");
                                           lessonActionList.add(rElement);
                                           txtEdtCtrlrList
-                                              .add(new TextEditingController());
+                                              .add(TextEditingController());
                                           txtEdtCtrlrList[txtEdtCtrlrList
                                                           .length -
                                                       1]
@@ -1321,16 +1322,27 @@ class _LessonAddState extends State<LessonAdd> {
                                       }
                                       // print("fsdadfewgree after - oldIndex : ${oldIndex} <=> newIndex : ${newIndex}");
 
+                                      /// 동작 순서 변경 시 처리 하는 로직
+                                      /// 제거 하는 oldIndex 리스트 요소를 final로 받고
+                                      /// 리스트에 newIndex에 요소를 insert 해준다.
                                       final movedActionList =
                                           lessonActionList.removeAt(oldIndex);
                                       lessonActionList.insert(
                                           newIndex, movedActionList);
 
+                                      /// 위와 동일한 방식 txtEdtCtrlrList에 적용
+                                      final movedTextField = txtEdtCtrlrList.removeAt(oldIndex);
+                                      txtEdtCtrlrList.insert(newIndex, movedTextField);
+                                      
                                       print(
                                           "qefwdfasfs ============= change =============");
                                       lessonActionList.forEach((element) {
                                         print(
                                             "qefwdfasfs change - element : ${element['actionName']}");
+                                      });
+                                      txtEdtCtrlrList.forEach((element) {
+                                        print(
+                                            "qefwdfasfs change - element.text : ${element.text}");
                                       });
 
                                       lessonActionList.forEach((element) {
