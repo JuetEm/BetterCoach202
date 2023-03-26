@@ -926,6 +926,9 @@ class _ActionSelectorState extends State<ActionSelector> {
             positionArray = [];
 
             searchString = "";
+
+            /// 액션 칩 초기화
+            actionChips = [];
             Navigator.pop(context);
           }, [
             /* IconButton(

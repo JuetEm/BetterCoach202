@@ -411,7 +411,10 @@ class _LoginPageState extends State<LoginPage> {
                         hint: "비밀번호",
                         width: 100,
                         height: 100,
-                        customFunction: () {},
+                        customFunction: () {
+                          print("엔터키 잘 먹네욥");
+                          // loginMethod(context, authService);
+                        },
                         isSecure: true,
                       ),
                       SizedBox(height: 10),

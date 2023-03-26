@@ -790,6 +790,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
     Color normalColor = Palette.gray66;
 
     return TextField(
+      // textInputAction: TextInputAction.go,
       controller: widget.customController,
       onSubmitted: widget.customFunction(),
       obscureText: widget.isSecure, // 비밀번호여부

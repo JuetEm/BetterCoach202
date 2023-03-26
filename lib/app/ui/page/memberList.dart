@@ -315,8 +315,7 @@ class _MemberListState extends State<MemberList> {
                       print('개인정보처리방침 is clicked');
                       launchUrl(Uri.parse(
                           /* 'https://huslxl.notion.site/9eec26cf46b941c4960209b419d41fbc' */
-                          'https://flame-production-5c2.notion.site/667e8ae7638d4a89b13a8ffd3072e7e3'
-                          ));
+                          'https://flame-production-5c2.notion.site/667e8ae7638d4a89b13a8ffd3072e7e3'));
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
@@ -337,8 +336,7 @@ class _MemberListState extends State<MemberList> {
                       print('서비스 이용약관 is clicked');
                       launchUrl(Uri.parse(
                           /* 'https://huslxl.notion.site/51d75d9fb0af4c64be5ec95f16fe6289' */
-                          'https://flame-production-5c2.notion.site/5233101eb50c4c048220b25dfd2f205f'
-                          ));
+                          'https://flame-production-5c2.notion.site/5233101eb50c4c048220b25dfd2f205f'));
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
@@ -399,7 +397,8 @@ class _MemberListState extends State<MemberList> {
                       print('베러코치 유튜브 채널 is clicked');
 
                       /// Youtube Channel URL
-                      launchUrl(Uri.parse('https://www.youtube.com/@bettercoach'));
+                      launchUrl(
+                          Uri.parse('https://www.youtube.com/@bettercoach'));
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
@@ -460,7 +459,15 @@ class _MemberListState extends State<MemberList> {
                           "${value} 프로퍼티 인자1",
                           "${value} 프로퍼티 인자2");
                       print('signOut');
-
+                      /// 로그 아웃 시 전부 전역 변수 전부 초기화
+                      /// 로그인 하는 만큼 회원 수가 중복 증가하는 현상 발견
+                      /* widget.tmpActionList = [];
+                      widget.tmpMemberList = []; */
+                      globalVariables.actionList = [];
+                      globalVariables.lessonNoteGlobalList = [];
+                      globalVariables.memberTicketList = [];
+                      globalVariables.resultList = [];
+                      globalVariables.ticketLibraryList = [];
                       authService.signOut();
 
                       // 로그인 페이지로 이동

@@ -1,6 +1,7 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:amplitude_flutter/identify.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:web_project/main.dart';
 
 class AnalyticLog {
@@ -9,7 +10,8 @@ class AnalyticLog {
   // GA analytics
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   // Amplitude analytics
-  static Amplitude amplitude = Amplitude.getInstance(instanceName: "BetterCoach");
+  static Amplitude amplitude =
+      Amplitude.getInstance(instanceName: "BetterCoach");
 
   static Identify identify = Identify();
 
@@ -38,17 +40,21 @@ class AnalyticLog {
       'testParam': testParam
     });
 
-    identify.set('sign_up_date', '2015-08-24');
+    /* if (kIsWeb) {
+      /// 웹 앱으로 빌드하는 경우 Amplitude 인스턴스 생성하지 않는다.
+    } else { */
+      identify.set('sign_up_date', '2015-08-24');
 
-    Amplitude.getInstance().identify(identify!);
+      Amplitude.getInstance().identify(identify!);
 
-    amplitude.trackingSessionEvents(true);
+      amplitude.trackingSessionEvents(true);
 
-    amplitude.logEvent(EventName, eventProperties: {
-      'screenName': screenName,
-      'stirng': strArg,
-      'testParam': testParam,
-    });
+      amplitude.logEvent(EventName, eventProperties: {
+        'screenName': screenName,
+        'stirng': strArg,
+        'testParam': testParam,
+      });
+    // }
 
     return mapInstance;
   }
