@@ -921,21 +921,22 @@ class _BaseContainerState extends State<BaseContainer> {
                                         if (widget.docId ==
                                             widget.resultMemberList[i]['id']) {
                                           print(
-                                              "globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
+                                              "2023-03-26 dev : globalWidget onPressed!! widget.resultMemberList[i]['id'] : ${widget.resultMemberList[i]['id']}");
                                           if (widget.resultMemberList[i]
                                                   ['isFavorite'] ==
                                               null) {
+                                                /// 없는데 울린다는 건 favorite 아이콘을 눌렀다는 의미! => favorite 별에 불 켜질 수 있게 true 설정 해준다!
                                             widget.resultMemberList[i]
                                                 ['isFavorite'] = true;
                                             print(
-                                                "widget.resultMemberList[i]['isFavorite'] is null!!");
+                                                "2023-03-26 dev : widget.resultMemberList[i]['isFavorite'] is null!!");
                                           } else {
                                             widget.resultMemberList[i]
                                                     ['isFavorite'] =
                                                 !widget.resultMemberList[i]
                                                     ['isFavorite'];
                                             print(
-                                                "widget.resultMemberList[i]['isFavorite'] is not null!!");
+                                                "2023-03-26 dev : widget.resultMemberList[i]['isFavorite'] is not null!!");
                                           }
 
                                           break;

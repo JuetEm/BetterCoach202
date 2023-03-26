@@ -20,6 +20,7 @@ import '../widget/baseTableCalendar.dart';
 import '../../data/model/color.dart';
 import '../../function/globalFunction.dart';
 import '../widget/globalWidget.dart';
+import 'confirmAlertWidget.dart';
 import 'memberInfo.dart';
 import 'memberList.dart';
 import 'membershipList.dart';
@@ -1209,7 +1210,36 @@ class _MemberAddState extends State<MemberAdd> {
                               print("${customUserInfo!.docId}");
                               // create bucket
                               final retvaldelte =
-                                  await showAlertDialog(context);
+                                  // await showAlertDialog(context);
+                                  await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ConfirmAlertWidget(
+                                    titleText: '정말로 회원을 삭제하시겠습니까?',
+                                    contentText:
+                                        '회원과 관련된 레슨노트 정보가 모두 삭제됩니다.',
+                                    confirmButtonText: '확인',
+                                    confirmButtonColor: Palette.textRed,
+                                    cancelButtonColor: Palette.gray00,
+                                    onConfirm: () {
+                                      String event = "onConfirm";
+                                      String value = "삭제하기";
+                                      analyticLog.sendAnalyticsEvent(
+                                          screenName,
+                                          "${event} : ${value}",
+                                          "${value} 프로퍼티 인자1",
+                                          "${value} 프로퍼티 인자2");
+
+                                      /// 확인버튼 클릭 시 작동할 함수
+                                      Navigator.pop(context, "OK");
+                                    },
+                                    onCancel: () {
+                                      /// 취소버튼 클릭 시 작동할 함수
+                                      Navigator.pop(context, "CANCEL");
+                                    },
+                                  );
+                                },
+                              );
                               if (retvaldelte == "OK") {
                                 /// 회원 삭제시 로컬에 들고 있는 리스트에서도 지워주도록 처리 removeWhere로 uid, id 검사해서 해당 멤버 지움
                                 globalVariables.resultList.removeWhere(

@@ -83,11 +83,16 @@ class MemberService extends ChangeNotifier {
 
   Future<bool> readIsFavorite(String uid, String docId) async {
     bool result = false;
-
+    print("2023-03-26 dev : uid : ${uid}, docId : ${docId}");
     await memberCollection.doc(docId).get().then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      print('[MS] isFavorite 실행 - readisActive : ${data['isFavorite']}');
-      result = data['isFavorite'] ?? false;
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        print('2023-03-26 dev :  [MS] isFavorite 실행 - readisActive : ${data['isFavorite']}');
+        result = data['isFavorite'] ?? false;
+      }else{
+        print("2023-03-26 dev :  doc is empty!");
+        result = false;
+      }
     });
 
     return result;
@@ -190,6 +195,7 @@ class MemberService extends ChangeNotifier {
       'note': note, // 메모
       'comment': comment,
       'isActive': true, // 회원권 활성화 여부
+      'isFavorite': false, // 즐겨찾는 멤버 여부, default : false
     });
 
     // notifyListeners();
@@ -232,10 +238,8 @@ class MemberService extends ChangeNotifier {
       'isFavorite': isFavorite, // 회원 좋아요 여부
     });
 
-
     // 멤버인포 화면과 상관 있는지 없는지 모르겠음, 있을 가능성 높음
     notifyListeners();
-    
   }
 
   Future<void> updateMemberTicket(

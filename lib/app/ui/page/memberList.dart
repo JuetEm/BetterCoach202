@@ -35,7 +35,7 @@ List mainSearchedList = [];
 GlobalFunction globalFunction = GlobalFunction();
 
 // GA 용 화면 이름 정의
-String screenName = "회원 목록";
+String screenName = "회원목록";
 
 MemberService memberService = MemberService();
 
