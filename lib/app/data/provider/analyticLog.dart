@@ -10,21 +10,25 @@ class AnalyticLog {
   // GA analytics
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   // Amplitude analytics
-  static Amplitude amplitude =
-      Amplitude.getInstance(instanceName: "BetterCoach");
+  late Amplitude amplitude;
 
   static Identify identify = Identify();
 
   Map<String, dynamic> analyticConfig(String? uid) {
-    amplitude.init("210de2d03268aacc063d1bda33b8275a");
-    uid != null ? amplitude.setUserId(uid) : null;
-
     Map<String, dynamic> logInstances = {};
 
     logInstances['firebaseAnalytics'] = analytics;
+    if (kIsWeb) {
+      /// 웹 앱으로 빌드하는 경우 Amplitude 인스턴스 생성하지 않는다.
+      /// Amplitude 관련 에러인 듯,
+      /// 웹의 경우 Amplitude가 어떻게 관리하는지 확인 필요함
+    } else {
+      amplitude = Amplitude.getInstance(instanceName: "BetterCoach");
+      amplitude.init("210de2d03268aacc063d1bda33b8275a");
+      uid != null ? amplitude.setUserId(uid) : null;
 
-    logInstances['amplitudeAnalytics'] = amplitude;
-
+      logInstances['amplitudeAnalytics'] = amplitude;
+    }
     return logInstances;
   }
 
