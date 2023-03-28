@@ -936,7 +936,6 @@ class _LessonAddState extends State<LessonAdd> {
                                                           lessonActionList[
                                                               index];
 
-                                                      
                                                       String uid =
                                                           doc['uid']; // 강사 고유번호
 
@@ -1366,21 +1365,29 @@ class _LessonAddState extends State<LessonAdd> {
                                         element['pos'] = reorderedIndex;
                                         reorderedIndex++;
                                       });
+                                      String recordId = "";
                                       lessonActionList.forEach((element) {
                                         // print("fsdadfewgree 1 - element['actionName'] : ${element['actionName']}, element['pos'] : ${element['pos']}, element['id'] : ${element['id']},");
                                         if (growthInth > 0) {
+                                          var rnd = Random().nextInt(45) + 1;
+                                          recordId = customUserInfo.uid +
+                                              "_" +
+                                              customUserInfo.docId +
+                                              "_" +
+                                              lessonDate +
+                                              "_" +
+                                              (DateTime.now()
+                                                      .millisecondsSinceEpoch)
+                                                  .toString() +
+                                              (DateTime.now()
+                                                      .microsecondsSinceEpoch)
+                                                  .toString() +
+                                              (rnd).toString();
+
+                                          /// 3
                                           lessonService.setLessonActionNote(
                                               element['id'] ??
-                                                  customUserInfo.uid +
-                                                      "_" +
-                                                      customUserInfo.docId +
-                                                      "_" +
-                                                      (lessonDate.isEmpty
-                                                          ? lessonDateArg
-                                                          : lessonDate) +
-                                                      "_" +
-                                                      (Timestamp.now())
-                                                          .toString(),
+                                                  recordId,
                                               element['uid'],
                                               element['docId'],
                                               element['actionName'],
@@ -1392,6 +1399,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               element['pos'],
                                               element['totalNote']);
                                         }
+                                        recordId = "";
                                       });
                                     },
                                     physics: BouncingScrollPhysics(),
@@ -1525,25 +1533,32 @@ class _LessonAddState extends State<LessonAdd> {
                                                   });
                                                   if (growthInth > 0) {
                                                     int k = 0;
+                                                    String recordId = "";
                                                     lessonActionList
                                                         .forEach((element) {
+                                                      var rnd =
+                                                          Random().nextInt(45) +
+                                                              1;
+                                                      recordId = customUserInfo
+                                                              .uid +
+                                                          "_" +
+                                                          customUserInfo.docId +
+                                                          "_" +
+                                                          lessonDate +
+                                                          "_" +
+                                                          (DateTime.now()
+                                                                  .millisecondsSinceEpoch)
+                                                              .toString() +
+                                                          (DateTime.now()
+                                                                  .microsecondsSinceEpoch)
+                                                              .toString() +
+                                                          (rnd).toString();
+
+                                                      /// 2
                                                       lessonService.setLessonActionNote(
                                                           lessonActionList[k]
                                                                   ['id'] ??
-                                                              customUserInfo
-                                                                      .uid +
-                                                                  "_" +
-                                                                  customUserInfo
-                                                                      .docId +
-                                                                  "_" +
-                                                                  (lessonDate
-                                                                          .isEmpty
-                                                                      ? lessonDateArg
-                                                                      : lessonDate) +
-                                                                  "_" +
-                                                                  (DateTime
-                                                                          .now())
-                                                                      .toString(),
+                                                              recordId,
                                                           lessonActionList[k]
                                                               ['uid'],
                                                           lessonActionList[k]
@@ -1564,6 +1579,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                               ['pos'],
                                                           lessonActionList[k]
                                                               ['totalNote']);
+                                                      recordId = "";
                                                     });
                                                   }
                                                   setState(() {});
@@ -1797,17 +1813,19 @@ class _LessonAddState extends State<LessonAdd> {
 
     // int teclIndex = 0;
     String recordId = "";
-    
+
     lessonActionList.forEach((element) async {
-      var rnd = Random().nextInt(45)+1;
+      var rnd = Random().nextInt(45) + 1;
       recordId = customUserInfo.uid +
           "_" +
           customUserInfo.docId +
           "_" +
           lessonDateTmp +
           "_" +
-          (DateTime.now().millisecondsSinceEpoch).toString()+(DateTime.now().microsecondsSinceEpoch).toString()+(rnd).toString();
-          
+          (DateTime.now().millisecondsSinceEpoch).toString() +
+          (DateTime.now().microsecondsSinceEpoch).toString() +
+          (rnd).toString();
+
       print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
           "recordId : " +
           recordId +
@@ -1831,6 +1849,8 @@ class _LessonAddState extends State<LessonAdd> {
           element['pos'].toString() +
           ", txtEdtCtrlrList[$element['pos']].text.trim() : " +
           txtEdtCtrlrList[element['pos']].text.trim());
+
+      /// 1
       await lessonService.setLessonActionNote(
         recordId,
         customUserInfo.uid,
