@@ -1386,8 +1386,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                                           /// 3
                                           lessonService.setLessonActionNote(
-                                              element['id'] ??
-                                                  recordId,
+                                              element['id'] ?? recordId,
                                               element['uid'],
                                               element['docId'],
                                               element['actionName'],
@@ -1514,6 +1513,10 @@ class _LessonAddState extends State<LessonAdd> {
                                                         onError: () {});
                                                   }
                                                   lessonActionList
+                                                      .removeAt(index);
+
+                                                  /// 2023-03-28 동작 리스트 삭제 시 TextEditController도 같이 삭제
+                                                  txtEdtCtrlrList
                                                       .removeAt(index);
                                                   print(
                                                       "qefwdfasfs ============= delete =============");
