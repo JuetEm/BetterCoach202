@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +109,7 @@ List notedActionWidget = [];
 List<String> notedActionsList = [];
 List deleteTargetDocIdLiet = [];
 
-/// 텍스트 에딧 컨트롤러 동적 생성 관리 
+/// 텍스트 에딧 컨트롤러 동적 생성 관리
 List<TextEditingController> txtEdtCtrlrList = [];
 
 int growthInth = 0;
@@ -225,7 +227,9 @@ class _LessonAddState extends State<LessonAdd> {
         print("ㄷㅎㄷㄱㅅㄱㅅ 날짜 초기화는 어디인가요? - 1 lessonDate : ${lessonDate}");
         lessonDate == ""
             ? lessonDate = argsList[1]
-            : (lessonDateController.text.isEmpty ? lessonDate = argsList[1] : lessonDate = lessonDateController.text);
+            : (lessonDateController.text.isEmpty
+                ? lessonDate = argsList[1]
+                : lessonDate = lessonDateController.text);
         lessonDateController.text = lessonDate;
         DateChangeMode = false;
       } else {
@@ -727,10 +731,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                     lessonActionList
                                                         .forEach((element) {
                                                       txtEdtCtrlrList.add(
+
                                                           /// 날짜 노트 읽어 올 때 동작 별 메모 남긴 경우 그대로 반영해서 읽어 오도록 처리
-                                                          TextEditingController(text: element['totalNote'].toString()));
+                                                          TextEditingController(
+                                                              text: element[
+                                                                      'totalNote']
+                                                                  .toString()));
                                                     });
-                                                    
+
                                                     print(
                                                         "ewagerefw txtEdtCtrlrList.length : ${txtEdtCtrlrList.length}");
                                                     txtEdtCtrlrList.length > 0
@@ -928,6 +936,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                           lessonActionList[
                                                               index];
 
+                                                      
                                                       String uid =
                                                           doc['uid']; // 강사 고유번호
 
@@ -1333,9 +1342,11 @@ class _LessonAddState extends State<LessonAdd> {
                                           newIndex, movedActionList);
 
                                       /// 위와 동일한 방식 txtEdtCtrlrList에 적용
-                                      final movedTextField = txtEdtCtrlrList.removeAt(oldIndex);
-                                      txtEdtCtrlrList.insert(newIndex, movedTextField);
-                                      
+                                      final movedTextField =
+                                          txtEdtCtrlrList.removeAt(oldIndex);
+                                      txtEdtCtrlrList.insert(
+                                          newIndex, movedTextField);
+
                                       print(
                                           "qefwdfasfs ============= change =============");
                                       lessonActionList.forEach((element) {
@@ -1786,36 +1797,39 @@ class _LessonAddState extends State<LessonAdd> {
 
     // int teclIndex = 0;
     String recordId = "";
+    
     lessonActionList.forEach((element) async {
+      var rnd = Random().nextInt(45)+1;
       recordId = customUserInfo.uid +
           "_" +
           customUserInfo.docId +
           "_" +
           lessonDateTmp +
           "_" +
-          (Timestamp.now()).toString();
+          (DateTime.now().millisecondsSinceEpoch).toString()+(DateTime.now().microsecondsSinceEpoch).toString()+(rnd).toString();
+          
       print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
           "recordId : " +
           recordId +
-          "customUserInfo.uid : " +
+          ", customUserInfo.uid : " +
           customUserInfo.uid +
-          "customUserInfo.docId, : " +
+          ", customUserInfo.docId, : " +
           customUserInfo.docId +
-          "element['actionName'] : " +
+          ", element['actionName'] : " +
           element['actionName'] +
-          "element['apratusName'] : " +
+          ", element['apratusName'] : " +
           element['apratusName'] +
-          "element['grade'] : " +
+          ", element['grade'] : " +
           element['grade'] +
-          "lessonDateArg : " +
+          ", lessonDateArg : " +
           lessonDateTmp +
-          "element['name'] : " +
+          ", element['name'] : " +
           element['name'] +
-          "element['phoneNumber'] : " +
+          ", element['phoneNumber'] : " +
           element['phoneNumber'] +
-          "element['pos'] : " +
+          ", element['pos'] : " +
           element['pos'].toString() +
-          "txtEdtCtrlrList[$element['pos']].text.trim() : " +
+          ", txtEdtCtrlrList[$element['pos']].text.trim() : " +
           txtEdtCtrlrList[element['pos']].text.trim());
       await lessonService.setLessonActionNote(
         recordId,
