@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
+import 'package:web_project/app/ui/lang/uiTextKor.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
@@ -172,7 +173,7 @@ class _MemberListState extends State<MemberList> {
     // TODO: implement initState
     super.initState();
     analyticLog.sendAnalyticsEvent(screenName, "PAGE : ${screenName}",
-        "Android 접속 스트링", "Android 접속 파라미터");
+        "memberList 스트링", "memberList 파라미터");
 
     globalVariables.sortList();
 
@@ -263,34 +264,15 @@ class _MemberListState extends State<MemberList> {
                       Icons.confirmation_number_outlined,
                       color: Palette.gray66,
                     ),
-                    title: Text('수강권 보관함'),
-                    // onTap: () async {
-                    //   String event = "onTap";
-                    //   String value = "수강권 보관함";
-                    //   analyticLog.sendAnalyticsEvent(
-                    //       screenName,
-                    //       "${event} : ${value}",
-                    //       "${value} 프로퍼티 인자1",
-                    //       "${value} 프로퍼티 인자2");
-                    //   print('수강권 보관함 is clicked');
-                    //   var result = await // 저장하기 성공시 Home로 이동
-                    //       Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => TicketLibraryManage(
-                    //               TicketLibraryManageList:
-                    //                   globalVariables.ticketLibraryList,
-                    //             )),
-                    //   ).then((value) {
-                    //     print("수강권 추가 result");
-                    //   });
-                    // },
+                    // '수강권 보관함'
+                    title: Text(UiTextKor.memberList_ticketLibrary),
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (context) {
                           return NotReadyAlertWidget(
-                            featureName: '수강권',
+                            // '수강권'
+                            featureName: UiTextKor.memberList_ticketMessage,
                           );
                         },
                       );
@@ -302,7 +284,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.info_outline,
                       color: Palette.gray66,
                     ),
-                    title: Text('개인정보처리방침'),
+                    // '개인정보처리방침'
+                    title: Text(UiTextKor.memberList_privacyPolicy),
                     onTap: () {
                       String event = "onTap";
                       String value = "개인정보처리방침";
@@ -324,7 +307,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.info_outline,
                       color: Palette.gray66,
                     ),
-                    title: Text('서비스 이용약관'),
+                    // '서비스 이용약관'
+                    title: Text(UiTextKor.memberList_termsOfService),
                     onTap: () {
                       String event = "onTap";
                       String value = "서비스 이용약관";
@@ -345,7 +329,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.help_outline,
                       color: Palette.gray66,
                     ),
-                    title: Text('자주 묻는 질문'),
+                    // '자주 묻는 질문'
+                    title: Text(UiTextKor.memberList_frequentlyAskedQuestions),
                     onTap: () {
                       print('자주 묻는 질문 is clicked');
                       Navigator.push(context,
@@ -362,7 +347,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.wallet_giftcard_outlined,
                       color: Palette.gray66,
                     ),
-                    title: Text('스타벅스 기프티콘 받기!'),
+                    // '스타벅스 기프티콘 받기!'
+                    title: Text(UiTextKor.memberList_getAStarbucksGiftcard),
                     onTap: () {
                       String event = "onTap";
                       String value = "스타벅스 기프티콘";
@@ -385,7 +371,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.videocam_outlined,
                       color: Palette.gray66,
                     ),
-                    title: Text('베러코치 유튜브 채널'),
+                    // '베러코치 유튜브 채널'
+                    title: Text(UiTextKor.memberList_betterCoachYouTubeChannel),
                     onTap: () {
                       String event = "onTap";
                       String value = "베러코치 유튜브 채널";
@@ -407,7 +394,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.people_outline,
                       color: Palette.gray66,
                     ),
-                    title: Text('사용자모임 오픈채팅방'),
+                    // '사용자모임 오픈채팅방'
+                    title: Text(UiTextKor.memberList_userGroupOpenChatRooms),
                     onTap: () {
                       String event = "onTap";
                       String value = "사용자모임 오픈채팅방";
@@ -428,7 +416,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.question_answer_outlined,
                       color: Palette.gray66,
                     ),
-                    title: Text('1:1 문의'),
+                    // '1:1 문의'
+                    title: Text(UiTextKor.memberList_contactUsOneOnOne),
                     onTap: () {
                       String event = "onTap";
                       String value = "1:1 오픈챗 문의";
@@ -449,7 +438,8 @@ class _MemberListState extends State<MemberList> {
                       Icons.logout,
                       color: Palette.gray66,
                     ),
-                    title: Text('로그아웃'),
+                    // '로그아웃'
+                    title: Text(UiTextKor.memberList_logOut),
                     onTap: () {
                       String event = "onTap";
                       String value = "로그아웃";
@@ -488,8 +478,9 @@ class _MemberListState extends State<MemberList> {
             iconTheme: IconThemeData(color: Palette.gray66),
             elevation: 0,
             backgroundColor: Palette.mainBackground,
+            // "회원목록"
             title: Text(
-              "회원목록",
+              UiTextKor.memberList_memberListLabel,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
@@ -497,12 +488,8 @@ class _MemberListState extends State<MemberList> {
                   ),
             ),
             centerTitle: true,
-            // leading: IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.calendar_month),
-            // ),
             actions: [
-              /// 드로워 버튼
+              /// 회원추가
               InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 onTap: () {
@@ -553,7 +540,7 @@ class _MemberListState extends State<MemberList> {
               ),
               InkWell(
                 onTapDown: (details) async {
-                  String event = "onTap";
+                  String event = "onTapDown";
                   String value = "Report";
                   analyticLog.sendAnalyticsEvent(
                       screenName,
@@ -602,7 +589,8 @@ class _MemberListState extends State<MemberList> {
                     BaseSearchTextField(
                       customController: searchController,
                       customFocusNode: searchFocusNode,
-                      hint: "이름을 검색하세요.",
+                      // "이름을 검색하세요."
+                      hint: UiTextKor.memberList_SearchForAName,
                       showArrow: true,
                       customFunction: () {
                         searchString = searchController.text.toLowerCase();
@@ -637,7 +625,7 @@ class _MemberListState extends State<MemberList> {
                     Row(
                       children: [
                         Text(
-                          /* searchString == "" ?  */ '총 ${globalVariables.resultList.length} 명' /*  : '검색 결과 ${searchResultCnt} 명' */,
+                          /* searchString == "" ?  */ mainSearchedList.isEmpty ? '${UiTextKor.memberList_SearchResultTotal} ${globalVariables.resultList.length} ${UiTextKor.memberList_SearchResultTotalCnt}' :  '${UiTextKor.memberList_SearchResultTotal} ${mainSearchedList.length} ${UiTextKor.memberList_SearchResultTotalCnt}'/*  : '검색 결과 ${searchResultCnt} 명' */,
                           style: TextStyle(color: Palette.gray7B),
                         ),
                         Spacer(),
@@ -676,7 +664,10 @@ class _MemberListState extends State<MemberList> {
                                 print(
                                     "mainSearchedList.length : ${mainSearchedList.length}");
                                 docs = mainSearchedList; // 문서들 가져오기
+                                
                               } else {
+                                // 2023-03-28 회원 검색 리스트 초기화
+                                mainSearchedList = [];
                                 globalVariables.sortList();
                                 docs = globalVariables.resultList; // 문서들 가져오기
                                 // print('docs = ${docs[0]}');

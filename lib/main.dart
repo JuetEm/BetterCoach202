@@ -43,6 +43,7 @@ import 'app/data/provider/auth_service.dart';
 import 'app/data/provider/calendar_service.dart';
 import 'app/data/model/color.dart';
 import 'app/function/globalFunction.dart';
+import 'app/ui/lang/uiTextKor.dart';
 import 'app/ui/page/lessonDetail.dart';
 import 'app/ui/page/memberList.dart';
 import 'app/ui/widget/globalWidget.dart';
@@ -73,7 +74,9 @@ late TextEditingController emailController;
 late TextEditingController passwordController;
 
 TextEditingController switchController =
-    TextEditingController(text: "로그인정보 기억하기");
+
+    /// "로그인정보 기억하기"
+    TextEditingController(text: UiTextKor.main_rememberLoginInfo);
 
 String? userEmail;
 String? userPassword;
@@ -318,7 +321,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     // TODO: implement initState
-    print("init 울린다!");
+    // print("init 울린다!");
     // GA 커스텀 로그 테스트
 
     analyticLog.sendAnalyticsEvent(
@@ -377,7 +380,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                             children: [
                               Text(
-                                "필라테스 강사를 위한 레슨 기록 솔루션",
+                                // "필라테스 강사를 위한 레슨 기록 솔루션"
+                                UiTextKor.main_loginLabel,
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: Palette.textOrange,
@@ -397,7 +401,8 @@ class _LoginPageState extends State<LoginPage> {
                       /// 이메일
                       LoginTextField(
                         customController: emailController,
-                        hint: "이메일",
+                        // "이메일"
+                        hint: UiTextKor.main_loginEmailTextField,
                         width: 100,
                         height: 100,
                         customFunction: () {},
@@ -408,11 +413,12 @@ class _LoginPageState extends State<LoginPage> {
                       /// 비밀번호
                       LoginTextField(
                         customController: passwordController,
-                        hint: "비밀번호",
+                        // "비밀번호"
+                        hint: UiTextKor.main_loginPasswordTextField,
                         width: 100,
                         height: 100,
                         customFunction: () {
-                          print("엔터키 잘 먹네욥");
+                          // print("엔터키 잘 먹네욥");
                           // loginMethod(context, authService);
                         },
                         isSecure: true,
@@ -431,6 +437,13 @@ class _LoginPageState extends State<LoginPage> {
                               suffixIcon: Switch(
                                 value: isLogInActiveChecked,
                                 onChanged: (value) {
+                                  String event = "onChanged";
+                                  String logValue = "로그인 정보 기억하기";
+                                  analyticLog.sendAnalyticsEvent(
+                                      screenName,
+                                      "${event} : ${logValue}",
+                                      "${logValue} : ${isLogInActiveChecked}",
+                                      "${logValue} 프로퍼티 인자2");
                                   setState(() {
                                     isLogInActiveChecked =
                                         !isLogInActiveChecked;
@@ -454,7 +467,8 @@ class _LoginPageState extends State<LoginPage> {
 
                       /// 이메일 가입 지원 종료
                       Text(
-                        "*이메일 회원가입은 더이상 지원되지 않습니다.",
+                        // "*이메일 회원가입은 더이상 지원되지 않습니다."
+                        UiTextKor.main_loginNoMoreEmailSignUp,
                         style: TextStyle(color: Palette.gray99),
                       ),
                       SizedBox(height: 20),
@@ -471,6 +485,13 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         onPressed: () {
                           loginMethod(context, authService);
+                          String event = "onPressed";
+                          String logValue = "이메일 로그인 버튼";
+                          analyticLog.sendAnalyticsEvent(
+                              screenName,
+                              "${event} : ${logValue}",
+                              "${logValue} : loginMethod",
+                              "${logValue} 프로퍼티 인자2");
                         },
                         child: Padding(
                           padding: EdgeInsets.all(14.0),
@@ -479,7 +500,8 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Icon(Icons.mail),
                               SizedBox(width: 4),
-                              Text("이메일로 로그인하기",
+                              // "이메일로 로그인하기"
+                              Text(UiTextKor.main_loginWithEmail,
                                   style: TextStyle(fontSize: 16)),
                             ],
                           ),
@@ -488,17 +510,6 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 10),
                     ]),
                   ),
-
-                  /* TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GlobalWidgetDashboard(),
-                          ),
-                        );
-                      },
-                      child: Text("Widget Dashboard Button")), */
 
                   // 카카오톡으로 로그인 버튼
                   ElevatedButton(
@@ -511,8 +522,13 @@ class _LoginPageState extends State<LoginPage> {
                       backgroundColor: Palette.buttonKakao,
                     ),
                     onPressed: () async {
-                      analyticLog.sendAnalyticsEvent(screenName, "카카오로_로그인하기",
-                          "카카오 로그인 테스트 스트링", "카카오 로그인 테스트 파라미터");
+                      String event = "onPressed";
+                      String logValue = "카카오톡으로 로그인 버튼";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${logValue}",
+                          "${logValue} : loginWithCurrentUser",
+                          "${logValue} 프로퍼티 인자2");
                       try {
                         if (kIsWeb) {
                           // web 방식 로그인 구현
@@ -542,7 +558,8 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                                 child: Image.asset("assets/images/kakao.png")),
                             SizedBox(width: 5),
-                            Text("카카오로 로그인하기",
+                            // "카카오로 로그인하기"
+                            Text(UiTextKor.main_loginWithKakao,
                                 style: TextStyle(
                                     fontSize: 16, color: Palette.gray00)),
                           ],
@@ -564,7 +581,8 @@ class _LoginPageState extends State<LoginPage> {
                               width: 16,
                               child: Image.asset("assets/images/apple.png")),
                           SizedBox(width: 5),
-                          Text("Apple로 로그인하기", style: TextStyle(fontSize: 16)),
+                          // "Apple로 로그인하기"
+                          Text(UiTextKor.main_loginWithApple, style: TextStyle(fontSize: 16)),
                         ],
                       )),
                     ),
@@ -577,8 +595,13 @@ class _LoginPageState extends State<LoginPage> {
                       backgroundColor: Palette.gray00,
                     ),
                     onPressed: () async {
-                      analyticLog.sendAnalyticsEvent(screenName, "Apple로_로그인하기",
-                          "Apple로 로그인하기 테스트 스트링", "Apple로 로그인하기 테스트 파라미터");
+                      String event = "onPressed";
+                      String logValue = "Apple로 로그인 버튼";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${logValue}",
+                          "${logValue} : loginWithCurrentUser",
+                          "${logValue} 프로퍼티 인자2");
                       /* try {
                         isKakaoInstalled = await isKakaoTalkInstalled();
                         print("isKakaoInstalled : ${isKakaoInstalled}");
@@ -606,7 +629,8 @@ class _LoginPageState extends State<LoginPage> {
                         print('카카오톡으로 로그인 실패 - error : ${error}');
                       } */
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("애플 로그인 기능은 현재 개발 중입니다."),
+                        // "애플 로그인 기능은 현재 개발 중입니다."
+                        content: Text(UiTextKor.main_loginWithAppleIsUnderDevMessage),
                       ));
                     },
                   ),
@@ -625,11 +649,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onPressed: () async {
                       print("Google onPress 울립니다!");
+                      String event = "onPressed";
+                      String logValue = "Google로 로그인 버튼";
                       analyticLog.sendAnalyticsEvent(
                           screenName,
-                          "Google로_로그인하기",
-                          "Google로 로그인하기 테스트 스트링",
-                          "Google로 로그인하기 테스트 파라미터");
+                          "${event} : ${logValue}",
+                          "${logValue} : loginController.googleSignIn",
+                          "${logValue} 프로퍼티 인자2");
                       try {
                         // if (Platform.isIOS || Platform.isAndroid) {
 
@@ -654,7 +680,8 @@ class _LoginPageState extends State<LoginPage> {
                               width: 16,
                               child: Image.asset("assets/images/google.png")),
                           SizedBox(width: 5),
-                          Text("Google로 로그인하기",
+                          // "Google로 로그인하기"
+                          Text(UiTextKor.main_loginWithGoogle,
                               style: TextStyle(
                                   fontSize: 16, color: Palette.gray00)),
                         ],
@@ -666,8 +693,13 @@ class _LoginPageState extends State<LoginPage> {
                   /// 로그인 없이 사용하기 버튼
                   TextButton(
                     onPressed: () {
-                      analyticLog.sendAnalyticsEvent(screenName, "로그인_없이_체험하기",
-                          "로그인 없이 체험하기 테스트 스트링", "로그인 없이 체험하기 테스트 파라미터");
+                      String event = "onPressed";
+                      String logValue = "로그인 없이 사용하기 버튼";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${logValue}",
+                          "${logValue} : loginMethodforDemo",
+                          "${logValue} 프로퍼티 인자2");
                       loginMethodforDemo(context, authService);
                     },
                     child: Padding(
@@ -676,7 +708,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("로그인 없이 체험하기",
+                            // "로그인 없이 체험하기"
+                            Text(UiTextKor.main_loginWithDemo,
                                 style: TextStyle(
                                     fontSize: 14, color: Palette.gray66)),
                             Icon(
@@ -689,9 +722,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-
+                  // "이메일 로그인"
                   TextButton(
                     onPressed: () {
+                      String event = "onPressed";
+                      String logValue = "이메일 로그인";
+                      analyticLog.sendAnalyticsEvent(
+                          screenName,
+                          "${event} : ${logValue}",
+                          "${logValue} : isEmailLoginDeactivated",
+                          "${logValue} 프로퍼티 인자2");
                       isEmailLoginDeactivated = !isEmailLoginDeactivated;
                       setState(() {});
                     },
@@ -701,7 +741,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("이메일 로그인",
+                            // "이메일 로그인"
+                            Text(UiTextKor.main_loginWithEmailTextButton,
                                 style: TextStyle(
                                     fontSize: 14, color: Palette.gray66)),
                             Icon(
@@ -849,7 +890,8 @@ class _LoginPageState extends State<LoginPage> {
                   print("memberTicketList await init complete!");
                   // 로그인 성공
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("로그인 성공"),
+                    // "로그인 성공"
+                    content: Text(UiTextKor.main_loginSuccessMessage),
                   ));
                   // 로그인 성공시 Home로 이동
                   List<dynamic> args = [
@@ -992,7 +1034,8 @@ class _LoginPageState extends State<LoginPage> {
             print("memberTicketList await init complete!");
             // 로그인 성공
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("로그인 성공"),
+              // "로그인 성공"
+              content: Text(UiTextKor.main_loginSuccessMessage),
             ));
             // 로그인 성공시 Home로 이동
             List<dynamic> args = [

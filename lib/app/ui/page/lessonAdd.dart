@@ -1414,7 +1414,7 @@ class _LessonAddState extends State<LessonAdd> {
                                       valueKey = ValueKey(index);
 
                                       final doc = lessonActionList[index];
-                                      print("동작 목록 리스트 - doc : ${doc}");
+                                      // print("동작 목록 리스트 - doc : ${doc}");
 
                                       String uid = doc['uid']; // 강사 고유번호
 
@@ -1512,12 +1512,16 @@ class _LessonAddState extends State<LessonAdd> {
                                                         onSuccess: () {},
                                                         onError: () {});
                                                   }
+
+                                                  /// 2023-03-28 DB에서 삭제 성공 한 경우에 리스트에서도 동작 삭제?!?!
+                                                  /// BUT DB와 아직 통신 하지 않은 상태일 수 있으니 따로 처리
                                                   lessonActionList
                                                       .removeAt(index);
 
                                                   /// 2023-03-28 동작 리스트 삭제 시 TextEditController도 같이 삭제
                                                   txtEdtCtrlrList
                                                       .removeAt(index);
+
                                                   print(
                                                       "qefwdfasfs ============= delete =============");
                                                   lessonActionList

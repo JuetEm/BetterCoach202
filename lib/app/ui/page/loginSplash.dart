@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:web_project/app/data/model/color.dart';
+import 'package:web_project/app/ui/lang/uiTextKor.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/main.dart';
 
@@ -56,7 +57,8 @@ class _LoginSplashState extends State<LoginSplash> {
                       child: Column(
                         children: [
                           Text(
-                            "필라테스 강사를 위한 레슨 기록 솔루션",
+                            // "필라테스 강사를 위한 레슨 기록 솔루션"
+                            UiTextKor.loginSplash_appInfo,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Palette.textOrange,
@@ -66,7 +68,8 @@ class _LoginSplashState extends State<LoginSplash> {
                             height: 30,
                           ),
                           Text(
-                            "로그인 중입니다.",
+                            // "로그인 중입니다."
+                            UiTextKor.loginSplash_logInInfo,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Palette.textOrange,
