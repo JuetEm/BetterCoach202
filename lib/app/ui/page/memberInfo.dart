@@ -345,7 +345,9 @@ class _MemberInfoState extends State<MemberInfo> {
                                                           globalVariables
                                                                       .resultList[i]
                                                                   ['isFavorite'] =
-                                                              !globalVariables
+                                                              globalVariables
+                                                                      .resultList[i]
+                                                                  ['isFavorite'] == null ? true : !globalVariables
                                                                       .resultList[i]
                                                                   ['isFavorite'];
                                                           break;
@@ -1495,7 +1497,18 @@ class NoteListDateCategory extends StatefulWidget {
 
 class _NoteListDateCategoryState extends State<NoteListDateCategory> {
   @override
+  void initState() {
+    super.initState();
+    
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
+    var docs = [];
     return Column(
       children: [
         SizedBox(
@@ -1506,10 +1519,11 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
           height: 10,
         ),
         FutureBuilder<QuerySnapshot>(
-          future: widget.dayLessonService.readCalSelectedNote(
+          future: docs.isEmpty ? widget.dayLessonService.readNotesAtFirstTime(
+              widget.userInfo.uid, widget.userInfo.docId, lessonDate) : widget.dayLessonService.readCalSelectedNote(
               widget.userInfo.uid, widget.userInfo.docId, lessonDate),
           builder: (context, snapshot) {
-            final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
+            docs = snapshot.data?.docs ?? []; // 문서들 가져오기
             print(
                 "fdsaerbtrbrytgerv - 2 - memberInfo - lessonDate : ${lessonDate}");
 

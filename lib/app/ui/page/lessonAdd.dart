@@ -290,7 +290,7 @@ class _LessonAddState extends State<LessonAdd> {
                   customUserInfo.docId,
                   lessonDate.isEmpty ? lessonDateArg : lessonDate)
               .then((value) {
-            print("ppppppppp - value : ${value}");
+            print("2023-04-06 debug : ppppppppp - value.length : ${value.length}");
             value.length == 0
                 ? isReturnIsNotEmpty = false
                 : isReturnIsNotEmpty = true;
@@ -301,7 +301,7 @@ class _LessonAddState extends State<LessonAdd> {
                     ? element['noteSelected'] = true
                     : element['noteSelected'] = false);
 
-            debugList(lessonActionList, "1");
+            debugList(lessonActionList, "2023-04-06 debug 1 :");
 
             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
             txtEdtCtrlrList = [];
@@ -358,6 +358,14 @@ class _LessonAddState extends State<LessonAdd> {
             lessonDate = "";
             DateChangeMode = true;
             checkInitState = true;
+
+            // 2023-04-06 레슨 노트 자가증식 하는 현상 없애기 위해서 추가
+            memberActionNote = [];
+            isReturnIsNotEmpty = true;
+            lessonActionList = [];
+            txtEdtCtrlrList = [];
+            print(
+                "뒤로가기!! lessonActionList.length : ${lessonActionList.length}");
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
           }, [
@@ -446,6 +454,10 @@ class _LessonAddState extends State<LessonAdd> {
                             // lessonService.notifyListeners();
                             widget.customFunction();
                             lessonService.nofiFunction();
+
+                            // 2023-04-06 레슨 노트 자가증식 하는 현상 없애기 위해서 추가
+                            lessonActionList = [];
+                            txtEdtCtrlrList = [];
                             Navigator.pop(context);
                           }
                         },
@@ -1170,7 +1182,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                     false;
                                               },
                                             );
-                                            debugList(lessonActionList, "1");
+                                            debugList(lessonActionList, "2023-04-06 debug 2 :");
 
                                             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
                                             // txtEdtCtrlrList = [];
@@ -2215,6 +2227,6 @@ void addTmpInfoList(
 
 debugList(List list, String mark) {
   list.forEach((element) {
-    print("${mark} - element : ${element}");
+    print("${mark} - debug element : ${element}");
   });
 }
