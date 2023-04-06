@@ -625,7 +625,7 @@ class _MemberListState extends State<MemberList> {
                     Row(
                       children: [
                         Text(
-                          /* searchString == "" ?  */ mainSearchedList.isEmpty ? '${UiTextKor.memberList_SearchResultTotal} ${globalVariables.resultList.length} ${UiTextKor.memberList_SearchResultTotalCnt}' :  '${UiTextKor.memberList_SearchResultTotal} ${mainSearchedList.length} ${UiTextKor.memberList_SearchResultTotalCnt}'/*  : '검색 결과 ${searchResultCnt} 명' */,
+                          /* searchString == "" ?  */ /* mainSearchedList.isEmpty ?  */'${UiTextKor.memberList_SearchResultTotal} ${globalVariables.resultList.length} ${UiTextKor.memberList_SearchResultTotalCnt}' /* :  '${UiTextKor.memberList_SearchResultTotal} ${mainSearchedList.length} ${UiTextKor.memberList_SearchResultTotalCnt}' *//*  : '검색 결과 ${searchResultCnt} 명' */,
                           style: TextStyle(color: Palette.gray7B),
                         ),
                         Spacer(),

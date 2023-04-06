@@ -9,12 +9,20 @@
       "client_info": {
         "mobilesdk_app_id": "1:417922293739:android:8a0a38908d1de53de103ae",
         "android_client_info": {
-          "package_name": "com.moley.web_project"
+          "package_name": "com.example.web_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "417922293739-djsfa4mrcfrp3v4jau352bunid874hhj.apps.googleusercontent.com",
+          "client_id": "417922293739-52pv86gf2ghfvn6vg9ca4va1u4eip907.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.web_project",
+            "certificate_hash": "d09509729fe9bedff9d40ec187216ae86884eb1e"
+          }
+        },
+        {
+          "client_id": "417922293739-s126kapoqnnpsddig5bht1dkmiclne44.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -34,7 +42,51 @@
               "client_id": "417922293739-u2a892q9iip44gobrqt8d4rqa3vref58.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.moley.webProject"
+                "bundle_id": "com.example.webProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417922293739:android:73df6d719d9fc052e103ae",
+        "android_client_info": {
+          "package_name": "com.squat.bettercoach.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417922293739-h0ij78o7mbu2737ch23unhsbhr94aq56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.squat.bettercoach.dev",
+            "certificate_hash": "d09509729fe9bedff9d40ec187216ae86884eb1e"
+          }
+        },
+        {
+          "client_id": "417922293739-s126kapoqnnpsddig5bht1dkmiclne44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ-1Vn33J6lz_pDD4fE3LFLWno-BOReXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417922293739-djsfa4mrcfrp3v4jau352bunid874hhj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "417922293739-u2a892q9iip44gobrqt8d4rqa3vref58.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.webProject"
               }
             }
           ]

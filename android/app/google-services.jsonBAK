@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "417922293739",
+    "project_id": "bettercoach-d6c79",
+    "storage_bucket": "bettercoach-d6c79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417922293739:android:8a0a38908d1de53de103ae",
+        "android_client_info": {
+          "package_name": "com.moley.web_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417922293739-djsfa4mrcfrp3v4jau352bunid874hhj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ-1Vn33J6lz_pDD4fE3LFLWno-BOReXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417922293739-djsfa4mrcfrp3v4jau352bunid874hhj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "417922293739-u2a892q9iip44gobrqt8d4rqa3vref58.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.moley.webProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

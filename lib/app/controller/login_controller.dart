@@ -127,6 +127,7 @@ class LoginController {
 
     final FA.UserCredential userCredential =
         await FA.FirebaseAuth.instance.signInWithCustomToken(customToken);
+        // await FA.FirebaseAuth.instance.signInWithCredential(customToken as FA.AuthCredential);
 
     final FA.User? fUser = userCredential.user;
 

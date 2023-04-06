@@ -1,4 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.squat.bettercoach.dev">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.squat.bettercoach.dev">
+<!-- tools:repalce="andoird:exported" 관련 에러 처리 하기 위해서 
+	1. xmlns:tools="http://schemas.android.com/tools" 내용을 <manifest xmlns:adroid ~ 이하에 추가
+	2. flutter project와 firebase project의 패키지 이름을 통일시켜주기 위해 firebase console에서 안드로이드 앱 추가
+	3. google-service.json 설정파일 android > app > 이하에 추가 -->
 	<!-- 인터넷 요청을 위해 -->
 	<uses-permission android:name="android.permission.INTERNET" />
 	<!-- Geoloacation -->
@@ -11,7 +15,7 @@
 	<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 	<application android:label="BetterCoach" android:name="${applicationName}" android:icon="@mipmap/launcher_icon" android:usesCleartextTraffic="true">
 		<!-- http 프로토콜 예외 발생 조치를 위해 -->
-		<activity android:name=".MainActivity" android:exported="true" tools:replace="android:exported" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize" android:showWhenLocked="true" android:turnScreenOn="true">
+		<activity android:name=".MainActivity" android:exported="true" tools:replace="android:exported, android:theme" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize" android:showWhenLocked="true" android:turnScreenOn="true">
 			<!--
 			Specifies an Android theme to apply to this Activity as soon as
 			the Android process has started. This theme is visible to the user
