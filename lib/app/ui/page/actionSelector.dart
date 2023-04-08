@@ -979,7 +979,8 @@ class _ActionSelectorState extends State<ActionSelector> {
                       String position = doc['position'];
                       String name = doc['name'];
                       String lowerCaseName = doc['lowerCaseName'];
-                      bool isSelected = doc['actionSelected'];
+                      /// 2023-04-08 debug 동작 추가 안되는 현상 디버깅
+                      bool isSelected = doc['actionSelected'] ?? false;
                       /* print(
                           '#####TempLEssonList: ${tmpLessonInfoList[1].toString()}');
                       inspect(tmpLessonInfoList[1]); */

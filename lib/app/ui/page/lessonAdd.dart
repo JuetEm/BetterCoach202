@@ -268,7 +268,7 @@ class _LessonAddState extends State<LessonAdd> {
       print("INIT!!!변경 : ${checkInitState}");
     }
     print("재빌드시 init상태 : ${checkInitState}");
-
+    print("2023-04-08 debug just before return Consumer5 lessonActionList.length : ${lessonActionList.length}, isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
     return Consumer5<LessonService, DayLessonService, SequenceRecentService,
         SequenceCustomService, MemberTicketService>(
       builder: (context, lessonService, dayLessonService, sequenceRecentService,
@@ -290,10 +290,12 @@ class _LessonAddState extends State<LessonAdd> {
                   customUserInfo.docId,
                   lessonDate.isEmpty ? lessonDateArg : lessonDate)
               .then((value) {
-            print("2023-04-06 debug : ppppppppp - value.length : ${value.length}");
+            print(
+                "2023-04-06 debug : ppppppppp - value.length : ${value.length}");
             value.length == 0
                 ? isReturnIsNotEmpty = false
                 : isReturnIsNotEmpty = true;
+            lessonActionList = [];
             lessonActionList.addAll(value);
             lessonActionList.isNotEmpty ? growthInth++ : null;
             lessonActionList.forEach((element) =>
@@ -306,7 +308,8 @@ class _LessonAddState extends State<LessonAdd> {
             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
             txtEdtCtrlrList = [];
             lessonActionList.forEach((element) {
-              txtEdtCtrlrList.add(new TextEditingController());
+              print("2023-04-08 debug txtEdtCtrlrList.add element : ${element}");
+              txtEdtCtrlrList.add(TextEditingController());
             });
 
             // setState(() {}); // 여기서 setState 호출하면 무한 획귀 오려 발생 하기도 함
@@ -365,7 +368,7 @@ class _LessonAddState extends State<LessonAdd> {
             lessonActionList = [];
             txtEdtCtrlrList = [];
             print(
-                "뒤로가기!! lessonActionList.length : ${lessonActionList.length}");
+                "2023-04-08 debug 뒤로가기!! lessonActionList.length : ${lessonActionList.length}");
             // 뒤로가기 선택시 MemberInfo로 이동
             Navigator.pop(context);
           }, [
@@ -427,6 +430,7 @@ class _LessonAddState extends State<LessonAdd> {
                               customUserInfo,
                               dayLessonService,
                               todayNoteView,
+                              lessonActionList,
                             );
                             isSequenceSaveChecked
                                 ? await saveCustomSequnce(
@@ -1182,7 +1186,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                     false;
                                               },
                                             );
-                                            debugList(lessonActionList, "2023-04-06 debug 2 :");
+                                            debugList(lessonActionList,
+                                                "2023-04-06 debug 2 :");
 
                                             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
                                             // txtEdtCtrlrList = [];
@@ -1776,15 +1781,17 @@ class _LessonAddState extends State<LessonAdd> {
     DayLessonService dayLessonService,
     // MemberTicketService memberTicketService,
     String todayNote,
+    List actionList,
     // String selectedTicketId,
     // bool isTicketCountChecked,
   ) async {
     print("2023-04-08 debug asdfsdfsfsgfdg - saveMethod CALLED!! => ${i}");
-    lessonActionList.forEach((element) {
-      print("2023-04-08 debug asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
+    actionList.forEach((element) {
+      print(
+          "2023-04-08 debug asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
     });
 
-    print("2023-04-08 debug 0 lessonActionList.length : ${lessonActionList.length}");
+    print("2023-04-08 debug 0 actionList.length : ${actionList.length}");
 
     print(userInfo.uid +
         "_" +
@@ -1815,7 +1822,7 @@ class _LessonAddState extends State<LessonAdd> {
       // isTicketCountChecked
     );
 
-    print("2023-04-08 debug 1 lessonActionList.length : ${lessonActionList.length}");
+    print("2023-04-08 debug 1 actionList.length : ${actionList.length}");
     /* int result = 0;
     lessonService
         .countRecord(userInfo.uid, userInfo.docId, lessonDate)
@@ -1823,7 +1830,7 @@ class _LessonAddState extends State<LessonAdd> {
       result = value;
     }); */
     if (growthInth > 0) {
-      lessonActionList.forEach((element) {
+      actionList.forEach((element) {
         print("fdasewvref 0 element : ${element}");
         element['id'] != null
             ? lessonService.delete(
@@ -1835,8 +1842,8 @@ class _LessonAddState extends State<LessonAdd> {
 
     // int teclIndex = 0;
     String recordId = "";
-    print("2023-04-08 debug 2 lessonActionList.length : ${lessonActionList.length}");
-    lessonActionList.forEach((element) async {
+    print("2023-04-08 debug 2 actionList.length : ${actionList.length}");
+    actionList.forEach((element) async {
       var rnd = Random().nextInt(45) + 1;
       recordId = customUserInfo.uid +
           "_" +
@@ -1893,7 +1900,7 @@ class _LessonAddState extends State<LessonAdd> {
     });
     // teclIndex = 0;
 
-    /*  for (int i = 0; i < lessonActionList.length; i++) {
+    /*  for (int i = 0; i < actionList.length; i++) {
       print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
           customUserInfo.uid +
           "_" +
@@ -1907,19 +1914,19 @@ class _LessonAddState extends State<LessonAdd> {
           "' " +
           customUserInfo.docId +
           "' " +
-          lessonActionList[i]['actionName'] +
+          actionList[i]['actionName'] +
           "' " +
-          lessonActionList[i]['apratusName'] +
+          actionList[i]['apratusName'] +
           "' " +
-          lessonActionList[i]['grade'] +
+          actionList[i]['grade'] +
           "' " +
           lessonDateArg +
           "' " +
-          lessonActionList[i]['name'] +
+          actionList[i]['name'] +
           "' " +
-          lessonActionList[i]['phoneNumber'] +
+          actionList[i]['phoneNumber'] +
           "' " +
-          lessonActionList[i]['pos'].toString() +
+          actionList[i]['pos'].toString() +
           "' " +
           txtEdtCtrlrList[i].text.trim());
       await lessonService.setLessonActionNote(
@@ -1932,13 +1939,13 @@ class _LessonAddState extends State<LessonAdd> {
             (DateTime.now()).toString(),
         customUserInfo.uid,
         customUserInfo.docId,
-        lessonActionList[i]['actionName'],
-        lessonActionList[i]['apratusName'],
-        lessonActionList[i]['grade'],
+        actionList[i]['actionName'],
+        actionList[i]['apratusName'],
+        actionList[i]['grade'],
         lessonDateArg,
-        lessonActionList[i]['name'],
-        lessonActionList[i]['phoneNumber'],
-        lessonActionList[i]['pos'],
+        actionList[i]['name'],
+        actionList[i]['phoneNumber'],
+        actionList[i]['pos'],
         txtEdtCtrlrList[i].text.trim(),
       );
 
@@ -1946,6 +1953,9 @@ class _LessonAddState extends State<LessonAdd> {
       growthInth++;
     } */
 
+    actionList = [];
+
+    /// 2023-04-08 debug
     lessonActionList = [];
     // lessonService.notifyListeners();
     /* String ticketId = globalVariables.memberTicketList
