@@ -8,6 +8,7 @@ import 'package:web_project/main.dart';
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
 import '../../function/globalFunction.dart';
+import '../lang/uiTextKor.dart';
 import '../widget/globalWidget.dart';
 import '../../data/model/action.dart' as tmpActionClass;
 
@@ -378,13 +379,22 @@ class _ActionAddState extends State<ActionAdd> {
 
                     /// 2023-04-08 dev 내가 만든 같은 동작이 있는지 검사 추가
                     if (globalVariables.actionList
-                            .where((element) => false)
-                            .isEmpty &&
-                        selectedApparatus.isNotEmpty &&
+                        .where((element) =>
+                            element['otherApparatusName'] == otherApparatusName &&
+                            element['lowerCaseName'] ==
+                                actionName.toLowerCase() &&
+                            element['otherPositionName'] == otherPositionName)
+                        .isNotEmpty) {
+                          print(
+                          "2023-04-08 dev isNotEmpty selectedApparatus : ${selectedApparatus}, otherApparatusName : ${otherApparatusName}, selectecPosition : ${selectecPosition}, otherPositionName : ${otherPositionName}, actionName : ${actionName}, user.uid : ${user.uid}, actionName.toUpperCase() : ${actionName.toUpperCase()}, actionName.toLowerCase() : ${actionName.toLowerCase()},");
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("같은 기구/자세/동작명이 이미 존재합니다. 다른 이름을 입력해주세요."),
+                      ));
+                    } else if (selectedApparatus.isNotEmpty &&
                         selectecPosition.isNotEmpty &&
                         actionName.isNotEmpty) {
                       print(
-                          "2023-04-08 dev selectedApparatus : ${selectedApparatus}, otherApparatusName : ${otherApparatusName}, selectecPosition : ${selectecPosition}, otherPositionName : ${otherPositionName}, actionName : ${actionName}, user.uid : ${user.uid}, actionName.toUpperCase() : ${actionName.toUpperCase()}, actionName.toLowerCase() : ${actionName.toLowerCase()},");
+                          "2023-04-08 dev isEmpty selectedApparatus : ${selectedApparatus}, otherApparatusName : ${otherApparatusName}, selectecPosition : ${selectecPosition}, otherPositionName : ${otherPositionName}, actionName : ${actionName}, user.uid : ${user.uid}, actionName.toUpperCase() : ${actionName.toUpperCase()}, actionName.toLowerCase() : ${actionName.toLowerCase()},");
                       String id = await actionService.create(
                         selectedApparatus,
                         otherApparatusName,
