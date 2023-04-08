@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/action.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
+import 'package:web_project/main.dart';
 
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
@@ -374,9 +375,16 @@ class _ActionAddState extends State<ActionAdd> {
                         context, nameController, "새로운 동작 이름")) {
                       actionName = nameController.text;
                     }
-                    if (selectedApparatus.isNotEmpty &&
+
+                    /// 2023-04-08 dev 내가 만든 같은 동작이 있는지 검사 추가
+                    if (globalVariables.actionList
+                            .where((element) => false)
+                            .isEmpty &&
+                        selectedApparatus.isNotEmpty &&
                         selectecPosition.isNotEmpty &&
                         actionName.isNotEmpty) {
+                      print(
+                          "2023-04-08 dev selectedApparatus : ${selectedApparatus}, otherApparatusName : ${otherApparatusName}, selectecPosition : ${selectecPosition}, otherPositionName : ${otherPositionName}, actionName : ${actionName}, user.uid : ${user.uid}, actionName.toUpperCase() : ${actionName.toUpperCase()}, actionName.toLowerCase() : ${actionName.toLowerCase()},");
                       String id = await actionService.create(
                         selectedApparatus,
                         otherApparatusName,

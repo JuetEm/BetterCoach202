@@ -212,6 +212,8 @@ class _ActionSelectorState extends State<ActionSelector> {
   void dispose() {
     // TODO: implement dispose
     // 화면 나갈때  chip 변수 초기화
+    isOnlyMineSelected = false; 
+
     isReformerSelected = false;
     isCadillacSelected = false;
     isChairSelected = false;
@@ -948,6 +950,8 @@ class _ActionSelectorState extends State<ActionSelector> {
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", () {
             // 화면 나갈때  chip 변수 초기화
+            isOnlyMineSelected = false; 
+            
             isReformerSelected = false;
             isCadillacSelected = false;
             isChairSelected = false;
