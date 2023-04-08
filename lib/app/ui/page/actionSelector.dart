@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/animation/animationContainer_iconButton.dart';
 import 'package:web_project/app/ui/animation/bouncing_iconButton.dart';
+import 'package:web_project/app/ui/page/memberInfo.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/data/model/lessonInfo.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
@@ -32,6 +33,9 @@ String screenName = "동작 검색";
 
 // tmpLessonInfoList 값 반영하여 FilterChips 동적 생성
 var actionChips = [];
+
+// 2023-04-08 dev 내동작만 보기
+bool isOnlyMineSelected = false;
 
 bool isReformerSelected = false;
 bool isCadillacSelected = false;
@@ -634,6 +638,35 @@ class _ActionSelectorState extends State<ActionSelector> {
       ),
     ];
 
+    final onlyMyChipElement = FilterChip(
+      padding: EdgeInsets.only(bottom: 0),
+      labelStyle: TextStyle(
+          fontSize: 12,
+          color: isOnlyMineSelected ? Palette.grayFF : Palette.gray99),
+      selectedColor: Palette.buttonOrange,
+      backgroundColor: Colors.transparent,
+      side: isOnlyMineSelected
+          ? BorderSide.none
+          : BorderSide(color: Palette.grayB4),
+      label: Text("ONLY MINE"),
+      selected: isOnlyMineSelected,
+      showCheckmark: false,
+      onSelected: (value) {
+        setState(
+          () {
+            print("2023-04-08 dev 내동작만 보기 필터칩 울린다!!!");
+            isOnlyMineSelected = !isOnlyMineSelected;
+          },
+        );
+      },
+    );
+
+    globalVariables.actionList
+            .where((element) => element['author'] == userInfo.uid)
+            .isNotEmpty
+        ? apparatusChips.insert(0, onlyMyChipElement)
+        : null;
+
     final positionChips = [
       FilterChip(
         padding: EdgeInsets.only(bottom: 0),
@@ -899,6 +932,18 @@ class _ActionSelectorState extends State<ActionSelector> {
         //   print(
         //       "selectedActionCount : ${selectedActionCount}, tmpLessonInfoList.length : ${tmpLessonInfoList.length}");
         // }
+
+        /// 2023-04-08 dev 내 동작만 보기 버튼, 필터칩 영역에서는 isOnlyMineSelected 값만 조정됨, docs 값 이 부분에서 처리
+        globalVariables.actionList
+                .where((element) => element['author'] == userInfo.uid)
+                .isNotEmpty
+            ? isOnlyMineSelected
+                ? docs = globalVariables.actionList
+                    .where((element) => element['author'] == userInfo.uid)
+                    .toList()
+                : null
+            : null;
+
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "동작선택", () {
@@ -942,15 +987,17 @@ class _ActionSelectorState extends State<ActionSelector> {
             ), */
             AnimatedIconButton(
               size: 25,
-              onPressed: (){
+              onPressed: () {
                 isFullScreen = !isFullScreen;
-                setState(() {
-                  
-                });
-                print('all icons pressed');},
+                setState(() {});
+                print('all icons pressed');
+              },
               icons: const <AnimatedIconItem>[
                 AnimatedIconItem(
-                  icon: Icon(Icons.open_in_full, color: Palette.gray00,),
+                  icon: Icon(
+                    Icons.open_in_full,
+                    color: Palette.gray00,
+                  ),
                 ),
                 AnimatedIconItem(
                   icon: Icon(Icons.close_fullscreen, color: Palette.gray00),
@@ -979,6 +1026,7 @@ class _ActionSelectorState extends State<ActionSelector> {
                       String position = doc['position'];
                       String name = doc['name'];
                       String lowerCaseName = doc['lowerCaseName'];
+
                       /// 2023-04-08 debug 동작 추가 안되는 현상 디버깅
                       bool isSelected = doc['actionSelected'] ?? false;
                       /* print(
