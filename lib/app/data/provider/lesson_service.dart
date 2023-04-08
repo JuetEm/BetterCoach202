@@ -14,7 +14,7 @@ class LessonService extends ChangeNotifier {
 
   GlobalFunction globalFunction = GlobalFunction();
 
-  nofiFunction(){
+  nofiFunction() {
     notifyListeners();
   }
 
@@ -279,7 +279,8 @@ class LessonService extends ChangeNotifier {
 
   Future<List> readDateMemberActionNote(
       String uid, String memberId, String date) async {
-    print("ewagerefw lessonActionList 초기화!! uid : ${uid}, memberId : ${memberId}, date : ${date}");
+    print(
+        "ewagerefw lessonActionList 초기화!! uid : ${uid}, memberId : ${memberId}, date : ${date}");
     List lessonActionResultList = [];
     var lessonActionResult = await lessonCollection
         .where('uid', isEqualTo: uid)
@@ -291,7 +292,8 @@ class LessonService extends ChangeNotifier {
     var docsALength = lessonActionResult.docs.length;
     var rstAObj = {};
     for (int i = 0; i < docsALength; i++) {
-      print( "2023-04-06 debug : readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      print(
+          "2023-04-06 debug : readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
@@ -357,7 +359,7 @@ class LessonService extends ChangeNotifier {
       lessonActionResultList.add(rstAObj);
     }
     // notifyListeners();
-    return [lessonActionResultList,docsALength];
+    return [lessonActionResultList, docsALength];
   }
 
   Future<QuerySnapshot> readNotesOflessonDate(
@@ -459,7 +461,34 @@ class LessonService extends ChangeNotifier {
       'timestamp': Timestamp.now(),
       'totalNote': totalNote,
     };
-    await lessonCollection.doc(id).set(data, SetOptions(merge: true));
+    print('2023-04-08 debug 0 id : ${id}, uid: ${uid},' +
+          'docId: ${docId},' +
+          'actionName: ${actionName},' +
+          'apratusName: ${apratusName},' +
+          'grade: ${grade},' +
+          'lessonDate: ${lessonDate},' +
+          'name: ${name},' +
+          'phoneNumber: ${phoneNumber},' +
+          'pos: ${pos},' +
+          'timestamp: ${Timestamp.now()},' +
+          'totalNote: ${totalNote},');
+
+    await lessonCollection
+        .doc(id)
+        .set(data, SetOptions(merge: true))
+        .then((value) {
+      print('2023-04-08 debug 1 id : ${id}, uid: ${uid},' +
+          'docId: ${docId},' +
+          'actionName: ${actionName},' +
+          'apratusName: ${apratusName},' +
+          'grade: ${grade},' +
+          'lessonDate: ${lessonDate},' +
+          'name: ${name},' +
+          'phoneNumber: ${phoneNumber},' +
+          'pos: ${pos},' +
+          'timestamp: ${Timestamp.now()},' +
+          'totalNote: ${totalNote},');
+    });
     notifyListeners();
   }
 

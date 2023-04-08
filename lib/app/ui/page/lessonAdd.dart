@@ -409,7 +409,7 @@ class _LessonAddState extends State<LessonAdd> {
                             //일별 노트 저장
                             /* await todayNoteSave(
                           lessonService, customUserInfo, context); */
-                            saveRecentSequence(
+                            await saveRecentSequence(
                               sequenceRecentService,
                               userInfo.uid,
                               userInfo.docId,
@@ -420,7 +420,7 @@ class _LessonAddState extends State<LessonAdd> {
                               Timestamp.now(),
                               userInfo.name,
                             );
-                            saveMethod(
+                            await saveMethod(
                               lessonService,
                               lessonDate.isEmpty ? lessonDateArg : lessonDate,
                               lessonAddMode,
@@ -429,7 +429,7 @@ class _LessonAddState extends State<LessonAdd> {
                               todayNoteView,
                             );
                             isSequenceSaveChecked
-                                ? saveCustomSequnce(
+                                ? await saveCustomSequnce(
                                     sequenceCustomService,
                                     userInfo.uid,
                                     userInfo.docId,
@@ -449,7 +449,7 @@ class _LessonAddState extends State<LessonAdd> {
                             memberActionNote = [];
                             isReturnIsNotEmpty = true;
 
-                            print("여기가 맞긴 합니까?!");
+                            print("2023-04-08 debug : 여기가 맞긴 합니까?!");
 
                             // lessonService.notifyListeners();
                             widget.customFunction();
@@ -1726,7 +1726,7 @@ class _LessonAddState extends State<LessonAdd> {
     deleteTargetDocIdLiet.add(lessonActionList[index]['id']);
   }
 
-  void saveRecentSequence(
+  Future<void> saveRecentSequence(
     SequenceRecentService sequenceRecentService,
     String uid,
     String memberId,
@@ -1736,7 +1736,7 @@ class _LessonAddState extends State<LessonAdd> {
     int like, // 좋아요 수 (추후 추가 가능성)
     Timestamp timeStamp, // 꺼내 쓸 때 변환해서 씀
     String username,
-  ) {
+  ) async {
     var now = DateTime.now();
     String sequenceTitle =
         username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
@@ -1744,7 +1744,7 @@ class _LessonAddState extends State<LessonAdd> {
         isfavorite, like, timeStamp, sequenceTitle);
   }
 
-  void saveCustomSequnce(
+  Future<void> saveCustomSequnce(
     SequenceCustomService sequenceCustomService,
     String uid,
     String memberId,
@@ -1755,7 +1755,7 @@ class _LessonAddState extends State<LessonAdd> {
     Timestamp timeStamp, // 꺼내 쓸 때 변환해서 씀
     String username,
     String sequenceTitle,
-  ) {
+  ) async {
     // 타임 스탬프 생성 난수로 임시명 생성 대체, 원래 전략으로 복귀 해야 함
     var unixTimestamp = DateTime.now().microsecondsSinceEpoch;
     // print("unixTimestamp : ${unixTimestamp}");
@@ -1779,10 +1779,12 @@ class _LessonAddState extends State<LessonAdd> {
     // String selectedTicketId,
     // bool isTicketCountChecked,
   ) async {
-    print("asdfsdfsfsgfdg - saveMethod CALLED!! => ${i}");
+    print("2023-04-08 debug asdfsdfsfsgfdg - saveMethod CALLED!! => ${i}");
     lessonActionList.forEach((element) {
-      print("asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
+      print("2023-04-08 debug asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
     });
+
+    print("2023-04-08 debug 0 lessonActionList.length : ${lessonActionList.length}");
 
     print(userInfo.uid +
         "_" +
@@ -1813,6 +1815,7 @@ class _LessonAddState extends State<LessonAdd> {
       // isTicketCountChecked
     );
 
+    print("2023-04-08 debug 1 lessonActionList.length : ${lessonActionList.length}");
     /* int result = 0;
     lessonService
         .countRecord(userInfo.uid, userInfo.docId, lessonDate)
@@ -1832,7 +1835,7 @@ class _LessonAddState extends State<LessonAdd> {
 
     // int teclIndex = 0;
     String recordId = "";
-
+    print("2023-04-08 debug 2 lessonActionList.length : ${lessonActionList.length}");
     lessonActionList.forEach((element) async {
       var rnd = Random().nextInt(45) + 1;
       recordId = customUserInfo.uid +
@@ -1845,7 +1848,7 @@ class _LessonAddState extends State<LessonAdd> {
           (DateTime.now().microsecondsSinceEpoch).toString() +
           (rnd).toString();
 
-      print("asdfsdfsfsgfdg gks qjs qhqtlek. : " +
+      print("2023-04-08 debug asdfsdfsfsgfdg gks qjs qhqtlek. : " +
           "recordId : " +
           recordId +
           ", customUserInfo.uid : " +
