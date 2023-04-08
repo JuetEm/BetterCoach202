@@ -951,7 +951,7 @@ class _ActionSelectorState extends State<ActionSelector> {
           appBar: BaseAppBarMethod(context, "동작선택", () {
             // 화면 나갈때  chip 변수 초기화
             isOnlyMineSelected = false; 
-            
+
             isReformerSelected = false;
             isCadillacSelected = false;
             isChairSelected = false;
@@ -1697,8 +1697,9 @@ class _ActionSelectorState extends State<ActionSelector> {
                                         // LessonAdd로 이동
                                         final result = await showDialog(
                                           context: context,
-                                          builder: (context) => StatefulBuilder(
-                                            builder: (context, setState) {
+                                          useRootNavigator: false, /// 다이얼로그 위에 스낵바 보여주기 위해서 root navigator 사용 안 함 옵션
+                                          builder: (BuildContext dialogContext) => StatefulBuilder(
+                                            builder: (dialogContext, setState) {
                                               return ActionAdd.manageList(
                                                   globalVariables.actionList);
                                             },

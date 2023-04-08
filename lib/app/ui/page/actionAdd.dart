@@ -22,6 +22,7 @@ late FocusNode actionNameFocusNode;
 
 class ActionAdd extends StatefulWidget {
   List tmpActionList = [];
+
   ActionAdd({super.key});
   ActionAdd.manageList(this.tmpActionList, {super.key});
 
@@ -122,6 +123,7 @@ class _ActionAddState extends State<ActionAdd> {
     final user = authService.currentUser()!;
     return Consumer<ActionService>(builder: (context, actionService, child) {
       return Dialog(
+        
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -138,7 +140,7 @@ class _ActionAddState extends State<ActionAdd> {
               children: <Widget>[
                 SizedBox(height: 10),
                 Container(
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.center,
                   child: Text(
                     '새로운 동작 생성',
                     style: TextStyle(
@@ -377,7 +379,7 @@ class _ActionAddState extends State<ActionAdd> {
                       actionName = nameController.text;
                     }
 
-                    /// 2023-04-08 dev 내가 만든 같은 동작이 있는지 검사 추가
+                    /// 2023-04-08 dev 내가 만든 같은 동작이 있는지 검사 추가, 기구/자세/동작명 같은 경우 추가 못하도록 처리
                     if (globalVariables.actionList
                         .where((element) =>
                             element['otherApparatusName'] == otherApparatusName &&
@@ -388,7 +390,7 @@ class _ActionAddState extends State<ActionAdd> {
                           print(
                           "2023-04-08 dev isNotEmpty selectedApparatus : ${selectedApparatus}, otherApparatusName : ${otherApparatusName}, selectecPosition : ${selectecPosition}, otherPositionName : ${otherPositionName}, actionName : ${actionName}, user.uid : ${user.uid}, actionName.toUpperCase() : ${actionName.toUpperCase()}, actionName.toLowerCase() : ${actionName.toLowerCase()},");
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("같은 기구/자세/동작명이 이미 존재합니다. 다른 이름을 입력해주세요."),
+                        content: Text("같은 기구/자세/동작명이 이미 존재합니다. 다른 동작명을 입력해주세요."),
                       ));
                     } else if (selectedApparatus.isNotEmpty &&
                         selectecPosition.isNotEmpty &&
