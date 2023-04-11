@@ -14,8 +14,10 @@ import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/page/faq.dart';
 import 'package:web_project/app/ui/page/lessonAdd.dart';
+import 'package:web_project/app/ui/page/membershipList.dart';
 import 'package:web_project/app/ui/page/report.dart';
 import 'package:web_project/app/ui/page/sequenceLibrary.dart';
+import 'package:web_project/app/ui/page/ticketLibraryList.dart';
 import 'package:web_project/app/ui/page/ticketLibraryManage.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/ui/widget/notReadyAlertWidget.dart';
@@ -276,6 +278,11 @@ class _MemberListState extends State<MemberList> {
                           );
                         },
                       );
+                      /* Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => TicketLibraryManage(TicketLibraryManageList: globalVariables.ticketLibraryList,)))
+                          .then((value) {
+                        print("수강권 추가 result");
+                      }); */
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),
@@ -338,7 +345,7 @@ class _MemberListState extends State<MemberList> {
                           .then((value) {
                         print("수강권 추가 result");
                       });
-                      ;
+                      
                     },
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   ),

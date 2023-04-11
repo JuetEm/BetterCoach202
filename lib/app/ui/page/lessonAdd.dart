@@ -268,7 +268,8 @@ class _LessonAddState extends State<LessonAdd> {
       print("INIT!!!변경 : ${checkInitState}");
     }
     print("재빌드시 init상태 : ${checkInitState}");
-    print("2023-04-08 debug just before return Consumer5 lessonActionList.length : ${lessonActionList.length}, isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
+    print(
+        "2023-04-08 debug just before return Consumer5 lessonActionList.length : ${lessonActionList.length}, isReturnIsNotEmpty : ${isReturnIsNotEmpty}");
     return Consumer5<LessonService, DayLessonService, SequenceRecentService,
         SequenceCustomService, MemberTicketService>(
       builder: (context, lessonService, dayLessonService, sequenceRecentService,
@@ -308,7 +309,8 @@ class _LessonAddState extends State<LessonAdd> {
             // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
             txtEdtCtrlrList = [];
             lessonActionList.forEach((element) {
-              print("2023-04-08 debug txtEdtCtrlrList.add element : ${element}");
+              print(
+                  "2023-04-08 debug txtEdtCtrlrList.add element : ${element}");
               txtEdtCtrlrList.add(TextEditingController());
             });
 
@@ -1167,12 +1169,14 @@ class _LessonAddState extends State<LessonAdd> {
                                                     SequenceLibrary()),
                                           ).then((value) {
                                             // lessonActionList = [];
-                                            List valList = value;
-                                            for (var v in valList) {
-                                              lessonActionList.add(v);
-                                            }
+                                            if (value == null) {
+                                            } else {
+                                              List valList = value;
+                                              for (var v in valList) {
+                                                lessonActionList.add(v);
+                                              }
 
-                                            /* lessonActionList.forEach(
+                                              /* lessonActionList.forEach(
                                                 (element) => element[
                                                             'totalNote']
                                                         .isNotEmpty
@@ -1180,23 +1184,24 @@ class _LessonAddState extends State<LessonAdd> {
                                                         false // true
                                                     : element['noteSelected'] =
                                                         false); */
-                                            lessonActionList.forEach(
-                                              (element) {
-                                                element['deleteSelected'] =
-                                                    false;
-                                              },
-                                            );
-                                            debugList(lessonActionList,
-                                                "2023-04-06 debug 2 :");
+                                              lessonActionList.forEach(
+                                                (element) {
+                                                  element['deleteSelected'] =
+                                                      false;
+                                                },
+                                              );
+                                              debugList(lessonActionList,
+                                                  "2023-04-06 debug 2 :");
 
-                                            // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
-                                            // txtEdtCtrlrList = [];
-                                            valList.forEach((element) {
-                                              txtEdtCtrlrList.add(
-                                                  new TextEditingController());
-                                            });
-                                            if (this.mounted) {
-                                              setState(() {});
+                                              // notedActionWidget = makeChips(notedActionWidget, lessonActionList, Palette.backgroundOrange);
+                                              // txtEdtCtrlrList = [];
+                                              valList.forEach((element) {
+                                                txtEdtCtrlrList.add(
+                                                    new TextEditingController());
+                                              });
+                                              if (this.mounted) {
+                                                setState(() {});
+                                              }
                                             }
                                           });
                                         },

@@ -16,7 +16,7 @@ class TicketLibraryService extends ChangeNotifier {
     var docsLength = result.docs.length;
     var rstObj = {};
     for (int i = 0; i < docsLength; i++) {
-      // print("result.docs[i].data() : ${result.docs[i].data()}");
+      print("2023-04-11 debug result.docs[i].data() : ${result.docs[i].data()}");
       rstObj = result.docs[i].data();
       rstObj['id'] = result.docs[i].id;
       resultList.add(rstObj);

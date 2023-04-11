@@ -875,6 +875,7 @@ class _LoginPageState extends State<LoginPage> {
 
               await ticketLibraryService.read(cUser.uid).then((value) {
                 globalVariables.ticketLibraryList.addAll(value);
+                print("2023-04-11 debug 수강권 데이터 확인 : ${value}");
               }).onError((error, stackTrace) {
                 print("error : ${error}");
                 print("stackTrace : \r\n${stackTrace}");

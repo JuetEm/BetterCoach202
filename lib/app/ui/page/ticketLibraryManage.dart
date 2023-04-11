@@ -53,6 +53,7 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                         });
                       }),
 
+                  // widget.TicketLibraryManageList != null ? 
                   ListView.separated(
                     physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.only(bottom: 30),
@@ -100,7 +101,8 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                     separatorBuilder: (BuildContext context, int index) {
                       return SizedBox.shrink();
                     },
-                  ),
+                  ) 
+                  //: SizedBox.shrink(),
                 ],
               ),
             ),
