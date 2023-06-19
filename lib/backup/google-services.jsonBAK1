@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "417922293739-34fj6k85nq9ptosd3u59ecsol32a6lpq.apps.googleusercontent.com",
+              "client_id": "417922293739-u2a892q9iip44gobrqt8d4rqa3vref58.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.squat.bettercoach.dev"
+                "bundle_id": "com.example.webProject"
               }
             }
           ]
@@ -83,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "417922293739-34fj6k85nq9ptosd3u59ecsol32a6lpq.apps.googleusercontent.com",
+              "client_id": "417922293739-u2a892q9iip44gobrqt8d4rqa3vref58.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.squat.bettercoach.dev"
+                "bundle_id": "com.example.webProject"
               }
             }
           ]

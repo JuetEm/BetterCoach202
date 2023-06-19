@@ -42,6 +42,19 @@
 				<data android:scheme="kakaob59deaa3a0ff4912ca55fc3d71ccd6aa" android:host="oauth" />
 			</intent-filter>
 		</activity>
+		<!-- Android Apple Login 추가 -->
+        <activity
+          android:name="com.aboutyou.dart_packages.sign_in_with_apple.SignInWithAppleCallback"
+          android:exported="true">
+             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="signinwithapple" />
+                <data android:path="callback" />
+             </intent-filter>
+        </activity>
 		<!-- Android 12 android:exported 설정 Override -->
 		<receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" android:exported="true">.
 		</receiver>

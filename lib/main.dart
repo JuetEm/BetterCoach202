@@ -171,7 +171,7 @@ void main() async {
   FB.User? user = authService.currentUser();
 
   user != null
-      ? analyticLog.analyticConfig(user!.uid)
+      ? analyticLog.analyticConfig(user.uid)
       : analyticLog.analyticConfig(null);
 
   print("user?.email : ${user?.email}");
@@ -582,7 +582,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: Image.asset("assets/images/apple.png")),
                           SizedBox(width: 5),
                           // "Apple로 로그인하기"
-                          Text(UiTextKor.main_loginWithApple, style: TextStyle(fontSize: 16)),
+                          Text(UiTextKor.main_loginWithApple,
+                              style: TextStyle(fontSize: 16)),
                         ],
                       )),
                     ),
@@ -628,10 +629,25 @@ class _LoginPageState extends State<LoginPage> {
                       } catch (error) {
                         print('카카오톡으로 로그인 실패 - error : ${error}');
                       } */
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        // "애플 로그인 기능은 현재 개발 중입니다."
-                        content: Text(UiTextKor.main_loginWithAppleIsUnderDevMessage),
-                      ));
+
+                      if (kIsWeb) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          // "애플 로그인 기능은 현재 개발 중입니다."
+                          content: Text(
+                              UiTextKor.main_loginWithAppleIsUnderDevMessage),
+                        ));
+                      } else if (Platform.isAndroid) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          // "애플 로그인 기능은 현재 개발 중입니다."
+                          content: Text(
+                              UiTextKor.main_loginWithAppleIsUnderDevMessage),
+                        ));
+                      } else if (Platform.isIOS) {
+                        loginController.appleSignIn(context).then((value) {
+                          print("appleSignIn value : ${value}");
+                          loginWithCurrentUser(value, context);
+                        });
+                      } 
                     },
                   ),
                   SizedBox(height: 10),

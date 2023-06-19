@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart' as GL;
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_project/app/ui/page/loginSplash.dart';
 import 'dart:io' show HttpHeaders, Platform;
@@ -22,6 +23,51 @@ class LoginController {
   String? url = "";
   String? name = "";
 
+  Future<FA.User?> appleSignIn(BuildContext context) async {
+    final appleCredential;
+    const clientId = "dev.bettercoach.squat.com";
+    const redirectUri =
+        "https://bettercoach-d6c79.firebaseapp.com/__/auth/handler";
+
+    print("appleSignIn - 1");
+
+    //애플 크리덴셜 읽어왓! => 로그인!
+    if (kIsWeb || Platform.isAndroid) {
+      appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName
+        ], //이메일 들여다 볼거임!
+        webAuthenticationOptions: WebAuthenticationOptions(
+            clientId: clientId, redirectUri: Uri.parse(redirectUri)),
+      );
+    } else {
+      // Adroid 에서 Apple Login 시에 필요한 메서드도 정의해줘야 함!!
+      appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName
+        ], //이메일 들여다 볼거임!
+      );
+    }
+    // 로그인 정보를 불러오는 동안 스플래시 이미지로 로딩중 정보 전달
+    showLoginSplash(context);
+    print("appleSignIn - 2");
+    //애플 크리덴셜 Oauth 크리덴셜로 바꿔!
+    final oauthCredential = FA.OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+    );
+    print("appleSignIn - 3");
+    //firebase에 Signin 하자구!
+    final FA.UserCredential userCredential =
+        await FA.FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    print("appleSignIn - 4");
+    final FA.User? user = userCredential.user;
+
+    return user;
+  }
+
   Future<FA.User?> googleSignIn(BuildContext context) async {
     final GL.GoogleSignInAccount? account;
     if (kIsWeb) {
@@ -38,8 +84,6 @@ class LoginController {
 
     final GL.GoogleSignInAuthentication googleAuth =
         await account!.authentication;
-
-    
 
     final FA.AuthCredential authCredential = FA.GoogleAuthProvider.credential(
         idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
@@ -67,11 +111,12 @@ class LoginController {
     User? user;
     isKakaoInstalled = await isKakaoTalkInstalled();
     print("isKakaoInstalled : ${isKakaoInstalled}");
-    
+
+    bool isOk = false;
     OAuthToken token = isKakaoInstalled
         ? await UserApi.instance.loginWithKakaoTalk()
         : await UserApi.instance.loginWithKakaoAccount();
-    
+
     // 로그인 정보를 불러오는 동안 스플래시 이미지로 로딩중 정보 전달
     showLoginSplash(context);
 
@@ -127,7 +172,7 @@ class LoginController {
 
     final FA.UserCredential userCredential =
         await FA.FirebaseAuth.instance.signInWithCustomToken(customToken);
-        // await FA.FirebaseAuth.instance.signInWithCredential(customToken as FA.AuthCredential);
+    // await FA.FirebaseAuth.instance.signInWithCredential(customToken as FA.AuthCredential);
 
     final FA.User? fUser = userCredential.user;
 

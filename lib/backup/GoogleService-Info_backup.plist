@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>417922293739-34fj6k85nq9ptosd3u59ecsol32a6lpq.apps.googleusercontent.com</string>
+	<string>980690811295-tsf31qe6t3qlvqrekob02hj1rhjfj8st.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.417922293739-34fj6k85nq9ptosd3u59ecsol32a6lpq</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>417922293739-52pv86gf2ghfvn6vg9ca4va1u4eip907.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.980690811295-tsf31qe6t3qlvqrekob02hj1rhjfj8st</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAORA1EgKjDgyhzaKZtJNbxdasBF1h5Jhs</string>
+	<string>AIzaSyAcUR3PRm-spuxKgKqREWs4ZiaRTWoOgMM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>417922293739</string>
+	<string>980690811295</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.squat.bettercoach.dev</string>
 	<key>PROJECT_ID</key>
-	<string>bettercoach-d6c79</string>
+	<string>webproject-48ca4</string>
 	<key>STORAGE_BUCKET</key>
-	<string>bettercoach-d6c79.appspot.com</string>
+	<string>webproject-48ca4.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:417922293739:ios:81f966ea944030c3e103ae</string>
+	<string>1:980690811295:ios:d3a332d9e861bb178225aa</string>
 </dict>
 </plist>

@@ -89,6 +89,7 @@ dependencies:
   auto_animated: any
   like_button: ^2.0.5
   favorite_button: ^0.0.4
+  sign_in_with_apple: ^4.3.0
 
 dev_dependencies:
   flutter_test:

@@ -14,7 +14,7 @@ class AnalyticLog {
 
   static Identify identify = Identify();
 
-  Map<String, dynamic> analyticConfig(String? uid) {
+  Future<Map<String, dynamic>> analyticConfig(String? uid) async {
     Map<String, dynamic> logInstances = {};
 
     logInstances['firebaseAnalytics'] = analytics;
